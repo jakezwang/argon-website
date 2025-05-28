@@ -138,7 +138,15 @@ export default function HomePage() {
             <p className="text-xl text-gray-800 mb-10">
               Contribute to the project on GitHub, or dive into our documentation.
             </p>
-            <div className="space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:space-x-4">
+              <a
+                href="https://github.com/argon-lab/argon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-brand-dark text-white hover:bg-opacity-90 font-bold px-10 py-4 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105"
+              >
+                Contribute on GitHub
+              </a>
               <a
                 href="https://github.com/argon-lab/argon/blob/master/README.md"
                 target="_blank"
