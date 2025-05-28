@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: theme('colors.brand-dark');
+    color: theme('colors.brand-text');
+  }
+
+  p {
+    color: theme('colors.brand-text-darker');
+  }
+
+  a {
+    color: theme('colors.brand-primary');
+  }
+  a:hover {
+    color: theme('colors.brand-secondary');
+  }
+
+  /* Headings will inherit color from body or can be styled with utility classes */
+}
