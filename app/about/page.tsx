@@ -6,14 +6,6 @@ export default function AboutPage() {
     <div className="py-12 sm:py-16 bg-brand-dark text-brand-text">
       <div className="max-w-4xl mx-auto px-6 lg:px-8"> {/* Removed pt-16 */}
 
-        {/* Why Argon? Section */}
-        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Why Argon?</h2>
-          <p className="text-lg text-brand-text-darker">
-            Traditional database workflows can be slow and cumbersome. Argon brings modern, Git-like agility to MongoDB, empowering developers to accelerate development cycles and reduce operational overhead with features like instant branching and S3-backed storage.
-          </p>
-        </section>
-
         {/* Team Introduction Section - Placeholder */}
         <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary text-center">Meet the Team</h2>
@@ -59,14 +51,28 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Project Status Section */}
+        {/* Why Argon? Section */}
         <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Project Status</h2>
-          <p className="text-lg mb-4 text-brand-text-darker">
-            Argon is currently in <strong className="text-brand-text">alpha development</strong>. We are actively working on core features, improving stability, and gathering feedback from early adopters.
+          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Why Argon? The AI Data Advantage</h2>
+          <p className="text-lg text-brand-text-darker mb-3">
+            Argon brings Git-like agility to MongoDB, accelerating AI development by enabling instant branching, serverless-inspired compute, and S3-backed storage. This makes Argon ideal for <strong className="text-brand-primary-light">managing complex AI datasets and model development pipelines.</strong>
           </p>
           <p className="text-lg text-brand-text-darker">
-            Key focus areas include enhancing the CLI, developing the web dashboard, and ensuring robust performance and security. We encourage you to try it out, report issues, and contribute to its growth.
+            Argon delivers <strong className="text-brand-accent">transformative benefits to NoSQL, focusing on AI use cases.</strong>
+          </p>
+        </section>
+
+        {/* Project Status Section */}
+        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
+          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Project Status: PoC for AI Innovation</h2>
+          <p className="text-lg mb-4 text-brand-text-darker">
+            Argon is an <strong className="text-brand-accent">open-source Proof-of-Concept (PoC)</strong> focused on database branching, time-travel, and compute-storage separation for non-relational databases. These features are key for <strong className="text-brand-primary-light">agile AI data management</strong> (experiments, model training). Our approach is <strong className="text-brand-accent">optimized for AI workloads with NoSQL.</strong>
+          </p>
+          <p className="text-lg mb-4 text-brand-text-darker">
+            The <code className="bg-brand-darker px-1 py-0.5 rounded text-sm">argonctl</code> CLI (on PyPI) allows early exploration. We're focused on <strong className="text-brand-accent">enhancing the PoC's stability and features</strong> based on community feedback, especially for AI applications, aiming for seamless data management from experimentation to deployment.
+          </p>
+          <p className="text-lg text-brand-text-darker">
+            We encourage community involvement: try Argon, report issues, suggest features, and contribute. Your feedback is vital.
           </p>
           <div className="mt-6">
             <Link href="https://github.com/argon-lab/argon/projects" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary font-semibold">

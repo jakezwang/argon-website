@@ -3,18 +3,19 @@
 import Link from 'next/link';
 import { useState } from 'react'; // Import useState
 
+// Define navLinks outside the component
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/features", label: "Features" },
+  { href: "/demo", label: "Demo" },
+  { href: "/about", label: "About Us" },
+  { href: "/investors", label: "Investors" },
+  { href: "https://github.com/argon-lab/argon/blob/master/README.md", label: "Docs", target: "_blank" },
+  { href: "https://github.com/argon-lab/argon", label: "GitHub", target: "_blank" },
+];
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
-
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/features", label: "Features" },
-    { href: "/demo", label: "Demo" },
-    { href: "/investors", label: "Investors" }, // Added Investors link
-    { href: "/about", label: "About Us" },
-    { href: "https://github.com/argon-lab/argon/blob/master/README.md", label: "Docs", target: "_blank" },
-    { href: "https://github.com/argon-lab/argon", label: "GitHub", target: "_blank" },
-  ];
 
   return (
     <nav className="bg-brand-surface shadow-md sticky top-0 z-50">
@@ -34,7 +35,7 @@ export default function Navbar() {
                   href={link.href}
                   target={link.target}
                   rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                  className="text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium" // Changed from text-lg to text-base
                 >
                   {link.label}
                 </Link>
@@ -75,7 +76,7 @@ export default function Navbar() {
                 href={link.href}
                 target={link.target}
                 rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                className="text-brand-muted hover:text-brand-text block px-3 py-2 rounded-md text-base font-medium"
+                className="text-brand-muted hover:text-brand-text block px-3 py-2 rounded-md text-lg font-medium" // Changed from text-xl to text-lg
                 onClick={() => setIsOpen(false)} // Close menu on click
               >
                 {link.label}
