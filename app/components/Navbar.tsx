@@ -38,7 +38,7 @@ export default function Navbar() {
                   target={link.target}
                   rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
                   className={link.isButton 
-                    ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
+                    ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
                     : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
                 >
                   {link.label}

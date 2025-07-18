@@ -104,7 +104,7 @@ export default function HomePage() {
                   href="https://github.com/argon-lab/argon"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary font-semibold px-6 py-2 rounded-lg transition-colors"
+                  className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-6 py-2 rounded-lg transition-colors"
                 >
                   Get Started with Open Source
                 </a>

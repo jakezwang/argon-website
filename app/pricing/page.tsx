@@ -259,7 +259,7 @@ export default function PricingPage() {
               href="https://github.com/argon-lab/argon"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md bg-brand-primary px-6 py-3 text-base font-semibold text-brand-dark shadow-sm hover:bg-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+              className="rounded-md bg-brand-primary px-6 py-3 text-base font-semibold text-brand-dark shadow-sm hover:bg-brand-secondary hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
             >
               Get Open Source
             </Link>
