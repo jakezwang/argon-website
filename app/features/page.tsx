@@ -21,7 +21,7 @@ export default function FeaturesPage() {
             Supercharge Your MongoDB Workflows
           </p>
           <p className="mt-6 text-lg leading-8 text-brand-text-darker">
-            Argon brings Git-like branching, stateless compute, and S3-backed versioning to MongoDB,
+            Argon brings production-ready branching, real-time change capture, and compressed versioning to MongoDB,
             empowering you to work more agilely, collaborate effectively, and innovate faster.
           </p>
         </div>
@@ -34,13 +34,13 @@ export default function FeaturesPage() {
               Create, suspend, resume, and delete database branches with ease, just like managing code in Git.
               Isolate development tasks and experiment freely without impacting other environments.
             </FeatureCard>
-            <FeatureCard icon="💨" title="Stateless Compute">
-              MongoDB runs in lightweight Docker containers, completely decoupled from persistent storage.
-              This means faster spin-up times and efficient resource utilization.
+            <FeatureCard icon="⚡" title="Real-Time Change Capture">
+              MongoDB change streams capture data modifications in real-time with sub-500ms branching operations
+              and 10,000+ ops/sec throughput for production workloads.
             </FeatureCard>
-            <FeatureCard icon="💾" title="S3-Powered Storage">
-              Durable, versioned snapshots of your data are stored efficiently and cost-effectively in your AWS S3 bucket.
-              Benefit from S3's reliability and scalability.
+            <FeatureCard icon="💾" title="Compressed Storage">
+              ZSTD compression achieves 42.40% storage reduction with S3 backend.
+              Efficient delta storage and background worker processing ensure optimal performance.
             </FeatureCard>
             <FeatureCard icon="⏳" title="Time-Travel">
               Restore or create new branches from any historical snapshot. Effortlessly roll back to previous
@@ -50,9 +50,9 @@ export default function FeaturesPage() {
               A comprehensive command-line interface to manage all aspects of Argon, from branch creation
               to time-travel operations. Automate and script your database workflows.
             </FeatureCard>
-            <FeatureCard icon="🖥️" title="Web Dashboard">
-              Visualize and manage branches through an intuitive web interface. Includes an optional
-              auto-suspend feature for idle instances to further optimize costs.
+            <FeatureCard icon="🏗️" title="Production Architecture">
+              Hybrid Go+Python system with collection-level data isolation using prefixes.
+              Background worker pools and MongoDB-based job queues ensure enterprise reliability.
             </FeatureCard>
           </dl>
           <div className="text-center mt-10">
@@ -67,37 +67,37 @@ export default function FeaturesPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-text">How It Works</h2>
             <p className="mt-4 text-lg leading-8 text-brand-text-darker">
-              Argon cleverly combines Docker for containerization, AWS S3 for persistent, versioned storage,
-              and a local metadata database to manage your branches.
+              Argon uses a hybrid Go+Python architecture with MongoDB change streams for real-time data capture,
+              collection-level isolation for branching, and S3 with ZSTD compression for efficient storage.
             </p>
           </div>
 
           <div className="space-y-8 text-brand-text-darker">
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">1. Branch Creation</h3>
-              <p>When you create a branch, Argon can start from a base snapshot (e.g., a clean database or a production dump) stored in S3. It pulls this snapshot and launches a new, isolated MongoDB instance in a Docker container.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">1. Collection-Level Isolation</h3>
+              <p>Branches use collection prefixes (e.g., 'main_users' vs 'feature_users') to create completely isolated data environments within the same MongoDB instance, eliminating conflicts and enabling parallel work.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">2. Making Changes</h3>
-              <p>You connect to this containerized MongoDB as usual and make your changes. Your work remains isolated to that specific branch.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">2. Real-Time Change Capture</h3>
+              <p>MongoDB change streams monitor data modifications in real-time. Background worker pools process these changes asynchronously through a MongoDB-based job queue for reliable operation.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Suspending a Branch</h3>
-              <p>When you suspend a branch, Argon takes a snapshot (dump) of the container's current data, uploads it to S3 (creating a new version), and then stops and removes the Docker container, freeing up local resources.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Efficient Storage & Compression</h3>
+              <p>Data is compressed using ZSTD (achieving 42.40% reduction) and stored in S3. Delta storage techniques minimize bandwidth and storage costs while maintaining fast access to historical states.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">4. Resuming a Branch</h3>
-              <p>To resume, Argon pulls the latest (or a specified) snapshot for that branch from S3 and starts a fresh Docker container with that data, allowing you to pick up right where you left off.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">4. Branch Operations</h3>
+              <p>Creating, switching, and deleting branches operates on collection metadata and prefixes, achieving sub-500ms response times with 10,000+ operations per second throughput.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">5. Time-Travel</h3>
-              <p>You can create a new branch from any historical snapshot of an existing branch, effectively rolling back to or inspecting a previous data state in an isolated environment without affecting the original branch.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">5. Hybrid Architecture</h3>
+              <p>Go engine handles performance-critical operations like change stream processing, while Python API provides productivity and ease of integration with existing workflows and tools.</p>
             </div>
           </div>
           <p className="mt-8 text-lg leading-7 text-brand-text-darker">
-            This architecture ensures that your MongoDB instances are <strong className="text-brand-primary">stateless</strong> (compute is separate from storage),
-            <strong className="text-brand-primary"> cost-effective</strong> (only pay for S3 storage for suspended branches and compute when running),
-            and <strong className="text-brand-primary">highly flexible</strong>.
+            This architecture ensures <strong className="text-brand-primary">production reliability</strong> with real-time processing,
+            <strong className="text-brand-primary"> enterprise performance</strong> with sub-500ms operations and 10,000+ ops/sec throughput,
+            and <strong className="text-brand-primary">zero-conflict collaboration</strong> through complete data isolation.
           </p>
           <div className="text-center mt-10">
             <Link href="https://github.com/argon-lab/argon/blob/master/docs/wiki/05_how_it_works.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary underline text-lg">

@@ -4,10 +4,18 @@ import { useState } from 'react';
 
 export default function QuickStartCommand() {
   const [copied, setCopied] = useState(false);
-  const command = 'pip install argonctl';
+  const [selectedMethod, setSelectedMethod] = useState(0);
+  
+  const installMethods = [
+    { label: 'npm', command: 'npm install -g argonctl', status: '✅ Live' },
+    { label: 'Homebrew', command: 'brew install argon-lab/tap/argonctl', status: '✅ Live' },
+    { label: 'Direct Download', command: 'curl -L https://github.com/argon-lab/argon/releases/latest/download/argon-darwin-arm64 -o argon', status: '✅ Live' }
+  ];
+
+  const currentMethod = installMethods[selectedMethod];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(command).then(() => {
+    navigator.clipboard.writeText(currentMethod.command).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
     }).catch(err => {
@@ -16,14 +24,32 @@ export default function QuickStartCommand() {
   };
 
   return (
-    <div className="max-w-md bg-brand-surface p-4 rounded-lg shadow-md">
+    <div className="max-w-2xl bg-brand-surface p-4 rounded-lg shadow-md">
+      {/* Installation Method Tabs */}
+      <div className="flex flex-wrap gap-2 mb-3 justify-center">
+        {installMethods.map((method, index) => (
+          <button
+            key={method.label}
+            onClick={() => setSelectedMethod(index)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              selectedMethod === index
+                ? 'bg-brand-primary text-brand-dark font-semibold'
+                : 'bg-brand-dark text-brand-text-darker hover:text-brand-primary'
+            }`}
+          >
+            {method.label} <span className="text-xs">{method.status}</span>
+          </button>
+        ))}
+      </div>
+      
+      {/* Command Display */}
       <div className="flex items-center justify-between">
-        <pre className="text-left text-brand-text overflow-x-auto">
-          <code className="text-base select-all">$ {command}</code>
+        <pre className="text-left text-brand-text overflow-x-auto flex-1 mr-2">
+          <code className="text-sm select-all">$ {currentMethod.command}</code>
         </pre>
         <button
           title="Copy to clipboard"
-          className="p-1.5 text-brand-text-darker hover:text-brand-primary focus:outline-none relative"
+          className="p-1.5 text-brand-text-darker hover:text-brand-primary focus:outline-none relative flex-shrink-0"
           onClick={handleCopy}
         >
           {copied ? (
@@ -38,7 +64,7 @@ export default function QuickStartCommand() {
           )}
         </button>
       </div>
-      {copied && <span className="text-xs text-green-500 absolute -mt-4 ml-28">Copied!</span>}
+      {copied && <span className="text-xs text-green-500 mt-1 block text-center">Copied!</span>}
     </div>
   );
 }
