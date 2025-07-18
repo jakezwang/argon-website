@@ -69,7 +69,7 @@ export default function AboutPage() {
             Argon is an <strong className="text-brand-accent">open-source Proof-of-Concept (PoC)</strong> focused on database branching, time-travel, and compute-storage separation for non-relational databases. These features are key for <strong className="text-brand-primary-light">agile AI data management</strong> (experiments, model training). Our approach is <strong className="text-brand-accent">optimized for AI workloads with NoSQL.</strong>
           </p>
           <p className="text-lg mb-4 text-brand-text-darker">
-            The <code className="bg-brand-darker px-1 py-0.5 rounded text-sm">argonctl</code> CLI (on PyPI) allows early exploration. We're focused on <strong className="text-brand-accent">enhancing the PoC's stability and features</strong> based on community feedback, especially for AI applications, aiming for seamless data management from experimentation to deployment.
+            The <code className="bg-brand-darker px-1 py-0.5 rounded text-sm">argonctl</code> CLI (available via npm and Homebrew) allows early exploration. We're focused on <strong className="text-brand-accent">enhancing the PoC's stability and features</strong> based on community feedback, especially for AI applications, aiming for seamless data management from experimentation to deployment.
           </p>
           <p className="text-lg text-brand-text-darker">
             We encourage community involvement: try Argon, report issues, suggest features, and contribute. Your feedback is vital.
