@@ -1,7 +1,8 @@
 // app/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import QuickStartCommand from './components/QuickStartCommand'; // Import the new component
+import QuickStartCommand from './components/QuickStartCommand';
+import PerformanceMetrics from './components/PerformanceMetrics';
 
 export default function HomePage() {
   return (
@@ -60,6 +61,9 @@ export default function HomePage() {
             {/* Removed QuickStartCommand from here */}
           </div>
         </section>
+
+        {/* Performance Metrics Section */}
+        <PerformanceMetrics />
 
         {/* Value Proposition Section - THIS IS THE "Why Choose Argon?" section */}
         <section className="py-12 sm:py-16 bg-brand-surface"> {/* Reduced py */}
