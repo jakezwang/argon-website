@@ -32,8 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Production-ready MongoDB branching and versioning platform. Create isolated database environments in seconds, 
-              <strong className="text-brand-primary-light"> time-travel through data states</strong>, and collaborate without conflicts using our hybrid Go+Python architecture.
+              Open-source MongoDB branching and versioning platform. Create isolated database environments in seconds, 
+              <strong className="text-brand-primary-light"> time-travel through data states</strong>, and collaborate without conflicts. 
+              Self-host or use our managed cloud service.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -51,12 +52,14 @@ export default function HomePage() {
               >
                 View on GitHub
               </a>
-              <Link
-                href="/investors"
+              <a
+                href="https://console.argonlabs.tech"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block bg-transparent border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
               >
-                Investor Relations
-              </Link>
+                Try Cloud Console
+              </a>
             </div>
             {/* Removed QuickStartCommand from here */}
           </div>
@@ -64,6 +67,80 @@ export default function HomePage() {
 
         {/* Performance Metrics Section */}
         <PerformanceMetrics />
+
+        {/* Deployment Options Section */}
+        <section className="py-12 sm:py-16 bg-brand-dark">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                Deploy Your Way
+              </h2>
+              <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto">
+                Argon is open-source at its core. Run it on your infrastructure or let us handle the complexity.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl">
+                <h3 className="text-2xl font-semibold text-brand-primary mb-4">Self-Hosted Open Source</h3>
+                <ul className="space-y-3 text-brand-text-darker mb-6">
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Complete control over your data and infrastructure</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>MIT licensed - modify and distribute freely</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Deploy on-premise or in your cloud</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Community support and contributions</span>
+                  </li>
+                </ul>
+                <a
+                  href="https://github.com/argon-lab/argon"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary font-semibold px-6 py-2 rounded-lg transition-colors"
+                >
+                  Get Started with Open Source
+                </a>
+              </div>
+              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl border border-brand-primary">
+                <h3 className="text-2xl font-semibold text-brand-primary mb-4">Managed Cloud Service</h3>
+                <ul className="space-y-3 text-brand-text-darker mb-6">
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Zero maintenance - we handle everything</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Web dashboard for easy management</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Automatic updates and scaling</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-primary mr-2">•</span>
+                    <span>Start free, upgrade as you grow</span>
+                  </li>
+                </ul>
+                <a
+                  href="https://console.argonlabs.tech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-transparent border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-6 py-2 rounded-lg transition-colors"
+                >
+                  Try Cloud Console
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Value Proposition Section - THIS IS THE "Why Choose Argon?" section */}
         <section className="py-12 sm:py-16 bg-brand-surface"> {/* Reduced py */}
@@ -157,7 +234,7 @@ export default function HomePage() {
               Ready to Transform Your MongoDB Experience?
             </h2>
             <p className="text-lg text-gray-800 mb-8"> {/* Reduced text-xl to text-lg, mb-10 to mb-8 */}
-              Contribute to the project on GitHub, or dive into our documentation.
+              Join the open-source community or get started with our cloud service in minutes.
             </p>
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
               <a
@@ -166,15 +243,15 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="inline-block bg-brand-dark text-white hover:bg-opacity-90 font-bold px-8 py-3 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
               >
-                Contribute on GitHub
+                Star on GitHub
               </a>
               <a
-                href="https://github.com/argon-lab/argon/blob/master/README.md"
+                href="https://console.argonlabs.tech"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-white text-brand-primary hover:bg-gray-100 font-bold px-8 py-3 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
               >
-                Read the Docs
+                Try Cloud Free
               </a>
             </div>
           </div>

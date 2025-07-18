@@ -7,11 +7,13 @@ import { useState } from 'react'; // Import useState
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/demo", label: "Demo" },
   { href: "/about", label: "About Us" },
   { href: "/investors", label: "Investors" },
   { href: "https://github.com/argon-lab/argon/blob/master/README.md", label: "Docs", target: "_blank" },
   { href: "https://github.com/argon-lab/argon", label: "GitHub", target: "_blank" },
+  { href: "https://console.argonlabs.tech", label: "Cloud Console", target: "_blank", isButton: true },
 ];
 
 export default function Navbar() {
@@ -35,7 +37,9 @@ export default function Navbar() {
                   href={link.href}
                   target={link.target}
                   rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                  className="text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium" // Changed from text-lg to text-base
+                  className={link.isButton 
+                    ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
+                    : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
                 >
                   {link.label}
                 </Link>
