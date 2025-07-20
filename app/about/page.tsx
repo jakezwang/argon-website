@@ -56,19 +56,19 @@ export default function AboutPage() {
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Why Argon?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="p-4">
-              <div className="text-4xl mb-3">🌿</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Git-like Workflows</h3>
-              <p className="text-brand-text-darker">Familiar branching for MongoDB data</p>
-            </div>
-            <div className="p-4">
-              <div className="text-4xl mb-3">🤖</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">ML-Ready</h3>
-              <p className="text-brand-text-darker">Built for AI/ML experiment tracking</p>
-            </div>
-            <div className="p-4">
               <div className="text-4xl mb-3">⚡</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Production-Ready</h3>
-              <p className="text-brand-text-darker">v1.0.0 with Python SDK & Docker</p>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">86x Faster</h3>
+              <p className="text-brand-text-darker">1.16ms branching vs 100ms+ standard</p>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl mb-3">⏳</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Time-Travel</h3>
+              <p className="text-brand-text-darker">First MongoDB with historical queries</p>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl mb-3">🚀</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">37,905+ ops/sec</h3>
+              <p className="text-brand-text-darker">Verified production performance</p>
             </div>
           </div>
         </section>
@@ -80,19 +80,19 @@ export default function AboutPage() {
             <div>
               <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working</h3>
               <ul className="space-y-2 text-brand-text-darker">
-                <li>• v1.0.0 production release</li>
-                <li>• Python SDK with ML integrations</li>
-                <li>• Docker deployment ready</li>
-                <li>• MongoDB branching system</li>
+                <li>• Pure WAL architecture with time-travel</li>
+                <li>• 1.16ms branching (86x faster)</li>
+                <li>• Python & Go SDKs published</li>
+                <li>• Homebrew, NPM, pip installation</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 What's Next</h3>
               <ul className="space-y-2 text-brand-text-darker">
-                <li>• Enhanced CLI experience</li>
-                <li>• Enterprise authentication</li>
-                <li>• Cloud managed service</li>
-                <li>• Community feedback integration</li>
+                <li>• Community adoption & demos</li>
+                <li>• Enterprise RBAC features</li>
+                <li>• Distributed WAL architecture</li>
+                <li>• Managed cloud service</li>
               </ul>
             </div>
           </div>

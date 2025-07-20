@@ -32,9 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Git-like versioning and branching for MongoDB. Create instant database branches for ML workflows, 
-              <strong className="text-brand-primary-light"> experiment tracking</strong>, and data versioning. 
-              Production-ready v1.0.0 with Python SDK and Docker deployment.
+              Revolutionary time-travel for MongoDB. Create instant branches in <strong className="text-brand-primary-light">1.16ms</strong>, 
+              query any historical database state, and achieve <strong className="text-brand-primary-light">37,905+ ops/sec</strong>. 
+              Production-ready with unified WAL architecture and ML integrations.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -83,19 +83,19 @@ export default function HomePage() {
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Production-ready v1.0.0 with Git-like workflows</span>
+                    <span>Pure WAL architecture with time-travel</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>High-performance MongoDB branching system</span>
+                    <span>86x faster branching than alternatives (1.16ms)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Install via Docker or build from source</span>
+                    <span>Install via Homebrew, NPM, or pip</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Python SDK with ML framework integrations</span>
+                    <span>Python & Go SDKs with clean interfaces</span>
                   </li>
                 </ul>
                 <a
@@ -153,30 +153,30 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">High-Performance Architecture</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Revolutionary Time-Travel</h3>
                 <p className="text-brand-text-darker">
-                  Hybrid Go+Python microservices with MongoDB change streams. Fast branch operations with collection-level isolation
-                  while maintaining <strong className="text-brand-primary-light">full MongoDB API compatibility.</strong>
+                  Industry-first MongoDB time-travel with millisecond precision. Query any historical state in <50ms
+                  with <strong className="text-brand-primary-light">37,905+ operations per second.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Data Versioning & Tracking</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Instant Zero-Copy Branching</h3>
                 <p className="text-brand-text-darker">
-                  Version control for MongoDB with experiment tracking capabilities. Branch-based data isolation
-                  with <strong className="text-brand-primary-light">ML framework integrations and automated compression.</strong>
+                  Create branches in 1.16ms (86x faster than industry standard). Pure WAL architecture enables
+                  <strong className="text-brand-primary-light">instant branching without data duplication.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Production-Ready Deployment</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">ML-Native Integration</h3>
                 <p className="text-brand-text-darker">
-                  Docker deployment with microservices architecture. MongoDB change streams and Redis job queues
-                  for <strong className="text-brand-accent">reliable production workloads and ML pipelines.</strong>
+                  Built-in MLflow, Weights & Biases, DVC, and Jupyter support. Production monitoring with
+                  <strong className="text-brand-accent">119+ test assertions and health checks.</strong>
                 </p>
               </div>
             </div>
             <div className="text-center mt-10">
               <p className="text-md text-brand-text-darker max-w-3xl mx-auto">
-                Git-like version control for MongoDB enabling <strong className="text-brand-primary-light">database branching and ML experiment tracking</strong> with production-ready performance and reliability.
+                The first MongoDB branching system with <strong className="text-brand-primary-light">time-travel capabilities and 86x faster performance</strong> than alternatives.
               </p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
                 Advanced Database Operations Made Simple
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon provides Git-like branching, data versioning, and experiment tracking for MongoDB through CLI and Python SDK interfaces.
+                Argon's pure WAL architecture enables instant branching, time-travel queries, and safe restore operations through a unified CLI.
               </p>
             </div>
             <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
@@ -198,19 +198,19 @@ export default function HomePage() {
               <ul className="space-y-3 text-base text-brand-text-darker"> {/* Reduced space-y-4 to space-y-3, text-lg to text-base */}
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Branch:</strong> Fast database branches with collection-level isolation.</span>
+                  <span><strong className="text-brand-text">Branch:</strong> Instant zero-copy branches in 1.16ms (86x faster).</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Version:</strong> Track data changes with MongoDB change streams.</span>
+                  <span><strong className="text-brand-text">Time-Travel:</strong> Query any historical database state in <50ms.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Experiment:</strong> ML workflow tracking with framework integrations.</span>
+                  <span><strong className="text-brand-text">Restore:</strong> Safe restore operations with production monitoring.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Integrate:</strong> Python SDK with MLflow, W&B, and DVC support.</span>
+                  <span><strong className="text-brand-text">Integrate:</strong> Python & Go SDKs, Jupyter magic commands, ML tools.</span>
                 </li>
               </ul>
               <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}

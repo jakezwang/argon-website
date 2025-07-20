@@ -42,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-950 text-white flex flex-col min-h-screen">
+      <body className="bg-brand-dark text-brand-text flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
           {children}

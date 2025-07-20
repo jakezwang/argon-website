@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    background-color: theme('colors.brand-dark');
+  }
+  
   body {
     background-color: theme('colors.brand-dark');
     color: theme('colors.brand-text');
