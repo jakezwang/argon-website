@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/investors", label: "Investors" },
   { href: "https://github.com/argon-lab/argon/blob/master/README.md", label: "Docs", target: "_blank" },
   { href: "https://github.com/argon-lab/argon", label: "GitHub", target: "_blank" },
+  { href: "https://console.argonlabs.tech", label: "Cloud Console", target: "_blank", isButton: true },
 ];
 
 export default function Navbar() {
@@ -39,9 +40,11 @@ export default function Navbar() {
                     href={link.href}
                     target={link.target}
                     rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                    className={isActive 
-                      ? "text-brand-primary bg-brand-dark px-3 py-2 rounded-md text-base font-medium"
-                      : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
+                    className={(link as any).isButton 
+                      ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
+                      : isActive 
+                        ? "text-brand-primary bg-brand-dark px-3 py-2 rounded-md text-base font-medium"
+                        : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
                   >
                     {link.label}
                   </Link>
