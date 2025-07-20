@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import TerminalDemo from './TerminalDemo';
+import ConsoleDemo from './ConsoleDemo';
+import IDEDemo from './IDEDemo';
 
 interface DemoStep {
   id: string;
@@ -97,185 +100,28 @@ const aiSteps: DemoStep[] = [
   }
 ];
 
-// Cloud Console workflow steps
-const consoleSteps: DemoStep[] = [
-  {
-    id: 'login',
-    command: 'Open console.argonlabs.tech → Sign in with Google',
-    description: 'Access the cloud console with secure authentication',
-    output: '✅ Signed in successfully\n👤 Welcome back!\n🏢 Teams: Personal, Work Team\n📊 Dashboard loaded',
-    metrics: { time: 'instant', operations: 'OAuth flow' }
-  },
-  {
-    id: 'create_project',
-    command: 'Create Project → "E-commerce API" → Add Sample Data',
-    description: 'Create new project with sample e-commerce data',
-    output: '🎉 Project "E-commerce API" created\n📦 Sample data: 1,000 products, 500 customers\n🌿 Default branch: main\n💾 MongoDB Atlas connected',
-    metrics: { time: '2.1s', operations: 'Visual UI' }
-  },
-  {
-    id: 'atlas_integration',
-    command: 'Integrations → Add MongoDB Atlas → Test Connection',
-    description: 'Connect securely to your MongoDB Atlas cluster',
-    output: '🔐 Atlas credentials encrypted (AES-256-GCM)\n✅ Connection test passed\n📊 Cluster: production-cluster-0\n🗄️ Databases: 3 detected',
-    metrics: { time: '850ms', operations: 'Secure storage' }
-  },
-  {
-    id: 'visual_branch',
-    command: 'Branches → Create → "feature/new-products" from main',
-    description: 'Create branch using visual interface',
-    output: '🌿 Branch "feature/new-products" created\n📋 Collections copied: products, categories, inventory\n👥 Shared with: Development Team\n🔄 Activity logged',
-    metrics: { time: '1.2s', operations: 'Visual branching' }
-  },
-  {
-    id: 'query_editor',
-    command: 'Query Editor → db.products.find({category: "electronics"})',
-    description: 'Use visual query editor with syntax highlighting',
-    output: '🔍 Query executed successfully\n📊 Results: 247 documents\n⚡ Execution time: 23ms\n📈 Performance metrics captured',
-    metrics: { time: '23ms', operations: 'MongoDB query' }
-  },
-  {
-    id: 'team_collaboration',
-    command: 'Share Project → Add team members → Set permissions',
-    description: 'Collaborate with team using role-based access',
-    output: '👥 Invited 3 team members\n🔐 Permissions: 2 editors, 1 viewer\n📧 Email invitations sent\n📱 Activity feed updated',
-    metrics: { time: '500ms', operations: 'Team management' }
-  },
-  {
-    id: 'branch_compare',
-    command: 'Compare Branches → main vs feature/new-products',
-    description: 'Visual diff showing changes between branches',
-    output: '🔍 Comparison complete\n📊 Changes detected:\n  • 15 new products added\n  • 3 categories modified\n  • 0 conflicts\n✅ Safe to merge',
-    metrics: { time: '340ms', operations: 'Visual diff' }
-  }
-];
-
-// SDK workflow steps  
-const sdkSteps: DemoStep[] = [
-  {
-    id: 'install',
-    command: 'npm install @argonlabs/sdk',
-    description: 'Install Argon SDK for Node.js',
-    output: '+ @argonlabs/sdk@1.0.0\n✅ Installation complete\n📚 Types included\n🔧 Ready for development',
-    metrics: { time: '3.2s', operations: 'Package install' }
-  },
-  {
-    id: 'initialize',
-    command: 'const argon = new ArgonClient({ apiKey: process.env.ARGON_API_KEY })',
-    description: 'Initialize SDK with API credentials',
-    output: '🔑 API key validated\n🌐 Connected to Argon Cloud\n📊 User: dev@company.com\n✅ SDK ready',
-    metrics: { time: '120ms', operations: 'Authentication' }
-  },
-  {
-    id: 'create_project_sdk',
-    command: 'const project = await argon.projects.create("my-app", { sampleData: true })',
-    description: 'Create project programmatically with sample data',
-    output: '🎉 Project "my-app" created\n📦 Sample data populated\n🆔 Project ID: proj_abc123\n🌿 Main branch ready',
-    metrics: { time: '1.8s', operations: 'API call' }
-  },
-  {
-    id: 'branch_operations',
-    command: 'const branch = await project.branches.create("feature/api-v2")',
-    description: 'Create and manage branches via SDK',
-    output: '🌿 Branch "feature/api-v2" created\n📋 Collections isolated\n🔗 Branch ID: br_def456\n💾 Ready for development',
-    metrics: { time: '450ms', operations: 'Branch creation' }
-  },
-  {
-    id: 'query_sdk',
-    command: 'const users = await branch.query("users", { role: "admin" })',
-    description: 'Execute queries programmatically',
-    output: '🔍 Query executed\n📊 Found 12 admin users\n⚡ Response time: 28ms\n📈 Usage tracked',
-    metrics: { time: '28ms', operations: 'SDK query' }
-  },
-  {
-    id: 'data_operations',
-    command: 'await branch.collections.users.insertOne({ name: "Alice", role: "admin" })',
-    description: 'Perform CRUD operations through SDK',
-    output: '📝 Document inserted\n🆔 ID: 507f1f77bcf86cd799439011\n🔄 Change stream captured\n💾 Automatically backed up',
-    metrics: { time: '45ms', operations: 'Insert operation' }
-  },
-  {
-    id: 'deployment',
-    command: 'await project.deploy({ branch: "feature/api-v2", target: "staging" })',
-    description: 'Deploy branch to staging environment',
-    output: '🚀 Deployment initiated\n🌐 Staging URL: https://staging-my-app.argon.dev\n✅ Health checks passed\n📱 Team notified',
-    metrics: { time: '2.1s', operations: 'Deployment' }
-  }
-];
 
 export default function InteractiveDemo() {
   const [activeTab, setActiveTab] = useState<'developer' | 'ai' | 'console' | 'sdk'>('developer');
   const [currentStep, setCurrentStep] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [typedCommand, setTypedCommand] = useState('');
-  const [showOutput, setShowOutput] = useState(false);
+  const [totalSteps, setTotalSteps] = useState(0);
+
+  // Reset when switching tabs
+  useEffect(() => {
+    setCurrentStep(0);
+  }, [activeTab]);
+
+  const handleStepChange = (step: number, total: number) => {
+    setCurrentStep(step);
+    setTotalSteps(total);
+  };
 
   const getCurrentSteps = () => {
     switch (activeTab) {
       case 'developer': return developerSteps;
       case 'ai': return aiSteps;
-      case 'console': return consoleSteps;
-      case 'sdk': return sdkSteps;
       default: return developerSteps;
     }
-  };
-
-  const currentSteps = getCurrentSteps();
-  const step = currentSteps[currentStep];
-
-  // Reset when switching tabs
-  useEffect(() => {
-    setCurrentStep(0);
-    setTypedCommand('');
-    setShowOutput(false);
-  }, [activeTab]);
-
-  // Typing animation
-  useEffect(() => {
-    if (isRunning && step) {
-      setTypedCommand('');
-      setShowOutput(false);
-      let i = 0;
-      const typeTimer = setInterval(() => {
-        if (i < step.command.length) {
-          setTypedCommand(step.command.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(typeTimer);
-          setTimeout(() => setShowOutput(true), 500);
-          setTimeout(() => setIsRunning(false), 1500);
-        }
-      }, 50);
-
-      return () => clearInterval(typeTimer);
-    }
-  }, [isRunning, step]);
-
-  const runStep = () => {
-    setIsRunning(true);
-  };
-
-  const nextStep = () => {
-    if (currentStep < currentSteps.length - 1) {
-      setCurrentStep(currentStep + 1);
-      setTypedCommand('');
-      setShowOutput(false);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-      setTypedCommand('');
-      setShowOutput(false);
-    }
-  };
-
-  const resetDemo = () => {
-    setCurrentStep(0);
-    setTypedCommand('');
-    setShowOutput(false);
-    setIsRunning(false);
   };
 
   return (
@@ -343,126 +189,70 @@ export default function InteractiveDemo() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Terminal Window */}
-        <div className="lg:col-span-2">
-          <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden">
-            {/* Terminal Header */}
-            <div className="bg-gray-800 px-4 py-2 flex items-center">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              </div>
-              <div className="flex-1 text-center">
-                <span className="text-gray-300 text-sm">argonctl-demo</span>
-              </div>
-            </div>
-
-            {/* Terminal Content */}
-            <div className="p-4 h-80 overflow-y-auto font-mono text-sm">
-              <div className="text-green-400">
-                $ {typedCommand}
-                {isRunning && <span className="animate-pulse">|</span>}
-              </div>
-              
-              {showOutput && (
-                <div className="mt-2 text-gray-300 whitespace-pre-line">
-                  {step.output}
-                  
-                  {step.metrics && (
-                    <div className="mt-3 p-3 bg-gray-800 rounded border-l-4 border-brand-primary">
-                      <div className="text-brand-primary font-semibold">⚡ Performance:</div>
-                      <div className="text-sm mt-1">
-                        <div>⏱️  Operation time: {step.metrics.time}</div>
-                        <div>🚀 Throughput: {step.metrics.operations}</div>
-                        {step.metrics.compression && (
-                          <div>🗜️  Compression: {step.metrics.compression}</div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-4 flex justify-between items-center">
-            <div className="flex space-x-2">
-              <button
-                onClick={prevStep}
-                disabled={currentStep === 0}
-                className="px-4 py-2 bg-brand-surface text-brand-text rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-dark transition-colors"
-              >
-                ← Previous
-              </button>
-              <button
-                onClick={runStep}
-                disabled={isRunning}
-                className="px-6 py-2 bg-brand-primary text-brand-dark rounded hover:bg-brand-secondary transition-colors disabled:opacity-50"
-              >
-                {isRunning ? 'Running...' : '▶ Run Command'}
-              </button>
-              <button
-                onClick={nextStep}
-                disabled={currentStep === currentSteps.length - 1 || !showOutput}
-                className="px-4 py-2 bg-brand-surface text-brand-text rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-dark transition-colors"
-              >
-                Next →
-              </button>
-            </div>
-            <button
-              onClick={resetDemo}
-              className="px-4 py-2 bg-brand-surface text-brand-text-darker rounded hover:bg-brand-dark transition-colors"
-            >
-              🔄 Reset
-            </button>
-          </div>
-        </div>
+        {/* Render appropriate demo interface based on active tab */}
+        {(activeTab === 'developer' || activeTab === 'ai') && (
+          <TerminalDemo steps={getCurrentSteps()} onStepChange={handleStepChange} />
+        )}
+        {activeTab === 'console' && (
+          <ConsoleDemo onStepChange={handleStepChange} />
+        )}
+        {activeTab === 'sdk' && (
+          <IDEDemo onStepChange={handleStepChange} />
+        )}
 
         {/* Step Information */}
         <div className="space-y-6">
           {/* Current Step */}
           <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
             <h4 className="text-lg font-semibold text-brand-primary mb-2">
-              Step {currentStep + 1} of {currentSteps.length}
+              Step {currentStep + 1} of {totalSteps || 1}
             </h4>
-            <p className="text-brand-text mb-4">{step?.description}</p>
+            {(activeTab === 'developer' || activeTab === 'ai') && (
+              <p className="text-brand-text mb-4">{getCurrentSteps()[currentStep]?.description}</p>
+            )}
+            {activeTab === 'console' && (
+              <p className="text-brand-text mb-4">Visual interface demo - {currentStep + 1} of {totalSteps}</p>
+            )}
+            {activeTab === 'sdk' && (
+              <p className="text-brand-text mb-4">SDK integration demo - {currentStep + 1} of {totalSteps}</p>
+            )}
             
             {/* Progress Bar */}
             <div className="w-full bg-brand-dark rounded-full h-2">
               <div 
                 className="bg-brand-primary h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((currentStep + 1) / currentSteps.length) * 100}%` }}
+                style={{ width: `${totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0}%` }}
               ></div>
             </div>
           </div>
 
           {/* All Steps Overview */}
-          <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
-            <h4 className="text-lg font-semibold text-brand-primary mb-4">Demo Steps</h4>
-            <div className="space-y-2">
-              {currentSteps.map((s, index) => (
-                <div
-                  key={s.id}
-                  className={`p-2 rounded text-sm transition-colors ${
-                    index === currentStep
-                      ? 'bg-brand-primary text-brand-dark'
-                      : index < currentStep
-                      ? 'bg-brand-dark text-brand-text-darker'
-                      : 'text-brand-text-darker'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="mr-2">
-                      {index < currentStep ? '✅' : index === currentStep ? '▶️' : '⏳'}
-                    </span>
-                    <span className="text-xs">{s.description}</span>
+          {(activeTab === 'developer' || activeTab === 'ai') && (
+            <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
+              <h4 className="text-lg font-semibold text-brand-primary mb-4">Demo Steps</h4>
+              <div className="space-y-2">
+                {getCurrentSteps().map((s, index) => (
+                  <div
+                    key={s.id}
+                    className={`p-2 rounded text-sm transition-colors ${
+                      index === currentStep
+                        ? 'bg-brand-primary text-brand-dark'
+                        : index < currentStep
+                        ? 'bg-brand-dark text-brand-text-darker'
+                        : 'text-brand-text-darker'
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <span className="mr-2">
+                        {index < currentStep ? '✅' : index === currentStep ? '▶️' : '⏳'}
+                      </span>
+                      <span className="text-xs">{s.description}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Key Benefits */}
           <div className="bg-brand-surface p-6 rounded-lg shadow-xl">

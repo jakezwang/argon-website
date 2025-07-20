@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react'; // Import useState
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 // Define navLinks outside the component
 const navLinks = [
@@ -16,7 +17,8 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="bg-brand-surface shadow-md sticky top-0 z-50">
@@ -30,19 +32,24 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  target={link.target}
-                  rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                  className={link.isButton 
-                    ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
-                    : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    target={link.target}
+                    rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+                    className={link.isButton 
+                      ? "bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white px-4 py-2 rounded-md text-base font-medium transition-colors ml-2"
+                      : isActive 
+                        ? "text-brand-primary bg-brand-dark px-3 py-2 rounded-md text-base font-medium"
+                        : "text-brand-muted hover:text-brand-text px-3 py-2 rounded-md text-base font-medium"}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
           </div>
           {/* Mobile Menu Button */}
@@ -73,18 +80,23 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                target={link.target}
-                rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
-                className="text-brand-muted hover:text-brand-text block px-3 py-2 rounded-md text-lg font-medium" // Changed from text-xl to text-lg
-                onClick={() => setIsOpen(false)} // Close menu on click
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  target={link.target}
+                  rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+                  className={isActive 
+                    ? "text-brand-primary bg-brand-dark block px-3 py-2 rounded-md text-lg font-medium"
+                    : "text-brand-muted hover:text-brand-text block px-3 py-2 rounded-md text-lg font-medium"}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
