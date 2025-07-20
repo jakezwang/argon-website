@@ -8,6 +8,7 @@ export default function QuickStartCommand() {
   
   const installMethods = [
     { label: 'npm', command: 'npm install -g argonctl', status: '✅ Live' },
+    { label: 'PyPI', command: 'pip install argon-mongodb', status: '✅ Live' },
     { label: 'Homebrew', command: 'brew install argon-lab/tap/argonctl', status: '✅ Live' },
     { label: 'Direct Download', command: 'curl -L https://github.com/argon-lab/argon/releases/latest/download/argon-darwin-arm64 -o argon', status: '✅ Live' }
   ];
