@@ -124,7 +124,7 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>S3 backend with ZSTD compression</span>
+                    <span>MongoDB-based storage system</span>
                   </li>
                 </ul>
                 <a

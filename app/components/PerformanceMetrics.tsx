@@ -26,11 +26,11 @@ const metrics: Metric[] = [
     icon: '🤖'
   },
   {
-    label: 'Storage Compression',
-    value: '40+',
-    unit: '% reduction',
-    description: 'ZSTD compression for efficient data storage',
-    icon: '🗜️'
+    label: 'Deployment',
+    value: '5',
+    unit: 'microservices',
+    description: 'Docker Compose with MongoDB, Redis, Go, Python, Next.js',
+    icon: '🐳'
   },
   {
     label: 'Data Isolation',
@@ -169,7 +169,7 @@ export default function PerformanceMetrics() {
               </li>
               <li className="flex items-start">
                 <span className="text-brand-primary mr-2">•</span>
-                <span><strong>Compression Ratio:</strong> ZSTD achieves consistent 40%+ storage reduction</span>
+                <span><strong>Data Isolation:</strong> Complete branch separation using collection prefixes</span>
               </li>
               <li className="flex items-start">
                 <span className="text-brand-primary mr-2">•</span>

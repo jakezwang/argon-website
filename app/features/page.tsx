@@ -38,9 +38,9 @@ export default function FeaturesPage() {
               Built on MongoDB change streams for data capture with collection prefixing.
               Hybrid Go+Python architecture optimized for performance and reliability.
             </FeatureCard>
-            <FeatureCard icon="💾" title="Efficient Storage">
-              ZSTD compression for 40%+ storage reduction with S3 backend support.
-              Background workers handle compression and storage operations asynchronously.
+            <FeatureCard icon="💾" title="MongoDB Storage">
+              Collection-based data isolation with MongoDB change streams.
+              Background workers handle data operations asynchronously for reliability.
             </FeatureCard>
             <FeatureCard icon="🤖" title="ML Framework Integration">
               Native support for MLflow, Weights & Biases, and DVC workflows.
@@ -82,8 +82,8 @@ export default function FeaturesPage() {
               <p>MongoDB change streams monitor data modifications in real-time. Background worker pools process these changes asynchronously through a MongoDB-based job queue for reliable operation.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Efficient Storage & Compression</h3>
-              <p>Data is compressed using ZSTD (achieving 40%+ reduction) and stored in S3. Background workers handle compression asynchronously to maintain performance.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Data Storage & Processing</h3>
+              <p>All data is stored in MongoDB with efficient collection-based isolation. Background workers handle asynchronous processing through MongoDB-based job queues.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">4. ML Workflow Support</h3>
