@@ -112,19 +112,19 @@ export default function HomePage() {
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>High availability configurations</span>
+                    <span>Docker containers and Kubernetes-ready</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Security & compliance features</span>
+                    <span>Terraform modules for AWS, GCP, Azure</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Cloud-native support (Docker/K8s)</span>
+                    <span>Prometheus and Grafana integration</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Monitoring & observability integration</span>
+                    <span>Production deployment guides available</span>
                   </li>
                 </ul>
                 <a
@@ -167,10 +167,10 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Production-Ready Architecture</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Enterprise-Ready Deployment</h3>
                 <p className="text-brand-text-darker">
-                  Enterprise-grade reliability with high availability, security compliance, and cloud-native deployment support.
-                  <strong className="text-brand-accent">Comprehensive monitoring and observability integration.</strong>
+                  Docker and Kubernetes support with Terraform modules for major cloud providers. Prometheus and Grafana integration
+                  for <strong className="text-brand-accent">production monitoring and enterprise deployment.</strong>
                 </p>
               </div>
             </div>
