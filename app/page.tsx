@@ -32,9 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Open-source MongoDB branching and versioning platform. Create isolated database environments in seconds, 
-              <strong className="text-brand-primary-light"> time-travel through data states</strong>, and collaborate without conflicts. 
-              Self-host or use our managed cloud service.
+              Open-source MongoDB branching platform with enterprise features. Create isolated database environments in seconds, 
+              <strong className="text-brand-primary-light"> collaborate with teams</strong>, and manage data with visual tools. 
+              Self-host or use our fully-featured cloud console.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -118,11 +118,11 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Web dashboard for easy management</span>
+                    <span>Full-featured web console with team collaboration</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Automatic updates and scaling</span>
+                    <span>MongoDB Atlas integration and visual query tools</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
@@ -155,24 +155,24 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Real-Time Performance</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Enterprise-Ready Features</h3>
                 <p className="text-brand-text-darker">
-                  Sub-500ms branching operations with 10,000+ ops/sec throughput. MongoDB change streams capture data in real-time
-                  with ZSTD compression achieving 42.40% storage reduction.
+                  Team collaboration with role-based permissions, MongoDB Atlas integration with secure connection management,
+                  and real-time usage tracking with billing integration.
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Production Architecture</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Visual Database Tools</h3>
                 <p className="text-brand-text-darker">
-                  Hybrid Go+Python system with collection-level data isolation. Background worker pools process changes asynchronously
-                  while maintaining <strong className="text-brand-primary-light">enterprise-grade reliability and scalability.</strong>
+                  Full-featured query editor supporting MongoDB operations, branch comparison with visual diffs, and sample data generation.
+                  <strong className="text-brand-primary-light">Intuitive web interface for complex database operations.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Zero-Conflict Collaboration</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Multi-Tenant Collaboration</h3>
                 <p className="text-brand-text-darker">
-                  Complete data isolation using collection prefixes. Multiple teams work simultaneously without interference,
-                  enabling <strong className="text-brand-accent">parallel development and safe experimentation.</strong>
+                  Team management with granular permissions, project sharing across organizations, and activity feed tracking.
+                  <strong className="text-brand-accent">Scale from individual projects to enterprise teams.</strong>
                 </p>
               </div>
             </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
                 Simplified Database Operations
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon’s intuitive CLI and (upcoming) dashboard make complex database tasks straightforward.
+                Argon's intuitive CLI and web console make complex database tasks straightforward with visual tools and team collaboration.
               </p>
             </div>
             <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
@@ -200,19 +200,19 @@ export default function HomePage() {
               <ul className="space-y-3 text-base text-brand-text-darker"> {/* Reduced space-y-4 to space-y-3, text-lg to text-base */}
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Branch:</strong> Create isolated database environments in seconds.</span>
+                  <span><strong className="text-brand-text">Branch:</strong> Create isolated database environments with MongoDB Atlas integration.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Snapshot:</strong> Automatically version data on S3 when suspending branches.</span>
+                  <span><strong className="text-brand-text">Compare:</strong> Visual diff tools to see changes between branches and merge safely.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Restore:</strong> Time-travel to any previous data state effortlessly.</span>
+                  <span><strong className="text-brand-text">Query:</strong> Visual query editor with full CRUD operations and aggregation pipelines.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Collaborate:</strong> Work in parallel without data conflicts.</span>
+                  <span><strong className="text-brand-text">Teams:</strong> Role-based collaboration with project sharing and activity tracking.</span>
                 </li>
               </ul>
               <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}
