@@ -57,8 +57,8 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="p-4">
               <div className="text-4xl mb-3">⚡</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">86x Faster</h3>
-              <p className="text-brand-text-darker">1.16ms branching vs 100ms+ standard</p>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Instant Branching</h3>
+              <p className="text-brand-text-darker">1.16ms - no more waiting for copies</p>
             </div>
             <div className="p-4">
               <div className="text-4xl mb-3">⏳</div>
@@ -81,7 +81,7 @@ export default function AboutPage() {
               <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working</h3>
               <ul className="space-y-2 text-brand-text-darker">
                 <li>• Pure WAL architecture with time-travel</li>
-                <li>• 1.16ms branching (86x faster)</li>
+                <li>• 1.16ms branching (instant database versions)</li>
                 <li>• Python & Go SDKs published</li>
                 <li>• Homebrew, NPM, pip installation</li>
               </ul>

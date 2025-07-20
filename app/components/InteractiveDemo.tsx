@@ -28,8 +28,8 @@ const developerSteps: DemoStep[] = [
   {
     id: 'create_branch',
     command: 'argon branches create feature-x -p my-app',
-    description: 'Instant branch creation (86x faster)',
-    output: '⚡ Branch created in 1.16ms\n🌿 Zero-copy branching - no data duplication\n📋 WAL LSN pointer: 0x1A2B3C4D\n🎯 86x faster than industry standard',
+    description: 'Instant branch creation (no database copying)',
+    output: '⚡ Branch created in 1.16ms\n🌿 Zero-copy branching - no data duplication\n📋 WAL LSN pointer: 0x1A2B3C4D\n🎯 Skip lengthy backup/restore cycles',
     metrics: { time: '1.16ms', operations: '15,360 ops/sec' }
   },
   {
@@ -266,7 +266,7 @@ export default function InteractiveDemo() {
                   <li>• Python SDK with ML integrations</li>
                   <li>• Git-like version control API</li>
                   <li>• Production-ready v1.0.0</li>
-                  <li>• Docker deployment support</li>
+                  <li>• Cross-platform CLI (npm, PyPI, Homebrew)</li>
                 </>
               )}
             </ul>

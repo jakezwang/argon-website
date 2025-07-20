@@ -21,8 +21,8 @@ export default function FeaturesPage() {
             Supercharge Your MongoDB Workflows
           </p>
           <p className="mt-6 text-lg leading-8 text-brand-text-darker">
-            Argon revolutionizes MongoDB with time-travel capabilities, 86x faster branching,
-            and production-ready WAL architecture. First-ever MongoDB branching with historical queries.
+            Argon brings Git-like version control to MongoDB with instant branching, time-travel capabilities,
+            and production-ready WAL architecture. The first solution enabling database versioning workflows.
           </p>
         </div>
 
@@ -31,8 +31,8 @@ export default function FeaturesPage() {
           <h2 className="text-3xl font-bold tracking-tight text-center mb-12 sm:text-4xl text-brand-text">Key Features</h2>
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
             <FeatureCard icon="⚡" title="Instant Branching (1.16ms)">
-              86x faster than industry standard. Zero-copy branches without data duplication
-              using revolutionary WAL architecture with LSN pointers.
+              Instant branches without waiting for database copies or backups. Zero-copy architecture
+              means no data duplication - branch creation completes in milliseconds, not minutes.
             </FeatureCard>
             <FeatureCard icon="⏳" title="Time-Travel Queries">
               Industry-first MongoDB time-travel. Query any historical database state
@@ -79,7 +79,7 @@ export default function FeaturesPage() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">2. Zero-Copy Branching</h3>
-              <p>Create branches in 1.16ms (86x faster than 100ms+ industry standard). No data duplication - branches share base data through intelligent LSN pointer management.</p>
+              <p>Create branches in 1.16ms - eliminating the lengthy backup/restore cycles traditionally required for database versioning. No data duplication - branches share base data through intelligent LSN pointer management.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Time-Travel Engine</h3>
@@ -95,7 +95,7 @@ export default function FeaturesPage() {
             </div>
           </div>
           <p className="mt-8 text-lg leading-7 text-brand-text-darker">
-            This architecture delivers <strong className="text-brand-primary">86x faster performance</strong> than alternatives,
+            This architecture delivers <strong className="text-brand-primary">instant branching</strong> compared to traditional backup/restore methods,
             <strong className="text-brand-primary"> industry-first time-travel</strong> for MongoDB,
             and <strong className="text-brand-primary">production-ready reliability</strong> with comprehensive testing.
           </p>

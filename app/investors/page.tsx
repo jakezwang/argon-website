@@ -55,7 +55,7 @@ export default function InvestorsPage() {
               <ul className="space-y-2 text-brand-text-darker mb-6">
                 <li>• Production-ready open source</li>
                 <li>• Python SDK with ML integrations</li>
-                <li>• Docker deployment available</li>
+                <li>• Multi-platform installations (npm, PyPI, Homebrew)</li>
                 <li>• Active community adoption</li>
               </ul>
               <div className="bg-brand-dark p-4 rounded">
