@@ -21,8 +21,8 @@ export default function FeaturesPage() {
             Supercharge Your MongoDB Workflows
           </p>
           <p className="mt-6 text-lg leading-8 text-brand-text-darker">
-            Argon brings production-ready branching, real-time change capture, and compressed versioning to MongoDB,
-            empowering you to work more agilely, collaborate effectively, and innovate faster.
+            Argon brings Git-like branching and version control to MongoDB with v1.0.0 production release,
+            featuring Python SDK, ML framework integrations, and Docker deployment.
           </p>
         </div>
 
@@ -31,33 +31,33 @@ export default function FeaturesPage() {
           <h2 className="text-3xl font-bold tracking-tight text-center mb-12 sm:text-4xl text-brand-text">Key Features</h2>
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
             <FeatureCard icon="🌿" title="Git-style Branching">
-              Create, suspend, resume, and delete database branches with ease, just like managing code in Git.
-              Isolate development tasks and experiment freely without impacting other environments.
+              Create and manage MongoDB branches using collection-level isolation.
+              Work on isolated environments for ML experiments and development tasks.
             </FeatureCard>
-            <FeatureCard icon="⚡" title="Real-Time Change Capture">
-              MongoDB change streams capture data modifications in real-time with sub-500ms branching operations
-              and 10,000+ ops/sec throughput for production workloads.
+            <FeatureCard icon="⚡" title="MongoDB Integration">
+              Built on MongoDB change streams for data capture with collection prefixing.
+              Hybrid Go+Python architecture optimized for performance and reliability.
             </FeatureCard>
-            <FeatureCard icon="💾" title="Compressed Storage">
-              ZSTD compression achieves 42.40% storage reduction with S3 backend.
-              Efficient delta storage and background worker processing ensure optimal performance.
+            <FeatureCard icon="💾" title="Efficient Storage">
+              ZSTD compression for 40%+ storage reduction with S3 backend support.
+              Background workers handle compression and storage operations asynchronously.
             </FeatureCard>
-            <FeatureCard icon="⏳" title="Time-Travel">
-              Restore or create new branches from any historical snapshot. Effortlessly roll back to previous
-              data states or inspect data from a specific point in time.
+            <FeatureCard icon="🤖" title="ML Framework Integration">
+              Native support for MLflow, Weights & Biases, and DVC workflows.
+              Track experiments and version datasets alongside your ML pipeline.
             </FeatureCard>
-            <FeatureCard icon="⌨️" title="Powerful CLI">
-              A comprehensive command-line interface to manage all aspects of Argon, from branch creation
-              to time-travel operations. Automate and script your database workflows.
+            <FeatureCard icon="🐍" title="Python SDK">
+              Production-ready Python SDK for programmatic access to all features.
+              Jupyter notebook support with example workflows for data scientists.
             </FeatureCard>
-            <FeatureCard icon="🏗️" title="Production Architecture">
-              Hybrid Go+Python system with collection-level data isolation using prefixes.
-              Background worker pools and MongoDB-based job queues ensure enterprise reliability.
+            <FeatureCard icon="🐳" title="Docker Deployment">
+              Complete Docker Compose setup with 5 microservices ready to deploy.
+              MongoDB, Redis, Go Engine, Python API, and Next.js dashboard included.
             </FeatureCard>
           </dl>
           <div className="text-center mt-10">
-            <Link href="https://github.com/argon-lab/argon/blob/master/docs/wiki/02_features.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary underline text-lg">
-              Explore all features in detail on our Wiki &rarr;
+            <Link href="https://github.com/argon-lab/argon/blob/master/docs/FEATURES.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary underline text-lg">
+              Explore all features in detail &rarr;
             </Link>
           </div>
         </div>
@@ -67,8 +67,8 @@ export default function FeaturesPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-text">How It Works</h2>
             <p className="mt-4 text-lg leading-8 text-brand-text-darker">
-              Argon uses a hybrid Go+Python architecture with MongoDB change streams for real-time data capture,
-              collection-level isolation for branching, and S3 with ZSTD compression for efficient storage.
+              Argon v1.0.0 uses a microservices architecture with MongoDB for data versioning,
+              perfect for ML teams needing experiment tracking and dataset management.
             </p>
           </div>
 
@@ -83,11 +83,11 @@ export default function FeaturesPage() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Efficient Storage & Compression</h3>
-              <p>Data is compressed using ZSTD (achieving 42.40% reduction) and stored in S3. Delta storage techniques minimize bandwidth and storage costs while maintaining fast access to historical states.</p>
+              <p>Data is compressed using ZSTD (achieving 40%+ reduction) and stored in S3. Background workers handle compression asynchronously to maintain performance.</p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-primary mb-2">4. Branch Operations</h3>
-              <p>Creating, switching, and deleting branches operates on collection metadata and prefixes, achieving sub-500ms response times with 10,000+ operations per second throughput.</p>
+              <h3 className="text-xl font-semibold text-brand-primary mb-2">4. ML Workflow Support</h3>
+              <p>Integration with MLflow, Weights & Biases, and DVC enables seamless experiment tracking. Python SDK provides programmatic access for automated ML pipelines.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">5. Hybrid Architecture</h3>
@@ -95,13 +95,13 @@ export default function FeaturesPage() {
             </div>
           </div>
           <p className="mt-8 text-lg leading-7 text-brand-text-darker">
-            This architecture ensures <strong className="text-brand-primary">production reliability</strong> with real-time processing,
-            <strong className="text-brand-primary"> enterprise performance</strong> with sub-500ms operations and 10,000+ ops/sec throughput,
-            and <strong className="text-brand-primary">zero-conflict collaboration</strong> through complete data isolation.
+            This architecture ensures <strong className="text-brand-primary">production reliability</strong> with v1.0.0 release,
+            <strong className="text-brand-primary"> ML-ready workflows</strong> with framework integrations,
+            and <strong className="text-brand-primary">easy deployment</strong> through Docker Compose.
           </p>
           <div className="text-center mt-10">
-            <Link href="https://github.com/argon-lab/argon/blob/master/docs/wiki/05_how_it_works.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary underline text-lg">
-              Get the deep dive on architecture and state flows (Wiki) &rarr;
+            <Link href="https://github.com/argon-lab/argon/blob/master/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary underline text-lg">
+              Get the deep dive on architecture &rarr;
             </Link>
           </div>
         </div>
