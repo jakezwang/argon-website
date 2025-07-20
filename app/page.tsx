@@ -155,7 +155,7 @@ export default function HomePage() {
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
                 <h3 className="text-2xl font-semibold text-brand-primary mb-3">Revolutionary Time-Travel</h3>
                 <p className="text-brand-text-darker">
-                  Industry-first MongoDB time-travel with millisecond precision. Query any historical state in <50ms
+                  Industry-first MongoDB time-travel with millisecond precision. Query any historical state in less than 50ms
                   with <strong className="text-brand-primary-light">37,905+ operations per second.</strong>
                 </p>
               </div>
@@ -202,7 +202,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Time-Travel:</strong> Query any historical database state in <50ms.</span>
+                  <span><strong className="text-brand-text">Time-Travel:</strong> Query any historical database state in less than 50ms.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}

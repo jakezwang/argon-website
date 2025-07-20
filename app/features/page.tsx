@@ -36,7 +36,7 @@ export default function FeaturesPage() {
             </FeatureCard>
             <FeatureCard icon="⏳" title="Time-Travel Queries">
               Industry-first MongoDB time-travel. Query any historical database state
-              in <50ms with millisecond precision tracking.
+              in less than 50ms with millisecond precision tracking.
             </FeatureCard>
             <FeatureCard icon="🚀" title="37,905+ ops/sec">
               Verified production performance with comprehensive monitoring.
@@ -83,7 +83,7 @@ export default function FeaturesPage() {
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">3. Time-Travel Engine</h3>
-              <p>Query any historical database state in <50ms. Safe restore operations with production monitoring. Complete audit trail with millisecond precision.</p>
+              <p>Query any historical database state in less than 50ms. Safe restore operations with production monitoring. Complete audit trail with millisecond precision.</p>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-primary mb-2">4. ML Workflow Support</h3>

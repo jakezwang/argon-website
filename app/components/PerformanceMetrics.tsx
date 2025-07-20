@@ -27,7 +27,7 @@ const metrics: Metric[] = [
   },
   {
     label: 'Time-Travel',
-    value: '<50',
+    value: '&lt;50',
     unit: 'ms',
     description: 'Query any historical database state instantly',
     icon: '⏳'
