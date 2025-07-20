@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import QuickStartCommand from './components/QuickStartCommand';
-import PerformanceMetrics from './components/PerformanceMetrics';
+import UseCases from './components/UseCases';
 
 export default function HomePage() {
   return (
@@ -63,8 +63,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Performance Metrics Section */}
-        <PerformanceMetrics />
+        {/* Use Cases Section */}
+        <UseCases />
 
         {/* Deployment Options Section */}
         <section className="py-12 sm:py-16 bg-brand-dark">
