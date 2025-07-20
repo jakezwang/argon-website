@@ -32,9 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Git-like versioning and branching for MongoDB. Create instant database branches, 
-              <strong className="text-brand-primary-light"> time-travel through data states</strong>, and achieve 37,000+ ops/sec performance. 
-              Version control for your database with millisecond-precision tracking.
+              Git-like versioning and branching for MongoDB. Create instant database branches for ML workflows, 
+              <strong className="text-brand-primary-light"> experiment tracking</strong>, and data versioning. 
+              Production-ready v1.0.0 with Python SDK and Docker deployment.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -83,19 +83,19 @@ export default function HomePage() {
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Production-ready Git-like versioning</span>
+                    <span>Production-ready v1.0.0 with Git-like workflows</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>37,009 operations/second performance</span>
+                    <span>High-performance MongoDB branching system</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Install via Docker, source, or Homebrew</span>
+                    <span>Install via Docker or build from source</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Go, Python, JavaScript SDK support</span>
+                    <span>Python SDK with ML framework integrations</span>
                   </li>
                 </ul>
                 <a
@@ -108,23 +108,23 @@ export default function HomePage() {
                 </a>
               </div>
               <div className="bg-brand-surface p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-4">Enterprise Deployment</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-4">ML & Data Science Focus</h3>
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Docker containers and Kubernetes-ready</span>
+                    <span>MLflow, Weights & Biases, DVC integrations</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Terraform modules for AWS, GCP, Azure</span>
+                    <span>Jupyter notebook support with examples</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Prometheus and Grafana integration</span>
+                    <span>Experiment tracking and dataset versioning</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Production deployment guides available</span>
+                    <span>S3 backend with ZSTD compression</span>
                   </li>
                 </ul>
                 <a
@@ -153,30 +153,30 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Lightning-Fast Performance</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">High-Performance Architecture</h3>
                 <p className="text-brand-text-darker">
-                  37,009 operations/second with 1.16ms branch creation. Zero-copy branching technology eliminates storage overhead
+                  Hybrid Go+Python microservices with MongoDB change streams. Fast branch operations with collection-level isolation
                   while maintaining <strong className="text-brand-primary-light">full MongoDB API compatibility.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Time-Travel Technology</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Data Versioning & Tracking</h3>
                 <p className="text-brand-text-darker">
-                  Query database states at any historical point with millisecond precision. 7,688 concurrent time-travel queries/sec
-                  with <strong className="text-brand-primary-light">intelligent reconstruction and safe restore previews.</strong>
+                  Version control for MongoDB with experiment tracking capabilities. Branch-based data isolation
+                  with <strong className="text-brand-primary-light">ML framework integrations and automated compression.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Enterprise-Ready Deployment</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Production-Ready Deployment</h3>
                 <p className="text-brand-text-darker">
-                  Docker and Kubernetes support with Terraform modules for major cloud providers. Prometheus and Grafana integration
-                  for <strong className="text-brand-accent">production monitoring and enterprise deployment.</strong>
+                  Docker deployment with microservices architecture. MongoDB change streams and Redis job queues
+                  for <strong className="text-brand-accent">reliable production workloads and ML pipelines.</strong>
                 </p>
               </div>
             </div>
             <div className="text-center mt-10">
               <p className="text-md text-brand-text-darker max-w-3xl mx-auto">
-                Git-like version control for MongoDB enabling <strong className="text-brand-primary-light">instant zero-copy branching and time-travel</strong> with enterprise performance and reliability.
+                Git-like version control for MongoDB enabling <strong className="text-brand-primary-light">database branching and ML experiment tracking</strong> with production-ready performance and reliability.
               </p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
                 Advanced Database Operations Made Simple
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon provides Git-like branching, time-travel, and restore capabilities for MongoDB through intuitive CLI and SDK interfaces.
+                Argon provides Git-like branching, data versioning, and experiment tracking for MongoDB through CLI and Python SDK interfaces.
               </p>
             </div>
             <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
@@ -198,19 +198,19 @@ export default function HomePage() {
               <ul className="space-y-3 text-base text-brand-text-darker"> {/* Reduced space-y-4 to space-y-3, text-lg to text-base */}
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Branch:</strong> Instant zero-copy branches in 1.16ms with no storage overhead.</span>
+                  <span><strong className="text-brand-text">Branch:</strong> Fast database branches with collection-level isolation.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Time-Travel:</strong> Query any historical state with millisecond precision tracking.</span>
+                  <span><strong className="text-brand-text">Version:</strong> Track data changes with MongoDB change streams.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Restore:</strong> Safe restore operations with preview and automatic safety checks.</span>
+                  <span><strong className="text-brand-text">Experiment:</strong> ML workflow tracking with framework integrations.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Integrate:</strong> Go, Python, JavaScript SDKs with full MongoDB API compatibility.</span>
+                  <span><strong className="text-brand-text">Integrate:</strong> Python SDK with MLflow, W&B, and DVC support.</span>
                 </li>
               </ul>
               <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}

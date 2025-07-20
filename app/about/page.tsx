@@ -26,7 +26,7 @@ export default function AboutPage() {
               </h3>
               <p className="text-brand-primary">Founder</p>
               <p className="text-brand-text-darker mt-2">
-                A U.S. Army soldier and seasoned Software Engineer, Jake was inspired by his work at MongoDB, LinkedIn, and Bloomberg to create Argon. He&apos;s passionate about building better developer tools to streamline workflows and boost productivity.
+                Software Engineer with experience at MongoDB, LinkedIn, and Bloomberg. Created Argon to bring Git-like workflows to MongoDB for ML teams.
               </p>
             </div>
             <div className="text-center">
@@ -53,30 +53,52 @@ export default function AboutPage() {
 
         {/* Why Argon? Section */}
         <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Why Argon? The AI Data Advantage</h2>
-          <p className="text-lg text-brand-text-darker mb-3">
-            Argon brings Git-like agility to MongoDB, accelerating AI development by enabling instant branching, serverless-inspired compute, and S3-backed storage. This makes Argon ideal for <strong className="text-brand-primary-light">managing complex AI datasets and model development pipelines.</strong>
-          </p>
-          <p className="text-lg text-brand-text-darker">
-            Argon delivers <strong className="text-brand-accent">transformative benefits to NoSQL, focusing on AI use cases.</strong>
-          </p>
+          <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Why Argon?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="p-4">
+              <div className="text-4xl mb-3">🌿</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Git-like Workflows</h3>
+              <p className="text-brand-text-darker">Familiar branching for MongoDB data</p>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl mb-3">🤖</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">ML-Ready</h3>
+              <p className="text-brand-text-darker">Built for AI/ML experiment tracking</p>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl mb-3">⚡</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Production-Ready</h3>
+              <p className="text-brand-text-darker">v1.0.0 with Python SDK & Docker</p>
+            </div>
+          </div>
         </section>
 
         {/* Project Status Section */}
         <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">Project Status: Production-Ready Platform</h2>
-          <p className="text-lg mb-4 text-brand-text-darker">
-            Argon is a <strong className="text-brand-accent">production-ready open-source platform</strong> delivering enterprise-grade database branching, time-travel, and real-time change capture for MongoDB. With proven performance metrics including sub-500ms operations and 10,000+ ops/sec throughput, these features power <strong className="text-brand-primary-light">scalable AI data management</strong> from experimentation to production deployment.
-          </p>
-          <p className="text-lg mb-4 text-brand-text-darker">
-            The <code className="bg-brand-darker px-1 py-0.5 rounded text-sm">argonctl</code> CLI (available via npm and Homebrew) provides immediate access to our hybrid Go+Python architecture. We're focused on <strong className="text-brand-accent">expanding enterprise features and scaling adoption</strong> based on production use cases, especially for AI applications requiring reliable data versioning and collaboration.
-          </p>
-          <p className="text-lg text-brand-text-darker">
-            We encourage community involvement: deploy Argon in production, report issues, suggest features, and contribute. Your real-world feedback drives our roadmap.
-          </p>
-          <div className="mt-6">
-            <Link href="https://github.com/argon-lab/argon/projects" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary font-semibold">
-              View our project roadmap on GitHub &rarr;
+          <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Current Status</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working</h3>
+              <ul className="space-y-2 text-brand-text-darker">
+                <li>• v1.0.0 production release</li>
+                <li>• Python SDK with ML integrations</li>
+                <li>• Docker deployment ready</li>
+                <li>• MongoDB branching system</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 What's Next</h3>
+              <ul className="space-y-2 text-brand-text-darker">
+                <li>• Enhanced CLI experience</li>
+                <li>• Enterprise authentication</li>
+                <li>• Cloud managed service</li>
+                <li>• Community feedback integration</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-6 text-center">
+            <Link href="https://github.com/argon-lab/argon" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary font-semibold">
+              View roadmap on GitHub &rarr;
             </Link>
           </div>
         </section>

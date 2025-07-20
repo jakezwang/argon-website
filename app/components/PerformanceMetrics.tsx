@@ -12,31 +12,31 @@ interface Metric {
 
 const metrics: Metric[] = [
   {
-    label: 'Branch Operations',
-    value: '<500',
-    unit: 'ms',
-    description: 'Lightning-fast branch creation, switching, and deletion',
-    icon: '⚡'
+    label: 'Architecture',
+    value: 'v1.0',
+    unit: 'production',
+    description: 'Hybrid Go+Python microservices with MongoDB integration',
+    icon: '🏗️'
   },
   {
-    label: 'Throughput',
-    value: '10,000+',
-    unit: 'ops/sec',
-    description: 'High-performance data operations with real-time processing',
-    icon: '🚀'
+    label: 'ML Frameworks',
+    value: '3+',
+    unit: 'integrations',
+    description: 'MLflow, Weights & Biases, and DVC support built-in',
+    icon: '🤖'
   },
   {
     label: 'Storage Compression',
-    value: '42.40',
+    value: '40+',
     unit: '% reduction',
-    description: 'ZSTD compression minimizes storage costs',
+    description: 'ZSTD compression for efficient data storage',
     icon: '🗜️'
   },
   {
     label: 'Data Isolation',
     value: '100',
-    unit: '% conflict-free',
-    description: 'Complete separation using collection-level prefixes',
+    unit: '% separation',
+    description: 'Complete branch isolation using collection prefixes',
     icon: '🛡️'
   }
 ];
@@ -107,11 +107,11 @@ export default function PerformanceMetrics() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-text">
-            Enterprise-Grade Performance
+            Production-Ready Architecture
           </h2>
           <p className="mt-4 text-lg text-brand-text-darker max-w-3xl mx-auto">
-            Production-ready metrics that power real-world applications with 
-            <strong className="text-brand-primary"> reliability, speed, and efficiency</strong>.
+            Built for ML workflows and data science teams with 
+            <strong className="text-brand-primary"> proven integrations and reliable performance</strong>.
           </p>
         </div>
 

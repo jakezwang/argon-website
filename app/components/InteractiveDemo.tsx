@@ -167,12 +167,12 @@ export default function InteractiveDemo() {
       <div className="text-center mb-8">
         <h3 className="text-2xl font-semibold text-brand-primary mb-2">
           {activeTab === 'developer' && 'Git-Like Database Versioning'}
-          {activeTab === 'ai' && 'ML Data Time-Travel & Experimentation'}
+          {activeTab === 'ai' && 'ML Data Versioning & Experiment Tracking'}
           {activeTab === 'sdk' && 'Programmatic Integration with SDK'}
         </h3>
         <p className="text-brand-text-darker">
-          {activeTab === 'developer' && 'See how developers use Git-like workflows for instant MongoDB branching and time-travel'}
-          {activeTab === 'ai' && 'Watch ML engineers version datasets with millisecond-precision time-travel capabilities'}
+          {activeTab === 'developer' && 'See how developers use Git-like workflows for MongoDB branching and data versioning'}
+          {activeTab === 'ai' && 'Watch ML engineers track experiments and version datasets with collection-level isolation'}
           {activeTab === 'sdk' && 'Learn how to integrate Argon\'s version control system programmatically into your applications'}
         </p>
       </div>
@@ -247,26 +247,26 @@ export default function InteractiveDemo() {
             <ul className="space-y-2 text-sm text-brand-text-darker">
               {activeTab === 'developer' && (
                 <>
-                  <li>• Instant zero-copy branching (1.16ms)</li>
-                  <li>• 37,009 operations/second performance</li>
-                  <li>• Millisecond-precision time travel</li>
+                  <li>• Fast collection-level branching</li>
+                  <li>• High-performance data operations</li>
+                  <li>• MongoDB change stream tracking</li>
                   <li>• Complete MongoDB API compatibility</li>
                 </>
               )}
               {activeTab === 'ai' && (
                 <>
-                  <li>• Historical dataset reconstruction</li>
-                  <li>• 7,688 concurrent time-travel queries/sec</li>
-                  <li>• Zero storage overhead for branches</li>
-                  <li>• Safe restore with preview capability</li>
+                  <li>• ML experiment tracking integration</li>
+                  <li>• MLflow, W&B, DVC support</li>
+                  <li>• Collection-level data isolation</li>
+                  <li>• ZSTD compression for storage</li>
                 </>
               )}
               {activeTab === 'sdk' && (
                 <>
-                  <li>• Go, Python, JavaScript SDK support</li>
-                  <li>• Full version control integration</li>
-                  <li>• Production-ready performance</li>
-                  <li>• Enterprise-grade reliability</li>
+                  <li>• Python SDK with ML integrations</li>
+                  <li>• Git-like version control API</li>
+                  <li>• Production-ready v1.0.0</li>
+                  <li>• Docker deployment support</li>
                 </>
               )}
             </ul>
