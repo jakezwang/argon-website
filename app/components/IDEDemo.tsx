@@ -240,22 +240,23 @@ export default function IDEDemo({ onStepChange }: IDEDemoProps) {
           </div>
 
           {/* Code Editor */}
-          <div className="relative">
-            <div className="p-4 h-64 overflow-y-auto font-mono text-sm">
+          <div className="flex">
+            {/* Line numbers */}
+            <div className="bg-gray-850 px-3 py-4 text-gray-500 text-sm font-mono border-r border-gray-600">
+              {step.code.split('\n').map((_, index) => (
+                <div key={index} className="leading-5 text-right">
+                  {index + 1}
+                </div>
+              ))}
+            </div>
+            
+            {/* Code content */}
+            <div className="flex-1 p-4 h-64 overflow-y-auto font-mono text-sm">
               <pre className="text-gray-300">
                 <code className="language-javascript">
                   {step.code}
                 </code>
               </pre>
-            </div>
-            
-            {/* Line numbers */}
-            <div className="absolute left-0 top-0 p-4 text-gray-500 text-sm font-mono pointer-events-none">
-              {step.code.split('\n').map((_, index) => (
-                <div key={index} className="leading-5">
-                  {index + 1}
-                </div>
-              ))}
             </div>
           </div>
 

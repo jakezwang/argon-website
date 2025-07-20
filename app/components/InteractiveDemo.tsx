@@ -166,14 +166,14 @@ export default function InteractiveDemo() {
       {/* Demo Description */}
       <div className="text-center mb-8">
         <h3 className="text-2xl font-semibold text-brand-primary mb-2">
-          {activeTab === 'developer' && 'WAL-Based Database Versioning'}
+          {activeTab === 'developer' && 'Git-Like Database Versioning'}
           {activeTab === 'ai' && 'ML Data Time-Travel & Experimentation'}
           {activeTab === 'sdk' && 'Programmatic Integration with SDK'}
         </h3>
         <p className="text-brand-text-darker">
-          {activeTab === 'developer' && 'See how developers use Argon\'s Write-Ahead Log system for instant branching and time-travel'}
+          {activeTab === 'developer' && 'See how developers use Git-like workflows for instant MongoDB branching and time-travel'}
           {activeTab === 'ai' && 'Watch ML engineers version datasets with millisecond-precision time-travel capabilities'}
-          {activeTab === 'sdk' && 'Learn how to integrate Argon\'s WAL system programmatically into your applications'}
+          {activeTab === 'sdk' && 'Learn how to integrate Argon\'s version control system programmatically into your applications'}
         </p>
       </div>
 
@@ -240,7 +240,7 @@ export default function InteractiveDemo() {
           {/* Key Benefits */}
           <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
             <h4 className="text-lg font-semibold text-brand-primary mb-4">
-              {activeTab === 'developer' && 'WAL System Benefits'}
+              {activeTab === 'developer' && 'Version Control Benefits'}
               {activeTab === 'ai' && 'ML/AI Benefits'}
               {activeTab === 'sdk' && 'SDK Benefits'}
             </h4>
@@ -264,7 +264,7 @@ export default function InteractiveDemo() {
               {activeTab === 'sdk' && (
                 <>
                   <li>• Go, Python, JavaScript SDK support</li>
-                  <li>• Full WAL system integration</li>
+                  <li>• Full version control integration</li>
                   <li>• Production-ready performance</li>
                   <li>• Enterprise-grade reliability</li>
                 </>

@@ -32,9 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Revolutionary Write-Ahead Log (WAL) system for MongoDB. Create instant zero-copy branches, 
+              Git-like versioning and branching for MongoDB. Create instant database branches, 
               <strong className="text-brand-primary-light"> time-travel through data states</strong>, and achieve 37,000+ ops/sec performance. 
-              The first MongoDB branching system with millisecond-precision versioning.
+              Version control for your database with millisecond-precision tracking.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -74,7 +74,7 @@ export default function HomePage() {
                 Deploy Your Way
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto">
-                Argon's WAL system is open-source and production-ready. Deploy on your infrastructure with full MongoDB API compatibility.
+                Argon brings Git-like version control to MongoDB. Deploy on your infrastructure with full MongoDB API compatibility.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -83,7 +83,7 @@ export default function HomePage() {
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Production-ready WAL system</span>
+                    <span>Production-ready Git-like versioning</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
@@ -145,10 +145,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10"> {/* Reduced mb-12 to mb-10 */}
               <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Why Choose Argon's WAL System?
+                Why Choose Argon for Database Versioning?
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon revolutionizes MongoDB operations with Write-Ahead Log technology, enabling <strong className="text-brand-accent">instant branching, time-travel, and enterprise-grade performance.</strong>
+                Argon brings familiar Git workflows to MongoDB, enabling <strong className="text-brand-accent">instant branching, time-travel, and enterprise-grade performance.</strong>
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -176,7 +176,7 @@ export default function HomePage() {
             </div>
             <div className="text-center mt-10">
               <p className="text-md text-brand-text-darker max-w-3xl mx-auto">
-                The first MongoDB WAL system enabling <strong className="text-brand-primary-light">instant zero-copy branching and time-travel</strong> with enterprise performance and reliability.
+                Git-like version control for MongoDB enabling <strong className="text-brand-primary-light">instant zero-copy branching and time-travel</strong> with enterprise performance and reliability.
               </p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export default function HomePage() {
                 Advanced Database Operations Made Simple
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon's Write-Ahead Log system provides powerful branching, time-travel, and restore capabilities through intuitive CLI and SDK interfaces.
+                Argon provides Git-like branching, time-travel, and restore capabilities for MongoDB through intuitive CLI and SDK interfaces.
               </p>
             </div>
             <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
