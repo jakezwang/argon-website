@@ -102,7 +102,7 @@ const aiSteps: DemoStep[] = [
 
 
 export default function InteractiveDemo() {
-  const [activeTab, setActiveTab] = useState<'developer' | 'ai' | 'console' | 'sdk'>('developer');
+  const [activeTab, setActiveTab] = useState<'developer' | 'ai' | 'sdk'>('developer');
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
 
@@ -120,6 +120,7 @@ export default function InteractiveDemo() {
     switch (activeTab) {
       case 'developer': return developerSteps;
       case 'ai': return aiSteps;
+      case 'sdk': return []; // SDK uses IDEDemo component
       default: return developerSteps;
     }
   };
@@ -150,16 +151,6 @@ export default function InteractiveDemo() {
             🤖 ML/AI Workflow
           </button>
           <button
-            onClick={() => setActiveTab('console')}
-            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
-              activeTab === 'console'
-                ? 'bg-brand-primary text-brand-dark font-semibold'
-                : 'text-brand-text-darker hover:text-brand-primary'
-            }`}
-          >
-            🖥️ Cloud Console
-          </button>
-          <button
             onClick={() => setActiveTab('sdk')}
             className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
               activeTab === 'sdk'
@@ -175,16 +166,14 @@ export default function InteractiveDemo() {
       {/* Demo Description */}
       <div className="text-center mb-8">
         <h3 className="text-2xl font-semibold text-brand-primary mb-2">
-          {activeTab === 'developer' && 'CLI-Based Database Branching'}
-          {activeTab === 'ai' && 'ML Data Versioning & Experimentation'}
-          {activeTab === 'console' && 'Visual Cloud Console Workflow'}
+          {activeTab === 'developer' && 'WAL-Based Database Versioning'}
+          {activeTab === 'ai' && 'ML Data Time-Travel & Experimentation'}
           {activeTab === 'sdk' && 'Programmatic Integration with SDK'}
         </h3>
         <p className="text-brand-text-darker">
-          {activeTab === 'developer' && 'See how developers create isolated environments using command-line tools'}
-          {activeTab === 'ai' && 'Watch ML engineers version datasets and run parallel experiments'}
-          {activeTab === 'console' && 'Experience the full-featured web interface with team collaboration and visual tools'}
-          {activeTab === 'sdk' && 'Learn how to integrate Argon programmatically into your applications'}
+          {activeTab === 'developer' && 'See how developers use Argon\'s Write-Ahead Log system for instant branching and time-travel'}
+          {activeTab === 'ai' && 'Watch ML engineers version datasets with millisecond-precision time-travel capabilities'}
+          {activeTab === 'sdk' && 'Learn how to integrate Argon\'s WAL system programmatically into your applications'}
         </p>
       </div>
 
@@ -192,9 +181,6 @@ export default function InteractiveDemo() {
         {/* Render appropriate demo interface based on active tab */}
         {(activeTab === 'developer' || activeTab === 'ai') && (
           <TerminalDemo steps={getCurrentSteps()} onStepChange={handleStepChange} />
-        )}
-        {activeTab === 'console' && (
-          <ConsoleDemo onStepChange={handleStepChange} />
         )}
         {activeTab === 'sdk' && (
           <IDEDemo onStepChange={handleStepChange} />
@@ -209,9 +195,6 @@ export default function InteractiveDemo() {
             </h4>
             {(activeTab === 'developer' || activeTab === 'ai') && (
               <p className="text-brand-text mb-4">{getCurrentSteps()[currentStep]?.description}</p>
-            )}
-            {activeTab === 'console' && (
-              <p className="text-brand-text mb-4">Visual interface demo - {currentStep + 1} of {totalSteps}</p>
             )}
             {activeTab === 'sdk' && (
               <p className="text-brand-text mb-4">SDK integration demo - {currentStep + 1} of {totalSteps}</p>
@@ -257,42 +240,33 @@ export default function InteractiveDemo() {
           {/* Key Benefits */}
           <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
             <h4 className="text-lg font-semibold text-brand-primary mb-4">
-              {activeTab === 'developer' && 'CLI Benefits'}
+              {activeTab === 'developer' && 'WAL System Benefits'}
               {activeTab === 'ai' && 'ML/AI Benefits'}
-              {activeTab === 'console' && 'Console Benefits'}
               {activeTab === 'sdk' && 'SDK Benefits'}
             </h4>
             <ul className="space-y-2 text-sm text-brand-text-darker">
               {activeTab === 'developer' && (
                 <>
-                  <li>• Zero-conflict parallel development</li>
-                  <li>• Sub-500ms branch operations</li>
-                  <li>• Complete data isolation</li>
-                  <li>• Git-like workflow familiarity</li>
+                  <li>• Instant zero-copy branching (1.16ms)</li>
+                  <li>• 37,009 operations/second performance</li>
+                  <li>• Millisecond-precision time travel</li>
+                  <li>• Complete MongoDB API compatibility</li>
                 </>
               )}
               {activeTab === 'ai' && (
                 <>
-                  <li>• Dataset versioning & experiments</li>
-                  <li>• Time-travel through model states</li>
-                  <li>• Parallel training environments</li>
-                  <li>• 42% storage compression</li>
-                </>
-              )}
-              {activeTab === 'console' && (
-                <>
-                  <li>• Visual interface & team collaboration</li>
-                  <li>• MongoDB Atlas integration</li>
-                  <li>• Role-based access control</li>
-                  <li>• Real-time activity tracking</li>
+                  <li>• Historical dataset reconstruction</li>
+                  <li>• 7,688 concurrent time-travel queries/sec</li>
+                  <li>• Zero storage overhead for branches</li>
+                  <li>• Safe restore with preview capability</li>
                 </>
               )}
               {activeTab === 'sdk' && (
                 <>
-                  <li>• Programmatic API access</li>
-                  <li>• TypeScript support included</li>
-                  <li>• Automated deployment workflows</li>
-                  <li>• Custom integration flexibility</li>
+                  <li>• Go, Python, JavaScript SDK support</li>
+                  <li>• Full WAL system integration</li>
+                  <li>• Production-ready performance</li>
+                  <li>• Enterprise-grade reliability</li>
                 </>
               )}
             </ul>

@@ -32,9 +32,9 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Open-source MongoDB branching platform with enterprise features. Create isolated database environments in seconds, 
-              <strong className="text-brand-primary-light"> collaborate with teams</strong>, and manage data with visual tools. 
-              Self-host or use our fully-featured cloud console.
+              Revolutionary Write-Ahead Log (WAL) system for MongoDB. Create instant zero-copy branches, 
+              <strong className="text-brand-primary-light"> time-travel through data states</strong>, and achieve 37,000+ ops/sec performance. 
+              The first MongoDB branching system with millisecond-precision versioning.
             </p>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
@@ -52,14 +52,12 @@ export default function HomePage() {
               >
                 View on GitHub
               </a>
-              <a
-                href="https://console.argonlabs.tech"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/demo"
                 className="inline-block bg-transparent border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
               >
-                Try Cloud Console
-              </a>
+                Try Interactive Demo
+              </Link>
             </div>
             {/* Removed QuickStartCommand from here */}
           </div>
@@ -76,7 +74,7 @@ export default function HomePage() {
                 Deploy Your Way
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto">
-                Argon is open-source at its core. Run it on your infrastructure or let us handle the complexity.
+                Argon's WAL system is open-source and production-ready. Deploy on your infrastructure with full MongoDB API compatibility.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -85,19 +83,19 @@ export default function HomePage() {
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Complete control over your data and infrastructure</span>
+                    <span>Production-ready WAL system</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>MIT licensed - modify and distribute freely</span>
+                    <span>37,009 operations/second performance</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Deploy on-premise or in your cloud</span>
+                    <span>Install via Docker, source, or Homebrew</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Community support and contributions</span>
+                    <span>Go, Python, JavaScript SDK support</span>
                   </li>
                 </ul>
                 <a
@@ -109,33 +107,33 @@ export default function HomePage() {
                   Get Started with Open Source
                 </a>
               </div>
-              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl border border-brand-primary">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-4">Managed Cloud Service</h3>
+              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl">
+                <h3 className="text-2xl font-semibold text-brand-primary mb-4">Enterprise Deployment</h3>
                 <ul className="space-y-3 text-brand-text-darker mb-6">
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Zero maintenance - we handle everything</span>
+                    <span>High availability configurations</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Full-featured web console with team collaboration</span>
+                    <span>Security & compliance features</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>MongoDB Atlas integration and visual query tools</span>
+                    <span>Cloud-native support (Docker/K8s)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-primary mr-2">•</span>
-                    <span>Start free, upgrade as you grow</span>
+                    <span>Monitoring & observability integration</span>
                   </li>
                 </ul>
                 <a
-                  href="https://console.argonlabs.tech"
+                  href="https://github.com/argon-lab/argon/blob/master/README.md"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-transparent border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-6 py-2 rounded-lg transition-colors"
                 >
-                  Try Cloud Console
+                  View Documentation
                 </a>
               </div>
             </div>
@@ -147,38 +145,38 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10"> {/* Reduced mb-12 to mb-10 */}
               <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Why Choose Argon for Your AI & Development Needs?
+                Why Choose Argon's WAL System?
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon empowers developers and data scientists to innovate faster by streamlining database management, <strong className="text-brand-accent">especially for AI-driven projects.</strong>
+                Argon revolutionizes MongoDB operations with Write-Ahead Log technology, enabling <strong className="text-brand-accent">instant branching, time-travel, and enterprise-grade performance.</strong>
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Enterprise-Ready Features</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Lightning-Fast Performance</h3>
                 <p className="text-brand-text-darker">
-                  Team collaboration with role-based permissions, MongoDB Atlas integration with secure connection management,
-                  and real-time usage tracking with billing integration.
+                  37,009 operations/second with 1.16ms branch creation. Zero-copy branching technology eliminates storage overhead
+                  while maintaining <strong className="text-brand-primary-light">full MongoDB API compatibility.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Visual Database Tools</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Time-Travel Technology</h3>
                 <p className="text-brand-text-darker">
-                  Full-featured query editor supporting MongoDB operations, branch comparison with visual diffs, and sample data generation.
-                  <strong className="text-brand-primary-light">Intuitive web interface for complex database operations.</strong>
+                  Query database states at any historical point with millisecond precision. 7,688 concurrent time-travel queries/sec
+                  with <strong className="text-brand-primary-light">intelligent reconstruction and safe restore previews.</strong>
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Multi-Tenant Collaboration</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">Production-Ready Architecture</h3>
                 <p className="text-brand-text-darker">
-                  Team management with granular permissions, project sharing across organizations, and activity feed tracking.
-                  <strong className="text-brand-accent">Scale from individual projects to enterprise teams.</strong>
+                  Enterprise-grade reliability with high availability, security compliance, and cloud-native deployment support.
+                  <strong className="text-brand-accent">Comprehensive monitoring and observability integration.</strong>
                 </p>
               </div>
             </div>
             <div className="text-center mt-10">
               <p className="text-md text-brand-text-darker max-w-3xl mx-auto">
-                Like Neon revolutionized PostgreSQL with branching, Argon brings <strong className="text-brand-primary-light">production-ready branching and versioning</strong> to MongoDB with real-time performance and enterprise reliability.
+                The first MongoDB WAL system enabling <strong className="text-brand-primary-light">instant zero-copy branching and time-travel</strong> with enterprise performance and reliability.
               </p>
             </div>
           </div>
@@ -189,10 +187,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10"> {/* Reduced mb-12 to mb-10 */}
               <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Simplified Database Operations
+                Advanced Database Operations Made Simple
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon's intuitive CLI and web console make complex database tasks straightforward with visual tools and team collaboration.
+                Argon's Write-Ahead Log system provides powerful branching, time-travel, and restore capabilities through intuitive CLI and SDK interfaces.
               </p>
             </div>
             <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
@@ -200,19 +198,19 @@ export default function HomePage() {
               <ul className="space-y-3 text-base text-brand-text-darker"> {/* Reduced space-y-4 to space-y-3, text-lg to text-base */}
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Branch:</strong> Create isolated database environments with MongoDB Atlas integration.</span>
+                  <span><strong className="text-brand-text">Branch:</strong> Instant zero-copy branches in 1.16ms with no storage overhead.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Compare:</strong> Visual diff tools to see changes between branches and merge safely.</span>
+                  <span><strong className="text-brand-text">Time-Travel:</strong> Query any historical state with millisecond precision tracking.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Query:</strong> Visual query editor with full CRUD operations and aggregation pipelines.</span>
+                  <span><strong className="text-brand-text">Restore:</strong> Safe restore operations with preview and automatic safety checks.</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Teams:</strong> Role-based collaboration with project sharing and activity tracking.</span>
+                  <span><strong className="text-brand-text">Integrate:</strong> Go, Python, JavaScript SDKs with full MongoDB API compatibility.</span>
                 </li>
               </ul>
               <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}
@@ -231,10 +229,10 @@ export default function HomePage() {
         <section className="py-16 md:py-24 bg-gradient-to-r from-brand-primary to-brand-secondary text-white"> {/* Reduced py */}
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-4xl font-extrabold tracking-tight mb-4 text-brand-dark"> {/* Reduced mb-6 to mb-4 */}
-              Ready to Transform Your MongoDB Experience?
+              Ready to Experience MongoDB Time-Travel?
             </h2>
             <p className="text-lg text-gray-800 mb-8"> {/* Reduced text-xl to text-lg, mb-10 to mb-8 */}
-              Join the open-source community or get started with our cloud service in minutes.
+              Join the open-source community and experience instant branching and time-travel for MongoDB.
             </p>
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
               <a
@@ -245,14 +243,12 @@ export default function HomePage() {
               >
                 Star on GitHub
               </a>
-              <a
-                href="https://console.argonlabs.tech"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/demo"
                 className="inline-block bg-white text-brand-primary hover:bg-gray-100 font-bold px-8 py-3 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
               >
-                Try Cloud Free
-              </a>
+                Try Interactive Demo
+              </Link>
             </div>
           </div>
         </section>
