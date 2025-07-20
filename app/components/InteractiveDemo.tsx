@@ -97,14 +97,130 @@ const aiSteps: DemoStep[] = [
   }
 ];
 
+// Cloud Console workflow steps
+const consoleSteps: DemoStep[] = [
+  {
+    id: 'login',
+    command: 'Open console.argonlabs.tech → Sign in with Google',
+    description: 'Access the cloud console with secure authentication',
+    output: '✅ Signed in successfully\n👤 Welcome back!\n🏢 Teams: Personal, Work Team\n📊 Dashboard loaded',
+    metrics: { time: 'instant', operations: 'OAuth flow' }
+  },
+  {
+    id: 'create_project',
+    command: 'Create Project → "E-commerce API" → Add Sample Data',
+    description: 'Create new project with sample e-commerce data',
+    output: '🎉 Project "E-commerce API" created\n📦 Sample data: 1,000 products, 500 customers\n🌿 Default branch: main\n💾 MongoDB Atlas connected',
+    metrics: { time: '2.1s', operations: 'Visual UI' }
+  },
+  {
+    id: 'atlas_integration',
+    command: 'Integrations → Add MongoDB Atlas → Test Connection',
+    description: 'Connect securely to your MongoDB Atlas cluster',
+    output: '🔐 Atlas credentials encrypted (AES-256-GCM)\n✅ Connection test passed\n📊 Cluster: production-cluster-0\n🗄️ Databases: 3 detected',
+    metrics: { time: '850ms', operations: 'Secure storage' }
+  },
+  {
+    id: 'visual_branch',
+    command: 'Branches → Create → "feature/new-products" from main',
+    description: 'Create branch using visual interface',
+    output: '🌿 Branch "feature/new-products" created\n📋 Collections copied: products, categories, inventory\n👥 Shared with: Development Team\n🔄 Activity logged',
+    metrics: { time: '1.2s', operations: 'Visual branching' }
+  },
+  {
+    id: 'query_editor',
+    command: 'Query Editor → db.products.find({category: "electronics"})',
+    description: 'Use visual query editor with syntax highlighting',
+    output: '🔍 Query executed successfully\n📊 Results: 247 documents\n⚡ Execution time: 23ms\n📈 Performance metrics captured',
+    metrics: { time: '23ms', operations: 'MongoDB query' }
+  },
+  {
+    id: 'team_collaboration',
+    command: 'Share Project → Add team members → Set permissions',
+    description: 'Collaborate with team using role-based access',
+    output: '👥 Invited 3 team members\n🔐 Permissions: 2 editors, 1 viewer\n📧 Email invitations sent\n📱 Activity feed updated',
+    metrics: { time: '500ms', operations: 'Team management' }
+  },
+  {
+    id: 'branch_compare',
+    command: 'Compare Branches → main vs feature/new-products',
+    description: 'Visual diff showing changes between branches',
+    output: '🔍 Comparison complete\n📊 Changes detected:\n  • 15 new products added\n  • 3 categories modified\n  • 0 conflicts\n✅ Safe to merge',
+    metrics: { time: '340ms', operations: 'Visual diff' }
+  }
+];
+
+// SDK workflow steps  
+const sdkSteps: DemoStep[] = [
+  {
+    id: 'install',
+    command: 'npm install @argonlabs/sdk',
+    description: 'Install Argon SDK for Node.js',
+    output: '+ @argonlabs/sdk@1.0.0\n✅ Installation complete\n📚 Types included\n🔧 Ready for development',
+    metrics: { time: '3.2s', operations: 'Package install' }
+  },
+  {
+    id: 'initialize',
+    command: 'const argon = new ArgonClient({ apiKey: process.env.ARGON_API_KEY })',
+    description: 'Initialize SDK with API credentials',
+    output: '🔑 API key validated\n🌐 Connected to Argon Cloud\n📊 User: dev@company.com\n✅ SDK ready',
+    metrics: { time: '120ms', operations: 'Authentication' }
+  },
+  {
+    id: 'create_project_sdk',
+    command: 'const project = await argon.projects.create("my-app", { sampleData: true })',
+    description: 'Create project programmatically with sample data',
+    output: '🎉 Project "my-app" created\n📦 Sample data populated\n🆔 Project ID: proj_abc123\n🌿 Main branch ready',
+    metrics: { time: '1.8s', operations: 'API call' }
+  },
+  {
+    id: 'branch_operations',
+    command: 'const branch = await project.branches.create("feature/api-v2")',
+    description: 'Create and manage branches via SDK',
+    output: '🌿 Branch "feature/api-v2" created\n📋 Collections isolated\n🔗 Branch ID: br_def456\n💾 Ready for development',
+    metrics: { time: '450ms', operations: 'Branch creation' }
+  },
+  {
+    id: 'query_sdk',
+    command: 'const users = await branch.query("users", { role: "admin" })',
+    description: 'Execute queries programmatically',
+    output: '🔍 Query executed\n📊 Found 12 admin users\n⚡ Response time: 28ms\n📈 Usage tracked',
+    metrics: { time: '28ms', operations: 'SDK query' }
+  },
+  {
+    id: 'data_operations',
+    command: 'await branch.collections.users.insertOne({ name: "Alice", role: "admin" })',
+    description: 'Perform CRUD operations through SDK',
+    output: '📝 Document inserted\n🆔 ID: 507f1f77bcf86cd799439011\n🔄 Change stream captured\n💾 Automatically backed up',
+    metrics: { time: '45ms', operations: 'Insert operation' }
+  },
+  {
+    id: 'deployment',
+    command: 'await project.deploy({ branch: "feature/api-v2", target: "staging" })',
+    description: 'Deploy branch to staging environment',
+    output: '🚀 Deployment initiated\n🌐 Staging URL: https://staging-my-app.argon.dev\n✅ Health checks passed\n📱 Team notified',
+    metrics: { time: '2.1s', operations: 'Deployment' }
+  }
+];
+
 export default function InteractiveDemo() {
-  const [activeTab, setActiveTab] = useState<'developer' | 'ai'>('developer');
+  const [activeTab, setActiveTab] = useState<'developer' | 'ai' | 'console' | 'sdk'>('developer');
   const [currentStep, setCurrentStep] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [typedCommand, setTypedCommand] = useState('');
   const [showOutput, setShowOutput] = useState(false);
 
-  const currentSteps = activeTab === 'developer' ? developerSteps : aiSteps;
+  const getCurrentSteps = () => {
+    switch (activeTab) {
+      case 'developer': return developerSteps;
+      case 'ai': return aiSteps;
+      case 'console': return consoleSteps;
+      case 'sdk': return sdkSteps;
+      default: return developerSteps;
+    }
+  };
+
+  const currentSteps = getCurrentSteps();
   const step = currentSteps[currentStep];
 
   // Reset when switching tabs
@@ -165,21 +281,21 @@ export default function InteractiveDemo() {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Tab Selector */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-brand-surface rounded-lg p-1">
+      <div className="flex justify-center mb-8 overflow-x-auto">
+        <div className="bg-brand-surface rounded-lg p-1 flex flex-nowrap min-w-max">
           <button
             onClick={() => setActiveTab('developer')}
-            className={`px-6 py-3 rounded-md transition-colors ${
+            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
               activeTab === 'developer'
                 ? 'bg-brand-primary text-brand-dark font-semibold'
                 : 'text-brand-text-darker hover:text-brand-primary'
             }`}
           >
-            👨‍💻 Developer Workflow
+            👨‍💻 CLI Workflow
           </button>
           <button
             onClick={() => setActiveTab('ai')}
-            className={`px-6 py-3 rounded-md transition-colors ${
+            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
               activeTab === 'ai'
                 ? 'bg-brand-primary text-brand-dark font-semibold'
                 : 'text-brand-text-darker hover:text-brand-primary'
@@ -187,19 +303,42 @@ export default function InteractiveDemo() {
           >
             🤖 ML/AI Workflow
           </button>
+          <button
+            onClick={() => setActiveTab('console')}
+            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
+              activeTab === 'console'
+                ? 'bg-brand-primary text-brand-dark font-semibold'
+                : 'text-brand-text-darker hover:text-brand-primary'
+            }`}
+          >
+            🖥️ Cloud Console
+          </button>
+          <button
+            onClick={() => setActiveTab('sdk')}
+            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
+              activeTab === 'sdk'
+                ? 'bg-brand-primary text-brand-dark font-semibold'
+                : 'text-brand-text-darker hover:text-brand-primary'
+            }`}
+          >
+            ⚡ SDK Integration
+          </button>
         </div>
       </div>
 
       {/* Demo Description */}
       <div className="text-center mb-8">
         <h3 className="text-2xl font-semibold text-brand-primary mb-2">
-          {activeTab === 'developer' ? 'Database Branching for Development' : 'ML Data Versioning & Experimentation'}
+          {activeTab === 'developer' && 'CLI-Based Database Branching'}
+          {activeTab === 'ai' && 'ML Data Versioning & Experimentation'}
+          {activeTab === 'console' && 'Visual Cloud Console Workflow'}
+          {activeTab === 'sdk' && 'Programmatic Integration with SDK'}
         </h3>
         <p className="text-brand-text-darker">
-          {activeTab === 'developer' 
-            ? 'See how developers create isolated environments, make changes, and collaborate without conflicts'
-            : 'Watch ML engineers version datasets, run parallel experiments, and time-travel through model states'
-          }
+          {activeTab === 'developer' && 'See how developers create isolated environments using command-line tools'}
+          {activeTab === 'ai' && 'Watch ML engineers version datasets and run parallel experiments'}
+          {activeTab === 'console' && 'Experience the full-featured web interface with team collaboration and visual tools'}
+          {activeTab === 'sdk' && 'Learn how to integrate Argon programmatically into your applications'}
         </p>
       </div>
 
@@ -328,22 +467,42 @@ export default function InteractiveDemo() {
           {/* Key Benefits */}
           <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
             <h4 className="text-lg font-semibold text-brand-primary mb-4">
-              {activeTab === 'developer' ? 'Developer Benefits' : 'ML/AI Benefits'}
+              {activeTab === 'developer' && 'CLI Benefits'}
+              {activeTab === 'ai' && 'ML/AI Benefits'}
+              {activeTab === 'console' && 'Console Benefits'}
+              {activeTab === 'sdk' && 'SDK Benefits'}
             </h4>
             <ul className="space-y-2 text-sm text-brand-text-darker">
-              {activeTab === 'developer' ? (
+              {activeTab === 'developer' && (
                 <>
                   <li>• Zero-conflict parallel development</li>
                   <li>• Sub-500ms branch operations</li>
                   <li>• Complete data isolation</li>
                   <li>• Git-like workflow familiarity</li>
                 </>
-              ) : (
+              )}
+              {activeTab === 'ai' && (
                 <>
                   <li>• Dataset versioning & experiments</li>
                   <li>• Time-travel through model states</li>
                   <li>• Parallel training environments</li>
                   <li>• 42% storage compression</li>
+                </>
+              )}
+              {activeTab === 'console' && (
+                <>
+                  <li>• Visual interface & team collaboration</li>
+                  <li>• MongoDB Atlas integration</li>
+                  <li>• Role-based access control</li>
+                  <li>• Real-time activity tracking</li>
+                </>
+              )}
+              {activeTab === 'sdk' && (
+                <>
+                  <li>• Programmatic API access</li>
+                  <li>• TypeScript support included</li>
+                  <li>• Automated deployment workflows</li>
+                  <li>• Custom integration flexibility</li>
                 </>
               )}
             </ul>
