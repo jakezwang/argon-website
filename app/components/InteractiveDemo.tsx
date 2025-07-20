@@ -36,14 +36,14 @@ const developerSteps: DemoStep[] = [
     id: 'work_changes',
     command: 'argon time-travel query -p my-app -b main --timestamp "5 minutes ago"',
     description: 'Query historical database state',
-    output: '⏳ Time-travel to: 2025-07-20T10:15:00Z\n🔍 Reconstructing state from WAL\n📋 Found 2,847 documents at timestamp\n✅ Query completed in &lt;50ms',
-    metrics: { time: '&lt;50ms', operations: '7,688 queries/sec' }
+    output: '⏳ Time-travel to: 2025-07-20T10:15:00Z\n🔍 Reconstructing state from WAL\n📋 Found 2,847 documents at timestamp\n✅ Query completed in <50ms',
+    metrics: { time: '<50ms', operations: '7,688 queries/sec' }
   },
   {
     id: 'create_test_branch',
     command: 'argon metrics',
     description: 'View real-time performance metrics',
-    output: '📊 Performance Metrics:\n• Throughput: 37,905 ops/sec\n• Branch creation: 1.16ms avg\n• Time-travel queries: &lt;50ms\n• Test coverage: 119 assertions (100%)',
+    output: '📊 Performance Metrics:\n• Throughput: 37,905 ops/sec\n• Branch creation: 1.16ms avg\n• Time-travel queries: <50ms\n• Test coverage: 119 assertions (100%)',
     metrics: { time: 'real-time', operations: '37,905 ops/sec' }
   },
   {
@@ -89,7 +89,7 @@ const aiSteps: DemoStep[] = [
     command: 'argon time-travel restore -p ml-project --timestamp "before bad experiment"',
     description: 'Safe restore from any point in time',
     output: '⏳ Time-travel to healthy state\n🔄 WAL reconstruction complete\n✅ Data restored successfully\n🛡️ Zero data loss guaranteed',
-    metrics: { time: '&lt;50ms', operations: 'instant' }
+    metrics: { time: '<50ms', operations: 'instant' }
   },
   {
     id: 'parallel_training',
