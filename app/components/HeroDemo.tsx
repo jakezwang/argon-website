@@ -16,50 +16,51 @@ const heroGraph: FlowGraph = {
   ],
   nodes: [
     { id: 'm0', x: 70, y: 26, lane: 0, appearAt: 0 },
-    { id: 's0', x: 190, y: 72, lane: 1, sub: 'fork', appearAt: 0 },
-    { id: 's1', x: 330, y: 72, lane: 1, sub: '+3,214 writes', appearAt: 1 },
-    { id: 's2', x: 460, y: 72, lane: 1, sub: 'undo', appearAt: 2 },
+    { id: 's0', x: 200, y: 72, lane: 1, sub: 'branch', appearAt: 0 },
+    { id: 's1', x: 340, y: 72, lane: 1, sub: "agent's work", appearAt: 1 },
+    { id: 'm1', x: 470, y: 26, lane: 0, sub: 'merged', appearAt: 3 },
   ],
   edges: [
     { from: 'm0', to: 's0', appearAt: 0 },
     { from: 's0', to: 's1', appearAt: 1 },
-    { from: 's1', to: 's2', appearAt: 2 },
+    { from: 'm0', to: 'm1', appearAt: 3 },
+    { from: 's1', to: 'm1', appearAt: 3, curve: 'target' },
   ],
   steps: [
     { head: 's0', caption: '' },
     { head: 's1', caption: '' },
-    { head: 's2', caption: '' },
-    { head: 's2', caption: '' },
+    { head: 's1', caption: '' },
+    { head: 'm1', caption: '' },
   ],
 };
 
 const scenes = [
   {
     cmd: 'argon sandbox create -p prod --ttl 1h',
-    note: 'the agent gets a real MongoDB database — prod is never touched',
-    docs: 'clean',
+    note: 'the agent gets its own branch — a real MongoDB database, prod untouched',
+    state: 'base',
   },
   {
     cmd: 'python agent.py --db mongodb://…/argon_br_f81a',
-    note: 'it wrecks the data — every write attributed to agent:price-fixer',
-    docs: 'wrecked',
+    note: 'it does its work — every write attributed to agent:sale-bot',
+    state: 'proposed',
   },
   {
-    cmd: 'argon undo --actor agent:price-fixer',
-    note: 'one command reverts the entire session',
-    docs: 'wrecked',
+    cmd: 'argon diff -p prod -b sale-bot',
+    note: 'review exactly what changed before anything touches prod',
+    state: 'proposed',
   },
   {
-    cmd: '✓ 3,214 writes reverted · 0 conflicts',
-    note: 'back to the fork state — the undo itself is auditable history',
-    docs: 'clean',
+    cmd: 'argon merge apply -p prod -b sale-bot',
+    note: 'merge what works into prod — or discard the branch, or undo later',
+    state: 'merged',
   },
 ] as const;
 
 const docData = [
-  { id: 'p1', clean: 'price: 49', wrecked: 'price: 0' },
-  { id: 'p2', clean: 'price: 89', wrecked: 'price: 0' },
-  { id: 'p3', clean: 'price: 74', wrecked: 'price: 0' },
+  { id: 'p1', base: 'price: 49', after: 'price: 44' },
+  { id: 'p2', base: 'price: 89', after: 'price: 80' },
+  { id: 'p3', base: 'price: 74', after: 'price: 67' },
 ];
 
 const SCENE_MS = 2800;
@@ -76,7 +77,16 @@ export default function HeroDemo() {
   }, []);
 
   const s = scenes[scene];
-  const wrecked = s.docs === 'wrecked';
+  const state = s.state; // 'base' | 'proposed' | 'merged'
+  const showAfter = state !== 'base';
+  const chipClass =
+    state === 'merged'
+      ? 'border-emerald-400/40 text-emerald-400'
+      : state === 'proposed'
+        ? 'border-amber-400/40 text-amber-400'
+        : 'border-brand-edge text-brand-text-darker';
+  const badge =
+    state === 'merged' ? 'merged to prod' : state === 'proposed' ? "branch: agent's work" : 'branch: isolated';
 
   return (
     <div
@@ -105,8 +115,8 @@ export default function HeroDemo() {
 
       {/* command */}
       <div className="border-b border-brand-edge px-4 py-3 font-mono text-[13px]">
-        <p className={scene === 3 ? 'text-emerald-400' : 'text-brand-text'}>
-          {scene !== 3 && <span className="select-none text-brand-muted">$ </span>}
+        <p className="text-brand-text">
+          <span className="select-none text-brand-muted">$ </span>
           {s.cmd}
         </p>
         <p className="mt-1 text-xs text-brand-muted">{s.note}</p>
@@ -117,17 +127,13 @@ export default function HeroDemo() {
         {docData.map((d) => (
           <span
             key={d.id}
-            className={`border px-2.5 py-1 font-mono text-xs transition-colors duration-500 ${
-              wrecked
-                ? 'border-red-400/40 text-red-400'
-                : 'border-brand-edge text-brand-text-darker'
-            }`}
+            className={`border px-2.5 py-1 font-mono text-xs transition-colors duration-500 ${chipClass}`}
           >
-            {d.id} · {wrecked ? d.wrecked : d.clean}
+            {d.id} · {showAfter ? d.after : d.base}
           </span>
         ))}
         <span className="ml-auto self-center font-mono text-[10px] uppercase tracking-widest text-brand-muted">
-          {wrecked ? 'sandbox: damaged' : 'sandbox: clean'}
+          {badge}
         </span>
       </div>
     </div>

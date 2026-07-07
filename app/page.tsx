@@ -34,9 +34,9 @@ export default function HomePage() {
               built for AI agents
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Every agent session gets a disposable branch of your database.
-              Audit what it wrote, merge what works — and undo the rest with
-              one command.
+              Give every AI agent its own branch of your database. Review what
+              it wrote, merge what works — discard or undo the rest. Nothing
+              touches production.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -119,8 +119,8 @@ export default function HomePage() {
                     label: 'of storage per branch — branches are metadata, not copies',
                   },
                   {
-                    stat: '1 command',
-                    label: 'to undo an entire agent session — conflicts reported, never clobbered',
+                    stat: 'diff → merge',
+                    label: 'adopt an agent’s work as a reviewed data PR — or undo it, per-actor',
                   },
                 ].map((item) => (
                   <div key={item.stat} className="bg-brand-dark p-6">

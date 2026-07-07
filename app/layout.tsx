@@ -11,21 +11,21 @@ export const metadata = {
   metadataBase: new URL('https://argonlabs.tech'),
   title: 'Argon — Git for MongoDB, Built for AI Agents',
   description:
-    'Open-source branching, time travel, and undo for MongoDB. Give every AI agent session a disposable branch — a real MongoDB database — audit every write, and revert anything.',
+    'Open-source branching and merge for MongoDB. Give every AI agent its own branch — a real MongoDB database — review what it wrote, and merge what works.',
   openGraph: {
     type: 'website',
     url: 'https://www.argonlabs.tech',
     siteName: 'Argon',
     title: 'Argon — Git for MongoDB, Built for AI Agents',
     description:
-      'Branching, time travel, and the undo button for MongoDB. Branches check out as real databases; every agent write is attributed and reversible.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Argon — Git for MongoDB, built for AI agents' }],
+      'Git-like branching and merge for MongoDB. A real database branch per AI agent — review the diff, merge what works, discard the rest.',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Argon — a database branch for every AI agent' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Argon — Git for MongoDB, Built for AI Agents',
     description:
-      'Branching, time travel, and the undo button for MongoDB. A disposable, auditable, reversible branch per AI agent session.',
+      'Git-like branching and merge for MongoDB. A real database branch per AI agent — review the diff, merge what works, discard the rest.',
     images: ['/og.png'],
   },
   icons: {

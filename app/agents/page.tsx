@@ -12,17 +12,20 @@ const flow: FlowGraph = {
     { name: 'eval run', y: 140 },
   ],
   nodes: [
-    { id: 'm0', x: 130, y: 32, lane: 0, sub: 'LSN 8112', appearAt: 0 },
+    { id: 'm0', x: 130, y: 32, lane: 0, sub: 'prod', appearAt: 0 },
     { id: 'pin', x: 130, y: 10, lane: 2, sub: 'pin: eval-2026-07', appearAt: 0, pin: true },
-    { id: 's0', x: 330, y: 88, lane: 1, sub: '1 · fork — ttl 1h', appearAt: 0 },
-    { id: 's1', x: 530, y: 88, lane: 1, sub: '2 · agent writes', appearAt: 0 },
-    { id: 's2', x: 730, y: 88, lane: 1, sub: '3 · undo', appearAt: 0 },
-    { id: 'e0', x: 530, y: 140, lane: 2, sub: '4 · fork from pin — identical input', appearAt: 0 },
+    { id: 's0', x: 300, y: 88, lane: 1, sub: '1 · branch — ttl 1h', appearAt: 0 },
+    { id: 's1', x: 490, y: 88, lane: 1, sub: '2 · agent writes', appearAt: 0 },
+    { id: 's2', x: 680, y: 88, lane: 1, sub: '3 · review & merge', appearAt: 0 },
+    { id: 'm1', x: 860, y: 32, lane: 0, sub: '→ merged', appearAt: 0 },
+    { id: 'e0', x: 490, y: 140, lane: 2, sub: '4 · fork from pin — identical input', appearAt: 0 },
   ],
   edges: [
     { from: 'm0', to: 's0', appearAt: 0 },
     { from: 's0', to: 's1', appearAt: 0 },
     { from: 's1', to: 's2', appearAt: 0 },
+    { from: 'm0', to: 'm1', appearAt: 0 },
+    { from: 's2', to: 'm1', appearAt: 0, curve: 'target' },
     { from: 'm0', to: 'pin', appearAt: 0, ghost: true },
     { from: 'pin', to: 'e0', appearAt: 0 },
   ],
@@ -48,8 +51,8 @@ const integrations = [
 ];
 
 const guarantees = [
-  'Undo is per-actor and conflict-safe — documents someone else touched are reported, never clobbered',
-  'Undos are written as new history — auditable, and reversible in turn',
+  'Merge is reviewed and exactly-once — conflicts are reported, never resolved silently',
+  'Or discard the branch, or undo per-actor — everything an agent did is a revertible range',
   'Expired sandboxes reap themselves, storage included',
 ];
 
@@ -61,15 +64,15 @@ export default function AgentsPage() {
         Give your agents a database they can&apos;t destroy
       </h1>
       <p className="mt-4 max-w-2xl text-lg leading-8">
-        A disposable, auditable, undoable branch per agent session.
-        One picture, three ways to plug in.
+        A branch per agent session — review the diff, merge what works,
+        discard the rest. One picture, three ways to plug in.
       </p>
 
       {/* The loop, as a picture */}
       <div className="mt-10 border border-brand-edge bg-brand-surface">
         <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
           <p className="font-mono text-xs text-brand-muted">
-            1 fork a sandbox · 2 agent writes, attributed · 3 undo the session · 4 pinned evals
+            1 branch off prod · 2 agent writes, attributed · 3 review &amp; merge · 4 pinned evals
           </p>
           <Link href="/demo" className="shrink-0 font-mono text-xs text-brand-primary hover:underline">
             step through it live →
