@@ -74,19 +74,14 @@ export default function AgentsPage() {
         <h2 className="text-3xl font-semibold tracking-tight text-brand-text">
           Compensation, not time travel backwards
         </h2>
-        <div className="mt-6 space-y-4 text-sm leading-7 text-brand-text-darker">
+        <div className="mt-6 text-sm leading-7 text-brand-text-darker">
           <p>
-            For every document the range touched, Argon restores the
-            pre-image of the oldest in-range entry — the state just before
-            the session began. An insert (no pre-image) compensates to a
-            delete. One pass, per document, no reverse replay.
-          </p>
-          <p>
-            History stays append-only: compensations are written as new
-            entries with actor <code className="font-mono text-brand-primary">undo</code>,
-            so every undo is itself audited and reversible. With{' '}
+            For every document the session touched, Argon restores its
+            pre-session state (inserts compensate to deletes). Compensations
+            are written as new, attributed history — every undo is audited
+            and reversible — and{' '}
             <code className="font-mono text-brand-primary">--dry-run</code>{' '}
-            you see exactly what would change — and what conflicts — before
+            shows exactly what would change, and what conflicts, before
             touching anything.
           </p>
         </div>

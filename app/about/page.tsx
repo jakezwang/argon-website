@@ -67,32 +67,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Why */}
-      <section className="mt-16">
-        <p className="kicker mb-8">Why Argon</p>
-        <div className="grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
-          {[
-            {
-              title: 'Millisecond branching',
-              body: 'Branches are metadata, not copies',
-            },
-            {
-              title: 'Time travel',
-              body: 'Inspect and restore any historical state',
-            },
-            {
-              title: 'Deterministic core',
-              body: 'Property-tested reproducible replay',
-            },
-          ].map((item) => (
-            <div key={item.title} className="bg-brand-dark p-6">
-              <h3 className="font-medium text-brand-text">{item.title}</h3>
-              <p className="mt-2 text-sm leading-6">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Status */}
       <section className="mt-16">
         <p className="kicker mb-8">Current status</p>

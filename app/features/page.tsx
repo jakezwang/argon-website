@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const FeatureCard = ({
   index,
   title,
@@ -63,67 +61,15 @@ export default function FeaturesPage() {
         </FeatureCard>
       </div>
 
-      {/* How it works */}
-      <div id="how-it-works" className="mt-24 max-w-3xl scroll-mt-20">
-        <p className="kicker mb-4">How it works</p>
-        <h2 className="text-3xl font-semibold tracking-tight text-brand-text">
-          Everything is a view over the log
-        </h2>
-        <p className="mt-4 text-lg leading-8">
-          Every write is recorded in an append-only write-ahead log (WAL).
-          Branches, time-travel, and restore are all views over that log.
+      {/* One idea, then the docs */}
+      <div className="mt-16 max-w-3xl">
+        <p className="text-lg leading-8">
+          Everything is a view over one append-only log: branches are
+          pointers into it, time-travel replays it (deterministically,
+          property-tested), and checkout materializes it into a real
+          MongoDB database. The deep dives:
         </p>
-
-        <div className="mt-12 space-y-10">
-          {[
-            {
-              n: '1',
-              title: 'The WAL is the source of truth',
-              body: 'Every write becomes an entry with a global LSN (log sequence number). "The database at LSN 5000" simply means replaying the log up to entry 5000 — that one idea powers everything else.',
-            },
-            {
-              n: '2',
-              title: 'Branches are pointers',
-              body: 'A branch is metadata: which branch it forked from, at which LSN, and where its own head is. Creating one is a single metadata write — milliseconds, regardless of data size.',
-            },
-            {
-              n: '3',
-              title: 'Deterministic replay (new in M1)',
-              body: 'Replay is a pure function over the log, so the same history always reconstructs the same state — property-tested across processes, instances, and thousands of replays. Time-travel and restore inherit this guarantee.',
-            },
-            {
-              n: '4',
-              title: 'Reproducible agent & eval workflows',
-              body: 'argon sandbox gives an agent a disposable real database with a TTL; argon pin freezes a named dataset state so every eval run forks identical input. The argon-agents package brings the same engine to LangGraph and Mem0 through the REST control plane.',
-            },
-            {
-              n: '5',
-              title: 'Branches are real databases (M3)',
-              body: 'argon checkout materializes a branch into a physical MongoDB database and prints its connection string — any driver connects, and indexes, aggregations, and transactions just work. Direct writes flow back into the WAL via change streams, and argon undo reverts a session with conflict detection.',
-            },
-            {
-              n: '6',
-              title: 'Data PRs & the agent surface (M4–M5)',
-              body: 'argon diff and argon merge preview/apply turn adoption into a reviewed, exactly-once operation — conflicts are never resolved silently, and merges are undoable. argon sandbox adds TTL branches that clean up after themselves, argon pin freezes named dataset states that GC and reset can never touch, and argon mcp exposes the whole loop to agents as MCP tools.',
-            },
-          ].map((item) => (
-            <div key={item.n} className="border-l border-brand-edge pl-6">
-              <p className="font-mono text-sm text-brand-primary">{item.n}</p>
-              <h3 className="mt-2 font-medium text-brand-text">{item.title}</h3>
-              <p className="mt-2 text-sm leading-6">{item.body}</p>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-12 text-lg leading-8">
-          The result:{' '}
-          <span className="text-brand-text">branching that costs metadata, not copies</span>,{' '}
-          <span className="text-brand-text">reproducible time-travel</span> for MongoDB, and{' '}
-          <span className="text-brand-text">a correctness-first core</span> locked down by
-          property tests.
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
           <a
             href="https://github.com/argon-lab/argon/blob/master/docs/CLI.md"
             target="_blank"

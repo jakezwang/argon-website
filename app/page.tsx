@@ -110,11 +110,7 @@ export default function HomePage() {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-3 font-mono text-xs">
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M1–M4 · engine, benchmarks, branch databases, data PRs — shipped
-            </span>
-            <span className="flex items-center gap-2 text-brand-text-darker">
-              <span className="status-dot bg-emerald-400" />
-              M5 · MCP, sandboxes, LangGraph, pins — shipped
+              v2.0 shipped: engine, benchmarks, branch databases, data PRs, agent surface
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
@@ -147,9 +143,8 @@ export default function HomePage() {
               </SectionHeading>
               <p className="max-w-2xl text-lg leading-8">
                 Argon — element 18 — is inert: it doesn&apos;t react with
-                anything. That&apos;s the contract this tool makes with your
-                data. Experiments happen on branches. History is append-only.
-                Production is never touched.
+                anything. That&apos;s the contract: experiments happen on
+                branches, history is append-only, production is never touched.
               </p>
               <div className="mt-12 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
                 {[
@@ -277,56 +272,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 04 · What people use it for ──────────────────────── */}
+      {/* ── 04 · Built in the open ───────────────────────────── */}
       <section className="border-b border-brand-edge">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <SectionHeading index="04" title="Use cases">
-            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
-              Built for the moments you dread
-            </h2>
-          </SectionHeading>
-          <div className="divide-y divide-brand-edge border border-brand-edge">
-            {[
-              {
-                title: 'Risky migrations',
-                scenario: 'You need to test a schema change against real data.',
-                solution: 'Branch, run the migration, argon diff the result. Merge it back through a reviewed plan — or delete the branch.',
-              },
-              {
-                title: 'The bad deploy',
-                scenario: 'A script just corrupted a collection in place.',
-                solution: 'Preview the state from before it ran, then restore. The restore is logged too — reversible.',
-              },
-              {
-                title: 'AI agent sandboxes',
-                scenario: 'An agent needs to write to a database, and you don’t fully trust it.',
-                solution: 'Check out a branch — a real MongoDB database with its own URI. Every write is captured with the agent as actor; argon undo --actor reverts its whole session, conflicts reported.',
-              },
-              {
-                title: 'ML experiments',
-                scenario: 'Two experiments need the same dataset without stepping on each other.',
-                solution: 'One branch per experiment; pin the exact LSN a run trained against for reproducibility.',
-              },
-            ].map((uc) => (
-              <div key={uc.title} className="grid gap-2 p-6 sm:grid-cols-[200px_1fr_1fr] sm:gap-8">
-                <h3 className="font-medium text-brand-text">{uc.title}</h3>
-                <p className="text-sm leading-6">{uc.scenario}</p>
-                <p className="text-sm leading-6 text-brand-text-darker">
-                  <span className="font-mono text-xs uppercase tracking-wider text-brand-primary">
-                    with argon ·{' '}
-                  </span>
-                  {uc.solution}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 05 · Built in the open ───────────────────────────── */}
-      <section className="border-b border-brand-edge">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <SectionHeading index="05" title="Built in the open">
+          <SectionHeading index="04" title="Built in the open">
             <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
               Claims you can check
             </h2>
