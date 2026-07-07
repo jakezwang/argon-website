@@ -5,7 +5,7 @@ import { useState } from 'react';
 const installMethods = [
   { label: 'brew', command: 'brew install argon-lab/tap/argonctl' },
   { label: 'npm', command: 'npm install -g argonctl' },
-  { label: 'pip', command: 'pip install argon-mongodb' },
+  { label: 'pip · sdk', command: 'pip install "argon-agents[langgraph]"' },
 ];
 
 export default function QuickStartCommand() {
