@@ -14,7 +14,7 @@ const useCases: UseCase[] = [
   {
     title: 'Stop Breaking Production',
     scenario: 'Need to test a risky database migration',
-    solution: 'Branch → Test → Merge (or delete if it fails)',
+    solution: 'Branch → Test → Promote (or delete if it fails)',
     benefit: 'Production stays safe, always',
     icon: '🛡️'
   },
@@ -104,7 +104,7 @@ export default function UseCases() {
         <div className="mt-16 bg-brand-dark p-8 rounded-xl shadow-xl max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-semibold text-brand-primary mb-4">🚀 Ready to Stop Worrying About Your Database?</h3>
-            <p className="text-brand-text-darker">Get started in under 30 seconds. Works with your existing MongoDB setup.</p>
+            <p className="text-brand-text-darker">Install in seconds. Bring your own MongoDB — local, self-hosted, or Atlas.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
@@ -123,7 +123,7 @@ export default function UseCases() {
           </div>
           
           <div className="text-center mt-6 text-sm text-brand-text-darker">
-            • No migration required • Works with existing MongoDB • 100% open source •
+            • Open source (MIT) • Self-hosted • Works via CLI &amp; SDKs today — native driver drop-in coming in v2 •
           </div>
         </div>
 

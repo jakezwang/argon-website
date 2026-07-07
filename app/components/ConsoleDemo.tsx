@@ -271,7 +271,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="bg-blue-500 text-white px-2 py-1 rounded text-xs">Ready</span>
-                    <button className="text-brand-primary text-sm">Merge</button>
+                    <button className="text-brand-primary text-sm">Restore</button>
                   </div>
                 </div>
               </div>
@@ -354,7 +354,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
             <div className="bg-brand-surface rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="text-brand-text">Comparing: <span className="text-brand-primary">main</span> vs <span className="text-brand-primary">feature/new-products</span></div>
-                <button className="bg-green-500 text-white px-4 py-2 rounded-lg">Merge Branch</button>
+                <button className="bg-green-500 text-white px-4 py-2 rounded-lg opacity-60" title="Merge is on the v2 roadmap (M4)">Merge (v2)</button>
               </div>
               
               <div className="grid grid-cols-3 gap-4 text-center">

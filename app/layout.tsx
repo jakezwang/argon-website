@@ -4,11 +4,11 @@ import Link from 'next/link'; // Import Link for Footer
 
 export const metadata = {
   metadataBase: new URL('https://argonlabs.tech'), // Added metadataBase
-  title: 'ArgonLabs - Agile MongoDB Management',
-  description: 'Transform your MongoDB workflows with ArgonLabs. Experience agile, serverless database management with Git-style branching, stateless compute, and S3-powered time-travel.',
+  title: 'ArgonLabs - Git-like Branching & Time Travel for MongoDB',
+  description: 'Argon is an open-source versioning layer for MongoDB: branch your database in milliseconds, time-travel through history, and rewind mistakes. Built for AI agent sandboxes.',
   openGraph: {
-    title: 'ArgonLabs - Agile MongoDB Management',
-    description: 'Revolutionizing MongoDB workflows with Git-like branching, stateless compute, and S3-backed versioning for unprecedented speed and flexibility.',
+    title: 'ArgonLabs - Git-like Branching & Time Travel for MongoDB',
+    description: 'Open-source Git-like branching, time travel, and rollback for MongoDB. Branch in milliseconds, rewind any mistake, and give AI agents a safe sandbox.',
   },
   icons: {
     icon: '/argon-logo.png', // Path to your icon in the public folder

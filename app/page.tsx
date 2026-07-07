@@ -33,10 +33,18 @@ export default function HomePage() {
             </div>
 
             <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              Finally, <strong className="text-brand-primary-light">Git workflows for your MongoDB database</strong>. 
-              Branch, merge, and time-travel through your data just like you do with code. 
-              No more fear of breaking production or losing data during experiments.
+              <strong className="text-brand-primary-light">Git-like branching &amp; time travel for MongoDB</strong>.
+              Branch your database in milliseconds, rewind any mistake, and give AI agents
+              a safe sandbox — without touching production. Open source, MIT licensed.
             </p>
+
+            <div className="max-w-2xl mx-auto mb-8 bg-brand-surface border border-brand-primary/40 rounded-lg px-4 py-3 text-sm text-brand-text-darker">
+              ✅ <strong className="text-brand-primary">Milestone 1 shipped:</strong> deterministic replay engine —
+              every branch and time-travel operation is now property-tested for byte-identical reproducibility.{' '}
+              <Link href="/roadmap" className="text-brand-primary hover:text-brand-secondary underline">
+                See the roadmap &rarr;
+              </Link>
+            </div>
 
             <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
               <Link
@@ -75,36 +83,36 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Built for Production
+                Built in the Open
               </h2>
               <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto">
-                Trusted by teams who <strong className="text-brand-primary">can't afford to lose data</strong>. 
-                Open source, no vendor lock-in, battle-tested.
+                <strong className="text-brand-primary">Correctness first, honest claims</strong> — every
+                performance number we publish will link to a reproducible benchmark.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
-                <div className="text-4xl mb-4">🔒</div>
-                <h3 className="text-xl font-semibold text-brand-primary mb-3">100% Safe</h3>
+                <div className="text-4xl mb-4">🔬</div>
+                <h3 className="text-xl font-semibold text-brand-primary mb-3">Deterministic Core</h3>
                 <p className="text-brand-text-darker">
-                  Your data never leaves your infrastructure. 
-                  Comprehensive testing ensures zero data loss.
+                  Replay is property-tested in CI: the same history always
+                  produces the same state, byte for byte.
                 </p>
               </div>
               <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
                 <div className="text-4xl mb-4">🎆</div>
                 <h3 className="text-xl font-semibold text-brand-primary mb-3">Open Source</h3>
                 <p className="text-brand-text-darker">
-                  MIT licensed. No vendor lock-in. 
+                  MIT licensed. No vendor lock-in.
                   Audit the code, contribute, or fork it.
                 </p>
               </div>
               <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
-                <div className="text-4xl mb-4">⚡</div>
-                <h3 className="text-xl font-semibold text-brand-primary mb-3">No Migration</h3>
+                <div className="text-4xl mb-4">🔒</div>
+                <h3 className="text-xl font-semibold text-brand-primary mb-3">Your Infrastructure</h3>
                 <p className="text-brand-text-darker">
-                  Works with your existing MongoDB setup. 
-                  Start using immediately, no downtime.
+                  Self-hosted, works with your own MongoDB — local or Atlas.
+                  Your data never leaves your environment.
                 </p>
               </div>
             </div>
@@ -148,10 +156,11 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">"git merge" for Teams</h3>
+                <h3 className="text-2xl font-semibold text-brand-primary mb-3">"git revert" for Data</h3>
                 <p className="text-brand-text-darker">
-                  Collaborate safely with database branches. Merge tested changes back to main, 
-                  <strong className="text-brand-accent">roll back bad deployments</strong>, and never lose data again.
+                  Rewind bad writes with deterministic time-travel and restore —
+                  <strong className="text-brand-accent"> roll back mistakes in place</strong>.
+                  Merge workflows and data PRs are on the <Link href="/roadmap" className="underline hover:text-brand-secondary">v2 roadmap</Link>.
                 </p>
               </div>
             </div>
@@ -191,7 +200,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Integrate:</strong> Works with your existing tools and workflows.</span>
+                  <span><strong className="text-brand-text">Integrate:</strong> CLI, Python SDK, and ML tooling (MLflow, DVC, W&amp;B) today — native driver drop-in coming in v2.</span>
                 </li>
               </ul>
               <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}

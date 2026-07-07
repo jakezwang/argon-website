@@ -23,20 +23,20 @@ export default function GitComparison() {
             </div>
             <div className="space-y-4 font-mono text-sm">
               <div className="bg-brand-dark p-3 rounded">
+                <span className="text-green-400">$</span> <span className="text-brand-text">git init</span>
+                <div className="text-brand-text-darker text-xs mt-1">Start versioning your code</div>
+              </div>
+              <div className="bg-brand-dark p-3 rounded">
                 <span className="text-green-400">$</span> <span className="text-brand-text">git branch feature-x</span>
                 <div className="text-brand-text-darker text-xs mt-1">Create isolated workspace</div>
               </div>
               <div className="bg-brand-dark p-3 rounded">
-                <span className="text-green-400">$</span> <span className="text-brand-text">git checkout feature-x</span>
-                <div className="text-brand-text-darker text-xs mt-1">Switch to branch</div>
+                <span className="text-green-400">$</span> <span className="text-brand-text">git log</span>
+                <div className="text-brand-text-darker text-xs mt-1">See every past state</div>
               </div>
               <div className="bg-brand-dark p-3 rounded">
-                <span className="text-green-400">$</span> <span className="text-brand-text">git commit -m "Add feature"</span>
-                <div className="text-brand-text-darker text-xs mt-1">Save changes</div>
-              </div>
-              <div className="bg-brand-dark p-3 rounded">
-                <span className="text-green-400">$</span> <span className="text-brand-text">git merge feature-x</span>
-                <div className="text-brand-text-darker text-xs mt-1">Integrate back to main</div>
+                <span className="text-green-400">$</span> <span className="text-brand-text">git reset --hard</span>
+                <div className="text-brand-text-darker text-xs mt-1">Undo mistakes</div>
               </div>
             </div>
           </div>
@@ -49,20 +49,20 @@ export default function GitComparison() {
             </div>
             <div className="space-y-4 font-mono text-sm">
               <div className="bg-brand-dark p-3 rounded">
+                <span className="text-blue-400">$</span> <span className="text-brand-text">argon projects create my-app</span>
+                <div className="text-brand-text-darker text-xs mt-1">Version your MongoDB database</div>
+              </div>
+              <div className="bg-brand-dark p-3 rounded">
                 <span className="text-blue-400">$</span> <span className="text-brand-text">argon branches create feature-x</span>
-                <div className="text-brand-text-darker text-xs mt-1">Create isolated database</div>
+                <div className="text-brand-text-darker text-xs mt-1">Isolated branch in milliseconds</div>
               </div>
               <div className="bg-brand-dark p-3 rounded">
-                <span className="text-blue-400">$</span> <span className="text-brand-text">mongosh feature-x</span>
-                <div className="text-brand-text-darker text-xs mt-1">Connect to branch</div>
+                <span className="text-blue-400">$</span> <span className="text-brand-text">argon time-travel</span>
+                <div className="text-brand-text-darker text-xs mt-1">Inspect any historical state</div>
               </div>
               <div className="bg-brand-dark p-3 rounded">
-                <span className="text-blue-400">$</span> <span className="text-brand-text">db.users.insertOne(&#123;...&#125;)</span>
-                <div className="text-brand-text-darker text-xs mt-1">Make changes safely</div>
-              </div>
-              <div className="bg-brand-dark p-3 rounded">
-                <span className="text-blue-400">$</span> <span className="text-brand-text">argon branches merge feature-x</span>
-                <div className="text-brand-text-darker text-xs mt-1">Apply to production</div>
+                <span className="text-blue-400">$</span> <span className="text-brand-text">argon restore</span>
+                <div className="text-brand-text-darker text-xs mt-1">Rewind — like git reset for data</div>
               </div>
             </div>
           </div>

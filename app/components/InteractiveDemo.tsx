@@ -17,41 +17,42 @@ interface DemoStep {
   };
 }
 
+// Simulated outputs for illustration — not live measurements.
 const developerSteps: DemoStep[] = [
   {
     id: 'init',
     command: 'argon projects create my-app',
     description: 'Create project with time-travel enabled',
-    output: '✅ Created project: my-app\n📊 MongoDB WAL initialized\n⏳ Time-travel enabled with millisecond precision\n🚀 Performance: 37,905+ ops/sec',
-    metrics: { time: '1.16ms', operations: '37,905 ops/sec' }
+    output: '✅ Created project: my-app\n📊 MongoDB WAL initialized\n⏳ Every write now recorded as an LSN-addressed entry',
+    metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'create_branch',
     command: 'argon branches create feature-x -p my-app',
-    description: 'Instant branch creation (no database copying)',
-    output: '⚡ Branch created in 1.16ms\n🌿 Zero-copy branching - no data duplication\n📋 WAL LSN pointer: 0x1A2B3C4D\n🎯 Skip lengthy backup/restore cycles',
-    metrics: { time: '1.16ms', operations: '15,360 ops/sec' }
+    description: 'Branch creation writes metadata, not data copies',
+    output: '⚡ Branch created: feature-x\n🌿 Branches are LSN pointers - no database copying\n📋 Forked from main at current head',
+    metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'work_changes',
     command: 'argon time-travel query -p my-app -b main --timestamp "5 minutes ago"',
     description: 'Query historical database state',
-    output: '⏳ Time-travel to: 2025-07-20T10:15:00Z\n🔍 Reconstructing state from WAL\n📋 Found 2,847 documents at timestamp\n✅ Query completed in <50ms',
-    metrics: { time: '<50ms', operations: '7,688 queries/sec' }
+    output: '⏳ Time-travel target resolved from timestamp\n🔍 Reconstructing state from WAL\n✅ Deterministic replay: same history, same state, every time',
+    metrics: { time: 'bounded by history size', operations: 'replay' }
   },
   {
-    id: 'create_test_branch',
-    command: 'argon metrics',
-    description: 'View real-time performance metrics',
-    output: '📊 Performance Metrics:\n• Throughput: 37,905 ops/sec\n• Branch creation: 1.16ms avg\n• Time-travel queries: <50ms\n• Test coverage: 119 assertions (100%)',
-    metrics: { time: 'real-time', operations: '37,905 ops/sec' }
+    id: 'restore',
+    command: 'argon restore -p my-app -b main --lsn 4990',
+    description: 'Rewind a branch to a previous state',
+    output: '🔄 Restoring main to LSN 4990\n✅ State reconstructed via deterministic replay\n🛡️ Restore is itself logged - you can undo the undo',
+    metrics: { time: 'replay-based', operations: 'restore' }
   },
   {
     id: 'switch_main',
     command: 'argon status',
-    description: 'Check system health and monitoring',
-    output: '✅ System Status: Healthy\n📋 Active branches: 3\n🚀 Current throughput: 37,905 ops/sec\n🛡️ Production monitoring: Active',
-    metrics: { time: 'instant', operations: '37,905 ops/sec' }
+    description: 'Check project status',
+    output: '✅ Project: my-app\n📋 Active branches: 3\n🔬 Replay determinism: property-tested in CI (M1)',
+    metrics: { time: 'instant', operations: 'status' }
   }
 ];
 
@@ -60,15 +61,15 @@ const aiSteps: DemoStep[] = [
     id: 'setup_dataset',
     command: '%argon branch create experiment-v2',
     description: 'Jupyter magic command for ML workflow',
-    output: '🔮 Jupyter integration active\n🤖 Created ML experiment branch\n📊 MLflow tracking enabled\n🎯 Branch: experiment-v2 (1.16ms)',
-    metrics: { time: '1.16ms', operations: '37,905 ops/sec' }
+    output: '🔮 Jupyter integration active\n🤖 Created ML experiment branch\n📊 MLflow tracking enabled\n🎯 Branch: experiment-v2',
+    metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'experiment_branch',
     command: 'mlflow.start_run()',
     description: 'MLflow integration with Argon branches',
     output: '🎯 MLflow run started\n🌿 Auto-created Argon branch: mlflow-run-x7k9\n📋 Experiment tracking enabled\n✅ Automatic versioning active',
-    metrics: { time: '1.16ms', operations: 'integrated' }
+    metrics: { time: 'milliseconds', operations: 'integrated' }
   },
   {
     id: 'transform_data',
@@ -88,15 +89,15 @@ const aiSteps: DemoStep[] = [
     id: 'time_travel',
     command: 'argon time-travel restore -p ml-project --timestamp "before bad experiment"',
     description: 'Safe restore from any point in time',
-    output: '⏳ Time-travel to healthy state\n🔄 WAL reconstruction complete\n✅ Data restored successfully\n🛡️ Zero data loss guaranteed',
-    metrics: { time: '<50ms', operations: 'instant' }
+    output: '⏳ Time-travel to healthy state\n🔄 WAL reconstruction complete\n✅ Data restored via deterministic replay\n🛡️ The restore itself is logged and reversible',
+    metrics: { time: 'replay-based', operations: 'restore' }
   },
   {
     id: 'parallel_training',
-    command: 'argon metrics --ml',
-    description: 'ML-specific performance metrics',
-    output: '📊 ML Performance:\n  • Active experiments: 12\n  • Parallel branches: 8\n  • Zero conflicts: 100%\n  • Throughput: 37,905 ops/sec',
-    metrics: { time: 'real-time', operations: '37,905 ops/sec' }
+    command: 'argon status --ml',
+    description: 'Overview of parallel experiments',
+    output: '📊 ML Overview:\n  • Active experiments: 12\n  • Parallel branches: 8\n  • Each experiment isolated on its own branch',
+    metrics: { time: 'instant', operations: 'status' }
   }
 ];
 
@@ -175,6 +176,9 @@ export default function InteractiveDemo() {
           {activeTab === 'ai' && 'Watch ML engineers track experiments and version datasets with collection-level isolation'}
           {activeTab === 'sdk' && 'Learn how to integrate Argon\'s version control system programmatically into your applications'}
         </p>
+        <p className="text-xs text-brand-text-darker mt-2 opacity-70">
+          Simulated walkthrough for illustration — outputs are not live measurements.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -247,10 +251,10 @@ export default function InteractiveDemo() {
             <ul className="space-y-2 text-sm text-brand-text-darker">
               {activeTab === 'developer' && (
                 <>
-                  <li>• Fast collection-level branching</li>
-                  <li>• High-performance data operations</li>
-                  <li>• MongoDB change stream tracking</li>
-                  <li>• Complete MongoDB API compatibility</li>
+                  <li>• Fast metadata-only branching</li>
+                  <li>• Deterministic, property-tested replay</li>
+                  <li>• Every write logged with LSN addressing</li>
+                  <li>• Native driver drop-in coming in v2 (M3)</li>
                 </>
               )}
               {activeTab === 'ai' && (
@@ -265,7 +269,7 @@ export default function InteractiveDemo() {
                 <>
                   <li>• Python SDK with ML integrations</li>
                   <li>• Git-like version control API</li>
-                  <li>• Production-ready v1.0.0</li>
+                  <li>• Open source, MIT licensed</li>
                   <li>• Cross-platform CLI (npm, PyPI, Homebrew)</li>
                 </>
               )}

@@ -57,18 +57,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div className="p-4">
               <div className="text-4xl mb-3">⚡</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Instant Branching</h3>
-              <p className="text-brand-text-darker">1.16ms - no more waiting for copies</p>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Millisecond Branching</h3>
+              <p className="text-brand-text-darker">Branches are metadata, not copies</p>
             </div>
             <div className="p-4">
               <div className="text-4xl mb-3">⏳</div>
               <h3 className="text-lg font-semibold text-brand-text mb-2">Time-Travel</h3>
-              <p className="text-brand-text-darker">First MongoDB with historical queries</p>
+              <p className="text-brand-text-darker">Inspect and restore any historical state</p>
             </div>
             <div className="p-4">
-              <div className="text-4xl mb-3">🚀</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">37,905+ ops/sec</h3>
-              <p className="text-brand-text-darker">Verified production performance</p>
+              <div className="text-4xl mb-3">🔬</div>
+              <h3 className="text-lg font-semibold text-brand-text mb-2">Deterministic Core</h3>
+              <p className="text-brand-text-darker">Property-tested reproducible replay</p>
             </div>
           </div>
         </section>
@@ -78,27 +78,27 @@ export default function AboutPage() {
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Current Status</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working (M1 shipped)</h3>
               <ul className="space-y-2 text-brand-text-darker">
-                <li>• Pure WAL architecture with time-travel</li>
-                <li>• 1.16ms branching (instant database versions)</li>
-                <li>• Python & Go SDKs published</li>
-                <li>• Homebrew, NPM, pip installation</li>
+                <li>• WAL architecture with branching & time-travel</li>
+                <li>• Deterministic replay, property-tested in CI</li>
+                <li>• Multi-process safe LSN allocation</li>
+                <li>• Python & Go SDKs; Homebrew, NPM, pip installs</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 What's Next</h3>
               <ul className="space-y-2 text-brand-text-darker">
-                <li>• Community adoption & demos</li>
-                <li>• Enterprise RBAC features</li>
-                <li>• Distributed WAL architecture</li>
-                <li>• Managed cloud service</li>
+                <li>• M2: snapshots + public reproducible benchmarks</li>
+                <li>• M3: native driver drop-in (pymongo/mongoose unchanged)</li>
+                <li>• M4: merge, diff & data PRs</li>
+                <li>• M5: MCP server & AI agent sandboxes</li>
               </ul>
             </div>
           </div>
           <div className="mt-6 text-center">
-            <Link href="https://github.com/argon-lab/argon" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:text-brand-secondary font-semibold">
-              View roadmap on GitHub &rarr;
+            <Link href="/roadmap" className="text-brand-primary hover:text-brand-secondary font-semibold">
+              See the full roadmap &rarr;
             </Link>
           </div>
         </section>

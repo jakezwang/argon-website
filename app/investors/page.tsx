@@ -51,12 +51,12 @@ export default function InvestorsPage() {
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Current Status & Vision</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 Today (v1.0.0)</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 Today</h3>
               <ul className="space-y-2 text-brand-text-darker mb-6">
-                <li>• Production-ready open source</li>
+                <li>• Open-source engine with a deterministic, property-tested core (M1 shipped)</li>
                 <li>• Python SDK with ML integrations</li>
                 <li>• Multi-platform installations (npm, PyPI, Homebrew)</li>
-                <li>• Active community adoption</li>
+                <li>• Public milestone-based roadmap toward v2</li>
               </ul>
               <div className="bg-brand-dark p-4 rounded">
                 <p className="text-sm text-brand-text-darker text-center">
