@@ -27,13 +27,16 @@ export default function HomePage() {
       <section className="border-b border-brand-edge">
         <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:py-28">
           <div>
-            <p className="kicker mb-5">Open source · MIT · MongoDB</p>
+            <p className="kicker mb-5">Open source · MIT · self-hosted</p>
             <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-brand-text sm:text-5xl">
-              The undo button for AI agents
+              Git for MongoDB,
+              <br />
+              built for AI agents
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8">
-              AI agents write to your database. Argon makes every write
-              branchable, auditable, and reversible — like Git, for MongoDB.
+              Every agent session gets a disposable branch of your database.
+              Audit what it wrote, merge what works — and undo the rest with
+              one command.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a

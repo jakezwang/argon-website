@@ -9,13 +9,13 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mon
 
 export const metadata = {
   metadataBase: new URL('https://argonlabs.tech'),
-  title: 'Argon — The Undo Button for AI Agents · MongoDB Branching & Time Travel',
+  title: 'Argon — Git for MongoDB, Built for AI Agents',
   description:
-    'Open-source Git-like branching, time travel, and rollback for MongoDB. Give every AI agent session its own branch — a real MongoDB database — and undo anything it wrote.',
+    'Open-source branching, time travel, and undo for MongoDB. Give every AI agent session a disposable branch — a real MongoDB database — audit every write, and revert anything.',
   openGraph: {
-    title: 'Argon — The Undo Button for AI Agents',
+    title: 'Argon — Git for MongoDB, Built for AI Agents',
     description:
-      'Git-like branching, time travel, and rollback for MongoDB. Branches check out as real MongoDB databases; every agent write is attributed and reversible.',
+      'Branching, time travel, and the undo button for MongoDB. Branches check out as real databases; every agent write is attributed and reversible.',
   },
   icons: {
     icon: '/argon-logo.png',
