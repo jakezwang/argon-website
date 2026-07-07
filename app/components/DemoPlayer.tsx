@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import GitGraph, { FlowGraph } from './GitGraph';
 
 export interface PanelLine {
   text: string;
@@ -28,6 +29,7 @@ interface DemoPlayerProps {
   initialPanel: DemoPanel;
   terminalTitle: string;
   panelKind?: string;
+  graph?: FlowGraph;
 }
 
 const TYPE_MS = 14;
@@ -53,6 +55,7 @@ export default function DemoPlayer({
   initialPanel,
   terminalTitle,
   panelKind = 'database view',
+  graph,
 }: DemoPlayerProps) {
   const [idx, setIdx] = useState(0);
   const [instant, setInstant] = useState(false);
@@ -119,9 +122,10 @@ export default function DemoPlayer({
     if (safeIdx > 0) goTo(safeIdx - 1, false);
   };
 
-  // The data panel reflects the world *after* the current command ran; while
-  // it is still typing, show the previous step's state.
+  // The data panel and graph reflect the world *after* the current command
+  // ran; while it is still typing, show the previous step's state.
   const panel = typingDone ? step.panel : safeIdx > 0 ? steps[safeIdx - 1].panel : initialPanel;
+  const graphStep = typingDone ? safeIdx : safeIdx - 1;
 
   return (
     <div
@@ -208,6 +212,25 @@ export default function DemoPlayer({
           </div>
         </div>
       </div>
+
+      {/* History graph — where you are in branch/commit space */}
+      {graph && (
+        <div className="mt-4 border border-brand-edge bg-brand-surface">
+          <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
+            <p className="font-mono text-xs text-brand-muted">
+              {graphStep >= 0
+                ? graph.steps[Math.min(graphStep, graph.steps.length - 1)].caption
+                : '…'}
+            </p>
+            <p className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-brand-muted">
+              history graph
+            </p>
+          </div>
+          <div className="px-4 py-3">
+            <GitGraph graph={graph} step={graphStep} />
+          </div>
+        </div>
+      )}
 
       {/* Controls */}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
