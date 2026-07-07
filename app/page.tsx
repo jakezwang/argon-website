@@ -205,29 +205,29 @@ export default function HomePage() {
             </h2>
           </SectionHeading>
           <div className="flex flex-col items-stretch gap-3 font-mono text-sm lg:flex-row lg:items-center">
-            <div className="border border-brand-edge bg-brand-surface px-5 py-4 text-center">
+            <div className="shrink-0 border border-brand-edge bg-brand-surface px-4 py-3 text-center">
               <p className="text-brand-text">your app · your agents</p>
-              <p className="mt-1 text-xs text-brand-muted">any MongoDB driver, unchanged</p>
+              <p className="mt-1 text-xs text-brand-muted">any driver, unchanged</p>
             </div>
-            <p className="shrink-0 text-center text-brand-muted lg:px-1">
-              — every write →
+            <p className="shrink-0 text-center text-xs text-brand-muted">
+              every write →
             </p>
-            <div className="border border-brand-primary/50 bg-brand-surface px-5 py-4 text-center">
+            <div className="shrink-0 border border-brand-primary/50 bg-brand-surface px-4 py-3 text-center">
               <p className="text-brand-primary">append-only log</p>
-              <p className="mt-1 text-xs text-brand-muted">before/after images · who wrote it · LSN</p>
+              <p className="mt-1 text-xs text-brand-muted">pre/post images · actor · LSN</p>
             </div>
-            <p className="shrink-0 text-center text-brand-muted lg:px-1">
-              — views over it →
+            <p className="shrink-0 text-center text-xs text-brand-muted">
+              views →
             </p>
-            <div className="grid flex-1 gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
+            <div className="min-w-0 flex-1 divide-y divide-brand-edge border border-brand-edge">
               {[
                 ['branches', 'real MongoDB databases'],
                 ['time travel', 'any state, by LSN or time'],
                 ['undo', 'per-actor, conflict-safe'],
               ].map(([t, d]) => (
-                <div key={t} className="bg-brand-dark px-4 py-4 text-center">
-                  <p className="text-brand-text">{t}</p>
-                  <p className="mt-1 text-xs text-brand-muted">{d}</p>
+                <div key={t} className="flex items-baseline gap-2 px-4 py-2.5">
+                  <p className="shrink-0 text-brand-text">{t}</p>
+                  <p className="truncate text-xs text-brand-muted">— {d}</p>
                 </div>
               ))}
             </div>
