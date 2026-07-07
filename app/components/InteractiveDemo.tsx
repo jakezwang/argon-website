@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import TerminalDemo from './TerminalDemo';
-import ConsoleDemo from './ConsoleDemo';
-import IDEDemo from './IDEDemo';
 
 interface DemoStep {
   id: string;
@@ -18,96 +16,139 @@ interface DemoStep {
 }
 
 // Simulated outputs for illustration — not live measurements.
-const developerSteps: DemoStep[] = [
+const cliSteps: DemoStep[] = [
   {
-    id: 'init',
+    id: 'create',
     command: 'argon projects create my-app',
-    description: 'Create project with time-travel enabled',
-    output: 'Created project: my-app\nMongoDB WAL initialized\nEvery write now recorded as an LSN-addressed entry',
-    metrics: { time: 'milliseconds', operations: 'metadata write' }
+    description: 'Create a project — every write from here on is versioned',
+    output: 'Created project: my-app\nMain branch ready\nEvery write becomes an LSN-addressed WAL entry',
+    metrics: { time: 'milliseconds', operations: 'metadata write' },
   },
   {
-    id: 'create_branch',
+    id: 'branch',
     command: 'argon branches create feature-x -p my-app',
-    description: 'Branch creation writes metadata, not data copies',
-    output: 'Branch created: feature-x\nBranches are LSN pointers - no database copying\nForked from main at current head',
-    metrics: { time: 'milliseconds', operations: 'metadata write' }
+    description: 'Branch — a metadata write, instant at any data size',
+    output: 'Branch created: feature-x\nForked from main at current head\nNo data copied',
+    metrics: { time: 'milliseconds', operations: 'metadata write' },
   },
   {
-    id: 'work_changes',
-    command: 'argon time-travel query -p my-app -b main --timestamp "5 minutes ago"',
-    description: 'Query historical database state',
-    output: 'Time-travel target resolved from timestamp\nReconstructing state from WAL\nDeterministic replay: same history, same state, every time',
-    metrics: { time: 'bounded by history size', operations: 'replay' }
+    id: 'checkout',
+    command: 'argon checkout -p my-app -b feature-x',
+    description: 'Materialize the branch into a real MongoDB database',
+    output: 'Checked out at LSN 4982\nConnection string:\n  mongodb://localhost:27017/argon_br_9f2c1a\nAny driver connects — indexes, aggregation, transactions',
+    metrics: { time: 'snapshot-accelerated', operations: 'checkout' },
   },
   {
-    id: 'restore',
-    command: 'argon restore -p my-app -b main --lsn 4990',
-    description: 'Rewind a branch to a previous state',
-    output: 'Restoring main to LSN 4990\nState reconstructed via deterministic replay\nRestore is itself logged - you can undo the undo',
-    metrics: { time: 'replay-based', operations: 'restore' }
+    id: 'watch',
+    command: 'argon watch -p my-app -b feature-x',
+    description: 'Capture direct driver writes into versioned history',
+    output: 'Watching for changes...\nEvery write recorded with full before/after images\nResume-token persisted — at-least-once, idempotent replay',
+    metrics: { time: 'streaming', operations: 'ingest' },
   },
   {
-    id: 'switch_main',
-    command: 'argon status',
-    description: 'Check project status',
-    output: 'Project: my-app\nActive branches: 3\nReplay determinism: property-tested in CI (M1)',
-    metrics: { time: 'instant', operations: 'status' }
-  }
+    id: 'diff',
+    command: 'argon diff -p my-app -b feature-x',
+    description: 'Review the branch against its parent',
+    output: 'vs main @ fork point:\n  + 12 added\n  ~ 3 modified\n  - 1 deleted\n  0 conflicts',
+    metrics: { time: 'three-way', operations: 'diff' },
+  },
+  {
+    id: 'merge',
+    command: 'argon merge preview -p my-app -b feature-x',
+    description: 'A data pull request: persisted, reviewable, exactly-once',
+    output: 'Merge plan persisted (pending): plan_7d31\n16 changes, 0 conflicts\nApply with: argon merge apply plan_7d31\nStale if either head moves — re-preview',
+    metrics: { time: 'reviewable', operations: 'merge plan' },
+  },
+  {
+    id: 'undo',
+    command: 'argon undo -p my-app -b main --from-lsn 5001 --dry-run',
+    description: 'The undo button — preview first, conflicts never silent',
+    output: 'Would revert 16 documents · 0 conflicts\nCompensations are new history: auditable, undoable in turn\nDrop --dry-run to apply',
+    metrics: { time: 'pre-image based', operations: 'undo' },
+  },
 ];
 
-const aiSteps: DemoStep[] = [
+const agentSteps: DemoStep[] = [
   {
-    id: 'setup_dataset',
-    command: '%argon branch create experiment-v2',
-    description: 'Jupyter magic command for ML workflow',
-    output: 'Jupyter integration active\nCreated ML experiment branch\nMLflow tracking enabled\nBranch: experiment-v2',
-    metrics: { time: 'milliseconds', operations: 'metadata write' }
+    id: 'sandbox',
+    command: 'argon sandbox create -p prod --ttl 1h',
+    description: 'Fork, checkout, and TTL-stamp in one command',
+    output: 'Sandbox: sandbox-f81a (expires in 1h)\nConnection string:\n  mongodb://localhost:27017/argon_br_f81a\nExpired sandboxes reap themselves — storage included',
+    metrics: { time: 'one command', operations: 'sandbox' },
   },
   {
-    id: 'experiment_branch',
-    command: 'mlflow.start_run()',
-    description: 'MLflow integration with Argon branches',
-    output: 'MLflow run started\nAuto-created Argon branch: mlflow-run-x7k9\nExperiment tracking enabled\nAutomatic versioning active',
-    metrics: { time: 'milliseconds', operations: 'integrated' }
+    id: 'agent-writes',
+    command: 'agent --db mongodb://…/argon_br_f81a',
+    description: 'The agent works against a real database, unchanged',
+    output: 'agent wrote 3,214 documents\nEvery write captured with actor: agent:price-fixer\nProduction never in the blast radius',
+    metrics: { time: 'any driver', operations: 'captured' },
   },
   {
-    id: 'transform_data',
-    command: 'wandb.init(project="argon-ml")',
-    description: 'Weights & Biases rich visualization',
-    output: 'W&B run initialized\nLinked to Argon branch\nReal-time metrics streaming\nRich experiment visualization',
-    metrics: { time: 'real-time', operations: 'streaming' }
+    id: 'review',
+    command: 'argon diff -p prod -b sandbox-f81a',
+    description: 'Audit exactly what the agent changed',
+    output: '3,214 documents touched by agent:price-fixer\n12 price fields set to 0 — flagged in review',
+    metrics: { time: 'per-document', operations: 'audit' },
   },
   {
-    id: 'model_branch',
-    command: 'dvc add data/model_v2.pkl',
-    description: 'DVC integration for data versioning',
-    output: 'DVC tracking enabled\nSynced with Argon branch\nRemote storage configured\nVersion control complete',
-    metrics: { time: 'instant', operations: 'synced' }
+    id: 'undo-actor',
+    command: 'argon undo -p prod --actor agent:price-fixer --from-lsn 5001',
+    description: 'Revert one agent’s entire session',
+    output: '3,214 documents reverted · 0 conflicts\nDocuments another actor touched since would be reported, never clobbered',
+    metrics: { time: 'per-actor', operations: 'undo' },
   },
   {
-    id: 'time_travel',
-    command: 'argon time-travel restore -p ml-project --timestamp "before bad experiment"',
-    description: 'Safe restore from any point in time',
-    output: 'Time-travel to healthy state\nWAL reconstruction complete\nData restored via deterministic replay\nThe restore itself is logged and reversible',
-    metrics: { time: 'replay-based', operations: 'restore' }
+    id: 'pin',
+    command: 'argon pin create -p prod -b main --name eval-2026-07',
+    description: 'Freeze a named dataset state for reproducible evals',
+    output: 'Pin created: eval-2026-07 @ LSN 8112\nImmutable — GC and reset can never touch it',
+    metrics: { time: 'named LSN', operations: 'pin' },
   },
   {
-    id: 'parallel_training',
-    command: 'argon status --ml',
-    description: 'Overview of parallel experiments',
-    output: 'ML Overview:\n  • Active experiments: 12\n  • Parallel branches: 8\n  • Each experiment isolated on its own branch',
-    metrics: { time: 'instant', operations: 'status' }
-  }
+    id: 'eval-run',
+    command: 'argon sandbox create -p prod --from-pin eval-2026-07',
+    description: 'Every eval run forks the pin — identical input, every time',
+    output: 'Sandbox from pin eval-2026-07\nSame input state for run #1, #17, or #1,000\nEvals stay reproducible while the live corpus moves',
+    metrics: { time: 'from pin', operations: 'eval sandbox' },
+  },
 ];
 
+const surfaceSteps: DemoStep[] = [
+  {
+    id: 'mcp',
+    command: 'claude mcp add argon -- argon mcp',
+    description: 'MCP: agents drive the whole loop themselves',
+    output: 'Registered: 13 tools over stdio\nsandbox_create · connect · diff · merge_preview/apply\nundo · snapshot · pin · sandbox_from_pin · keep · discard\nThe server supervises an ingester per sandbox',
+    metrics: { time: 'stdio', operations: 'MCP' },
+  },
+  {
+    id: 'rest',
+    command: 'go run ./api',
+    description: 'REST control plane for language SDKs and services',
+    output: 'Listening on :8080\nProjects, branches, sandboxes, pins, merges over HTTP\nSandbox-from-pin included, ingester supervised',
+    metrics: { time: 'HTTP', operations: 'REST' },
+  },
+  {
+    id: 'proxy',
+    command: 'argon proxy',
+    description: 'Wire proxy: stable branch-aliased connection strings',
+    output: 'Proxying mongodb://localhost:27100\nURIs stay stable across checkout/release cycles\nSynchronous capture is on the roadmap',
+    metrics: { time: 'wire protocol', operations: 'proxy' },
+  },
+  {
+    id: 'agents-pkg',
+    command: 'python -c "from argon_agents import checkpointer"',
+    description: 'argon-agents: LangGraph checkpointer + Mem0 factory',
+    output: 'LangGraph checkpointer with fork and rewind\nMem0 factory on the same REST control plane\nPyPI publication pending — source ships with the engine',
+    metrics: { time: 'REST-backed', operations: 'argon-agents' },
+  },
+];
 
 export default function InteractiveDemo() {
-  const [activeTab, setActiveTab] = useState<'developer' | 'ai' | 'sdk'>('developer');
+  const [activeTab, setActiveTab] = useState<'cli' | 'agent' | 'surfaces'>('cli');
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(0);
 
-  // Reset when switching tabs
   useEffect(() => {
     setCurrentStep(0);
   }, [activeTab]);
@@ -119,158 +160,133 @@ export default function InteractiveDemo() {
 
   const getCurrentSteps = () => {
     switch (activeTab) {
-      case 'developer': return developerSteps;
-      case 'ai': return aiSteps;
-      case 'sdk': return []; // SDK uses IDEDemo component
-      default: return developerSteps;
+      case 'cli':
+        return cliSteps;
+      case 'agent':
+        return agentSteps;
+      case 'surfaces':
+        return surfaceSteps;
+      default:
+        return cliSteps;
     }
   };
 
+  const tabs: { key: typeof activeTab; label: string }[] = [
+    { key: 'cli', label: 'CLI workflow' },
+    { key: 'agent', label: 'Agent & eval workflow' },
+    { key: 'surfaces', label: 'MCP · REST · proxy' },
+  ];
+
   return (
-    <div className="max-w-6xl mx-auto">
-      {/* Tab Selector */}
-      <div className="flex justify-center mb-8 overflow-x-auto">
-        <div className="bg-brand-surface rounded-lg p-1 flex flex-nowrap min-w-max">
-          <button
-            onClick={() => setActiveTab('developer')}
-            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
-              activeTab === 'developer'
-                ? 'bg-brand-primary text-brand-dark font-semibold'
-                : 'text-brand-text-darker hover:text-brand-primary'
-            }`}
-          >
-            CLI Workflow
-          </button>
-          <button
-            onClick={() => setActiveTab('ai')}
-            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
-              activeTab === 'ai'
-                ? 'bg-brand-primary text-brand-dark font-semibold'
-                : 'text-brand-text-darker hover:text-brand-primary'
-            }`}
-          >
-            ML/AI Workflow
-          </button>
-          <button
-            onClick={() => setActiveTab('sdk')}
-            className={`px-4 py-3 rounded-md transition-colors whitespace-nowrap ${
-              activeTab === 'sdk'
-                ? 'bg-brand-primary text-brand-dark font-semibold'
-                : 'text-brand-text-darker hover:text-brand-primary'
-            }`}
-          >
-            SDK Integration
-          </button>
+    <div className="mx-auto max-w-6xl">
+      {/* Tabs */}
+      <div className="mb-8 flex justify-center overflow-x-auto">
+        <div className="flex min-w-max flex-nowrap border border-brand-edge">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`whitespace-nowrap px-4 py-2.5 font-mono text-sm transition-colors ${
+                activeTab === tab.key
+                  ? 'bg-brand-surface text-brand-primary'
+                  : 'text-brand-text-darker hover:text-brand-text'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Demo Description */}
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-semibold text-brand-primary mb-2">
-          {activeTab === 'developer' && 'Git-Like Database Versioning'}
-          {activeTab === 'ai' && 'ML Data Versioning & Experiment Tracking'}
-          {activeTab === 'sdk' && 'Programmatic Integration with SDK'}
+      {/* Description */}
+      <div className="mb-8 text-center">
+        <h3 className="mb-2 text-2xl font-semibold text-brand-text">
+          {activeTab === 'cli' && 'The full loop, from branch to data PR'}
+          {activeTab === 'agent' && 'Sandbox an agent, audit it, undo it, pin the eval'}
+          {activeTab === 'surfaces' && 'Four surfaces, one engine'}
         </h3>
         <p className="text-brand-text-darker">
-          {activeTab === 'developer' && 'See how developers use Git-like workflows for MongoDB branching and data versioning'}
-          {activeTab === 'ai' && 'Watch ML engineers track experiments and version datasets with collection-level isolation'}
-          {activeTab === 'sdk' && 'Learn how to integrate Argon\'s version control system programmatically into your applications'}
+          {activeTab === 'cli' &&
+            'Project → branch → real database → capture → diff → reviewable merge → undo'}
+          {activeTab === 'agent' &&
+            'TTL sandboxes with per-actor attribution, session undo, and pinned datasets for reproducible evals'}
+          {activeTab === 'surfaces' &&
+            'The CLI for humans and CI, MCP for agents, REST for SDKs, and a wire proxy for stable URIs'}
         </p>
-        <p className="text-xs text-brand-text-darker mt-2 opacity-70">
+        <p className="mt-2 text-xs text-brand-text-darker opacity-70">
           Simulated walkthrough for illustration — outputs are not live measurements.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Render appropriate demo interface based on active tab */}
-        {(activeTab === 'developer' || activeTab === 'ai') && (
-          <TerminalDemo steps={getCurrentSteps()} onStepChange={handleStepChange} />
-        )}
-        {activeTab === 'sdk' && (
-          <IDEDemo onStepChange={handleStepChange} />
-        )}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <TerminalDemo steps={getCurrentSteps()} onStepChange={handleStepChange} />
 
-        {/* Step Information */}
+        {/* Step info */}
         <div className="space-y-6">
-          {/* Current Step */}
-          <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
-            <h4 className="text-lg font-semibold text-brand-primary mb-2">
+          <div className="border border-brand-edge bg-brand-surface p-6">
+            <h4 className="mb-2 font-mono text-sm text-brand-primary">
               Step {currentStep + 1} of {totalSteps || 1}
             </h4>
-            {(activeTab === 'developer' || activeTab === 'ai') && (
-              <p className="text-brand-text mb-4">{getCurrentSteps()[currentStep]?.description}</p>
-            )}
-            {activeTab === 'sdk' && (
-              <p className="text-brand-text mb-4">SDK integration demo - {currentStep + 1} of {totalSteps}</p>
-            )}
-            
-            {/* Progress Bar */}
-            <div className="w-full bg-brand-dark rounded-full h-2">
-              <div 
-                className="bg-brand-primary h-2 rounded-full transition-all duration-300"
+            <p className="mb-4 text-sm leading-6 text-brand-text">
+              {getCurrentSteps()[currentStep]?.description}
+            </p>
+            <div className="h-1 w-full bg-brand-dark">
+              <div
+                className="h-1 bg-brand-primary transition-all duration-300"
                 style={{ width: `${totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0}%` }}
-              ></div>
+              />
             </div>
           </div>
 
-          {/* All Steps Overview */}
-          {(activeTab === 'developer' || activeTab === 'ai') && (
-            <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
-              <h4 className="text-lg font-semibold text-brand-primary mb-4">Demo Steps</h4>
-              <div className="space-y-2">
-                {getCurrentSteps().map((s, index) => (
-                  <div
-                    key={s.id}
-                    className={`p-2 rounded text-sm transition-colors ${
-                      index === currentStep
-                        ? 'bg-brand-primary text-brand-dark'
-                        : index < currentStep
-                        ? 'bg-brand-dark text-brand-text-darker'
-                        : 'text-brand-text-darker'
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      <span className="mr-2">
-                        {index < currentStep ? '' : index === currentStep ? '▶' : '⏳'}
-                      </span>
-                      <span className="text-xs">{s.description}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Key Benefits */}
-          <div className="bg-brand-surface p-6 rounded-lg shadow-xl">
-            <h4 className="text-lg font-semibold text-brand-primary mb-4">
-              {activeTab === 'developer' && 'Version Control Benefits'}
-              {activeTab === 'ai' && 'ML/AI Benefits'}
-              {activeTab === 'sdk' && 'SDK Benefits'}
+          <div className="border border-brand-edge bg-brand-surface p-6">
+            <h4 className="mb-4 font-mono text-xs uppercase tracking-wider text-brand-muted">
+              Steps
             </h4>
-            <ul className="space-y-2 text-sm text-brand-text-darker">
-              {activeTab === 'developer' && (
+            <div className="space-y-1.5">
+              {getCurrentSteps().map((s, index) => (
+                <div
+                  key={s.id}
+                  className={`flex items-center gap-2 px-2 py-1.5 text-xs ${
+                    index === currentStep
+                      ? 'bg-brand-dark text-brand-primary'
+                      : index < currentStep
+                        ? 'text-brand-muted line-through decoration-brand-edge'
+                        : 'text-brand-text-darker'
+                  }`}
+                >
+                  <span className="font-mono">{String(index + 1).padStart(2, '0')}</span>
+                  <span>{s.description}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border border-brand-edge bg-brand-surface p-6">
+            <h4 className="mb-4 font-mono text-xs uppercase tracking-wider text-brand-muted">
+              Why it holds up
+            </h4>
+            <ul className="space-y-2 text-sm leading-6 text-brand-text-darker">
+              {activeTab === 'cli' && (
                 <>
-                  <li>• Fast metadata-only branching</li>
-                  <li>• Deterministic, property-tested replay</li>
-                  <li>• Every write logged with LSN addressing</li>
-                  <li>• Branches check out as real MongoDB databases</li>
+                  <li>Branches are metadata — real databases on checkout</li>
+                  <li>Deterministic, property-tested replay</li>
+                  <li>Merges are exactly-once, conflicts never silent</li>
+                  <li>Real-driver capture validated in CI</li>
                 </>
               )}
-              {activeTab === 'ai' && (
+              {activeTab === 'agent' && (
                 <>
-                  <li>• ML experiment tracking integration</li>
-                  <li>• MLflow, W&B, DVC support</li>
-                  <li>• Collection-level data isolation</li>
-                  <li>• ZSTD compression for storage</li>
+                  <li>Every write attributed to an actor</li>
+                  <li>Undo compensates via pre-images, reports conflicts</li>
+                  <li>Pins are GC- and reset-proof by construction</li>
+                  <li>TTL expiry reclaims storage, loudly skips pinned children</li>
                 </>
               )}
-              {activeTab === 'sdk' && (
+              {activeTab === 'surfaces' && (
                 <>
-                  <li>• Python SDK with ML integrations</li>
-                  <li>• Git-like version control API</li>
-                  <li>• Open source, MIT licensed</li>
-                  <li>• Cross-platform CLI (npm, PyPI, Homebrew)</li>
+                  <li>All four surfaces drive the same WAL engine</li>
+                  <li>MCP and REST supervise capture for you</li>
+                  <li>Open source, MIT — run it all yourself</li>
                 </>
               )}
             </ul>

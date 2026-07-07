@@ -45,13 +45,15 @@ export default function FeaturesPage() {
           same history produces the same state every time, across processes
           and instances.
         </FeatureCard>
-        <FeatureCard index="/04" title="ML framework integration">
-          Native support for MLflow, Weights &amp; Biases, and DVC workflows.
-          Track experiments and version datasets alongside your ML pipeline.
+        <FeatureCard index="/04" title="Agent &amp; eval workflows">
+          TTL sandboxes with per-actor undo, dataset pins that GC and reset
+          can never touch, and the argon-agents package: a LangGraph
+          checkpointer with fork and rewind, plus a Mem0 factory.
         </FeatureCard>
-        <FeatureCard index="/05" title="Multiple SDKs">
-          Python SDK via pip, Go SDK, and a unified CLI. Install via
-          Homebrew, npm, or pip for cross-platform support.
+        <FeatureCard index="/05" title="Four surfaces, one engine">
+          A unified CLI for humans and CI, an MCP server for agents
+          (thirteen tools), a REST control plane for language SDKs, and a
+          wire proxy for stable per-branch connection strings.
         </FeatureCard>
         <FeatureCard index="/06" title="Honest engineering">
           Every performance number on this site comes from our public
@@ -91,8 +93,8 @@ export default function FeaturesPage() {
             },
             {
               n: '4',
-              title: 'ML workflow support',
-              body: 'Integration with MLflow, Weights & Biases, and DVC enables seamless experiment tracking. The Python SDK provides programmatic access for automated ML pipelines.',
+              title: 'Reproducible agent & eval workflows',
+              body: 'argon sandbox gives an agent a disposable real database with a TTL; argon pin freezes a named dataset state so every eval run forks identical input. The argon-agents package brings the same engine to LangGraph and Mem0 through the REST control plane.',
             },
             {
               n: '5',
