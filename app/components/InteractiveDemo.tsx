@@ -87,9 +87,9 @@ const sourcePanel: DemoPanel = {
     {
       name: 'products (3 documents)',
       lines: [
-        { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
-        { text: '{ _id: "p2", name: "sonic screwdriver", price: 30 }' },
-        { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
+        { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
+        { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
+        { text: '{ _id: "s3", name: "track spike", price: 74 }' },
       ],
     },
   ],
@@ -119,9 +119,9 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (3 documents)',
           lines: [
-            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }', status: 'added' },
-            { text: '{ _id: "p2", name: "sonic screwdriver", price: 30 }', status: 'added' },
-            { text: '{ _id: "p3", name: "point thruster", price: 45 }', status: 'added' },
+            { text: '{ _id: "s1", name: "trail shoe", price: 49 }', status: 'added' },
+            { text: '{ _id: "s2", name: "road shoe", price: 89 }', status: 'added' },
+            { text: '{ _id: "s3", name: "track spike", price: 74 }', status: 'added' },
           ],
         },
       ],
@@ -139,9 +139,9 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (3 documents, inherited)',
           lines: [
-            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
-            { text: '{ _id: "p2", name: "sonic screwdriver", price: 30 }' },
-            { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
+            { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
+            { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
+            { text: '{ _id: "s3", name: "track spike", price: 74 }' },
           ],
         },
       ],
@@ -163,9 +163,9 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (3 documents)',
           lines: [
-            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
-            { text: '{ _id: "p2", name: "sonic screwdriver", price: 30 }' },
-            { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
+            { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
+            { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
+            { text: '{ _id: "s3", name: "track spike", price: 74 }' },
           ],
         },
       ],
@@ -177,8 +177,8 @@ const cliSteps: DemoStep[] = [
     description: 'Capture direct driver writes into versioned history',
     output: [
       'Watching for changes...',
-      'captured: insert products/p4 (LSN 4)',
-      'captured: update products/p2 (LSN 5)',
+      'captured: insert products/s4 (LSN 4)',
+      'captured: update products/s2 (LSN 5)',
     ],
     panel: {
       title: 'mongodb://…/argon_br_9f2c1a',
@@ -187,10 +187,10 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (4 documents)',
           lines: [
-            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
-            { text: '{ _id: "p2", name: "sonic screwdriver", price: 25 }', status: 'modified' },
-            { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
-            { text: '{ _id: "p4", name: "heisenberg compensator", price: 120 }', status: 'added' },
+            { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
+            { text: '{ _id: "s2", name: "road shoe", price: 79 }', status: 'modified' },
+            { text: '{ _id: "s3", name: "track spike", price: 74 }' },
+            { text: '{ _id: "s4", name: "trail runner", price: 59 }', status: 'added' },
           ],
         },
       ],
@@ -207,9 +207,9 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products',
           lines: [
-            { text: '{ _id: "p4", … } added', status: 'added' },
-            { text: '{ _id: "p2", price: 30 → 25 }', status: 'modified' },
-            { text: 'p1, p3 unchanged', status: 'muted' },
+            { text: '{ _id: "s4", … } added', status: 'added' },
+            { text: '{ _id: "s2", price: 89 → 79 }', status: 'modified' },
+            { text: 's1, s3 unchanged', status: 'muted' },
           ],
         },
       ],
@@ -231,8 +231,8 @@ const cliSteps: DemoStep[] = [
         {
           name: 'planned changes',
           lines: [
-            { text: 'insert products/p4', status: 'added' },
-            { text: 'update products/p2 (price 30 → 25)', status: 'modified' },
+            { text: 'insert products/s4', status: 'added' },
+            { text: 'update products/s2 (price 89 → 79)', status: 'modified' },
           ],
         },
       ],
@@ -254,10 +254,10 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (4 documents)',
           lines: [
-            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
-            { text: '{ _id: "p2", name: "sonic screwdriver", price: 25 }', status: 'modified' },
-            { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
-            { text: '{ _id: "p4", name: "heisenberg compensator", price: 120 }', status: 'added' },
+            { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
+            { text: '{ _id: "s2", name: "road shoe", price: 79 }', status: 'modified' },
+            { text: '{ _id: "s3", name: "track spike", price: 74 }' },
+            { text: '{ _id: "s4", name: "trail runner", price: 59 }', status: 'added' },
           ],
         },
       ],
@@ -278,8 +278,8 @@ const cliSteps: DemoStep[] = [
         {
           name: 'products (would become)',
           lines: [
-            { text: '{ _id: "p4", … } would be deleted', status: 'removed' },
-            { text: '{ _id: "p2", price: 25 → 30 } would revert', status: 'modified' },
+            { text: '{ _id: "s4", … } would be deleted', status: 'removed' },
+            { text: '{ _id: "s2", price: 79 → 89 } would revert', status: 'modified' },
           ],
         },
       ],
