@@ -58,18 +58,22 @@ const milestones: {
   {
     tag: 'M3',
     title: 'True drop-in',
-    status: 'active',
+    status: 'shipped',
+    when: 'July 2026',
     items: [
       {
-        text: 'One physical MongoDB database per branch — real mongod executes your queries, so every operator, index, and aggregation just works',
+        text: 'One physical MongoDB database per branch — argon checkout materializes it and prints a connection string; real mongod executes your queries, so every operator, index, and aggregation just works',
         done: true,
       },
       {
-        text: 'Write capture via change streams with pre/post images',
+        text: 'Write capture via change streams with pre/post images and resume-token recovery',
         done: true,
       },
-      'Per-branch connection strings: pymongo and mongoose work unchanged — claimed only once official driver test suites pass',
-      'argon undo --session: roll back everything an AI agent wrote, in one command',
+      {
+        text: 'argon undo — revert a range or one actor\'s entire session, with per-document conflict detection; compensations are new, auditable history',
+        done: true,
+      },
+      'Last box: official driver test suites (pymongo/mongoose) running against branch databases in CI — until then we say "any driver connects" (architectural fact), not "drop-in, no asterisks"',
     ],
   },
   {

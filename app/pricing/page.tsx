@@ -124,7 +124,7 @@ export default function PricingPage() {
             },
             {
               q: 'What MongoDB versions are supported?',
-              a: 'Argon works with MongoDB 4.0+, self-hosted or Atlas. Some upcoming v2 features (change-stream write capture, planned for M3) will require a replica set or Atlas.',
+              a: 'Argon works with MongoDB 4.0+, self-hosted or Atlas. Change-stream write capture on live branches requires a replica set or Atlas (standalone mongod does not support change streams).',
             },
           ].map((item) => (
             <div key={item.q} className="py-6">

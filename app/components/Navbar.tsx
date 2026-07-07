@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import PeriodicTile from './PeriodicTile';
 
 const navLinks = [
+  { href: '/agents', label: 'Agents' },
   { href: '/features', label: 'Features' },
   { href: '/roadmap', label: 'Roadmap' },
   { href: '/demo', label: 'Demo' },

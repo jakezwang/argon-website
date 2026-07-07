@@ -96,8 +96,8 @@ export default function FeaturesPage() {
             },
             {
               n: '5',
-              title: "What's next: v2",
-              body: 'Snapshots for bounded replay and public benchmarks (M2), one physical MongoDB database per branch so pymongo and mongoose work unchanged (M3), then merge, diff, and data PRs (M4).',
+              title: 'Branches are real databases (M3)',
+              body: 'argon checkout materializes a branch into a physical MongoDB database and prints its connection string — any driver connects, and indexes, aggregations, and transactions just work. Direct writes flow back into the WAL via change streams, and argon undo reverts a session with conflict detection. Next: merge, diff, and data PRs (M4).',
             },
           ].map((item) => (
             <div key={item.n} className="border-l border-brand-edge pl-6">

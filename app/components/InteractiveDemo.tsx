@@ -254,7 +254,7 @@ export default function InteractiveDemo() {
                   <li>• Fast metadata-only branching</li>
                   <li>• Deterministic, property-tested replay</li>
                   <li>• Every write logged with LSN addressing</li>
-                  <li>• Native driver drop-in coming in v2 (M3)</li>
+                  <li>• Branches check out as real MongoDB databases</li>
                 </>
               )}
               {activeTab === 'ai' && (

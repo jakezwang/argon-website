@@ -100,13 +100,13 @@ export default function AboutPage() {
           <div>
             <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
               <span className="status-dot bg-emerald-400" />
-              Working today (M1 shipped)
+              Working today (M1–M3 shipped)
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>WAL architecture with branching &amp; time-travel</li>
-              <li>Deterministic replay, property-tested in CI</li>
-              <li>Multi-process safe LSN allocation</li>
-              <li>Python &amp; Go SDKs; Homebrew, npm, pip installs</li>
+              <li>Deterministic WAL engine with branching &amp; time-travel</li>
+              <li>Snapshots, GC &amp; public reproducible benchmarks</li>
+              <li>Branches check out as real MongoDB databases</li>
+              <li>argon undo — per-actor session rollback</li>
             </ul>
           </div>
           <div>
@@ -115,10 +115,10 @@ export default function AboutPage() {
               What&apos;s next
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>M2: snapshots + public reproducible benchmarks</li>
-              <li>M3: native driver drop-in (pymongo/mongoose unchanged)</li>
+              <li>Official driver test suites in CI (M3&apos;s last box)</li>
               <li>M4: merge, diff &amp; data PRs</li>
-              <li>M5: MCP server &amp; AI agent sandboxes</li>
+              <li>M5: MCP server, LangGraph checkpointer, TTL sandboxes</li>
+              <li>Argon Cloud (waitlist open)</li>
             </ul>
           </div>
         </div>

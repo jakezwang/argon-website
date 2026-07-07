@@ -50,11 +50,13 @@ export default function HomePage() {
           <div>
             <p className="kicker mb-5">Open source · MIT · MongoDB</p>
             <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-brand-text sm:text-5xl">
-              Git-like branching &amp; time travel for MongoDB
+              The undo button for AI agents
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Branch your database in milliseconds, rewind any mistake, and
-              give AI agents a safe sandbox — without touching production.
+              Git-like branching, time travel, and rollback for MongoDB.
+              Give every agent session its own branch — a real MongoDB
+              database with its own connection string. Keep what works,
+              undo what doesn&apos;t.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -84,20 +86,20 @@ export default function HomePage() {
             </div>
             <div className="overflow-x-auto p-5 font-mono text-[13px] leading-6">
               <TerminalLine
-                cmd="argon import database --db shop --project shop"
-                out={['3 collections imported', 'every write now logged to the WAL']}
-              />
-              <TerminalLine
-                cmd="argon branches create experiment -p shop"
+                cmd="argon branches create agent-run -p shop"
                 out={['branch created — metadata only, no data copied']}
               />
               <TerminalLine
-                cmd="argon time-travel info -p shop -b main"
-                out={['history: LSN 1 → 4982']}
+                cmd="argon checkout -p shop -b agent-run"
+                out={['branch is live: a real MongoDB database', 'mongodb://…/argon_br_9f2c1a — any driver connects']}
               />
               <TerminalLine
-                cmd="argon restore preview -p shop -b main --lsn 4950"
-                out={['32 documents would change', 'run `restore reset` to apply']}
+                cmd="python agent.py --db mongodb://…/argon_br_9f2c1a"
+                out={['agent wrote 3,214 documents', 'every write captured with actor: agent:price-fixer']}
+              />
+              <TerminalLine
+                cmd="argon undo -p shop --actor agent:price-fixer --from-lsn 5001"
+                out={['3,214 documents reverted · 0 conflicts', 'compensations logged as new history — undoable']}
               />
             </div>
           </div>
@@ -108,15 +110,15 @@ export default function HomePage() {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-3 font-mono text-xs">
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M1 · deterministic replay — shipped
+              M1–M2 · deterministic engine + public benchmarks — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M2 · bounded time travel + public benchmarks — shipped
+              M3 · real branch databases + undo — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              M3 · true drop-in — in progress
+              M4 · merge, diff &amp; data PRs — next
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →
@@ -154,7 +156,7 @@ export default function HomePage() {
                   {
                     n: '/02',
                     title: 'Rewind anything',
-                    body: 'Every write is logged with full before/after document images. Inspect any historical state, restore to any point — and undo the undo.',
+                    body: 'Every write is logged with full before/after document images. Restore to any point, or revert one agent’s entire session with argon undo --actor — conflicts reported, never clobbered.',
                   },
                   {
                     n: '/03',
@@ -197,8 +199,10 @@ export default function HomePage() {
                 {[
                   ['git init', 'argon projects create', 'start versioning'],
                   ['git branch feature-x', 'argon branches create feature-x', 'isolated branch in milliseconds'],
+                  ['git checkout feature-x', 'argon checkout -b feature-x', 'a real MongoDB database + URI'],
                   ['git log', 'argon time-travel info', 'see every past state'],
                   ['git reset --hard', 'argon restore reset', 'rewind mistakes'],
+                  ['git revert', 'argon undo --actor agent:x', 'revert one agent’s session'],
                 ].map(([git, argon, what]) => (
                   <tr key={git} className="border-b border-brand-edge last:border-b-0">
                     <td className="whitespace-nowrap px-5 py-3 text-brand-text-darker">{git}</td>
@@ -287,7 +291,7 @@ export default function HomePage() {
               {
                 title: 'AI agent sandboxes',
                 scenario: 'An agent needs to write to a database, and you don’t fully trust it.',
-                solution: 'Give it a branch. Audit every write it made via the log. Keep what worked, discard the rest.',
+                solution: 'Check out a branch — a real MongoDB database with its own URI. Every write is captured with the agent as actor; argon undo --actor reverts its whole session, conflicts reported.',
               },
               {
                 title: 'ML experiments',
@@ -350,6 +354,17 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Positioning ──────────────────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-16 text-center">
+          <p className="mx-auto max-w-3xl font-mono text-lg leading-9 text-brand-text-darker">
+            Postgres has Neon. MySQL has PlanetScale. SQL has Dolt.
+            Data lakes have lakeFS.{' '}
+            <span className="text-brand-primary">MongoDB has Argon.</span>
+          </p>
         </div>
       </section>
 
