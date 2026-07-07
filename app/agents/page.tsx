@@ -100,12 +100,12 @@ export default function AgentsPage() {
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-brand-text-darker">
           <code className="font-mono text-brand-primary">argon mcp</code> exposes
-          the workflow as nine MCP tools over stdio: open a sandbox (returns
-          the connection string), list branches, connect, diff, preview and
-          apply merges, undo with dry-run, snapshot, keep or discard. The
-          server supervises a change-stream ingester for every sandbox it
-          hands out, so agent writes become versioned history with no
-          babysitting.
+          the workflow as thirteen MCP tools over stdio: open a sandbox
+          (returns the connection string), list branches, connect, diff,
+          preview and apply merges, undo with dry-run, snapshot, pin, fork a
+          sandbox from a pin, keep or discard. The server supervises a
+          change-stream ingester for every sandbox it hands out, so agent
+          writes become versioned history with no babysitting.
         </p>
         <pre className="mt-6 max-w-xl overflow-x-auto border border-brand-edge bg-brand-surface px-4 py-3 font-mono text-sm text-brand-text">
           <code>
@@ -118,9 +118,9 @@ export default function AgentsPage() {
         </p>
       </div>
 
-      {/* What's next */}
+      {/* The rest of the surface */}
       <div className="mt-20 border-t border-brand-edge pt-10">
-        <p className="kicker mb-6">Where this is going</p>
+        <p className="kicker mb-6">Also in the toolbox</p>
         <div className="grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2">
           <div className="bg-brand-dark p-6">
             <div className="flex items-baseline justify-between">
@@ -136,11 +136,13 @@ export default function AgentsPage() {
           <div className="bg-brand-dark p-6">
             <div className="flex items-baseline justify-between">
               <h3 className="font-medium text-brand-text">Eval dataset pinning</h3>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-brand-muted">next</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider text-emerald-400">shipped</span>
             </div>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
-              Pin an evaluation to an exact LSN so results stay reproducible
-              even while the underlying corpus keeps moving.
+              <code className="font-mono text-brand-primary">argon pin</code> freezes
+              a named dataset state that GC and reset can never touch. Fork a
+              sandbox from the pin per eval run — every run sees identical
+              input, even while the live corpus keeps moving.
             </p>
           </div>
         </div>

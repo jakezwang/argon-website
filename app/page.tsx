@@ -114,11 +114,11 @@ export default function HomePage() {
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M5 · MCP server + TTL sandboxes — shipped
+              M5 · MCP, sandboxes, LangGraph, pins — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              next · eval dataset pinning, Argon Cloud
+              next · Argon Cloud (waitlist open)
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →

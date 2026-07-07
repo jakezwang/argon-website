@@ -102,7 +102,7 @@ export default function FeaturesPage() {
             {
               n: '6',
               title: 'Data PRs & the agent surface (M4–M5)',
-              body: 'argon diff and argon merge preview/apply turn adoption into a reviewed, exactly-once operation — conflicts are never resolved silently, and merges are undoable. argon sandbox adds TTL branches that clean up after themselves, and argon mcp exposes the whole loop to agents as MCP tools.',
+              body: 'argon diff and argon merge preview/apply turn adoption into a reviewed, exactly-once operation — conflicts are never resolved silently, and merges are undoable. argon sandbox adds TTL branches that clean up after themselves, argon pin freezes named dataset states that GC and reset can never touch, and argon mcp exposes the whole loop to agents as MCP tools.',
             },
           ].map((item) => (
             <div key={item.n} className="border-l border-brand-edge pl-6">
@@ -123,12 +123,12 @@ export default function FeaturesPage() {
 
         <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
           <a
-            href="https://github.com/argon-lab/argon/blob/master/docs/FEATURES.md"
+            href="https://github.com/argon-lab/argon/blob/master/docs/CLI.md"
             target="_blank"
             rel="noopener noreferrer"
             className="prose-link"
           >
-            Full feature reference →
+            Full CLI reference →
           </a>
           <a
             href="https://github.com/argon-lab/argon/blob/master/docs/ARCHITECTURE.md"

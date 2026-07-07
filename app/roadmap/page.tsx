@@ -102,11 +102,11 @@ const milestones: {
   {
     tag: 'M5',
     title: 'Agent ecosystem',
-    status: 'active',
-    statusLabel: 'shipped · eval pinning remaining',
+    status: 'shipped',
+    when: 'July 2026',
     items: [
       {
-        text: 'MCP server (argon mcp): agents open their own sandbox, get a connection string, diff, merge, and undo — nine tools over stdio, with a supervised change-stream ingester per sandbox',
+        text: 'MCP server (argon mcp): agents open their own sandbox, get a connection string, diff, merge, undo, and pin — thirteen tools over stdio, with a supervised change-stream ingester per sandbox',
         done: true,
       },
       {
@@ -121,7 +121,20 @@ const milestones: {
         text: 'Wire-protocol proxy: branch-aliased MongoDB connection strings',
         done: true,
       },
-      'Eval dataset pinning: reproducible evaluations against a fixed data version',
+      {
+        text: 'Dataset pins (argon pin): named immutable branch states that GC and reset can never touch — pin a dataset once, fork a sandbox from the pin per eval run, and every run sees identical input state',
+        done: true,
+      },
+    ],
+  },
+  {
+    tag: 'Next',
+    title: 'Beyond the rebuild',
+    status: 'planned',
+    items: [
+      'GCS chunk-store backend (S3-compatible and filesystem ship today)',
+      'Synchronous write capture in the wire-protocol proxy',
+      'Argon Cloud — managed service on the rebuilt engine (waitlist open)',
     ],
   },
 ];
