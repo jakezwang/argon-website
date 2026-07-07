@@ -19,13 +19,16 @@ const cliGraph: FlowGraph = {
     { id: 'm1', x: 280, y: 44, lane: 0, sub: 'LSN 3 · import', appearAt: 1 },
     { id: 'b0', x: 430, y: 110, lane: 1, sub: 'fork @ 3', appearAt: 2 },
     { id: 'b1', x: 620, y: 110, lane: 1, sub: 'LSN 5 · writes', appearAt: 4 },
-    { id: 'plan', x: 800, y: 44, lane: 0, sub: 'plan_7d31 · pending', appearAt: 6, ghost: true },
+    { id: 'plan', x: 810, y: 44, lane: 0, sub: 'plan_7d31 · pending', appearAt: 6, hideAt: 7, ghost: true },
+    { id: 'm2', x: 810, y: 44, lane: 0, sub: 'LSN 8 · merge', appearAt: 7 },
   ],
   edges: [
     { from: 'm0', to: 'm1', appearAt: 1 },
     { from: 'm1', to: 'b0', appearAt: 2 },
     { from: 'b0', to: 'b1', appearAt: 4 },
-    { from: 'b1', to: 'plan', appearAt: 6, ghost: true },
+    { from: 'b1', to: 'plan', appearAt: 6, hideAt: 7, ghost: true, curve: 'target' },
+    { from: 'm1', to: 'm2', appearAt: 7 },
+    { from: 'b1', to: 'm2', appearAt: 7, curve: 'target' },
   ],
   steps: [
     { head: 'm0', caption: 'project created — main is born at LSN 0' },
@@ -34,8 +37,9 @@ const cliGraph: FlowGraph = {
     { head: 'b0', caption: 'feature-x is now a physical database (argon_br_9f2c1a)' },
     { head: 'b1', caption: 'captured driver writes advance feature-x to LSN 5' },
     { head: 'b1', highlight: ['b1', 'm1'], caption: 'diff: feature-x head vs main @ the fork point' },
-    { head: 'b1', caption: 'merge plan (dashed = pending) targets main — applied exactly once' },
-    { head: 'b1', highlight: ['b0'], caption: 'undo would rewind to the fork state — recorded as new history' },
+    { head: 'b1', caption: 'merge plan (dashed = pending) targets main — nothing applied yet' },
+    { head: 'm2', caption: 'feature-x merges into main — LSN 8, attributed, exactly-once' },
+    { head: 'm2', highlight: ['m1'], caption: 'undo would rewind main past the merge — recorded as new history' },
   ],
 };
 
@@ -234,15 +238,40 @@ const cliSteps: DemoStep[] = [
     },
   },
   {
-    id: 'undo',
-    command: 'argon undo -p my-app -b feature-x --from-lsn 4 --dry-run',
-    description: 'The undo button — preview first, conflicts never silent',
+    id: 'merge-apply',
+    command: 'argon merge apply plan_7d31',
+    description: 'The branch lands on main — attributed, exactly-once',
     output: [
-      'Would revert 2 documents · 0 conflicts',
+      'Applied against the exact heads the plan was computed for',
+      '2 changes on main · actor: merge:feature-x',
+      'main head: LSN 8',
+    ],
+    panel: {
+      title: 'my-app · main @ LSN 8',
+      note: 'the merge is ordinary history — attributed, and undoable',
+      sections: [
+        {
+          name: 'products (4 documents)',
+          lines: [
+            { text: '{ _id: "p1", name: "flux capacitor", price: 88 }' },
+            { text: '{ _id: "p2", name: "sonic screwdriver", price: 25 }', status: 'modified' },
+            { text: '{ _id: "p3", name: "point thruster", price: 45 }' },
+            { text: '{ _id: "p4", name: "heisenberg compensator", price: 120 }', status: 'added' },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: 'undo',
+    command: 'argon undo -p my-app -b main --from-lsn 6 --dry-run',
+    description: 'The undo button — even a merge is just a revertible range',
+    output: [
+      'Would revert 2 documents on main · 0 conflicts',
       'Compensations are new history: auditable, undoable in turn',
     ],
     panel: {
-      title: 'undo preview · feature-x',
+      title: 'undo preview · main',
       note: 'nothing changed yet — drop --dry-run to apply',
       sections: [
         {

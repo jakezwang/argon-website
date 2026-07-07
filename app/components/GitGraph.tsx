@@ -13,6 +13,7 @@ export interface GraphNode {
   y: number;
   sub?: string;
   appearAt: number;
+  hideAt?: number;
   ghost?: boolean;
   pin?: boolean;
   lane: number;
@@ -21,7 +22,12 @@ export interface GraphEdge {
   from: string;
   to: string;
   appearAt: number;
+  hideAt?: number;
   ghost?: boolean;
+  // Where the bend sits: forks curve away right after the source ('source',
+  // default); merges run along their lane and curve in just before the
+  // target ('target') — the classic git-graph shapes.
+  curve?: 'source' | 'target';
 }
 export interface GraphStep {
   head?: string;
@@ -39,8 +45,10 @@ export interface FlowGraph {
 const laneColors = ['#96A7FF', '#34d399', '#fbbf24'];
 
 export default function GitGraph({ graph, step }: { graph: FlowGraph; step: number }) {
-  const visibleNodes = graph.nodes.filter((n) => n.appearAt <= step);
-  const visibleEdges = graph.edges.filter((e) => e.appearAt <= step);
+  const shown = (el: { appearAt: number; hideAt?: number }) =>
+    el.appearAt <= step && (el.hideAt === undefined || step < el.hideAt);
+  const visibleNodes = graph.nodes.filter(shown);
+  const visibleEdges = graph.edges.filter(shown);
   const byId = Object.fromEntries(graph.nodes.map((n) => [n.id, n]));
   const state = step >= 0 ? graph.steps[Math.min(step, graph.steps.length - 1)] : undefined;
 
@@ -48,8 +56,14 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
     const a = byId[e.from];
     const b = byId[e.to];
     if (a.y === b.y) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
-    const mid = (a.x + b.x) / 2;
-    return `M ${a.x} ${a.y} C ${mid} ${a.y}, ${mid} ${b.y}, ${b.x} ${b.y}`;
+    if (a.x === b.x) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+    const w = Math.min(90, Math.abs(b.x - a.x));
+    if (e.curve === 'target') {
+      const x0 = b.x - w;
+      return `M ${a.x} ${a.y} L ${x0} ${a.y} C ${x0 + w / 2} ${a.y}, ${x0 + w / 2} ${b.y}, ${b.x} ${b.y}`;
+    }
+    const x1 = a.x + w;
+    return `M ${a.x} ${a.y} C ${a.x + w / 2} ${a.y}, ${a.x + w / 2} ${b.y}, ${x1} ${b.y} L ${b.x} ${b.y}`;
   };
 
   return (
