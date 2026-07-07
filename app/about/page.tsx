@@ -74,7 +74,7 @@ export default function AboutPage() {
           <div>
             <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
               <span className="status-dot bg-emerald-400" />
-              Working today (M1–M4 + agent surface)
+              Working today
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
               <li>Deterministic WAL engine; public reproducible benchmarks</li>
