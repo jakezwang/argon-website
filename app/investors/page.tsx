@@ -20,7 +20,7 @@ export default function InvestorsPage() {
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Market Opportunity</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">🎯 Target Market</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">Target Market</h3>
               <ul className="space-y-2 text-brand-text-darker">
                 <li>• AI/ML Development Teams</li>
                 <li>• Data Science Organizations</li>
@@ -29,7 +29,7 @@ export default function InvestorsPage() {
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">💰 Revenue Model</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">Revenue Model</h3>
               <ul className="space-y-2 text-brand-text-darker">
                 <li>• <strong>Open Source:</strong> Community adoption</li>
                 <li>• <strong>Cloud SaaS:</strong> Managed service</li>
@@ -51,7 +51,7 @@ export default function InvestorsPage() {
           <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Current Status & Vision</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 Today</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">Today</h3>
               <ul className="space-y-2 text-brand-text-darker mb-6">
                 <li>• Open-source engine with a deterministic, property-tested core (M1 shipped)</li>
                 <li>• Python SDK with ML integrations</li>
@@ -65,7 +65,7 @@ export default function InvestorsPage() {
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">🎆 Future Vision</h3>
+              <h3 className="text-xl font-semibold text-brand-text mb-4">Future Vision</h3>
               <ul className="space-y-2 text-brand-text-darker mb-6">
                 <li>• Managed cloud service (SaaS)</li>
                 <li>• Advanced AI data versioning</li>

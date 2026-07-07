@@ -130,7 +130,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
                 <div className="text-gray-600">Sign in to your account</div>
               </div>
               <button className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-600">
-                <span>🔐</span>
+                <span></span>
                 <span>Continue with Google</span>
               </button>
               <div className="text-xs text-gray-500 text-center mt-4">
@@ -207,7 +207,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-brand-text-darker">Status:</span>
-                    <span className="text-green-400">✅ Connected</span>
+                    <span className="text-green-400">Connected</span>
                   </div>
                 </div>
               </div>
@@ -302,9 +302,9 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
               <div className="border-t border-gray-700 p-4 bg-gray-850">
                 <div className="text-brand-primary text-sm mb-2">Results (247 documents)</div>
                 <div className="space-y-2 text-xs text-gray-400">
-                  <div>⚡ Execution time: 23ms</div>
-                  <div>📊 Scanned: 1,250 documents</div>
-                  <div>🎯 Returned: 247 documents</div>
+                  <div>Execution time: 23ms</div>
+                  <div>Scanned: 1,250 documents</div>
+                  <div>Returned: 247 documents</div>
                 </div>
               </div>
             </div>
@@ -323,10 +323,10 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
               <h2 className="text-lg font-semibold text-brand-text mb-4">Team Members</h2>
               <div className="space-y-3">
                 {[
-                  { name: 'John Doe', email: 'john@company.com', role: 'Owner', avatar: '🧑‍💻' },
-                  { name: 'Sarah Wilson', email: 'sarah@company.com', role: 'Admin', avatar: '👩‍💻' },
-                  { name: 'Mike Chen', email: 'mike@company.com', role: 'Editor', avatar: '👨‍💻' },
-                  { name: 'Lisa Garcia', email: 'lisa@company.com', role: 'Viewer', avatar: '👩‍🔬' }
+                  { name: 'John Doe', email: 'john@company.com', role: 'Owner', avatar: '‍' },
+                  { name: 'Sarah Wilson', email: 'sarah@company.com', role: 'Admin', avatar: '‍' },
+                  { name: 'Mike Chen', email: 'mike@company.com', role: 'Editor', avatar: '‍' },
+                  { name: 'Lisa Garcia', email: 'lisa@company.com', role: 'Viewer', avatar: '‍' }
                 ].map(member => (
                   <div key={member.email} className="flex items-center justify-between p-3 bg-brand-dark rounded">
                     <div className="flex items-center space-x-3">
@@ -411,7 +411,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
           </div>
           <div className="flex-1 mx-4">
             <div className="bg-white rounded px-3 py-1 text-sm text-gray-600">
-              🔒 console.argonlabs.tech
+              console.argonlabs.tech
             </div>
           </div>
         </div>
@@ -437,7 +437,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
             disabled={isLoading}
             className="px-6 py-2 bg-brand-primary text-brand-dark rounded hover:bg-brand-secondary transition-colors disabled:opacity-50"
           >
-            {isLoading ? 'Loading...' : '🖱️ ' + step.title}
+            {isLoading ? 'Loading...' : '' + step.title}
           </button>
           <button
             onClick={nextStep}
@@ -451,7 +451,7 @@ export default function ConsoleDemo({ onStepChange }: ConsoleDemoProps) {
           onClick={resetDemo}
           className="px-4 py-2 bg-brand-surface text-brand-text-darker rounded hover:bg-brand-dark transition-colors"
         >
-          🔄 Reset
+          Reset
         </button>
       </div>
     </div>

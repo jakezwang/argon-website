@@ -3,51 +3,43 @@ import InteractiveDemo from '../components/InteractiveDemo';
 
 export default function DemoPage() {
   return (
-    <div className="py-12 sm:py-16 bg-brand-dark text-brand-text">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-brand-text">
-            Argon in Action
-          </h1>
-          <p className="mt-6 text-xl leading-8 text-brand-text-darker">
-            Experience Argon's power through interactive demos. Simulated walkthroughs of
-            real workflows for developers and ML engineers.
-          </p>
+    <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <p className="kicker mb-4">Demo</p>
+      <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
+        Argon in action
+      </h1>
+      <p className="mt-5 max-w-2xl text-lg leading-8">
+        Simulated walkthroughs of real workflows for developers and ML
+        engineers — step through the commands at your own pace.
+      </p>
+
+      <section className="mt-14">
+        <InteractiveDemo />
+      </section>
+
+      <section className="mt-20 border-t border-brand-edge pt-10">
+        <h2 className="text-2xl font-semibold tracking-tight text-brand-text">
+          Try it yourself
+        </h2>
+        <p className="mt-3 max-w-2xl leading-8">
+          Self-host Argon today with the open source version — or join the
+          waitlist for the managed cloud service coming after the v2 engine
+          ships.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="https://github.com/argon-lab/argon/blob/master/README.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-solid"
+          >
+            Self-host guide
+          </Link>
+          <Link href="/pricing" className="btn-quiet">
+            Join the cloud waitlist
+          </Link>
         </div>
-
-        {/* Interactive Demo Section */}
-        <section className="mb-16">
-          <InteractiveDemo />
-        </section>
-
-        {/* Additional Resources */}
-        <section className="bg-brand-surface p-6 sm:p-8 rounded-lg shadow-xl text-center">
-          <h2 className="text-3xl font-semibold mb-6 text-brand-primary">
-            Ready to Try It Yourself?
-          </h2>
-          <p className="text-lg text-brand-text-darker mb-8">
-            Self-host Argon today with our open source version — or join the waitlist
-            for the managed cloud service coming after the v2 engine ships.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/pricing"
-              className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105"
-            >
-              Join the Cloud Waitlist &rarr;
-            </Link>
-            <Link
-              href="https://github.com/argon-lab/argon/blob/master/README.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-brand-surface border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105"
-            >
-              Self-Host Guide
-            </Link>
-          </div>
-        </section>
-
-      </div>
+      </section>
     </div>
   );
 }

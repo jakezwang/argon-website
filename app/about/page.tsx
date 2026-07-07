@@ -1,142 +1,167 @@
 import Link from 'next/link';
-import Image from 'next/image'; // Added Image import
+import Image from 'next/image';
 
 export default function AboutPage() {
   return (
-    <div className="py-12 sm:py-16 bg-brand-dark text-brand-text">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8"> {/* Removed pt-16 */}
+    <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+      <p className="kicker mb-4">About</p>
+      <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
+        A small team with a specific obsession
+      </h1>
+      <p className="mt-5 max-w-2xl text-lg leading-8">
+        MongoDB has no equivalent of Neon, PlanetScale, or Dolt — no way to
+        branch, rewind, or audit your data the way you manage code. Argon
+        exists to fill that gap, correctly.
+      </p>
 
-        {/* Team Introduction Section - Placeholder */}
-        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-6 text-brand-primary text-center">Meet the Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-            <div className="text-center">
-              <div className="relative w-[200px] h-[200px] rounded-full mx-auto mb-4 shadow-lg overflow-hidden">
-                <Image
-                  src="/jakewang.jpeg"
-                  alt="Jake Wang"
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </div>
-              <h3 className="text-2xl font-semibold text-brand-text">
-                <Link href="https://www.linkedin.com/in/wang1/" target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary-light hover:underline">
-                  Jake Wang
-                </Link>
-              </h3>
-              <p className="text-brand-primary">Founder</p>
-              <p className="text-brand-text-darker mt-2">
-                Software Engineer with experience at MongoDB, LinkedIn, and Bloomberg. Created Argon to bring Git-like workflows to MongoDB for ML teams.
-              </p>
+      {/* Team */}
+      <section className="mt-16">
+        <p className="kicker mb-8">Team</p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          <div className="border border-brand-edge bg-brand-surface p-8">
+            <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
+              <Image src="/jakewang.jpeg" alt="Jake Wang" fill className="object-cover" />
             </div>
-            <div className="text-center">
-              <div className="relative w-[200px] h-[200px] rounded-full mx-auto mb-4 shadow-lg overflow-hidden">
-                <Image
-                  src="/nootnoot.jpg"
-                  alt="Noot Noot"
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </div>
-              <h3 className="text-2xl font-semibold text-brand-text">
-                <Link href="https://www.instagram.com/energetic_nootnoot" target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary-light hover:underline">
-                  Noot Noot
-                </Link>
-              </h3>
-              <p className="text-brand-primary">Chief Emotional Support Officer</p>
-              <p className="text-brand-text-darker mt-2">
-                Noot Noot: Official team cat and purr-fessional morale booster. He keeps us smiling and the workplace pawsitive. His value? Beyond measure (and very fluffy)!
-              </p>
-            </div>
+            <h3 className="mt-5 text-lg font-medium text-brand-text">
+              <Link
+                href="https://www.linkedin.com/in/wang1/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brand-primary"
+              >
+                Jake Wang
+              </Link>
+            </h3>
+            <p className="font-mono text-xs uppercase tracking-wider text-brand-primary">
+              Founder
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              Software engineer with experience at MongoDB, LinkedIn, and
+              Bloomberg. Created Argon to bring Git-like workflows to MongoDB
+              for ML teams.
+            </p>
           </div>
-        </section>
+          <div className="border border-brand-edge bg-brand-surface p-8">
+            <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
+              <Image src="/nootnoot.jpg" alt="Noot Noot" fill className="object-cover" />
+            </div>
+            <h3 className="mt-5 text-lg font-medium text-brand-text">
+              <Link
+                href="https://www.instagram.com/energetic_nootnoot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brand-primary"
+              >
+                Noot Noot
+              </Link>
+            </h3>
+            <p className="font-mono text-xs uppercase tracking-wider text-brand-primary">
+              Chief Emotional Support Officer
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              Official team cat and professional morale booster. Keeps the
+              workplace pawsitive. His value: beyond measure (and very
+              fluffy).
+            </p>
+          </div>
+        </div>
+      </section>
 
-        {/* Why Argon? Section */}
-        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Why Argon?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="p-4">
-              <div className="text-4xl mb-3">⚡</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Millisecond Branching</h3>
-              <p className="text-brand-text-darker">Branches are metadata, not copies</p>
+      {/* Why */}
+      <section className="mt-16">
+        <p className="kicker mb-8">Why Argon</p>
+        <div className="grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
+          {[
+            {
+              title: 'Millisecond branching',
+              body: 'Branches are metadata, not copies',
+            },
+            {
+              title: 'Time travel',
+              body: 'Inspect and restore any historical state',
+            },
+            {
+              title: 'Deterministic core',
+              body: 'Property-tested reproducible replay',
+            },
+          ].map((item) => (
+            <div key={item.title} className="bg-brand-dark p-6">
+              <h3 className="font-medium text-brand-text">{item.title}</h3>
+              <p className="mt-2 text-sm leading-6">{item.body}</p>
             </div>
-            <div className="p-4">
-              <div className="text-4xl mb-3">⏳</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Time-Travel</h3>
-              <p className="text-brand-text-darker">Inspect and restore any historical state</p>
-            </div>
-            <div className="p-4">
-              <div className="text-4xl mb-3">🔬</div>
-              <h3 className="text-lg font-semibold text-brand-text mb-2">Deterministic Core</h3>
-              <p className="text-brand-text-darker">Property-tested reproducible replay</p>
-            </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        {/* Project Status Section */}
-        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-6 text-brand-primary">Current Status</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">✅ What's Working (M1 shipped)</h3>
-              <ul className="space-y-2 text-brand-text-darker">
-                <li>• WAL architecture with branching & time-travel</li>
-                <li>• Deterministic replay, property-tested in CI</li>
-                <li>• Multi-process safe LSN allocation</li>
-                <li>• Python & Go SDKs; Homebrew, NPM, pip installs</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-brand-text mb-4">🚀 What's Next</h3>
-              <ul className="space-y-2 text-brand-text-darker">
-                <li>• M2: snapshots + public reproducible benchmarks</li>
-                <li>• M3: native driver drop-in (pymongo/mongoose unchanged)</li>
-                <li>• M4: merge, diff & data PRs</li>
-                <li>• M5: MCP server & AI agent sandboxes</li>
-              </ul>
-            </div>
+      {/* Status */}
+      <section className="mt-16">
+        <p className="kicker mb-8">Current status</p>
+        <div className="grid gap-6 border border-brand-edge bg-brand-surface p-8 sm:grid-cols-2">
+          <div>
+            <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
+              <span className="status-dot bg-emerald-400" />
+              Working today (M1 shipped)
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
+              <li>WAL architecture with branching &amp; time-travel</li>
+              <li>Deterministic replay, property-tested in CI</li>
+              <li>Multi-process safe LSN allocation</li>
+              <li>Python &amp; Go SDKs; Homebrew, npm, pip installs</li>
+            </ul>
           </div>
-          <div className="mt-6 text-center">
-            <Link href="/roadmap" className="text-brand-primary hover:text-brand-secondary font-semibold">
-              See the full roadmap &rarr;
-            </Link>
+          <div>
+            <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
+              <span className="status-dot bg-amber-400" />
+              What&apos;s next
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
+              <li>M2: snapshots + public reproducible benchmarks</li>
+              <li>M3: native driver drop-in (pymongo/mongoose unchanged)</li>
+              <li>M4: merge, diff &amp; data PRs</li>
+              <li>M5: MCP server &amp; AI agent sandboxes</li>
+            </ul>
           </div>
-        </section>
+        </div>
+        <div className="mt-4">
+          <Link href="/roadmap" className="prose-link font-mono text-sm">
+            See the full roadmap →
+          </Link>
+        </div>
+      </section>
 
-        {/* License Section */}
-        <section className="mb-12 bg-brand-surface p-8 rounded-lg shadow-xl">
-          <h2 className="text-3xl font-semibold mb-4 text-brand-primary">License</h2>
-          <p className="text-lg text-brand-text-darker">
-            Argon is licensed under the <Link href="https://github.com/argon-lab/argon/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-secondary">MIT License</Link>.
-          </p>
-        </section>
-
-        {/* Call to Action */}
-        <section className="text-center py-10">
-          <h2 className="text-3xl font-bold mb-6 text-brand-text">Get Involved!</h2>
-          <p className="text-xl mb-8 text-brand-text-darker">
-            Ready to take Argon for a spin or help shape its future?
-          </p>
-          <div className="space-x-4">
-            <Link
-              href="https://github.com/argon-lab/argon"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-md transform transition-transform duration-150 hover:scale-105"
-            >
-              Star us on GitHub
-            </Link>
-            <Link
-              href="https://github.com/argon-lab/argon/discussions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-brand-surface text-brand-primary hover:bg-opacity-80 border border-brand-primary font-semibold px-8 py-3 rounded-lg shadow-md transform transition-transform duration-150 hover:scale-105"
-            >
-              Join the Discussion
-            </Link>
-          </div>
-        </section>
-      </div>
+      {/* License + CTA */}
+      <section className="mt-16 border-t border-brand-edge pt-10">
+        <p className="leading-8">
+          Argon is licensed under the{' '}
+          <Link
+            href="https://github.com/argon-lab/argon/blob/master/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="prose-link"
+          >
+            MIT License
+          </Link>
+          . Ready to take it for a spin or help shape its future?
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="https://github.com/argon-lab/argon"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-solid"
+          >
+            Star us on GitHub
+          </Link>
+          <Link
+            href="https://github.com/argon-lab/argon/discussions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-quiet"
+          >
+            Join the discussion
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

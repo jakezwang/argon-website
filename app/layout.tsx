@@ -1,54 +1,117 @@
 import '../styles/globals.css';
-import Navbar from './components/Navbar'; // Import Navbar
-import Link from 'next/link'; // Import Link for Footer
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import Link from 'next/link';
+import Navbar from './components/Navbar';
+import PeriodicTile from './components/PeriodicTile';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata = {
-  metadataBase: new URL('https://argonlabs.tech'), // Added metadataBase
-  title: 'ArgonLabs - Git-like Branching & Time Travel for MongoDB',
-  description: 'Argon is an open-source versioning layer for MongoDB: branch your database in milliseconds, time-travel through history, and rewind mistakes. Built for AI agent sandboxes.',
+  metadataBase: new URL('https://argonlabs.tech'),
+  title: 'Argon — Git-like Branching & Time Travel for MongoDB',
+  description:
+    'Argon is an open-source versioning layer for MongoDB: branch your database in milliseconds, time-travel through history, and rewind mistakes. Built for AI agent sandboxes.',
   openGraph: {
-    title: 'ArgonLabs - Git-like Branching & Time Travel for MongoDB',
-    description: 'Open-source Git-like branching, time travel, and rollback for MongoDB. Branch in milliseconds, rewind any mistake, and give AI agents a safe sandbox.',
+    title: 'Argon — Git-like Branching & Time Travel for MongoDB',
+    description:
+      'Open-source Git-like branching, time travel, and rollback for MongoDB. Branch in milliseconds, rewind any mistake, and give AI agents a safe sandbox.',
   },
   icons: {
-    icon: '/argon-logo.png', // Path to your icon in the public folder
-    apple: '/argon-logo.png', // For Apple touch icon
+    icon: '/argon-logo.png',
+    apple: '/argon-logo.png',
   },
 };
 
+const FooterColumn = ({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string; external?: boolean }[];
+}) => (
+  <div>
+    <h3 className="kicker mb-4">{title}</h3>
+    <ul className="space-y-2.5">
+      {links.map((link) => (
+        <li key={link.label}>
+          <Link
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+            className="text-sm text-brand-text-darker transition-colors hover:text-brand-text"
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 const Footer = () => (
-  <footer className="bg-brand-surface border-t border-brand-muted mt-auto py-8 text-center">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p className="text-brand-muted text-sm">
-        &copy; {new Date().getFullYear()} Argon Labs. All rights reserved.
-      </p>
-      <p className="text-brand-muted text-sm mt-1">
-        <Link href="/privacy" className="hover:text-brand-primary">
-          Privacy Policy
-        </Link>
-        {' | '}
-        <Link href="/terms" className="hover:text-brand-primary">
-          Terms of Service
-        </Link>
-      </p>
+  <footer className="border-t border-brand-edge">
+    <div className="mx-auto max-w-6xl px-6 py-14">
+      <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
+        <div className="col-span-2">
+          <div className="flex items-center gap-3">
+            <PeriodicTile size="sm" />
+            <span className="font-mono text-lg text-brand-text">argon</span>
+          </div>
+          <p className="mt-4 max-w-xs text-sm leading-6 text-brand-muted">
+            Git-like branching and time travel for MongoDB. Named after the
+            noble gas: inert by design — it never reacts with your production
+            data.
+          </p>
+        </div>
+        <FooterColumn
+          title="Project"
+          links={[
+            { label: 'Features', href: '/features' },
+            { label: 'Roadmap', href: '/roadmap' },
+            { label: 'Demo', href: '/demo' },
+            { label: 'Pricing', href: '/pricing' },
+          ]}
+        />
+        <FooterColumn
+          title="Source"
+          links={[
+            { label: 'GitHub', href: 'https://github.com/argon-lab/argon', external: true },
+            { label: 'Documentation', href: 'https://github.com/argon-lab/argon/tree/master/docs', external: true },
+            { label: 'Discussions', href: 'https://github.com/argon-lab/argon/discussions', external: true },
+            { label: 'Issues', href: 'https://github.com/argon-lab/argon/issues', external: true },
+          ]}
+        />
+        <FooterColumn
+          title="Company"
+          links={[
+            { label: 'About', href: '/about' },
+            { label: 'Investors', href: '/investors' },
+            { label: 'Privacy', href: '/privacy' },
+            { label: 'Terms', href: '/terms' },
+          ]}
+        />
+      </div>
+      <div className="mt-12 flex flex-col gap-2 border-t border-brand-edge pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-xs text-brand-muted">
+          MIT licensed · open source · self-hosted
+        </p>
+        <p className="font-mono text-xs text-brand-muted">
+          © {new Date().getFullYear()} Argon Labs
+        </p>
+      </div>
     </div>
   </footer>
 );
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-brand-dark text-brand-text flex flex-col min-h-screen">
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="flex min-h-screen flex-col bg-brand-dark font-sans text-brand-text antialiased">
         <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>
-  )
+  );
 }
