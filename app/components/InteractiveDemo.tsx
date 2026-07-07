@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import DemoPlayer, { DemoPanel, DemoStep } from './DemoPlayer';
 import { FlowGraph } from './GitGraph';
+import SurfacePicker from './SurfacePicker';
 
 // History graphs: lane 0 = main (lavender), lane 1 = branch (green),
 // lane 2 = second branch (amber). Nodes appear at the step index where
@@ -432,100 +433,6 @@ const agentSteps: DemoStep[] = [
   },
 ];
 
-const surfacesInitialPanel: DemoPanel = {
-  title: 'one engine',
-  note: 'pick the surface that matches your integration point',
-  sections: [],
-};
-
-const surfaceSteps: DemoStep[] = [
-  {
-    id: 'mcp',
-    command: 'claude mcp add argon -- argon mcp',
-    description: 'MCP: agents drive the whole loop themselves',
-    output: ['Registered: argon (13 tools over stdio)'],
-    panel: {
-      title: 'MCP tools',
-      note: 'the server supervises a capture ingester per sandbox',
-      sections: [
-        {
-          name: 'tools/list',
-          lines: [
-            { text: 'argon_sandbox_create → returns a connection string', status: 'added' },
-            { text: 'argon_diff · argon_merge_preview · argon_merge_apply' },
-            { text: 'argon_undo (with dry-run) · argon_snapshot_create' },
-            { text: 'argon_pin_create · argon_sandbox_from_pin' },
-            { text: 'argon_branch_list · argon_connect · keep · discard' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    id: 'rest',
-    command: 'go run ./api',
-    description: 'REST control plane for language SDKs and services',
-    output: ['Listening on :8080'],
-    panel: {
-      title: 'REST · :8080',
-      sections: [
-        {
-          name: 'endpoints',
-          lines: [
-            { text: 'POST /projects · /projects/:p/branches' },
-            { text: 'POST /projects/:p/sandboxes (ingester supervised)' },
-            { text: 'POST /projects/:p/pins · sandbox-from-pin' },
-            { text: 'POST /merge/preview · /merge/apply · /undo' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    id: 'proxy',
-    command: 'argon proxy',
-    description: 'Wire proxy: stable branch-aliased connection strings',
-    output: ['Proxying on mongodb://localhost:27100'],
-    panel: {
-      title: 'argon proxy · :27100',
-      note: 'URIs survive checkout/release cycles; synchronous capture is roadmap',
-      sections: [
-        {
-          name: 'aliases',
-          lines: [
-            { text: 'mongodb://…:27100/?branch=feature-x → argon_br_9f2c1a' },
-            { text: 'mongodb://…:27100/?branch=main → argon_br_00a1ce' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    id: 'agents-pkg',
-    command: 'pip install "argon-agents[langgraph]"',
-    description: 'argon-agents: LangGraph checkpointer + Mem0 factory',
-    output: [
-      'Successfully installed argon-agents-0.1.0',
-      'LangGraph checkpointer with fork and rewind',
-      'Mem0 factory on the same REST control plane',
-    ],
-    panel: {
-      title: 'argon-agents 0.1.0 (PyPI)',
-      note: 'CI runs the real engine stack: checkpoint round-trips, pinned eval datasets',
-      sections: [
-        {
-          name: 'surface',
-          lines: [
-            { text: 'ArgonCheckpointer — fork a conversation at step 14' },
-            { text: 'Mem0 factory — agent memory on versioned storage' },
-            { text: 'create_pin / sandbox_from_pin for eval harnesses' },
-          ],
-        },
-      ],
-    },
-  },
-];
-
 export default function InteractiveDemo() {
   const [activeTab, setActiveTab] = useState<'cli' | 'agent' | 'surfaces'>('cli');
 
@@ -586,15 +493,7 @@ export default function InteractiveDemo() {
           graph={agentGraph}
         />
       )}
-      {activeTab === 'surfaces' && (
-        <DemoPlayer
-          key="surfaces"
-          steps={surfaceSteps}
-          initialPanel={surfacesInitialPanel}
-          terminalTitle="argon · surfaces"
-          panelKind="surface view"
-        />
-      )}
+      {activeTab === 'surfaces' && <SurfacePicker />}
     </div>
   );
 }
