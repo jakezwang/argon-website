@@ -148,9 +148,14 @@ export default function FeaturesPage() {
           >
             Run the benchmarks →
           </a>
-          <Link href="/roadmap" className="prose-link">
-            Roadmap →
-          </Link>
+          <a
+            href="https://github.com/argon-lab/argon/blob/master/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="prose-link"
+          >
+            Changelog →
+          </a>
         </div>
       </div>
     </div>

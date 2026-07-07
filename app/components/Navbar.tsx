@@ -8,9 +8,7 @@ import PeriodicTile from './PeriodicTile';
 const navLinks = [
   { href: '/agents', label: 'Agents' },
   { href: '/features', label: 'Features' },
-  { href: '/roadmap', label: 'Roadmap' },
   { href: '/demo', label: 'Demo' },
-  { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
 ];
 
@@ -56,17 +54,11 @@ export default function Navbar() {
               href="https://github.com/argon-lab/argon"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-1.5 font-mono text-[13px] text-brand-text-darker transition-colors hover:text-brand-text"
+              className="flex items-center gap-2 border border-brand-edge px-3.5 py-1.5 font-mono text-[13px] text-brand-text transition-colors hover:border-brand-primary hover:text-brand-primary"
             >
               <GitHubIcon />
-              GitHub
+              Star on GitHub
             </a>
-            <Link
-              href="/pricing"
-              className="ml-2 border border-brand-edge px-3.5 py-1.5 font-mono text-[13px] text-brand-text transition-colors hover:border-brand-primary hover:text-brand-primary"
-            >
-              Cloud waitlist
-            </Link>
           </div>
 
           {/* Mobile toggle */}
@@ -94,12 +86,10 @@ export default function Navbar() {
       {isOpen && (
         <div className="border-t border-brand-edge md:hidden" id="mobile-menu">
           <div className="space-y-1 px-4 py-3">
-            {[...navLinks, { href: 'https://github.com/argon-lab/argon', label: 'GitHub' }].map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                target={link.href.startsWith('http') ? '_blank' : undefined}
-                rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className={`block px-2 py-2 font-mono text-sm ${
                   pathname === link.href ? 'text-brand-primary' : 'text-brand-text-darker'
                 }`}
@@ -108,13 +98,15 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/pricing"
+            <a
+              href="https://github.com/argon-lab/argon"
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-2 block border border-brand-edge px-2 py-2 text-center font-mono text-sm text-brand-text"
               onClick={() => setIsOpen(false)}
             >
-              Cloud waitlist
-            </Link>
+              Star on GitHub
+            </a>
           </div>
         </div>
       )}

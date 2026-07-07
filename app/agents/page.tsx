@@ -155,9 +155,14 @@ export default function AgentsPage() {
           >
             Get started on GitHub
           </a>
-          <Link href="/roadmap" className="btn-quiet">
-            View the roadmap
-          </Link>
+          <a
+            href="https://github.com/argon-lab/argon/blob/master/docs/AGENTS.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-quiet"
+          >
+            Read the agents guide
+          </a>
         </div>
       </div>
     </div>

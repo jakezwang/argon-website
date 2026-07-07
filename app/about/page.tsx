@@ -117,13 +117,17 @@ export default function AboutPage() {
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
               <li>GCS chunk-store backend</li>
               <li>Synchronous capture in the wire-protocol proxy</li>
-              <li>Argon Cloud (waitlist open)</li>
             </ul>
           </div>
         </div>
         <div className="mt-4">
-          <Link href="/roadmap" className="prose-link font-mono text-sm">
-            See the full roadmap →
+          <Link
+            href="https://github.com/argon-lab/argon/blob/master/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="prose-link font-mono text-sm"
+          >
+            Read the changelog →
           </Link>
         </div>
       </section>

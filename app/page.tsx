@@ -67,8 +67,8 @@ export default function HomePage() {
               >
                 View on GitHub
               </a>
-              <Link href="/roadmap" className="btn-quiet">
-                Read the roadmap
+              <Link href="/agents" className="btn-quiet">
+                See the agent workflow
               </Link>
             </div>
             <div className="mt-10">
@@ -118,11 +118,16 @@ export default function HomePage() {
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              next · Argon Cloud (waitlist open)
+              next · GCS chunk store, synchronous proxy capture
             </span>
-            <Link href="/roadmap" className="text-brand-primary hover:underline">
-              full roadmap →
-            </Link>
+            <a
+              href="https://github.com/argon-lab/argon/blob/master/CHANGELOG.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-primary hover:underline"
+            >
+              changelog →
+            </a>
           </div>
         </div>
       </section>
@@ -379,8 +384,8 @@ export default function HomePage() {
             Branch your MongoDB today
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-8">
-            Open source and self-hosted now; managed cloud later. Star the
-            repo to follow along.
+            Open source, MIT licensed, self-hosted. Star the repo to follow
+            along — or run the benchmarks yourself first.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
@@ -391,9 +396,14 @@ export default function HomePage() {
             >
               Star on GitHub
             </a>
-            <Link href="/pricing" className="btn-quiet">
-              Join the cloud waitlist
-            </Link>
+            <a
+              href="https://github.com/argon-lab/benchmarks"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-quiet"
+            >
+              Run the benchmarks
+            </a>
           </div>
         </div>
       </section>

@@ -67,10 +67,10 @@ const Footer = () => (
         <FooterColumn
           title="Project"
           links={[
+            { label: 'Agents', href: '/agents' },
             { label: 'Features', href: '/features' },
-            { label: 'Roadmap', href: '/roadmap' },
             { label: 'Demo', href: '/demo' },
-            { label: 'Pricing', href: '/pricing' },
+            { label: 'Benchmarks', href: 'https://github.com/argon-lab/benchmarks', external: true },
           ]}
         />
         <FooterColumn
