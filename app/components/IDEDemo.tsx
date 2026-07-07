@@ -17,7 +17,7 @@ const sdkSteps: SDKStep[] = [
     filename: 'terminal',
     code: 'npm install @argonlabs/sdk',
     description: 'Install Argon SDK for Node.js',
-    output: '+ @argonlabs/sdk@1.0.0\n✅ Installation complete\n📚 Types included\n🔧 Ready for development',
+    output: '+ @argonlabs/sdk@1.0.0\nInstallation complete\nTypes included\nReady for development',
     language: 'bash'
   },
   {
@@ -30,9 +30,9 @@ const argon = new ArgonClient({
   endpoint: 'https://api.argonlabs.tech'
 });
 
-console.log('🔑 SDK initialized');`,
+console.log('SDK initialized');`,
     description: 'Initialize SDK with API credentials',
-    output: '🔑 API key validated\n🌐 Connected to Argon Cloud\n📊 User: dev@company.com\n✅ SDK ready',
+    output: 'API key validated\nConnected to Argon Cloud\nUser: dev@company.com\nSDK ready',
     language: 'javascript'
   },
   {
@@ -47,7 +47,7 @@ const project = await argon.projects.create('my-app', {
 
 console.log('Project created:', project.id);`,
     description: 'Create project programmatically with sample data',
-    output: '🎉 Project "my-app" created\n📦 Sample data populated\n🆔 Project ID: proj_abc123\n🌿 Main branch ready',
+    output: 'Project "my-app" created\nSample data populated\nProject ID: proj_abc123\nMain branch ready',
     language: 'javascript'
   },
   {
@@ -64,7 +64,7 @@ await branch.activate();
 
 console.log('Branch ready for development');`,
     description: 'Create and manage branches via SDK',
-    output: '🌿 Branch "feature/api-v2" created\n📋 Collections isolated\n🔗 Branch ID: br_def456\n💾 Ready for development',
+    output: 'Branch "feature/api-v2" created\nCollections isolated\nBranch ID: br_def456\nReady for development',
     language: 'javascript'
   },
   {
@@ -83,7 +83,7 @@ const stats = await branch.collections.orders.aggregate([
 
 console.log('Found', adminUsers.length, 'admin users');`,
     description: 'Execute queries programmatically',
-    output: '🔍 Query executed\n📊 Found 12 admin users\n⚡ Response time: 28ms\n📈 Usage tracked',
+    output: 'Query executed\nFound 12 admin users\nResponse time: 28ms\nUsage tracked',
     language: 'javascript'
   },
   {
@@ -103,7 +103,7 @@ await branch.collections.users.updateOne(
   { $set: { permissions: ['read', 'write', 'admin'] } }
 );`,
     description: 'Perform CRUD operations through SDK',
-    output: '📝 Document inserted\n🆔 ID: 507f1f77bcf86cd799439011\n🔄 Change stream captured\n💾 Automatically backed up',
+    output: 'Document inserted\nID: 507f1f77bcf86cd799439011\nChange stream captured\nAutomatically backed up',
     language: 'javascript'
   },
   {
@@ -122,7 +122,7 @@ const deployment = await project.deploy({
 // Monitor deployment status
 console.log('Deployment status:', deployment.status);`,
     description: 'Deploy branch to staging environment',
-    output: '🚀 Deployment initiated\n🌐 Staging URL: https://staging-my-app.argon.dev\n✅ Health checks passed\n📱 Team notified',
+    output: 'Deployment initiated\nStaging URL: https://staging-my-app.argon.dev\nHealth checks passed\nTeam notified',
     language: 'javascript'
   }
 ];
@@ -175,10 +175,10 @@ export default function IDEDemo({ onStepChange }: IDEDemoProps) {
 
   const getLanguageIcon = (lang: string) => {
     switch (lang) {
-      case 'javascript': return '🟨';
-      case 'typescript': return '🔷';
-      case 'bash': return '💻';
-      default: return '📄';
+      case 'javascript': return '';
+      case 'typescript': return '';
+      case 'bash': return '';
+      default: return '';
     }
   };
 
@@ -303,7 +303,7 @@ export default function IDEDemo({ onStepChange }: IDEDemoProps) {
           onClick={resetDemo}
           className="px-4 py-2 bg-brand-surface text-brand-text-darker rounded hover:bg-brand-dark transition-colors"
         >
-          🔄 Reset
+          Reset
         </button>
       </div>
     </div>

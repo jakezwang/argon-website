@@ -23,35 +23,35 @@ const developerSteps: DemoStep[] = [
     id: 'init',
     command: 'argon projects create my-app',
     description: 'Create project with time-travel enabled',
-    output: '✅ Created project: my-app\n📊 MongoDB WAL initialized\n⏳ Every write now recorded as an LSN-addressed entry',
+    output: 'Created project: my-app\nMongoDB WAL initialized\nEvery write now recorded as an LSN-addressed entry',
     metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'create_branch',
     command: 'argon branches create feature-x -p my-app',
     description: 'Branch creation writes metadata, not data copies',
-    output: '⚡ Branch created: feature-x\n🌿 Branches are LSN pointers - no database copying\n📋 Forked from main at current head',
+    output: 'Branch created: feature-x\nBranches are LSN pointers - no database copying\nForked from main at current head',
     metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'work_changes',
     command: 'argon time-travel query -p my-app -b main --timestamp "5 minutes ago"',
     description: 'Query historical database state',
-    output: '⏳ Time-travel target resolved from timestamp\n🔍 Reconstructing state from WAL\n✅ Deterministic replay: same history, same state, every time',
+    output: 'Time-travel target resolved from timestamp\nReconstructing state from WAL\nDeterministic replay: same history, same state, every time',
     metrics: { time: 'bounded by history size', operations: 'replay' }
   },
   {
     id: 'restore',
     command: 'argon restore -p my-app -b main --lsn 4990',
     description: 'Rewind a branch to a previous state',
-    output: '🔄 Restoring main to LSN 4990\n✅ State reconstructed via deterministic replay\n🛡️ Restore is itself logged - you can undo the undo',
+    output: 'Restoring main to LSN 4990\nState reconstructed via deterministic replay\nRestore is itself logged - you can undo the undo',
     metrics: { time: 'replay-based', operations: 'restore' }
   },
   {
     id: 'switch_main',
     command: 'argon status',
     description: 'Check project status',
-    output: '✅ Project: my-app\n📋 Active branches: 3\n🔬 Replay determinism: property-tested in CI (M1)',
+    output: 'Project: my-app\nActive branches: 3\nReplay determinism: property-tested in CI (M1)',
     metrics: { time: 'instant', operations: 'status' }
   }
 ];
@@ -61,42 +61,42 @@ const aiSteps: DemoStep[] = [
     id: 'setup_dataset',
     command: '%argon branch create experiment-v2',
     description: 'Jupyter magic command for ML workflow',
-    output: '🔮 Jupyter integration active\n🤖 Created ML experiment branch\n📊 MLflow tracking enabled\n🎯 Branch: experiment-v2',
+    output: 'Jupyter integration active\nCreated ML experiment branch\nMLflow tracking enabled\nBranch: experiment-v2',
     metrics: { time: 'milliseconds', operations: 'metadata write' }
   },
   {
     id: 'experiment_branch',
     command: 'mlflow.start_run()',
     description: 'MLflow integration with Argon branches',
-    output: '🎯 MLflow run started\n🌿 Auto-created Argon branch: mlflow-run-x7k9\n📋 Experiment tracking enabled\n✅ Automatic versioning active',
+    output: 'MLflow run started\nAuto-created Argon branch: mlflow-run-x7k9\nExperiment tracking enabled\nAutomatic versioning active',
     metrics: { time: 'milliseconds', operations: 'integrated' }
   },
   {
     id: 'transform_data',
     command: 'wandb.init(project="argon-ml")',
     description: 'Weights & Biases rich visualization',
-    output: '🌊 W&B run initialized\n🔗 Linked to Argon branch\n📈 Real-time metrics streaming\n🎨 Rich experiment visualization',
+    output: 'W&B run initialized\nLinked to Argon branch\nReal-time metrics streaming\nRich experiment visualization',
     metrics: { time: 'real-time', operations: 'streaming' }
   },
   {
     id: 'model_branch',
     command: 'dvc add data/model_v2.pkl',
     description: 'DVC integration for data versioning',
-    output: '💾 DVC tracking enabled\n🔄 Synced with Argon branch\n🌐 Remote storage configured\n✅ Version control complete',
+    output: 'DVC tracking enabled\nSynced with Argon branch\nRemote storage configured\nVersion control complete',
     metrics: { time: 'instant', operations: 'synced' }
   },
   {
     id: 'time_travel',
     command: 'argon time-travel restore -p ml-project --timestamp "before bad experiment"',
     description: 'Safe restore from any point in time',
-    output: '⏳ Time-travel to healthy state\n🔄 WAL reconstruction complete\n✅ Data restored via deterministic replay\n🛡️ The restore itself is logged and reversible',
+    output: 'Time-travel to healthy state\nWAL reconstruction complete\nData restored via deterministic replay\nThe restore itself is logged and reversible',
     metrics: { time: 'replay-based', operations: 'restore' }
   },
   {
     id: 'parallel_training',
     command: 'argon status --ml',
     description: 'Overview of parallel experiments',
-    output: '📊 ML Overview:\n  • Active experiments: 12\n  • Parallel branches: 8\n  • Each experiment isolated on its own branch',
+    output: 'ML Overview:\n  • Active experiments: 12\n  • Parallel branches: 8\n  • Each experiment isolated on its own branch',
     metrics: { time: 'instant', operations: 'status' }
   }
 ];
@@ -139,7 +139,7 @@ export default function InteractiveDemo() {
                 : 'text-brand-text-darker hover:text-brand-primary'
             }`}
           >
-            👨‍💻 CLI Workflow
+            CLI Workflow
           </button>
           <button
             onClick={() => setActiveTab('ai')}
@@ -149,7 +149,7 @@ export default function InteractiveDemo() {
                 : 'text-brand-text-darker hover:text-brand-primary'
             }`}
           >
-            🤖 ML/AI Workflow
+            ML/AI Workflow
           </button>
           <button
             onClick={() => setActiveTab('sdk')}
@@ -159,7 +159,7 @@ export default function InteractiveDemo() {
                 : 'text-brand-text-darker hover:text-brand-primary'
             }`}
           >
-            ⚡ SDK Integration
+            SDK Integration
           </button>
         </div>
       </div>
@@ -231,7 +231,7 @@ export default function InteractiveDemo() {
                   >
                     <div className="flex items-center">
                       <span className="mr-2">
-                        {index < currentStep ? '✅' : index === currentStep ? '▶️' : '⏳'}
+                        {index < currentStep ? '' : index === currentStep ? '▶' : '⏳'}
                       </span>
                       <span className="text-xs">{s.description}</span>
                     </div>

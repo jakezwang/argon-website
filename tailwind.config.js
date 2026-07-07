@@ -8,18 +8,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'brand-dark': '#0A0F1A', // Very dark blue/black - primary background
-        'brand-surface': '#131A2A', // Slightly lighter for cards/surfaces
-        'brand-muted': '#8A94A6', // Muted text, borders
-        'brand-primary': '#00E5FF', // Neon cyan/blue - primary accent
-        'brand-secondary': '#FF00AA', // Neon pink/magenta - secondary accent
-        'brand-text': '#E0E0E0', // Primary text color
-        'brand-text-darker': '#B0B0B0', // Slightly darker text for less emphasis
+        // Argon glows blue-violet in a discharge tube — that's the accent.
+        'brand-dark': '#0B0E14', // page background
+        'brand-surface': '#111521', // panels
+        'brand-edge': '#222838', // 1px borders
+        'brand-muted': '#6E7891', // secondary labels
+        'brand-primary': '#96A7FF', // argon glow
+        'brand-secondary': '#6D7FE0', // deeper glow (hover / fills)
+        'brand-text': '#E8EBF2',
+        'brand-text-darker': '#9AA3B5',
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
     },
   },

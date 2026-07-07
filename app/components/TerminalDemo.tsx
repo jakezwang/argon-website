@@ -108,12 +108,12 @@ export default function TerminalDemo({ steps, onStepChange }: TerminalDemoProps)
               
               {step.metrics && (
                 <div className="mt-3 p-3 bg-gray-800 rounded border-l-4 border-brand-primary">
-                  <div className="text-brand-primary font-semibold">⚡ Performance:</div>
+                  <div className="text-brand-primary font-semibold">Performance:</div>
                   <div className="text-sm mt-1">
-                    <div>⏱️  Operation time: {step.metrics.time}</div>
-                    <div>🚀 Throughput: {step.metrics.operations}</div>
+                    <div>⏱ Operation time: {step.metrics.time}</div>
+                    <div>Throughput: {step.metrics.operations}</div>
                     {step.metrics.compression && (
-                      <div>🗜️  Compression: {step.metrics.compression}</div>
+                      <div> Compression: {step.metrics.compression}</div>
                     )}
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function TerminalDemo({ steps, onStepChange }: TerminalDemoProps)
           onClick={resetDemo}
           className="px-4 py-2 bg-brand-surface text-brand-text-darker rounded hover:bg-brand-dark transition-colors"
         >
-          🔄 Reset
+          Reset
         </button>
       </div>
     </div>

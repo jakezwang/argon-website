@@ -1,246 +1,379 @@
-// app/page.tsx
-import Image from 'next/image';
 import Link from 'next/link';
 import QuickStartCommand from './components/QuickStartCommand';
-import UseCases from './components/UseCases';
-import GitComparison from './components/GitComparison';
+import PeriodicTile from './components/PeriodicTile';
+
+const TerminalLine = ({
+  cmd,
+  out,
+}: {
+  cmd?: string;
+  out?: string[];
+}) => (
+  <div className="mb-3 last:mb-0">
+    {cmd && (
+      <p className="text-brand-text">
+        <span className="select-none text-brand-muted">$ </span>
+        {cmd}
+      </p>
+    )}
+    {out?.map((line, i) => (
+      <p key={i} className="pl-4 text-brand-muted">
+        {line}
+      </p>
+    ))}
+  </div>
+);
+
+const SectionHeading = ({
+  index,
+  title,
+  children,
+}: {
+  index: string;
+  title: string;
+  children?: React.ReactNode;
+}) => (
+  <div className="mb-10">
+    <p className="kicker mb-3">
+      {index} — {title}
+    </p>
+    {children}
+  </div>
+);
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
-      <main className="flex-grow">
-        <section className="bg-brand-dark text-brand-text">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
-            {/* Logo and Title Group */}
-            <div className="flex justify-center items-center mb-6">
-              <Image
-                src="/argon-logo.png"
-                alt="Argon Logo"
-                width={100} // Increased size from 80 to 100
-                height={100} // Increased size from 80 to 100
-                className="mr-4 rounded-full shadow-xl" // Added margin to the right of the logo
-              />
-              <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">
-                <span className="block xl:inline">Welcome to</span>{' '}
-                <span className="block text-brand-primary xl:inline">Argon</span>
-              </h1>
-            </div>
-
-            {/* QuickStartCommand directly under logo-title */}
-            <div className="mb-8 flex justify-center"> {/* Adjusted margin */}
-              <QuickStartCommand />
-            </div>
-
-            <p className="max-w-2xl mx-auto text-lg text-brand-text-darker mb-8">
-              <strong className="text-brand-primary-light">Git-like branching &amp; time travel for MongoDB</strong>.
-              Branch your database in milliseconds, rewind any mistake, and give AI agents
-              a safe sandbox — without touching production. Open source, MIT licensed.
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:py-28">
+          <div>
+            <p className="kicker mb-5">Open source · MIT · MongoDB</p>
+            <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-brand-text sm:text-5xl">
+              Git-like branching &amp; time travel for MongoDB
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8">
+              Branch your database in milliseconds, rewind any mistake, and
+              give AI agents a safe sandbox — without touching production.
             </p>
-
-            <div className="max-w-2xl mx-auto mb-8 bg-brand-surface border border-brand-primary/40 rounded-lg px-4 py-3 text-sm text-brand-text-darker">
-              ✅ <strong className="text-brand-primary">Milestone 1 shipped:</strong> deterministic replay engine —
-              every branch and time-travel operation is now property-tested for byte-identical reproducibility.{' '}
-              <Link href="/roadmap" className="text-brand-primary hover:text-brand-secondary underline">
-                See the roadmap &rarr;
-              </Link>
-            </div>
-
-            <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
-              <Link
-                href="/features"
-                className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
-              >
-                Discover Features
-              </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="https://github.com/argon-lab/argon"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-brand-surface text-brand-primary hover:bg-opacity-80 border border-brand-primary font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
+                className="btn-solid"
               >
                 View on GitHub
               </a>
-              <Link
-                href="/demo"
-                className="inline-block bg-transparent border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-dark font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
-              >
-                Try Interactive Demo
+              <Link href="/roadmap" className="btn-quiet">
+                Read the roadmap
               </Link>
             </div>
-            {/* Removed QuickStartCommand from here */}
-          </div>
-        </section>
-
-        {/* Git Comparison Section */}
-        <GitComparison />
-
-        {/* Use Cases Section */}
-        <UseCases />
-
-        {/* Trust & Reliability Section */}
-        <section className="py-12 sm:py-16 bg-brand-dark">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Built in the Open
-              </h2>
-              <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto">
-                <strong className="text-brand-primary">Correctness first, honest claims</strong> — every
-                performance number we publish will link to a reproducible benchmark.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
-                <div className="text-4xl mb-4">🔬</div>
-                <h3 className="text-xl font-semibold text-brand-primary mb-3">Deterministic Core</h3>
-                <p className="text-brand-text-darker">
-                  Replay is property-tested in CI: the same history always
-                  produces the same state, byte for byte.
-                </p>
-              </div>
-              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
-                <div className="text-4xl mb-4">🎆</div>
-                <h3 className="text-xl font-semibold text-brand-primary mb-3">Open Source</h3>
-                <p className="text-brand-text-darker">
-                  MIT licensed. No vendor lock-in.
-                  Audit the code, contribute, or fork it.
-                </p>
-              </div>
-              <div className="bg-brand-surface p-8 rounded-xl shadow-2xl text-center">
-                <div className="text-4xl mb-4">🔒</div>
-                <h3 className="text-xl font-semibold text-brand-primary mb-3">Your Infrastructure</h3>
-                <p className="text-brand-text-darker">
-                  Self-hosted, works with your own MongoDB — local or Atlas.
-                  Your data never leaves your environment.
-                </p>
-              </div>
-            </div>
-            <div className="text-center mt-10">
-              <a
-                href="https://github.com/argon-lab/argon"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105"
-              >
-                ⭐ Star on GitHub
-              </a>
+            <div className="mt-10">
+              <QuickStartCommand />
             </div>
           </div>
-        </section>
 
-        {/* Value Proposition Section - THIS IS THE "Why Choose Argon?" section */}
-        <section className="py-12 sm:py-16 bg-brand-surface"> {/* Reduced py */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10"> {/* Reduced mb-12 to mb-10 */}
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Never Break Production Again
-              </h2>
-              <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Stop being afraid of your database. <strong className="text-brand-accent">Experiment freely, deploy confidently, and sleep better at night.</strong>
+          {/* Terminal — a real session, no invented numbers */}
+          <div className="border border-brand-edge bg-brand-surface">
+            <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
+              <p className="font-mono text-xs text-brand-muted">argon · session</p>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-brand-muted">
+                simulated
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">"git checkout" for Databases</h3>
-                <p className="text-brand-text-darker">
-                  Jump to any point in your database history. Made a mistake? <strong className="text-brand-primary-light">Restore instantly</strong> without 
-                  backups or downtime. Like <code className="bg-brand-surface px-1 rounded">git reset</code> but for your data.
-                </p>
-              </div>
-              <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">"git branch" for Data</h3>
-                <p className="text-brand-text-darker">
-                  Create isolated database environments instantly. Test migrations, experiment with schemas, or 
-                  <strong className="text-brand-primary-light">let multiple teams work in parallel</strong> without conflicts.
-                </p>
-              </div>
-              <div className="bg-brand-dark p-8 rounded-xl shadow-2xl">
-                <h3 className="text-2xl font-semibold text-brand-primary mb-3">"git revert" for Data</h3>
-                <p className="text-brand-text-darker">
-                  Rewind bad writes with deterministic time-travel and restore —
-                  <strong className="text-brand-accent"> roll back mistakes in place</strong>.
-                  Merge workflows and data PRs are on the <Link href="/roadmap" className="underline hover:text-brand-secondary">v2 roadmap</Link>.
-                </p>
-              </div>
-            </div>
-            <div className="text-center mt-10">
-              <p className="text-md text-brand-text-darker max-w-3xl mx-auto">
-                <strong className="text-brand-primary-light">"If Git and MongoDB had a baby"</strong> - Finally, version control for your database that actually makes sense.
-              </p>
+            <div className="overflow-x-auto p-5 font-mono text-[13px] leading-6">
+              <TerminalLine
+                cmd="argon import database --db shop --project shop"
+                out={['3 collections imported', 'every write now logged to the WAL']}
+              />
+              <TerminalLine
+                cmd="argon branches create experiment -p shop"
+                out={['branch created — metadata only, no data copied']}
+              />
+              <TerminalLine
+                cmd="argon time-travel info -p shop -b main"
+                out={['history: LSN 1 → 4982']}
+              />
+              <TerminalLine
+                cmd="argon restore preview -p shop -b main --lsn 4950"
+                out={['32 documents would change', 'run `restore reset` to apply']}
+              />
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* How it Works Teaser Section */}
-        <section className="py-12 sm:py-16 bg-brand-dark"> {/* Reduced py */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10"> {/* Reduced mb-12 to mb-10 */}
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Advanced Database Operations Made Simple
-              </h2>
-              <p className="mt-3 text-lg text-brand-text-darker max-w-3xl mx-auto"> {/* Reduced mt-4 to mt-3, text-xl to text-lg */}
-                Argon gives you superpowers: branch your database, travel through time, and collaborate without conflicts. All with the simplicity of Git.
-              </p>
+        {/* Status strip */}
+        <div className="border-t border-brand-edge">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-3 font-mono text-xs">
+            <span className="flex items-center gap-2 text-brand-text-darker">
+              <span className="status-dot bg-emerald-400" />
+              M1 · deterministic replay — shipped
+            </span>
+            <span className="flex items-center gap-2 text-brand-text-darker">
+              <span className="status-dot bg-amber-400" />
+              M2 · snapshots &amp; public benchmarks — in progress
+            </span>
+            <Link href="/roadmap" className="text-brand-primary hover:underline">
+              full roadmap →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 01 · Inert by design ─────────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="grid gap-12 lg:grid-cols-[auto_1fr] lg:gap-20">
+            <div className="flex items-start">
+              <PeriodicTile size="lg" />
             </div>
-            <div className="max-w-3xl mx-auto bg-brand-surface p-6 rounded-xl shadow-2xl"> {/* Reduced p-8 to p-6 */}
-              {/* Placeholder for a simple diagram or key points */}
-              <ul className="space-y-3 text-base text-brand-text-darker"> {/* Reduced space-y-4 to space-y-3, text-lg to text-base */}
-                <li className="flex items-start">
-                  <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Branch:</strong> Create isolated test environments instantly.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Time-Travel:</strong> Undo mistakes by going back in time.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Restore:</strong> Fix problems without backups or downtime.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-brand-primary mr-2 text-xl">✓</span> {/* Reduced mr-3 to mr-2, text-2xl to text-xl */}
-                  <span><strong className="text-brand-text">Integrate:</strong> CLI, Python SDK, and ML tooling (MLflow, DVC, W&amp;B) today — native driver drop-in coming in v2.</span>
-                </li>
-              </ul>
-              <div className="mt-6 text-center"> {/* Reduced mt-8 to mt-6 */}
-                <Link
-                  href="/features#how-it-works"
-                  className="text-brand-primary hover:text-brand-secondary font-semibold text-base" /* Reduced text-lg to text-base */
-                >
-                  Learn more about how Argon works &rarr;
-                </Link>
+            <div>
+              <SectionHeading index="01" title="Inert by design">
+                <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+                  Named after the noble gas for a reason
+                </h2>
+              </SectionHeading>
+              <p className="max-w-2xl text-lg leading-8">
+                Argon — element 18 — is inert: it doesn&apos;t react with
+                anything. That&apos;s the contract this tool makes with your
+                data. Experiments happen on branches. History is append-only.
+                Production is never touched.
+              </p>
+              <div className="mt-12 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
+                {[
+                  {
+                    n: '/01',
+                    title: 'Branch in milliseconds',
+                    body: 'A branch is one metadata document — parent, fork LSN, head LSN. No data is copied, whatever the database size.',
+                  },
+                  {
+                    n: '/02',
+                    title: 'Rewind anything',
+                    body: 'Every write is logged with full before/after document images. Inspect any historical state, restore to any point — and undo the undo.',
+                  },
+                  {
+                    n: '/03',
+                    title: 'Prove what happened',
+                    body: 'The write-ahead log is an audit trail: who wrote what, when, on which branch. Git blame, for your data.',
+                  },
+                ].map((item) => (
+                  <div key={item.n} className="bg-brand-dark p-6">
+                    <p className="font-mono text-xs text-brand-primary">{item.n}</p>
+                    <h3 className="mt-3 font-medium text-brand-text">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6">{item.body}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Call to Action Section */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-brand-primary to-brand-secondary text-white"> {/* Reduced py */}
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-extrabold tracking-tight mb-4 text-brand-dark"> {/* Reduced mb-6 to mb-4 */}
-              Ready to Git Your Database?
+      {/* ── 02 · Same muscle memory ──────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <SectionHeading index="02" title="Familiar workflow">
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+              The Git muscle memory you already have
             </h2>
-            <p className="text-lg text-gray-800 mb-8"> {/* Reduced text-xl to text-lg, mb-10 to mb-8 */}
-              Join developers who stopped worrying about breaking production. Start branching your MongoDB like a pro.
-            </p>
-            <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-center sm:items-center sm:space-x-4">
-              <a
-                href="#quick-start"
-                className="inline-block bg-brand-dark text-white hover:bg-opacity-90 font-bold px-8 py-3 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
-              >
-                Get Started Free
-              </a>
-              <Link
-                href="/demo"
-                className="inline-block bg-white text-brand-primary hover:bg-gray-100 font-bold px-8 py-3 rounded-lg shadow-xl transform transition-transform duration-150 hover:scale-105 w-full sm:w-auto"
-              >
-                See Live Demo
-              </Link>
-            </div>
+          </SectionHeading>
+          <div className="overflow-x-auto border border-brand-edge">
+            <table className="w-full font-mono text-sm">
+              <thead>
+                <tr className="border-b border-brand-edge bg-brand-surface text-left">
+                  <th className="px-5 py-3 font-normal text-brand-muted">git (code)</th>
+                  <th className="px-5 py-3 font-normal text-brand-muted">argon (data)</th>
+                  <th className="hidden px-5 py-3 font-normal text-brand-muted sm:table-cell">
+                    what it does
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['git init', 'argon projects create', 'start versioning'],
+                  ['git branch feature-x', 'argon branches create feature-x', 'isolated branch in milliseconds'],
+                  ['git log', 'argon time-travel info', 'see every past state'],
+                  ['git reset --hard', 'argon restore reset', 'rewind mistakes'],
+                ].map(([git, argon, what]) => (
+                  <tr key={git} className="border-b border-brand-edge last:border-b-0">
+                    <td className="whitespace-nowrap px-5 py-3 text-brand-text-darker">{git}</td>
+                    <td className="whitespace-nowrap px-5 py-3 text-brand-primary">{argon}</td>
+                    <td className="hidden px-5 py-3 text-brand-muted sm:table-cell">{what}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </section>
-      </main>
+          <p className="mt-4 font-mono text-xs text-brand-muted">
+            merge &amp; diff land in M4 —{' '}
+            <Link href="/roadmap" className="text-brand-primary hover:underline">
+              roadmap
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ── 03 · How it works ────────────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <SectionHeading index="03" title="How it works">
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+              One idea, carried all the way through
+            </h2>
+          </SectionHeading>
+          <div className="grid gap-10 lg:grid-cols-3">
+            {[
+              {
+                step: '1',
+                title: 'Every write becomes a log entry',
+                body: 'Writes are recorded in an append-only write-ahead log with full document images and a global sequence number (LSN). The log is the source of truth.',
+              },
+              {
+                step: '2',
+                title: 'Branches are pointers',
+                body: 'A branch records where it forked and where its head is. Creating one costs a single metadata write; sibling branches can never see each other.',
+              },
+              {
+                step: '3',
+                title: 'Replay is deterministic',
+                body: 'State at any LSN is reconstructed by replaying the log — a pure function, property-tested in CI. The same history produces the same state, byte for byte.',
+              },
+            ].map((item) => (
+              <div key={item.step} className="border-l border-brand-edge pl-6">
+                <p className="font-mono text-2xl text-brand-primary">{item.step}</p>
+                <h3 className="mt-4 font-medium text-brand-text">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6">{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10">
+            <a
+              href="https://github.com/argon-lab/argon/blob/master/docs/ARCHITECTURE.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="prose-link font-mono text-sm"
+            >
+              Read the architecture doc →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 04 · What people use it for ──────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <SectionHeading index="04" title="Use cases">
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+              Built for the moments you dread
+            </h2>
+          </SectionHeading>
+          <div className="divide-y divide-brand-edge border border-brand-edge">
+            {[
+              {
+                title: 'Risky migrations',
+                scenario: 'You need to test a schema change against real data.',
+                solution: 'Branch, run the migration, inspect the result. Promote it or delete the branch.',
+              },
+              {
+                title: 'The bad deploy',
+                scenario: 'A script just corrupted a collection in place.',
+                solution: 'Preview the state from before it ran, then restore. The restore is logged too — reversible.',
+              },
+              {
+                title: 'AI agent sandboxes',
+                scenario: 'An agent needs to write to a database, and you don’t fully trust it.',
+                solution: 'Give it a branch. Audit every write it made via the log. Keep what worked, discard the rest.',
+              },
+              {
+                title: 'ML experiments',
+                scenario: 'Two experiments need the same dataset without stepping on each other.',
+                solution: 'One branch per experiment; pin the exact LSN a run trained against for reproducibility.',
+              },
+            ].map((uc) => (
+              <div key={uc.title} className="grid gap-2 p-6 sm:grid-cols-[200px_1fr_1fr] sm:gap-8">
+                <h3 className="font-medium text-brand-text">{uc.title}</h3>
+                <p className="text-sm leading-6">{uc.scenario}</p>
+                <p className="text-sm leading-6 text-brand-text-darker">
+                  <span className="font-mono text-xs uppercase tracking-wider text-brand-primary">
+                    with argon ·{' '}
+                  </span>
+                  {uc.solution}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 05 · Built in the open ───────────────────────────── */}
+      <section className="border-b border-brand-edge">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <SectionHeading index="05" title="Built in the open">
+            <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+              Claims you can check
+            </h2>
+          </SectionHeading>
+          <div className="grid gap-px border border-brand-edge bg-brand-edge lg:grid-cols-3">
+            {[
+              {
+                title: 'Correctness first',
+                body: 'Replay determinism is enforced structurally and verified by property tests in CI — the same history always produces the same state.',
+                link: { label: 'see the tests', href: 'https://github.com/argon-lab/argon/tree/master/tests' },
+              },
+              {
+                title: 'No unverifiable numbers',
+                body: 'We removed every performance figure we couldn’t back. When the public benchmark suite ships with M2, each number will link to a run you can reproduce.',
+                link: { label: 'roadmap', href: '/roadmap' },
+              },
+              {
+                title: 'Your infrastructure',
+                body: 'MIT licensed, self-hosted, works with your own MongoDB — local or Atlas. Your data never leaves your environment.',
+                link: { label: 'license', href: 'https://github.com/argon-lab/argon/blob/master/LICENSE' },
+              },
+            ].map((item) => (
+              <div key={item.title} className="bg-brand-dark p-6">
+                <h3 className="font-medium text-brand-text">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6">{item.body}</p>
+                <a
+                  href={item.link.href}
+                  target={item.link.href.startsWith('http') ? '_blank' : undefined}
+                  rel={item.link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="mt-4 inline-block font-mono text-xs text-brand-primary hover:underline"
+                >
+                  {item.link.label} →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Final CTA ────────────────────────────────────────── */}
+      <section>
+        <div className="mx-auto max-w-6xl px-6 py-24 text-center">
+          <h2 className="text-3xl font-semibold tracking-tight text-brand-text">
+            Branch your MongoDB today
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg leading-8">
+            Open source and self-hosted now; managed cloud later. Star the
+            repo to follow along.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://github.com/argon-lab/argon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-solid"
+            >
+              Star on GitHub
+            </a>
+            <Link href="/pricing" className="btn-quiet">
+              Join the cloud waitlist
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

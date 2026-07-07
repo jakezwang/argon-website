@@ -1,130 +1,141 @@
 import Link from 'next/link';
 
-const MilestoneCard = ({
-  tag,
-  title,
-  status,
-  statusColor,
-  items,
-}: {
+type Status = 'shipped' | 'active' | 'planned';
+
+const statusStyle: Record<Status, { dot: string; label: string }> = {
+  shipped: { dot: 'bg-emerald-400', label: 'shipped' },
+  active: { dot: 'bg-amber-400', label: 'in progress' },
+  planned: { dot: 'bg-brand-muted', label: 'planned' },
+};
+
+const milestones: {
   tag: string;
   title: string;
-  status: string;
-  statusColor: string;
+  status: Status;
+  when?: string;
   items: string[];
-}) => (
-  <section className="bg-brand-surface p-8 rounded-lg shadow-xl">
-    <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
-      <h2 className="text-2xl font-semibold text-brand-primary">
-        {tag} · {title}
-      </h2>
-      <span className={`text-sm font-semibold px-3 py-1 rounded-full ${statusColor}`}>
-        {status}
-      </span>
-    </div>
-    <ul className="space-y-2 text-brand-text-darker">
-      {items.map((item, i) => (
-        <li key={i} className="flex items-start">
-          <span className="text-brand-primary mr-2">•</span>
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  </section>
-);
+}[] = [
+  {
+    tag: 'M1',
+    title: 'Correctness release',
+    status: 'shipped',
+    when: 'July 2026',
+    items: [
+      'Deterministic replay: the same history always reconstructs the same state — property-tested across processes, instances, and repeated replays',
+      'Distributed LSN allocation: multiple Argon processes can write the same project with no sequence conflicts',
+      "Branch ancestry with fork-point isolation: sibling branches can no longer see each other's writes",
+      'Truthful write results across all operations (UpdateMany, DeleteMany, ReplaceOne, upserts)',
+      'WAL entry v2 with pre/post document images and actor tracking, plus a migration tool for existing data',
+    ],
+  },
+  {
+    tag: 'M2',
+    title: 'Bounded time travel',
+    status: 'active',
+    items: [
+      'Snapshot layer: content-addressed, compressed checkpoints so time-travel replays a bounded window instead of full history (first pieces merged)',
+      'WAL segmentation with cold storage offload and garbage collection — storage stops growing without bound',
+      'A public benchmark repo: every performance number on this site will link to a run you can reproduce with docker compose up',
+    ],
+  },
+  {
+    tag: 'M3',
+    title: 'True drop-in',
+    status: 'planned',
+    items: [
+      'One physical MongoDB database per branch — real mongod executes your queries, so every operator, index, and aggregation just works',
+      'Write capture via change streams with pre/post images',
+      'Per-branch connection strings: pymongo and mongoose work unchanged',
+      'argon undo --session: roll back everything an AI agent wrote, in one command',
+    ],
+  },
+  {
+    tag: 'M4',
+    title: 'Merge, diff & data PRs',
+    status: 'planned',
+    items: [
+      'Document-level diff between branches or against any historical state',
+      'Three-way merge with conflict detection',
+      'Reviewable merge plans — pull requests for data',
+    ],
+  },
+  {
+    tag: 'M5',
+    title: 'Agent ecosystem',
+    status: 'planned',
+    items: [
+      'MCP server: agents open their own sandbox before risky data operations, then merge or discard',
+      'LangGraph checkpointer with fork and rewind',
+      'TTL sandboxes: short-lived branches that clean up after themselves',
+      'Eval dataset pinning: reproducible evaluations against a fixed data version',
+    ],
+  },
+];
 
 export default function RoadmapPage() {
   return (
-    <div className="py-12 sm:py-16 bg-brand-dark text-brand-text">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl text-brand-text">
-            Roadmap
-          </h1>
-          <p className="mt-6 text-xl leading-8 text-brand-text-darker">
-            Argon v2 is being rebuilt milestone by milestone, correctness first.
-            Each milestone ships independently, and we publish what&apos;s done —
-            not what we hope will be done.
-          </p>
-        </div>
+    <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+      <p className="kicker mb-4">Roadmap</p>
+      <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
+        Rebuilt milestone by milestone, correctness first
+      </h1>
+      <p className="mt-5 max-w-2xl text-lg leading-8">
+        Each milestone ships independently, and we publish what&apos;s done —
+        not what we hope will be done.
+      </p>
 
-        <div className="space-y-8">
-          <MilestoneCard
-            tag="M1"
-            title="Correctness Release"
-            status="✅ Shipped · July 2026"
-            statusColor="bg-green-900 text-green-300"
-            items={[
-              'Deterministic replay: the same history always reconstructs the same state — property-tested across processes, instances, and repeated replays',
-              'Distributed LSN allocation: multiple Argon processes can write the same project with no sequence conflicts',
-              'Branch ancestry with fork-point isolation: sibling branches can no longer see each other\'s writes',
-              'Truthful write results across all operations (UpdateMany, DeleteMany, ReplaceOne, upserts)',
-              'WAL entry v2 with pre/post document images and actor tracking, plus a migration tool for existing data',
-            ]}
-          />
+      <div className="mt-14 space-y-0">
+        {milestones.map((m, i) => {
+          const s = statusStyle[m.status];
+          return (
+            <div key={m.tag} className="relative border-l border-brand-edge pb-12 pl-8 last:pb-0">
+              {/* timeline node */}
+              <span
+                className={`absolute -left-[5px] top-1.5 h-[9px] w-[9px] rounded-full ${s.dot}`}
+                aria-hidden="true"
+              />
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <h2 className="font-mono text-xl text-brand-text">
+                  <span className="text-brand-primary">{m.tag}</span> · {m.title}
+                </h2>
+                <span className="font-mono text-xs uppercase tracking-wider text-brand-muted">
+                  {s.label}
+                  {m.when ? ` · ${m.when}` : ''}
+                </span>
+              </div>
+              <ul className="mt-4 space-y-2.5">
+                {m.items.map((item, j) => (
+                  <li key={j} className="flex gap-3 text-sm leading-6 text-brand-text-darker">
+                    <span className="select-none font-mono text-brand-muted">–</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
 
-          <MilestoneCard
-            tag="M2"
-            title="Bounded Time Travel"
-            status="🚧 In progress"
-            statusColor="bg-amber-900 text-amber-300"
-            items={[
-              'Snapshot layer: content-addressed, compressed checkpoints so time-travel replays a bounded window instead of full history',
-              'WAL segmentation with cold storage offload and garbage collection — storage stops growing without bound',
-              'A public benchmark repo: every performance number on this site will link to a run you can reproduce with docker compose up',
-            ]}
-          />
-
-          <MilestoneCard
-            tag="M3"
-            title="True Drop-in"
-            status="Planned"
-            statusColor="bg-brand-dark text-brand-text-darker border border-brand-muted"
-            items={[
-              'One physical MongoDB database per branch — real mongod executes your queries, so every operator, index, and aggregation just works',
-              'Write capture via change streams with pre/post images',
-              'Per-branch connection strings: pymongo and mongoose work unchanged',
-              'argon undo --session: roll back everything an AI agent wrote, in one command',
-            ]}
-          />
-
-          <MilestoneCard
-            tag="M4"
-            title="Merge, Diff & Data PRs"
-            status="Planned"
-            statusColor="bg-brand-dark text-brand-text-darker border border-brand-muted"
-            items={[
-              'Document-level diff between branches or against any historical state',
-              'Three-way merge with conflict detection',
-              'Reviewable merge plans — pull requests for data',
-            ]}
-          />
-
-          <MilestoneCard
-            tag="M5"
-            title="Agent Ecosystem"
-            status="Planned"
-            statusColor="bg-brand-dark text-brand-text-darker border border-brand-muted"
-            items={[
-              'MCP server: agents open their own sandbox before risky data operations, then merge or discard',
-              'LangGraph checkpointer with fork and rewind',
-              'TTL sandboxes: short-lived branches that clean up after themselves',
-              'Eval dataset pinning: reproducible evaluations against a fixed data version',
-            ]}
-          />
-        </div>
-
-        <div className="text-center mt-12">
-          <p className="text-lg text-brand-text-darker mb-6">
-            Follow the work, or come build it with us.
-          </p>
+      <div className="mt-16 border-t border-brand-edge pt-8">
+        <p className="text-brand-text-darker">
+          Follow the work, or come build it with us.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
           <a
             href="https://github.com/argon-lab/argon"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-md transform transition-transform duration-150 hover:scale-105"
+            className="btn-solid"
           >
             View on GitHub
+          </a>
+          <a
+            href="https://github.com/argon-lab/argon/discussions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-quiet"
+          >
+            Join the discussion
           </a>
         </div>
       </div>
