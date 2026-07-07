@@ -73,7 +73,10 @@ const milestones: {
         text: 'argon undo — revert a range or one actor\'s entire session, with per-document conflict detection; compensations are new, auditable history',
         done: true,
       },
-      'Last box: official driver test suites (pymongo/mongoose) running against branch databases in CI — until then we say "any driver connects" (architectural fact), not "drop-in, no asterisks"',
+      {
+        text: 'Real-driver validation in CI: pymongo and mongoose workloads (CRUD, bulk writes, indexes, aggregation, transactions) run against checked-out branches; the WAL is verified to reproduce the physical state canonical-byte-exact, then each entire driver session is undone and the database must converge back to empty',
+        done: true,
+      },
     ],
   },
   {
@@ -100,7 +103,7 @@ const milestones: {
     tag: 'M5',
     title: 'Agent ecosystem',
     status: 'active',
-    statusLabel: 'MCP + sandboxes shipped · integrations remaining',
+    statusLabel: 'shipped · eval pinning remaining',
     items: [
       {
         text: 'MCP server (argon mcp): agents open their own sandbox, get a connection string, diff, merge, and undo — nine tools over stdio, with a supervised change-stream ingester per sandbox',
@@ -110,7 +113,14 @@ const milestones: {
         text: 'TTL sandboxes (argon sandbox create/keep/discard/sweep): short-lived branches that clean up after themselves, storage reclaimed on discard',
         done: true,
       },
-      'LangGraph checkpointer with fork and rewind',
+      {
+        text: 'LangGraph checkpointer and Mem0 factory — the argon-agents Python package, on top of the rebuilt REST API',
+        done: true,
+      },
+      {
+        text: 'Wire-protocol proxy: branch-aliased MongoDB connection strings',
+        done: true,
+      },
       'Eval dataset pinning: reproducible evaluations against a fixed data version',
     ],
   },

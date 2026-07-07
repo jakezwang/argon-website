@@ -104,9 +104,9 @@ export default function AboutPage() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
               <li>Deterministic WAL engine; public reproducible benchmarks</li>
-              <li>Branches check out as real MongoDB databases</li>
+              <li>Branches check out as real MongoDB databases — real-driver validated in CI</li>
               <li>argon diff / merge — reviewable data PRs; per-actor undo</li>
-              <li>TTL sandboxes + MCP server (argon mcp)</li>
+              <li>TTL sandboxes, MCP server, argon-agents (LangGraph + Mem0)</li>
             </ul>
           </div>
           <div>
@@ -115,9 +115,8 @@ export default function AboutPage() {
               What&apos;s next
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>Official driver test suites in CI (M3&apos;s last box)</li>
-              <li>LangGraph checkpointer with fork &amp; rewind</li>
               <li>Eval dataset pinning</li>
+              <li>GCS chunk-store backend; synchronous proxy capture</li>
               <li>Argon Cloud (waitlist open)</li>
             </ul>
           </div>

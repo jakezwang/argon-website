@@ -51,7 +51,7 @@ export default function AgentsPage() {
         <Step
           n="2"
           title="Point the agent at it"
-          body="Any driver connects — it's a real mongod, so indexes, aggregations, and transactions all work. No SDK, no wrapper, no code changes in the agent."
+          body="Any driver connects — it's a real mongod, so indexes, aggregations, and transactions all work. Validated in CI with real pymongo and mongoose workloads, capture verified byte-for-byte."
           cmd="agent --db mongodb://…/argon_br_9f2c"
         />
         <Step
@@ -123,14 +123,21 @@ export default function AgentsPage() {
         <p className="kicker mb-6">Where this is going</p>
         <div className="grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2">
           <div className="bg-brand-dark p-6">
-            <h3 className="font-medium text-brand-text">LangGraph checkpointer</h3>
+            <div className="flex items-baseline justify-between">
+              <h3 className="font-medium text-brand-text">LangGraph checkpointer</h3>
+              <span className="font-mono text-[11px] uppercase tracking-wider text-emerald-400">shipped</span>
+            </div>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
               Fork and rewind conversation state the way you branch data —
-              the checkpointer that can go back to step 14 and try again.
+              in the <code className="font-mono text-brand-primary">argon-agents</code> Python
+              package, alongside a Mem0 factory, on the REST API.
             </p>
           </div>
           <div className="bg-brand-dark p-6">
-            <h3 className="font-medium text-brand-text">Eval dataset pinning</h3>
+            <div className="flex items-baseline justify-between">
+              <h3 className="font-medium text-brand-text">Eval dataset pinning</h3>
+              <span className="font-mono text-[11px] uppercase tracking-wider text-brand-muted">next</span>
+            </div>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
               Pin an evaluation to an exact LSN so results stay reproducible
               even while the underlying corpus keeps moving.

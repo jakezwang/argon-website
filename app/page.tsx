@@ -118,7 +118,7 @@ export default function HomePage() {
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              next · LangGraph, eval pinning, driver-suite CI
+              next · eval dataset pinning, Argon Cloud
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →
