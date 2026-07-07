@@ -97,7 +97,12 @@ export default function FeaturesPage() {
             {
               n: '5',
               title: 'Branches are real databases (M3)',
-              body: 'argon checkout materializes a branch into a physical MongoDB database and prints its connection string — any driver connects, and indexes, aggregations, and transactions just work. Direct writes flow back into the WAL via change streams, and argon undo reverts a session with conflict detection. Next: merge, diff, and data PRs (M4).',
+              body: 'argon checkout materializes a branch into a physical MongoDB database and prints its connection string — any driver connects, and indexes, aggregations, and transactions just work. Direct writes flow back into the WAL via change streams, and argon undo reverts a session with conflict detection.',
+            },
+            {
+              n: '6',
+              title: 'Data PRs & the agent surface (M4–M5)',
+              body: 'argon diff and argon merge preview/apply turn adoption into a reviewed, exactly-once operation — conflicts are never resolved silently, and merges are undoable. argon sandbox adds TTL branches that clean up after themselves, and argon mcp exposes the whole loop to agents as MCP tools.',
             },
           ].map((item) => (
             <div key={item.n} className="border-l border-brand-edge pl-6">

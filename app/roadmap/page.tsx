@@ -79,21 +79,38 @@ const milestones: {
   {
     tag: 'M4',
     title: 'Merge, diff & data PRs',
-    status: 'planned',
+    status: 'shipped',
+    when: 'July 2026',
     items: [
-      'Document-level diff between branches or against any historical state',
-      'Three-way merge with conflict detection',
-      'Reviewable merge plans — pull requests for data',
+      {
+        text: 'argon diff — document-level three-way diff between a branch and its parent',
+        done: true,
+      },
+      {
+        text: 'argon merge preview/apply — merge plans are persisted, reviewable, and applied exactly once against the heads they were computed for; conflicts are never resolved silently',
+        done: true,
+      },
+      {
+        text: 'Merges are ordinary history: attributed to an actor, and undoable with argon undo like any other range',
+        done: true,
+      },
     ],
   },
   {
     tag: 'M5',
     title: 'Agent ecosystem',
-    status: 'planned',
+    status: 'active',
+    statusLabel: 'MCP + sandboxes shipped · integrations remaining',
     items: [
-      'MCP server: agents open their own sandbox before risky data operations, then merge or discard',
+      {
+        text: 'MCP server (argon mcp): agents open their own sandbox, get a connection string, diff, merge, and undo — nine tools over stdio, with a supervised change-stream ingester per sandbox',
+        done: true,
+      },
+      {
+        text: 'TTL sandboxes (argon sandbox create/keep/discard/sweep): short-lived branches that clean up after themselves, storage reclaimed on discard',
+        done: true,
+      },
       'LangGraph checkpointer with fork and rewind',
-      'TTL sandboxes: short-lived branches that clean up after themselves',
       'Eval dataset pinning: reproducible evaluations against a fixed data version',
     ],
   },

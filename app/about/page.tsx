@@ -100,13 +100,13 @@ export default function AboutPage() {
           <div>
             <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
               <span className="status-dot bg-emerald-400" />
-              Working today (M1–M3 shipped)
+              Working today (M1–M4 + agent surface)
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>Deterministic WAL engine with branching &amp; time-travel</li>
-              <li>Snapshots, GC &amp; public reproducible benchmarks</li>
+              <li>Deterministic WAL engine; public reproducible benchmarks</li>
               <li>Branches check out as real MongoDB databases</li>
-              <li>argon undo — per-actor session rollback</li>
+              <li>argon diff / merge — reviewable data PRs; per-actor undo</li>
+              <li>TTL sandboxes + MCP server (argon mcp)</li>
             </ul>
           </div>
           <div>
@@ -116,8 +116,8 @@ export default function AboutPage() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
               <li>Official driver test suites in CI (M3&apos;s last box)</li>
-              <li>M4: merge, diff &amp; data PRs</li>
-              <li>M5: MCP server, LangGraph checkpointer, TTL sandboxes</li>
+              <li>LangGraph checkpointer with fork &amp; rewind</li>
+              <li>Eval dataset pinning</li>
               <li>Argon Cloud (waitlist open)</li>
             </ul>
           </div>

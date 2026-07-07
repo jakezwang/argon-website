@@ -96,7 +96,7 @@ export default function PricingPage() {
           title="Argon Cloud"
           price="Coming"
           tag="waitlist"
-          description="A managed service planned for after the v2 engine ships — zero maintenance, usage-based pricing."
+          description="A managed service on the rebuilt engine — zero maintenance, usage-based pricing."
           features={[
             'Fully managed infrastructure (planned)',
             'Web dashboard included (planned)',
@@ -120,7 +120,7 @@ export default function PricingPage() {
             },
             {
               q: 'When is Argon Cloud coming?',
-              a: "After the v2 engine milestones ship — see the roadmap. We'd rather launch a managed service on the rebuilt, benchmarked engine than rush one out. Waitlist members hear first.",
+              a: "The engine rebuild has shipped through M4 plus the agent surface (sandboxes, MCP) — the cloud is what comes next on the roadmap. We'd rather launch a managed service on the rebuilt, benchmarked engine than rush one out. Waitlist members hear first.",
             },
             {
               q: 'What MongoDB versions are supported?',

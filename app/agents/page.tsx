@@ -44,9 +44,9 @@ export default function AgentsPage() {
       <div className="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
         <Step
           n="1"
-          title="Check out a branch"
-          body="Branch creation is a metadata write; checkout materializes it into a physical MongoDB database and prints the connection string."
-          cmd="argon checkout -p app -b agent-run"
+          title="Open a sandbox"
+          body="Fork, checkout, and TTL-stamp in one command: an isolated physical MongoDB database with its own connection string. Expired sandboxes reap themselves — storage included."
+          cmd="argon sandbox create -p app --ttl 1h"
         />
         <Step
           n="2"
@@ -58,12 +58,12 @@ export default function AgentsPage() {
           n="3"
           title="Every write is on the record"
           body="Change streams capture each write with full before/after images and the actor that made it. The append-only log is your audit trail."
-          cmd="argon time-travel info -p app -b agent-run"
+          cmd="argon diff -p app -b agent-run"
         />
         <Step
           n="4"
-          title="Keep it — or undo it"
-          body="Revert everything one actor wrote in a range. Documents someone else touched afterwards are reported as conflicts, never silently clobbered. Undos are new history: auditable, and undoable in turn."
+          title="Merge it — or undo it"
+          body="argon merge preview persists a reviewable plan; apply executes it exactly once, conflicts never resolved silently. Or revert the agent's whole session — undos are new history: auditable, undoable in turn."
           cmd="argon undo -p app --actor agent:x --from-lsn 5001"
         />
       </div>
@@ -92,23 +92,48 @@ export default function AgentsPage() {
         </div>
       </div>
 
+      {/* MCP */}
+      <div className="mt-20 border-t border-brand-edge pt-10">
+        <p className="kicker mb-4">Model Context Protocol</p>
+        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-brand-text">
+          Agents drive the whole loop themselves
+        </h2>
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-brand-text-darker">
+          <code className="font-mono text-brand-primary">argon mcp</code> exposes
+          the workflow as nine MCP tools over stdio: open a sandbox (returns
+          the connection string), list branches, connect, diff, preview and
+          apply merges, undo with dry-run, snapshot, keep or discard. The
+          server supervises a change-stream ingester for every sandbox it
+          hands out, so agent writes become versioned history with no
+          babysitting.
+        </p>
+        <pre className="mt-6 max-w-xl overflow-x-auto border border-brand-edge bg-brand-surface px-4 py-3 font-mono text-sm text-brand-text">
+          <code>
+            <span className="text-brand-muted">$ </span>claude mcp add argon -- argon mcp
+          </code>
+        </pre>
+        <p className="mt-3 font-mono text-xs text-brand-muted">
+          Claude Code opens its own sandbox before risky data work, then
+          merges or discards it — undo included.
+        </p>
+      </div>
+
       {/* What's next */}
       <div className="mt-20 border-t border-brand-edge pt-10">
         <p className="kicker mb-6">Where this is going</p>
         <div className="grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2">
           <div className="bg-brand-dark p-6">
-            <h3 className="font-medium text-brand-text">M4 · Data PRs</h3>
+            <h3 className="font-medium text-brand-text">LangGraph checkpointer</h3>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
-              Document-level diff and three-way merge with reviewable merge
-              plans — adopt an agent&apos;s work the way you review code.
+              Fork and rewind conversation state the way you branch data —
+              the checkpointer that can go back to step 14 and try again.
             </p>
           </div>
           <div className="bg-brand-dark p-6">
-            <h3 className="font-medium text-brand-text">M5 · Agent ecosystem</h3>
+            <h3 className="font-medium text-brand-text">Eval dataset pinning</h3>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
-              MCP server so agents open their own sandboxes, LangGraph
-              checkpointer with fork and rewind, TTL branches that clean up
-              after themselves, eval dataset pinning.
+              Pin an evaluation to an exact LSN so results stay reproducible
+              even while the underlying corpus keeps moving.
             </p>
           </div>
         </div>

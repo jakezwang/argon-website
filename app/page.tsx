@@ -110,15 +110,15 @@ export default function HomePage() {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-3 font-mono text-xs">
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M1–M2 · deterministic engine + public benchmarks — shipped
+              M1–M4 · engine, benchmarks, branch databases, data PRs — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M3 · real branch databases + undo — shipped
+              M5 · MCP server + TTL sandboxes — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              M4 · merge, diff &amp; data PRs — next
+              next · LangGraph, eval pinning, driver-suite CI
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →
@@ -201,6 +201,8 @@ export default function HomePage() {
                   ['git branch feature-x', 'argon branches create feature-x', 'isolated branch in milliseconds'],
                   ['git checkout feature-x', 'argon checkout -b feature-x', 'a real MongoDB database + URI'],
                   ['git log', 'argon time-travel info', 'see every past state'],
+                  ['git diff main', 'argon diff', 'document-level three-way diff'],
+                  ['git merge + PR review', 'argon merge preview/apply', 'reviewable data PRs, exactly-once'],
                   ['git reset --hard', 'argon restore reset', 'rewind mistakes'],
                   ['git revert', 'argon undo --actor agent:x', 'revert one agent’s session'],
                 ].map(([git, argon, what]) => (
@@ -214,9 +216,11 @@ export default function HomePage() {
             </table>
           </div>
           <p className="mt-4 font-mono text-xs text-brand-muted">
-            merge &amp; diff land in M4 —{' '}
-            <Link href="/roadmap" className="text-brand-primary hover:underline">
-              roadmap
+            agents can drive all of this themselves via MCP:{' '}
+            <code className="text-brand-primary">claude mcp add argon -- argon mcp</code>
+            {' — '}
+            <Link href="/agents" className="text-brand-primary hover:underline">
+              see the agent workflow
             </Link>
           </p>
         </div>
@@ -281,7 +285,7 @@ export default function HomePage() {
               {
                 title: 'Risky migrations',
                 scenario: 'You need to test a schema change against real data.',
-                solution: 'Branch, run the migration, inspect the result. Promote it or delete the branch.',
+                solution: 'Branch, run the migration, argon diff the result. Merge it back through a reviewed plan — or delete the branch.',
               },
               {
                 title: 'The bad deploy',
