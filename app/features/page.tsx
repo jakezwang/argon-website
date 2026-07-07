@@ -29,35 +29,27 @@ export default function FeaturesPage() {
       {/* Key features */}
       <div className="mt-16 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2 lg:grid-cols-3">
         <FeatureCard index="/01" title="Millisecond branching">
-          Creating a branch writes metadata only — no database copies, no
-          backup/restore cycles. Measured: 0.86 ms p50 / 1.93 ms p99 on a
-          project with 50k-entry history, 479 bytes of storage per branch.
+          One metadata write — no copies at any size. Measured: 0.86 ms
+          p50, 479 bytes per branch.
         </FeatureCard>
         <FeatureCard index="/02" title="Time-travel queries">
-          Inspect your database as it was at any point in its history,
-          addressed by log sequence number or timestamp, and restore from any
-          of those states.
+          Inspect or restore any historical state, addressed by LSN or
+          timestamp.
         </FeatureCard>
         <FeatureCard index="/03" title="Deterministic by design">
-          Replay is a pure function, verified by property tests in CI: the
-          same history produces the same state every time, across processes
-          and instances.
+          Same history, same state — byte for byte, property-tested in CI.
         </FeatureCard>
         <FeatureCard index="/04" title="Agent &amp; eval workflows">
-          TTL sandboxes with per-actor undo, dataset pins that GC and reset
-          can never touch, and the argon-agents package: a LangGraph
-          checkpointer with fork and rewind, plus a Mem0 factory.
+          TTL sandboxes, per-actor undo, GC-proof dataset pins, and a
+          LangGraph checkpointer (argon-agents).
         </FeatureCard>
         <FeatureCard index="/05" title="Four surfaces, one engine">
-          A unified CLI for humans and CI, an MCP server for agents
-          (thirteen tools), a REST control plane for language SDKs, and a
-          wire proxy for stable per-branch connection strings.
+          CLI for humans · MCP for agents (13 tools) · REST for SDKs ·
+          wire proxy for stable URIs.
         </FeatureCard>
         <FeatureCard index="/06" title="Honest engineering">
-          Every performance number on this site comes from our public
-          benchmark suite — pinned engine ref, recorded environment,
-          reproducible with docker compose up. Numbers we can&apos;t back
-          don&apos;t get published.
+          Every number links to a benchmark you can run with docker compose
+          up. What we can&apos;t back, we don&apos;t publish.
         </FeatureCard>
       </div>
 

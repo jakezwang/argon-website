@@ -1,28 +1,7 @@
 import Link from 'next/link';
 import QuickStartCommand from './components/QuickStartCommand';
 import PeriodicTile from './components/PeriodicTile';
-
-const TerminalLine = ({
-  cmd,
-  out,
-}: {
-  cmd?: string;
-  out?: string[];
-}) => (
-  <div className="mb-3 last:mb-0">
-    {cmd && (
-      <p className="text-brand-text">
-        <span className="select-none text-brand-muted">$ </span>
-        {cmd}
-      </p>
-    )}
-    {out?.map((line, i) => (
-      <p key={i} className="pl-4 text-brand-muted">
-        {line}
-      </p>
-    ))}
-  </div>
-);
+import HeroDemo from './components/HeroDemo';
 
 const SectionHeading = ({
   index,
@@ -53,10 +32,8 @@ export default function HomePage() {
               The undo button for AI agents
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8">
-              Git-like branching, time travel, and rollback for MongoDB.
-              Give every agent session its own branch — a real MongoDB
-              database with its own connection string. Keep what works,
-              undo what doesn&apos;t.
+              AI agents write to your database. Argon makes every write
+              branchable, auditable, and reversible — like Git, for MongoDB.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -76,32 +53,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Terminal — a real session, no invented numbers */}
-          <div className="border border-brand-edge bg-brand-surface">
-            <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
-              <p className="font-mono text-xs text-brand-muted">argon · session</p>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-brand-muted">
-                simulated
-              </p>
-            </div>
-            <div className="overflow-x-auto p-5 font-mono text-[13px] leading-6">
-              <TerminalLine
-                cmd="argon branches create agent-run -p shop"
-                out={['branch created — metadata only, no data copied']}
-              />
-              <TerminalLine
-                cmd="argon checkout -p shop -b agent-run"
-                out={['branch is live: a real MongoDB database', 'mongodb://…/argon_br_9f2c1a — any driver connects']}
-              />
-              <TerminalLine
-                cmd="python agent.py --db mongodb://…/argon_br_9f2c1a"
-                out={['agent wrote 3,214 documents', 'every write captured with actor: agent:price-fixer']}
-              />
-              <TerminalLine
-                cmd="argon undo -p shop --actor agent:price-fixer --from-lsn 5001"
-                out={['3,214 documents reverted · 0 conflicts', 'compensations logged as new history — undoable']}
-              />
-            </div>
+          {/* The ten-second pitch: auto-looping mini demo */}
+          <div>
+            <HeroDemo />
+            <p className="mt-2 text-right font-mono text-xs">
+              <Link href="/demo" className="text-brand-primary hover:underline">
+                step through the full demo →
+              </Link>
+            </p>
           </div>
         </div>
 
@@ -149,28 +108,36 @@ export default function HomePage() {
               <div className="mt-12 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
                 {[
                   {
-                    n: '/01',
-                    title: 'Branch in milliseconds',
-                    body: 'A branch is one metadata document — parent, fork LSN, head LSN. No data is copied, whatever the database size. Measured: 0.86 ms p50 on a 50k-entry project, 479 bytes per branch.',
+                    stat: '0.86 ms',
+                    label: 'to create a branch — p50, measured on a 50k-entry project',
                   },
                   {
-                    n: '/02',
-                    title: 'Rewind anything',
-                    body: 'Every write is logged with full before/after document images. Restore to any point, or revert one agent’s entire session with argon undo --actor — conflicts reported, never clobbered.',
+                    stat: '479 B',
+                    label: 'of storage per branch — branches are metadata, not copies',
                   },
                   {
-                    n: '/03',
-                    title: 'Prove what happened',
-                    body: 'The write-ahead log is an audit trail: who wrote what, when, on which branch. Git blame, for your data.',
+                    stat: '1 command',
+                    label: 'to undo an entire agent session — conflicts reported, never clobbered',
                   },
                 ].map((item) => (
-                  <div key={item.n} className="bg-brand-dark p-6">
-                    <p className="font-mono text-xs text-brand-primary">{item.n}</p>
-                    <h3 className="mt-3 font-medium text-brand-text">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-6">{item.body}</p>
+                  <div key={item.stat} className="bg-brand-dark p-6">
+                    <p className="font-mono text-3xl text-brand-primary">{item.stat}</p>
+                    <p className="mt-2 text-sm leading-6">{item.label}</p>
                   </div>
                 ))}
               </div>
+              <p className="mt-3 font-mono text-xs text-brand-muted">
+                numbers from the{' '}
+                <a
+                  href="https://github.com/argon-lab/benchmarks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-primary hover:underline"
+                >
+                  public benchmark suite
+                </a>{' '}
+                — reproduce them with docker compose up
+              </p>
             </div>
           </div>
         </div>
@@ -234,30 +201,33 @@ export default function HomePage() {
               One idea, carried all the way through
             </h2>
           </SectionHeading>
-          <div className="grid gap-10 lg:grid-cols-3">
-            {[
-              {
-                step: '1',
-                title: 'Every write becomes a log entry',
-                body: 'Writes are recorded in an append-only write-ahead log with full document images and a global sequence number (LSN). The log is the source of truth.',
-              },
-              {
-                step: '2',
-                title: 'Branches are pointers',
-                body: 'A branch records where it forked and where its head is. Creating one costs a single metadata write; sibling branches can never see each other.',
-              },
-              {
-                step: '3',
-                title: 'Replay is deterministic',
-                body: 'State at any LSN is reconstructed by replaying the log — a pure function, property-tested in CI. The same history produces the same state, byte for byte.',
-              },
-            ].map((item) => (
-              <div key={item.step} className="border-l border-brand-edge pl-6">
-                <p className="font-mono text-2xl text-brand-primary">{item.step}</p>
-                <h3 className="mt-4 font-medium text-brand-text">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6">{item.body}</p>
-              </div>
-            ))}
+          <div className="flex flex-col items-stretch gap-3 font-mono text-sm lg:flex-row lg:items-center">
+            <div className="border border-brand-edge bg-brand-surface px-5 py-4 text-center">
+              <p className="text-brand-text">your app · your agents</p>
+              <p className="mt-1 text-xs text-brand-muted">any MongoDB driver, unchanged</p>
+            </div>
+            <p className="shrink-0 text-center text-brand-muted lg:px-1">
+              — every write →
+            </p>
+            <div className="border border-brand-primary/50 bg-brand-surface px-5 py-4 text-center">
+              <p className="text-brand-primary">append-only log</p>
+              <p className="mt-1 text-xs text-brand-muted">before/after images · who wrote it · LSN</p>
+            </div>
+            <p className="shrink-0 text-center text-brand-muted lg:px-1">
+              — views over it →
+            </p>
+            <div className="grid flex-1 gap-px border border-brand-edge bg-brand-edge sm:grid-cols-3">
+              {[
+                ['branches', 'real MongoDB databases'],
+                ['time travel', 'any state, by LSN or time'],
+                ['undo', 'per-actor, conflict-safe'],
+              ].map(([t, d]) => (
+                <div key={t} className="bg-brand-dark px-4 py-4 text-center">
+                  <p className="text-brand-text">{t}</p>
+                  <p className="mt-1 text-xs text-brand-muted">{d}</p>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="mt-10">
             <a
@@ -280,32 +250,28 @@ export default function HomePage() {
               Claims you can check
             </h2>
           </SectionHeading>
-          <div className="grid gap-px border border-brand-edge bg-brand-edge lg:grid-cols-3">
+          <div className="divide-y divide-brand-edge border border-brand-edge">
             {[
               {
-                title: 'Correctness first',
-                body: 'Replay determinism is enforced structurally and verified by property tests in CI — the same history always produces the same state.',
-                link: { label: 'see the tests', href: 'https://github.com/argon-lab/argon/tree/master/tests' },
+                text: 'Deterministic replay, property-tested in CI — same history, same state, byte for byte',
+                link: { label: 'tests', href: 'https://github.com/argon-lab/argon/tree/master/tests' },
               },
               {
-                title: 'No unverifiable numbers',
-                body: 'We removed every performance figure we couldn’t back. Every number on this site now comes from the public benchmark suite — pinned engine ref, recorded environment, reproducible with docker compose up.',
-                link: { label: 'run the benchmarks', href: 'https://github.com/argon-lab/benchmarks' },
+                text: 'Every number on this site reproduces with docker compose up',
+                link: { label: 'benchmarks', href: 'https://github.com/argon-lab/benchmarks' },
               },
               {
-                title: 'Your infrastructure',
-                body: 'MIT licensed, self-hosted, works with your own MongoDB — local or Atlas. Your data never leaves your environment.',
+                text: 'MIT licensed, self-hosted — your MongoDB, your data, your infrastructure',
                 link: { label: 'license', href: 'https://github.com/argon-lab/argon/blob/master/LICENSE' },
               },
             ].map((item) => (
-              <div key={item.title} className="bg-brand-dark p-6">
-                <h3 className="font-medium text-brand-text">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6">{item.body}</p>
+              <div key={item.link.label} className="flex flex-wrap items-center justify-between gap-2 px-5 py-4">
+                <p className="text-sm text-brand-text-darker">{item.text}</p>
                 <a
                   href={item.link.href}
-                  target={item.link.href.startsWith('http') ? '_blank' : undefined}
-                  rel={item.link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="mt-4 inline-block font-mono text-xs text-brand-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-brand-primary hover:underline"
                 >
                   {item.link.label} →
                 </a>

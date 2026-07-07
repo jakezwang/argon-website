@@ -36,6 +36,7 @@ export interface GraphStep {
 }
 export interface FlowGraph {
   height: number;
+  width?: number;
   lanes: GraphLane[];
   nodes: GraphNode[];
   edges: GraphEdge[];
@@ -74,7 +75,7 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
   return (
     <svg
       width="100%"
-      viewBox={`0 0 1000 ${graph.height}`}
+      viewBox={`0 0 ${graph.width ?? 1000} ${graph.height}`}
       role="img"
       aria-label="Branch and commit history graph"
       className="block"
