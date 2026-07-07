@@ -23,8 +23,7 @@ export default function DemoPage() {
         </h2>
         <p className="mt-3 max-w-2xl leading-8">
           Self-host Argon with the open source version — sixty seconds from
-          install to your first branch. There&apos;s also a hosted demo
-          console if you want to click around first.
+          install to your first branch.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -35,19 +34,7 @@ export default function DemoPage() {
           >
             Quick start guide
           </Link>
-          <a
-            href="https://console.argonlabs.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-quiet"
-          >
-            Open the demo console
-          </a>
         </div>
-        <p className="mt-3 font-mono text-xs text-brand-muted">
-          The console is a demo instance — the product is the open-source
-          engine.
-        </p>
       </section>
     </div>
   );
