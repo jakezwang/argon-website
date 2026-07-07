@@ -25,7 +25,8 @@ export default function DemoPage() {
           Self-host Argon with the open source version — sixty seconds from
           install to your first branch. Or click around a hosted demo
           first: no login, your own disposable sandbox project, gone in an
-          hour.
+          hour. It opens with a one-minute guided tour of the whole loop —
+          branch, agent session, time travel, merge, undo.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
