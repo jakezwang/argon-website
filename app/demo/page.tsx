@@ -5,15 +5,15 @@ export default function DemoPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
       <p className="kicker mb-4">Demo</p>
-      <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
+      <h1 className="text-3xl font-semibold tracking-tight text-brand-text">
         Argon in action
       </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-8">
-        Simulated walkthroughs of real workflows for developers and ML
-        engineers — step through the commands at your own pace.
+      <p className="mt-2 max-w-2xl text-base leading-7">
+        Step through real workflows — terminal, database view, and history
+        graph move together.
       </p>
 
-      <section className="mt-14">
+      <section className="mt-8">
         <InteractiveDemo />
       </section>
 

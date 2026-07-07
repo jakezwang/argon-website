@@ -52,18 +52,23 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
   const byId = Object.fromEntries(graph.nodes.map((n) => [n.id, n]));
   const state = step >= 0 ? graph.steps[Math.min(step, graph.steps.length - 1)] : undefined;
 
+  // Bends start after a straight lead segment so curves never sweep through
+  // the LSN labels that sit under their source (or target) node.
   const edgePath = (e: GraphEdge) => {
     const a = byId[e.from];
     const b = byId[e.to];
-    if (a.y === b.y) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
-    if (a.x === b.x) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
-    const w = Math.min(90, Math.abs(b.x - a.x));
+    if (a.y === b.y || a.x === b.x) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+    const dx = Math.abs(b.x - a.x);
+    const lead = Math.min(60, Math.max(0, dx - 100));
+    const w = Math.min(90, dx - lead);
     if (e.curve === 'target') {
-      const x0 = b.x - w;
-      return `M ${a.x} ${a.y} L ${x0} ${a.y} C ${x0 + w / 2} ${a.y}, ${x0 + w / 2} ${b.y}, ${b.x} ${b.y}`;
+      const x0 = b.x - lead - w;
+      const x1 = b.x - lead;
+      return `M ${a.x} ${a.y} L ${x0} ${a.y} C ${x0 + w / 2} ${a.y}, ${x0 + w / 2} ${b.y}, ${x1} ${b.y} L ${b.x} ${b.y}`;
     }
-    const x1 = a.x + w;
-    return `M ${a.x} ${a.y} C ${a.x + w / 2} ${a.y}, ${a.x + w / 2} ${b.y}, ${x1} ${b.y} L ${b.x} ${b.y}`;
+    const x0 = a.x + lead;
+    const x1 = x0 + w;
+    return `M ${a.x} ${a.y} L ${x0} ${a.y} C ${x0 + w / 2} ${a.y}, ${x0 + w / 2} ${b.y}, ${x1} ${b.y} L ${b.x} ${b.y}`;
   };
 
   return (
@@ -156,12 +161,12 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
             )}
             {n.sub && (
               <text
-                x={n.x}
-                y={n.y + (n.pin ? -12 : 20)}
+                x={n.pin ? n.x - 12 : n.x}
+                y={n.pin ? n.y + 3 : n.y + 17}
                 fontSize={10}
                 fontFamily="var(--font-mono), monospace"
                 fill="#6E7891"
-                textAnchor="middle"
+                textAnchor={n.pin ? 'end' : 'middle'}
               >
                 {n.sub}
               </text>

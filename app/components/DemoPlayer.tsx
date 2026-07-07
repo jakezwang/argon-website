@@ -136,6 +136,15 @@ export default function DemoPlayer({
       }}
       className="outline-none focus-visible:outline-none"
     >
+      {/* Current step, one line */}
+      <p className="mb-3 font-mono text-xs text-brand-text-darker">
+        <span className="text-brand-primary">
+          step {safeIdx + 1}/{steps.length}
+        </span>
+        {' · '}
+        {step.description}
+      </p>
+
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Terminal */}
         <div className="flex flex-col border border-brand-edge bg-brand-surface">
@@ -149,7 +158,7 @@ export default function DemoPlayer({
             ref={scrollRef}
             onClick={skip}
             title={done ? undefined : 'Click to skip the animation'}
-            className={`h-96 overflow-y-auto p-4 font-mono text-[13px] leading-6 ${
+            className={`h-72 overflow-y-auto p-4 font-mono text-[13px] leading-6 ${
               done ? '' : 'cursor-pointer'
             }`}
           >
@@ -189,7 +198,7 @@ export default function DemoPlayer({
               {panelKind}
             </p>
           </div>
-          <div className="h-96 overflow-y-auto p-4 font-mono text-xs leading-6">
+          <div className="h-72 overflow-y-auto p-4 font-mono text-xs leading-6">
             {panel.note && <p className="mb-3 text-brand-muted">// {panel.note}</p>}
             {panel.sections.length === 0 && !panel.note && (
               <p className="text-brand-muted">// empty</p>
@@ -250,9 +259,24 @@ export default function DemoPlayer({
             Next →
           </button>
         </div>
-        <p className="hidden font-mono text-xs text-brand-muted sm:block">
-          arrow keys work too · click the terminal to skip
-        </p>
+        <div className="flex flex-wrap items-center gap-1.5">
+          {steps.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => goTo(i, false)}
+              title={s.description}
+              className={`h-7 w-7 border font-mono text-[11px] transition-colors ${
+                i === safeIdx
+                  ? 'border-brand-primary text-brand-primary'
+                  : i < safeIdx
+                    ? 'border-brand-edge text-brand-muted hover:text-brand-text'
+                    : 'border-brand-edge text-brand-text-darker hover:text-brand-text'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
         <button
           onClick={() => goTo(0, true)}
           className="btn-quiet px-4 py-1.5 font-mono text-sm"
@@ -261,25 +285,6 @@ export default function DemoPlayer({
         </button>
       </div>
 
-      {/* Step list — click to jump */}
-      <div className="mt-4 divide-y divide-brand-edge border border-brand-edge">
-        {steps.map((s, i) => (
-          <button
-            key={s.id}
-            onClick={() => goTo(i, false)}
-            className={`flex w-full items-center gap-3 px-4 py-2 text-left text-xs transition-colors ${
-              i === safeIdx
-                ? 'bg-brand-surface text-brand-primary'
-                : i < safeIdx
-                  ? 'text-brand-muted hover:text-brand-text'
-                  : 'text-brand-text-darker hover:text-brand-text'
-            }`}
-          >
-            <span className="font-mono">{String(i + 1).padStart(2, '0')}</span>
-            <span>{s.description}</span>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

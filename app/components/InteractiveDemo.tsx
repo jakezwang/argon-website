@@ -9,18 +9,18 @@ import { FlowGraph } from './GitGraph';
 // the corresponding command completes.
 
 const cliGraph: FlowGraph = {
-  height: 160,
+  height: 128,
   lanes: [
-    { name: 'main', y: 44 },
-    { name: 'feature-x', y: 110 },
+    { name: 'main', y: 36 },
+    { name: 'feature-x', y: 94 },
   ],
   nodes: [
-    { id: 'm0', x: 120, y: 44, lane: 0, sub: 'LSN 0', appearAt: 0 },
-    { id: 'm1', x: 280, y: 44, lane: 0, sub: 'LSN 3 · import', appearAt: 1 },
-    { id: 'b0', x: 430, y: 110, lane: 1, sub: 'fork @ 3', appearAt: 2 },
-    { id: 'b1', x: 620, y: 110, lane: 1, sub: 'LSN 5 · writes', appearAt: 4 },
-    { id: 'plan', x: 810, y: 44, lane: 0, sub: 'plan_7d31 · pending', appearAt: 6, hideAt: 7, ghost: true },
-    { id: 'm2', x: 810, y: 44, lane: 0, sub: 'LSN 8 · merge', appearAt: 7 },
+    { id: 'm0', x: 120, y: 36, lane: 0, sub: 'LSN 0', appearAt: 0 },
+    { id: 'm1', x: 280, y: 36, lane: 0, sub: 'LSN 3 · import', appearAt: 1 },
+    { id: 'b0', x: 430, y: 94, lane: 1, sub: 'fork @ 3', appearAt: 2 },
+    { id: 'b1', x: 620, y: 94, lane: 1, sub: 'LSN 5 · writes', appearAt: 4 },
+    { id: 'plan', x: 810, y: 36, lane: 0, sub: 'plan_7d31 · pending', appearAt: 6, hideAt: 7, ghost: true },
+    { id: 'm2', x: 810, y: 36, lane: 0, sub: 'LSN 8 · merge', appearAt: 7 },
   ],
   edges: [
     { from: 'm0', to: 'm1', appearAt: 1 },
@@ -44,26 +44,26 @@ const cliGraph: FlowGraph = {
 };
 
 const agentGraph: FlowGraph = {
-  height: 200,
+  height: 168,
   lanes: [
-    { name: 'prod/main', y: 40 },
-    { name: 'sandbox-f81a', y: 104 },
-    { name: 'eval run', y: 164 },
+    { name: 'prod/main', y: 32 },
+    { name: 'sandbox-f81a', y: 88 },
+    { name: 'eval run', y: 140 },
   ],
   nodes: [
-    { id: 'm0', x: 130, y: 40, lane: 0, sub: 'LSN 8112', appearAt: 0 },
-    { id: 's0', x: 330, y: 104, lane: 1, sub: 'fork · ttl 1h', appearAt: 0 },
-    { id: 's1', x: 530, y: 104, lane: 1, sub: '+3,214 writes', appearAt: 1 },
-    { id: 's2', x: 730, y: 104, lane: 1, sub: 'undo · compensations', appearAt: 3 },
-    { id: 'pin', x: 130, y: 12, lane: 2, sub: 'pin: eval-2026-07', appearAt: 4, pin: true },
-    { id: 'e0', x: 530, y: 164, lane: 2, sub: 'fork from pin', appearAt: 5 },
+    { id: 'm0', x: 130, y: 32, lane: 0, sub: 'LSN 8112', appearAt: 0 },
+    { id: 's0', x: 330, y: 88, lane: 1, sub: 'fork · ttl 1h', appearAt: 0 },
+    { id: 's1', x: 530, y: 88, lane: 1, sub: '+3,214 writes', appearAt: 1 },
+    { id: 's2', x: 730, y: 88, lane: 1, sub: 'undo · compensations', appearAt: 3 },
+    { id: 'pin', x: 130, y: 10, lane: 2, sub: 'eval-2026-07', appearAt: 4, pin: true },
+    { id: 'e0', x: 530, y: 140, lane: 2, sub: 'fork from pin', appearAt: 5 },
   ],
   edges: [
     { from: 'm0', to: 's0', appearAt: 0 },
     { from: 's0', to: 's1', appearAt: 1 },
     { from: 's1', to: 's2', appearAt: 3 },
     { from: 'm0', to: 'pin', appearAt: 4, ghost: true },
-    { from: 'm0', to: 'e0', appearAt: 5 },
+    { from: 'pin', to: 'e0', appearAt: 5 },
   ],
   steps: [
     { head: 's0', caption: 'sandbox forks prod @ LSN 8112 — TTL reaps it in 1h' },
@@ -558,21 +558,11 @@ export default function InteractiveDemo() {
 
       {/* Description */}
       <div className="mb-8 text-center">
-        <h3 className="mb-2 text-2xl font-semibold text-brand-text">
-          {activeTab === 'cli' && 'The full loop, from branch to data PR'}
-          {activeTab === 'agent' && 'Sandbox an agent, audit it, undo it, pin the eval'}
-          {activeTab === 'surfaces' && 'Four surfaces, one engine'}
-        </h3>
-        <p className="text-brand-text-darker">
-          {activeTab === 'cli' &&
-            'The terminal drives; the right panel shows what your database looks like after each command.'}
-          {activeTab === 'agent' &&
-            'TTL sandboxes with per-actor attribution, session undo, and pinned datasets for reproducible evals.'}
-          {activeTab === 'surfaces' &&
-            'The CLI for humans and CI, MCP for agents, REST for SDKs, and a wire proxy for stable URIs.'}
-        </p>
-        <p className="mt-2 text-xs text-brand-text-darker opacity-70">
-          Simulated walkthrough for illustration — outputs are not live measurements.
+        <p className="text-sm text-brand-text-darker">
+          {activeTab === 'cli' && 'The full loop, from branch to data PR — the terminal drives, the panels follow.'}
+          {activeTab === 'agent' && 'Sandbox an agent, audit it, undo it, pin the eval.'}
+          {activeTab === 'surfaces' && 'Four surfaces, one engine: CLI, MCP, REST, wire proxy.'}
+          <span className="opacity-60"> · simulated</span>
         </p>
       </div>
 
