@@ -10,8 +10,8 @@ export default function DemoPage() {
             Argon in Action
           </h1>
           <p className="mt-6 text-xl leading-8 text-brand-text-darker">
-            Experience Argon's power through interactive demos. See real-world workflows for
-            developers and ML engineers with live performance metrics.
+            Experience Argon's power through interactive demos. Simulated walkthroughs of
+            real workflows for developers and ML engineers.
           </p>
         </div>
 
