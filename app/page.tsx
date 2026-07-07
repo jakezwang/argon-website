@@ -111,8 +111,12 @@ export default function HomePage() {
               M1 · deterministic replay — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
+              <span className="status-dot bg-emerald-400" />
+              M2 · snapshot engine, GC &amp; chunk stores — shipped
+            </span>
+            <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              M2 · snapshots &amp; public benchmarks — in progress
+              public benchmarks — in progress
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →

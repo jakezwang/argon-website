@@ -8,12 +8,15 @@ const statusStyle: Record<Status, { dot: string; label: string }> = {
   planned: { dot: 'bg-brand-muted', label: 'planned' },
 };
 
+type Item = string | { text: string; done: boolean };
+
 const milestones: {
   tag: string;
   title: string;
   status: Status;
+  statusLabel?: string;
   when?: string;
-  items: string[];
+  items: Item[];
 }[] = [
   {
     tag: 'M1',
@@ -32,9 +35,20 @@ const milestones: {
     tag: 'M2',
     title: 'Bounded time travel',
     status: 'active',
+    statusLabel: 'engine shipped · benchmarks in progress',
     items: [
-      'Snapshot layer: content-addressed, compressed checkpoints so time-travel replays a bounded window instead of full history (first pieces merged)',
-      'WAL segmentation with cold storage offload and garbage collection — storage stops growing without bound',
+      {
+        text: 'Snapshot layer: content-addressed, compressed checkpoints so time-travel replays a bounded window instead of full history — taken automatically off the write path',
+        done: true,
+      },
+      {
+        text: 'Retention-window WAL garbage collection and full storage reclamation of deleted branches — storage stops growing without bound',
+        done: true,
+      },
+      {
+        text: 'Pluggable snapshot chunk stores: MongoDB (default), S3-compatible object storage, or filesystem',
+        done: true,
+      },
       'A public benchmark repo: every performance number on this site will link to a run you can reproduce with docker compose up',
     ],
   },
@@ -99,17 +113,32 @@ export default function RoadmapPage() {
                   <span className="text-brand-primary">{m.tag}</span> · {m.title}
                 </h2>
                 <span className="font-mono text-xs uppercase tracking-wider text-brand-muted">
-                  {s.label}
+                  {m.statusLabel ?? s.label}
                   {m.when ? ` · ${m.when}` : ''}
                 </span>
               </div>
               <ul className="mt-4 space-y-2.5">
-                {m.items.map((item, j) => (
-                  <li key={j} className="flex gap-3 text-sm leading-6 text-brand-text-darker">
-                    <span className="select-none font-mono text-brand-muted">–</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
+                {m.items.map((item, j) => {
+                  const text = typeof item === 'string' ? item : item.text;
+                  const done = typeof item === 'string' ? false : item.done;
+                  return (
+                    <li key={j} className="flex gap-3 text-sm leading-6 text-brand-text-darker">
+                      <span
+                        className={`select-none font-mono ${done ? 'text-emerald-400' : 'text-brand-muted'}`}
+                      >
+                        –
+                      </span>
+                      <span>
+                        {text}
+                        {done && (
+                          <span className="ml-2 font-mono text-xs uppercase tracking-wider text-emerald-400">
+                            shipped
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           );
