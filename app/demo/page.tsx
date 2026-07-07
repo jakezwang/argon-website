@@ -37,7 +37,7 @@ export default function DemoPage() {
             Quick start guide
           </Link>
           <a
-            href="https://argon-demo-159867561954.us-central1.run.app"
+            href="https://console.argonlabs.tech"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-quiet"
