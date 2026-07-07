@@ -26,17 +26,15 @@ export default function DemoPage() {
             Ready to Try It Yourself?
           </h2>
           <p className="text-lg text-brand-text-darker mb-8">
-            Get started with Argon instantly in the cloud or follow our guide to self-host.
-            Our comprehensive documentation covers installation and advanced use cases.
+            Self-host Argon today with our open source version — or join the waitlist
+            for the managed cloud service coming after the v2 engine ships.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="https://console.argonlabs.tech"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/pricing"
               className="inline-block bg-brand-primary text-brand-dark hover:bg-brand-secondary hover:text-white font-semibold px-8 py-3 rounded-lg shadow-lg transform transition-transform duration-150 hover:scale-105"
             >
-              Try Cloud Console &rarr;
+              Join the Cloud Waitlist &rarr;
             </Link>
             <Link
               href="https://github.com/argon-lab/argon/blob/master/README.md"

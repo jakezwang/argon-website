@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/investors", label: "Investors" },
   { href: "https://github.com/argon-lab/argon/blob/master/README.md", label: "Docs", target: "_blank" },
   { href: "https://github.com/argon-lab/argon", label: "GitHub", target: "_blank" },
-  { href: "https://console.argonlabs.tech", label: "Cloud Console", target: "_blank", isButton: true },
+  { href: "/pricing", label: "Cloud (Waitlist)", isButton: true },
 ];
 
 export default function Navbar() {
