@@ -405,12 +405,16 @@ const surfaceSteps: DemoStep[] = [
   },
   {
     id: 'agents-pkg',
-    command: 'python -c "from argon_agents import checkpointer"',
+    command: 'pip install "argon-agents[langgraph]"',
     description: 'argon-agents: LangGraph checkpointer + Mem0 factory',
-    output: ['LangGraph checkpointer with fork and rewind', 'Mem0 factory on the same REST control plane'],
+    output: [
+      'Successfully installed argon-agents-0.1.0',
+      'LangGraph checkpointer with fork and rewind',
+      'Mem0 factory on the same REST control plane',
+    ],
     panel: {
-      title: 'argon-agents (Python)',
-      note: 'PyPI publication pending — source ships with the engine',
+      title: 'argon-agents 0.1.0 (PyPI)',
+      note: 'CI runs the real engine stack: checkpoint round-trips, pinned eval datasets',
       sections: [
         {
           name: 'surface',

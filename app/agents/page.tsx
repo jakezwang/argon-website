@@ -128,9 +128,11 @@ export default function AgentsPage() {
               <span className="font-mono text-[11px] uppercase tracking-wider text-emerald-400">shipped</span>
             </div>
             <p className="mt-2 text-sm leading-6 text-brand-text-darker">
-              Fork and rewind conversation state the way you branch data —
-              in the <code className="font-mono text-brand-primary">argon-agents</code> Python
-              package, alongside a Mem0 factory, on the REST API.
+              Fork and rewind conversation state the way you branch data —{' '}
+              <code className="font-mono text-brand-primary">
+                pip install &quot;argon-agents[langgraph]&quot;
+              </code>
+              , alongside a Mem0 factory, on the REST API.
             </p>
           </div>
           <div className="bg-brand-dark p-6">
