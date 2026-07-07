@@ -23,7 +23,9 @@ export default function DemoPage() {
         </h2>
         <p className="mt-3 max-w-2xl leading-8">
           Self-host Argon with the open source version — sixty seconds from
-          install to your first branch.
+          install to your first branch. Or click around a hosted demo
+          first: no login, your own disposable sandbox project, gone in an
+          hour.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -34,7 +36,19 @@ export default function DemoPage() {
           >
             Quick start guide
           </Link>
+          <a
+            href="https://argon-demo-159867561954.us-central1.run.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-quiet"
+          >
+            Open the demo console
+          </a>
         </div>
+        <p className="mt-3 font-mono text-xs text-brand-muted">
+          The console is an anonymous demo sandbox — the product is the
+          open-source engine.
+        </p>
       </section>
     </div>
   );
