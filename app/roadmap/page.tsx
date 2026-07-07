@@ -34,8 +34,8 @@ const milestones: {
   {
     tag: 'M2',
     title: 'Bounded time travel',
-    status: 'active',
-    statusLabel: 'engine shipped · benchmarks in progress',
+    status: 'shipped',
+    when: 'July 2026',
     items: [
       {
         text: 'Snapshot layer: content-addressed, compressed checkpoints so time-travel replays a bounded window instead of full history — taken automatically off the write path',
@@ -49,17 +49,26 @@ const milestones: {
         text: 'Pluggable snapshot chunk stores: MongoDB (default), S3-compatible object storage, or filesystem',
         done: true,
       },
-      'A public benchmark repo: every performance number on this site will link to a run you can reproduce with docker compose up',
+      {
+        text: 'Public benchmark suite (github.com/argon-lab/benchmarks): every performance number on this site links to a run you can reproduce with docker compose up',
+        done: true,
+      },
     ],
   },
   {
     tag: 'M3',
     title: 'True drop-in',
-    status: 'planned',
+    status: 'active',
     items: [
-      'One physical MongoDB database per branch — real mongod executes your queries, so every operator, index, and aggregation just works',
-      'Write capture via change streams with pre/post images',
-      'Per-branch connection strings: pymongo and mongoose work unchanged',
+      {
+        text: 'One physical MongoDB database per branch — real mongod executes your queries, so every operator, index, and aggregation just works',
+        done: true,
+      },
+      {
+        text: 'Write capture via change streams with pre/post images',
+        done: true,
+      },
+      'Per-branch connection strings: pymongo and mongoose work unchanged — claimed only once official driver test suites pass',
       'argon undo --session: roll back everything an AI agent wrote, in one command',
     ],
   },

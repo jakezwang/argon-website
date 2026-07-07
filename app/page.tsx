@@ -112,11 +112,11 @@ export default function HomePage() {
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-emerald-400" />
-              M2 · snapshot engine, GC &amp; chunk stores — shipped
+              M2 · bounded time travel + public benchmarks — shipped
             </span>
             <span className="flex items-center gap-2 text-brand-text-darker">
               <span className="status-dot bg-amber-400" />
-              public benchmarks — in progress
+              M3 · true drop-in — in progress
             </span>
             <Link href="/roadmap" className="text-brand-primary hover:underline">
               full roadmap →
@@ -149,7 +149,7 @@ export default function HomePage() {
                   {
                     n: '/01',
                     title: 'Branch in milliseconds',
-                    body: 'A branch is one metadata document — parent, fork LSN, head LSN. No data is copied, whatever the database size.',
+                    body: 'A branch is one metadata document — parent, fork LSN, head LSN. No data is copied, whatever the database size. Measured: 0.86 ms p50 on a 50k-entry project, 479 bytes per branch.',
                   },
                   {
                     n: '/02',
@@ -327,8 +327,8 @@ export default function HomePage() {
               },
               {
                 title: 'No unverifiable numbers',
-                body: 'We removed every performance figure we couldn’t back. When the public benchmark suite ships with M2, each number will link to a run you can reproduce.',
-                link: { label: 'roadmap', href: '/roadmap' },
+                body: 'We removed every performance figure we couldn’t back. Every number on this site now comes from the public benchmark suite — pinned engine ref, recorded environment, reproducible with docker compose up.',
+                link: { label: 'run the benchmarks', href: 'https://github.com/argon-lab/benchmarks' },
               },
               {
                 title: 'Your infrastructure',

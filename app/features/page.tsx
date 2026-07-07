@@ -32,8 +32,8 @@ export default function FeaturesPage() {
       <div className="mt-16 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2 lg:grid-cols-3">
         <FeatureCard index="/01" title="Millisecond branching">
           Creating a branch writes metadata only — no database copies, no
-          backup/restore cycles. Branches share history through LSN pointers
-          into the write-ahead log.
+          backup/restore cycles. Measured: 0.86 ms p50 / 1.93 ms p99 on a
+          project with 50k-entry history, 479 bytes of storage per branch.
         </FeatureCard>
         <FeatureCard index="/02" title="Time-travel queries">
           Inspect your database as it was at any point in its history,
@@ -54,9 +54,10 @@ export default function FeaturesPage() {
           Homebrew, npm, or pip for cross-platform support.
         </FeatureCard>
         <FeatureCard index="/06" title="Honest engineering">
-          Every performance number we publish will link to a reproducible
-          benchmark (coming with Milestone 2). Until then, we&apos;d rather
-          show you the tests than the adjectives.
+          Every performance number on this site comes from our public
+          benchmark suite — pinned engine ref, recorded environment,
+          reproducible with docker compose up. Numbers we can&apos;t back
+          don&apos;t get published.
         </FeatureCard>
       </div>
 
@@ -131,6 +132,14 @@ export default function FeaturesPage() {
             className="prose-link"
           >
             Architecture deep dive →
+          </a>
+          <a
+            href="https://github.com/argon-lab/benchmarks"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="prose-link"
+          >
+            Run the benchmarks →
           </a>
           <Link href="/roadmap" className="prose-link">
             Roadmap →
