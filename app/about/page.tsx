@@ -36,9 +36,10 @@ export default function AboutPage() {
               Founder
             </p>
             <p className="mt-3 text-sm leading-6">
-              Software engineer with experience at MongoDB, LinkedIn, and
-              Bloomberg. Created Argon to bring Git-like workflows to MongoDB
-              for ML teams.
+              Software engineer, previously at MongoDB, LinkedIn, and
+              Bloomberg. Building Argon to give MongoDB the Git-style
+              branching, merge, and time travel it never had — and to make
+              databases something AI agents can work in without fear.
             </p>
           </div>
           <div className="border border-brand-edge bg-brand-surface p-8">
