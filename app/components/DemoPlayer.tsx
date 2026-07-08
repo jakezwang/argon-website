@@ -32,9 +32,9 @@ interface DemoPlayerProps {
   graph?: FlowGraph;
 }
 
-const TYPE_MS = 14;
-const LINE_MS = 110;
-const DWELL_MS = 1500;
+const TYPE_MS = 16;
+const LINE_MS = 130;
+const DWELL_MS = 3000;
 
 const statusStyle: Record<NonNullable<PanelLine['status']> | 'default', string> = {
   added: 'text-emerald-400',
@@ -63,10 +63,9 @@ export default function DemoPlayer({
   const [chars, setChars] = useState(0);
   const [lines, setLines] = useState(0);
   // Auto-plays through the flow on load so the panels fill and the story
-  // tells itself; the first manual interaction hands control to the user.
-  const [auto, setAuto] = useState(true);
-  const autoRef = useRef(true);
-  const advanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // tells itself; a Pause button (or any manual control) stops it, and Play
+  // resumes from wherever you are.
+  const [playing, setPlaying] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const safeIdx = Math.min(idx, steps.length - 1);
@@ -75,27 +74,14 @@ export default function DemoPlayer({
   const outputDone = lines >= step.output.length;
   const done = typingDone && outputDone;
 
-  // Animation driver. One effect per step owns the whole chain — type the
-  // command, reveal the output, then (while auto-playing) dwell and advance.
-  // Keeping the auto-advance inside this effect avoids racing a separate
-  // done-watcher that could clear the typing timer mid-step. Remounting
-  // (key per tab) means switching flows never leaves stale timers behind.
+  // Typing animation for the current step. Types the command, then reveals
+  // the output line by line. Runs once per step (remounting per tab means
+  // switching flows never leaves stale timers behind).
   useEffect(() => {
-    const scheduleAdvance = () => {
-      if (autoRef.current && safeIdx < steps.length - 1) {
-        advanceRef.current = setTimeout(() => {
-          setInstant(false);
-          setIdx((i) => i + 1);
-        }, DWELL_MS);
-      }
-    };
     if (instant) {
       setChars(step.command.length);
       setLines(step.output.length);
-      scheduleAdvance();
-      return () => {
-        if (advanceRef.current) clearTimeout(advanceRef.current);
-      };
+      return;
     }
     setChars(0);
     setLines(0);
@@ -110,19 +96,27 @@ export default function DemoPlayer({
         outputTimer = setInterval(() => {
           l += 1;
           setLines(l);
-          if (l >= step.output.length && outputTimer) {
-            clearInterval(outputTimer);
-            scheduleAdvance();
-          }
+          if (l >= step.output.length && outputTimer) clearInterval(outputTimer);
         }, LINE_MS);
       }
     }, TYPE_MS);
     return () => {
       clearInterval(typeTimer);
       if (outputTimer) clearInterval(outputTimer);
-      if (advanceRef.current) clearTimeout(advanceRef.current);
     };
-  }, [safeIdx, instant, step, steps.length]);
+  }, [safeIdx, instant, step]);
+
+  // Auto-advance: while playing, once a step has finished, dwell (long enough
+  // to read it), then move on. Pausing (playing=false) cancels the pending
+  // advance; pressing Play while a finished step is showing reschedules it.
+  useEffect(() => {
+    if (!playing || !done || safeIdx >= steps.length - 1) return;
+    const t = setTimeout(() => {
+      setInstant(false);
+      setIdx((i) => i + 1);
+    }, DWELL_MS);
+    return () => clearTimeout(t);
+  }, [playing, done, safeIdx, steps.length]);
 
   // Keep the terminal scrolled to the newest line.
   useEffect(() => {
@@ -134,10 +128,18 @@ export default function DemoPlayer({
     setInstant(!animate);
     setIdx(i);
   };
-  const stop = () => {
-    autoRef.current = false;
-    if (advanceRef.current) clearTimeout(advanceRef.current);
-    setAuto(false);
+  const pause = () => setPlaying(false);
+  const atEnd = safeIdx === steps.length - 1 && done;
+  const togglePlay = () => {
+    if (playing) {
+      setPlaying(false);
+    } else {
+      if (atEnd) {
+        setInstant(false);
+        setIdx(0);
+      }
+      setPlaying(true);
+    }
   };
   const skip = () => {
     if (!done) setInstant(true);
@@ -160,11 +162,11 @@ export default function DemoPlayer({
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'ArrowRight') {
-          stop();
+          pause();
           next();
         }
         if (e.key === 'ArrowLeft') {
-          stop();
+          pause();
           prev();
         }
       }}
@@ -176,10 +178,10 @@ export default function DemoPlayer({
           step {safeIdx + 1}/{steps.length}
         </span>
         <span>· {step.description}</span>
-        {auto && (
+        {playing && (
           <span className="flex items-center gap-1.5 text-brand-muted">
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand-primary" />
-            playing — click anything to take over
+            auto-playing
           </span>
         )}
       </p>
@@ -196,7 +198,7 @@ export default function DemoPlayer({
           <div
             ref={scrollRef}
             onClick={() => {
-              stop();
+              pause();
               skip();
             }}
             title={done ? undefined : 'Click to skip the animation'}
@@ -287,8 +289,14 @@ export default function DemoPlayer({
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
           <button
+            onClick={togglePlay}
+            className="btn-solid px-5 py-1.5 font-mono text-sm"
+          >
+            {playing ? '❙❙ Pause' : atEnd ? '↺ Replay' : '▶ Play'}
+          </button>
+          <button
             onClick={() => {
-              stop();
+              pause();
               prev();
             }}
             disabled={safeIdx === 0}
@@ -298,11 +306,11 @@ export default function DemoPlayer({
           </button>
           <button
             onClick={() => {
-              stop();
+              pause();
               next();
             }}
             disabled={safeIdx === steps.length - 1 && done}
-            className="btn-solid px-5 py-1.5 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-40"
+            className="btn-quiet px-4 py-1.5 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next →
           </button>
@@ -312,7 +320,7 @@ export default function DemoPlayer({
             <button
               key={s.id}
               onClick={() => {
-                stop();
+                pause();
                 goTo(i, false);
               }}
               title={s.description}
@@ -330,14 +338,13 @@ export default function DemoPlayer({
         </div>
         <button
           onClick={() => {
-            autoRef.current = true;
-            setAuto(true);
             setInstant(false);
             setIdx(0);
+            setPlaying(true);
           }}
           className="btn-quiet px-4 py-1.5 font-mono text-sm"
         >
-          {auto ? 'Restart' : 'Replay'}
+          Restart
         </button>
       </div>
 
