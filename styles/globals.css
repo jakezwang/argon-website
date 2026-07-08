@@ -51,4 +51,56 @@
   .status-dot {
     @apply inline-block h-[7px] w-[7px] rounded-full;
   }
+
+  /* Long-form article typography (no @tailwindcss/typography dependency) */
+  .article {
+    @apply text-brand-text-darker;
+  }
+  .article p,
+  .article ul,
+  .article ol,
+  .article pre,
+  .article blockquote {
+    @apply mt-5;
+  }
+  .article p,
+  .article li {
+    @apply leading-7;
+  }
+  .article h2 {
+    @apply mt-12 text-xl font-semibold tracking-tight text-brand-text;
+  }
+  .article h2 + p {
+    @apply mt-4;
+  }
+  .article h3 {
+    @apply mt-8 text-lg font-medium text-brand-text;
+  }
+  .article h3 + p {
+    @apply mt-3;
+  }
+  .article a {
+    @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
+  }
+  .article ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+  .article ol {
+    @apply list-decimal space-y-2 pl-5;
+  }
+  .article strong {
+    @apply font-medium text-brand-text;
+  }
+  .article code {
+    @apply rounded bg-brand-surface px-1.5 py-0.5 font-mono text-[0.85em] text-brand-text;
+  }
+  .article pre {
+    @apply overflow-x-auto border border-brand-edge bg-brand-surface p-4 font-mono text-sm leading-6 text-brand-text;
+  }
+  .article pre code {
+    @apply bg-transparent p-0 text-[0.9em];
+  }
+  .article blockquote {
+    @apply border-l-2 border-brand-primary pl-4 text-brand-text;
+  }
 }
