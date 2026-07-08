@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'mongodb-time-travel-vs-point-in-time-recovery',
+    title: 'MongoDB Time Travel vs Point-in-Time Recovery',
+    description:
+      'Time travel and point-in-time recovery (PITR) both go back in time in MongoDB, but they solve opposite problems: PITR restores a whole database for disaster recovery, while time travel queries or branches any past state without touching the present. How each works, and when to use which.',
+    date: '2026-07-08',
+    tags: ['MongoDB', 'Time Travel', 'Backup'],
+    readingMinutes: 8,
+  },
+  {
     slug: 'mongodb-database-branching-explained',
     title: 'MongoDB Database Branching, Explained',
     description:
