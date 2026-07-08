@@ -14,6 +14,13 @@ const FeatureCard = ({
   </div>
 );
 
+export const metadata = {
+  title: 'Branching, Time Travel & Data PRs for MongoDB',
+  description:
+    'Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.',
+  alternates: { canonical: '/features' },
+};
+
 export default function FeaturesPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">

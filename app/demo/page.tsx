@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import InteractiveDemo from '../components/InteractiveDemo';
 
+export const metadata = {
+  title: 'Interactive Demo: Branch & Time-Travel MongoDB',
+  description:
+    'Step through Argon in the browser: branch a MongoDB database, watch the collection and history graph move together, time-travel to any point, and merge changes back.',
+  alternates: { canonical: '/demo' },
+};
+
 export default function DemoPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">

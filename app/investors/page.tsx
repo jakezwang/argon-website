@@ -1,3 +1,10 @@
+export const metadata = {
+  title: 'Investors',
+  description:
+    'Argon is the versioning layer for MongoDB, built for the agent era — the open-source engine for branching, time travel, and undoable databases.',
+  alternates: { canonical: '/investors' },
+};
+
 export default function InvestorsPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">

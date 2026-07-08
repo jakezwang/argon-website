@@ -1,0 +1,30 @@
+# Argon
+
+> Argon is an open-source engine that brings Git-style branching, time travel, and merge to MongoDB. It gives every developer — and every AI agent — a real, isolated MongoDB database branch they can write to, review, merge, or throw away. MIT-licensed and self-hosted.
+
+Argon is to MongoDB what Neon is to Postgres and PlanetScale is to MySQL: a versioning and branching layer. It is built for the AI-agent era, where agents need disposable, auditable, undoable databases.
+
+## What Argon does
+
+- **Branch a MongoDB database** in milliseconds — an isolated copy that shares history, not storage.
+- **Time travel** to any point in a branch's history and query the data as it was.
+- **Data PRs**: diff two branches, review the change, and merge exactly-once. Conflicts are reported, never resolved silently.
+- **Per-actor undo**: every write is a revertible range, so an agent's changes can be undone without touching anyone else's.
+- **Agent surface**: an MCP server (13 tools), TTL sandboxes, and reproducible dataset pins for evals.
+
+## Install
+
+- CLI: `brew install argon-lab/tap/argonctl` or `npm install -g argonctl` or download from GitHub releases.
+- Python agents: `pip install "argon-agents[langgraph]"`
+- MCP: `claude mcp add argon -- argon mcp`
+
+## Key links
+
+- Website: https://argonlabs.tech
+- Source (engine, Go, MIT): https://github.com/argon-lab/argon
+- Documentation: https://github.com/argon-lab/argon/tree/master/docs
+- Agent adapters (LangGraph, Mem0): https://github.com/argon-lab/argon-agents
+- Reproducible benchmarks: https://github.com/argon-lab/benchmarks
+- Features: https://argonlabs.tech/features
+- For AI agents: https://argonlabs.tech/agents
+- Live demo: https://argonlabs.tech/demo

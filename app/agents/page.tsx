@@ -56,6 +56,13 @@ const guarantees = [
   'Expired sandboxes reap themselves, storage included',
 ];
 
+export const metadata = {
+  title: 'MongoDB Sandboxes for AI Agents',
+  description:
+    'Give every AI agent its own branchable MongoDB sandbox — TTL-scoped, reviewable, and undoable. MCP server, dataset pins for reproducible evals, and per-actor undo.',
+  alternates: { canonical: '/agents' },
+};
+
 export default function AgentsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-14 sm:py-16">

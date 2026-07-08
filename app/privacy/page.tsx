@@ -1,4 +1,10 @@
 // /Users/jakewang/dev/argon-website/app/privacy/page.tsx
+export const metadata = {
+  title: 'Privacy Policy',
+  description: 'How Argon Labs collects, uses, and safeguards your information.',
+  alternates: { canonical: '/privacy' },
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 lg:px-8 py-12 sm:py-16 text-brand-text">

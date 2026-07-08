@@ -9,12 +9,18 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mon
 
 export const metadata = {
   metadataBase: new URL('https://argonlabs.tech'),
-  title: 'Argon — Git for MongoDB, Built for AI Agents',
+  title: {
+    default: 'Argon — Git for MongoDB, Built for AI Agents',
+    template: '%s — Argon',
+  },
   description:
     'Open-source branching and merge for MongoDB. Give every AI agent its own branch — a real MongoDB database — review what it wrote, and merge what works.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
-    url: 'https://www.argonlabs.tech',
+    url: 'https://argonlabs.tech',
     siteName: 'Argon',
     title: 'Argon — Git for MongoDB, Built for AI Agents',
     description:
@@ -32,6 +38,44 @@ export const metadata = {
     icon: '/argon-logo.png',
     apple: '/argon-logo.png',
   },
+};
+
+// Structured data (JSON-LD) — helps Google rich results and lets AI engines
+// (ChatGPT, Perplexity, Claude, AI Overviews) extract accurate facts about Argon.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://argonlabs.tech/#organization',
+      name: 'Argon Labs',
+      url: 'https://argonlabs.tech',
+      logo: 'https://argonlabs.tech/argon-logo.png',
+      sameAs: ['https://github.com/argon-lab/argon'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://argonlabs.tech/#website',
+      url: 'https://argonlabs.tech',
+      name: 'Argon',
+      publisher: { '@id': 'https://argonlabs.tech/#organization' },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://argonlabs.tech/#software',
+      name: 'Argon',
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'macOS, Linux, Windows',
+      description:
+        'Open-source engine that brings Git-style branching, time travel, and merge to MongoDB — a real, isolated database branch for every developer and AI agent.',
+      url: 'https://argonlabs.tech',
+      downloadUrl: 'https://github.com/argon-lab/argon',
+      softwareVersion: '2.0.0',
+      license: 'https://opensource.org/licenses/MIT',
+      author: { '@id': 'https://argonlabs.tech/#organization' },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    },
+  ],
 };
 
 const FooterColumn = ({
@@ -119,6 +163,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="flex min-h-screen flex-col bg-brand-dark font-sans text-brand-text antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />

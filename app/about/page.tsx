@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+export const metadata = {
+  title: { absolute: 'About Argon — The Versioning Layer for MongoDB' },
+  description:
+    'MongoDB has no Neon, PlanetScale, or Dolt. Argon Labs builds the open-source versioning layer that brings Git-style branching and time travel to MongoDB.',
+  alternates: { canonical: '/about' },
+};
+
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
