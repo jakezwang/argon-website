@@ -103,4 +103,17 @@
   .article blockquote {
     @apply border-l-2 border-brand-primary pl-4 text-brand-text;
   }
+  .article table {
+    @apply mt-6 w-full border-collapse text-sm;
+  }
+  .article th,
+  .article td {
+    @apply border border-brand-edge px-3 py-2 text-left align-top;
+  }
+  .article th {
+    @apply font-mono text-xs uppercase tracking-wide text-brand-text;
+  }
+  .article td {
+    @apply text-brand-text-darker;
+  }
 }

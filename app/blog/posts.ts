@@ -20,6 +20,24 @@ export const posts: Post[] = [
     tags: ['MongoDB', 'Branching', 'Database'],
     readingMinutes: 8,
   },
+  {
+    slug: 'database-branching-tools-compared',
+    title: 'Database Branching Tools Compared: Neon, PlanetScale, Dolt, lakeFS, and Argon',
+    description:
+      'A practical map of the database branching landscape — what Neon, PlanetScale, Dolt, lakeFS, and Argon each branch, how they compare on merge, time travel, and licensing, and which one fits MongoDB.',
+    date: '2026-07-08',
+    tags: ['Comparison', 'Branching', 'Database'],
+    readingMinutes: 9,
+  },
+  {
+    slug: 'disposable-mongodb-sandbox-for-ai-agents',
+    title: 'A Disposable MongoDB Sandbox for Every AI Agent',
+    description:
+      'Why AI agents need their own database, how a branch-per-agent workflow keeps production safe, and how to wire it up with Argon’s MCP server, TTL sandboxes, and reproducible dataset pins.',
+    date: '2026-07-08',
+    tags: ['AI Agents', 'MCP', 'MongoDB'],
+    readingMinutes: 7,
+  },
 ];
 
 export const getPost = (slug: string): Post | undefined =>
