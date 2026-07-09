@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: 'mongodb-mcp-server-versioned-sandboxes',
+    title: 'MCP + MongoDB: Versioned Sandboxes for Agent Tool-Calls',
+    description:
+      'Connecting an AI agent to MongoDB over MCP usually means handing it a live database. Argon’s MCP server gives each agent a versioned, branchable MongoDB instead — 13 tools to open a sandbox, diff, merge, time-travel, and undo.',
+    date: '2026-07-08',
+    tags: ['MCP', 'AI Agents', 'MongoDB'],
+    readingMinutes: 7,
+  },
+  {
     slug: 'mongodb-time-travel-vs-point-in-time-recovery',
     title: 'MongoDB Time Travel vs Point-in-Time Recovery',
     description:
