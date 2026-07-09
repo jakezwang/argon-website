@@ -126,6 +126,7 @@ const Footer = () => (
             { label: 'Features', href: '/features' },
             { label: 'Demo', href: '/demo' },
             { label: 'Blog', href: '/blog' },
+            { label: 'FAQ', href: '/faq' },
             { label: 'Benchmarks', href: 'https://github.com/argon-lab/benchmarks', external: true },
           ]}
         />

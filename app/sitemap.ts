@@ -12,6 +12,7 @@ const staticRoutes: {
   { path: '/agents', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/features', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/blog', priority: 0.7, changeFrequency: 'weekly' },
+  { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/demo', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/about', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/investors', priority: 0.3, changeFrequency: 'yearly' },
