@@ -3,11 +3,33 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-  title: { absolute: "About Argon — The Versioning Layer for MongoDB" },
+  title: { absolute: "About Argon — Data Sandboxes for AI Agents" },
   description:
-    "About Argon, an open-source tool for branching and reviewing MongoDB data, and its founder Jake Wang.",
+    "Meet the team behind Argon, an open-source tool that gives AI agents their own MongoDB sandboxes, with changes you can review, merge, or undo.",
   alternates: { canonical: "/about" },
 };
+
+const team = [
+  {
+    name: "Jake Wang",
+    image: "/jakewang.jpeg",
+    href: "https://www.linkedin.com/in/wang1/",
+    role: "Founder",
+    bio: [
+      "I'm building Argon for AI agents that work with MongoDB. Each agent gets its own sandbox, with changes you can review, merge, or undo.",
+      "I'm a software engineer at Pinterest. Before that, I worked at MongoDB, LinkedIn, and Bloomberg.",
+    ],
+  },
+  {
+    name: "Noot Noot",
+    image: "/nootnoot.jpg",
+    href: "https://www.instagram.com/energetic_nootnoot",
+    role: "Chief Emotional Support Officer",
+    bio: [
+      "Official team cat and professional morale booster. Keeps the workplace pawsitive. His value: beyond measure (and very fluffy).",
+    ],
+  },
+];
 
 export default function AboutPage() {
   return (
@@ -17,72 +39,48 @@ export default function AboutPage() {
         About Argon
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8">
-        Argon adds branching and version history to MongoDB. You can try changes
-        in a separate database, review the diff, and decide what to merge.
+        Argon gives AI agents their own MongoDB sandboxes. Agents can read and
+        write data with their usual tools. You can compare their changes, decide
+        what to merge, and undo a run when it goes wrong.
       </p>
 
       {/* Team */}
       <section className="mt-16">
         <p className="kicker mb-8">Team</p>
         <div className="grid gap-6 sm:grid-cols-2">
-          <div className="border border-brand-edge bg-brand-surface p-8">
-            <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
-              <Image
-                src="/jakewang.jpeg"
-                alt="Jake Wang"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <h3 className="mt-5 text-lg font-medium text-brand-text">
-              <Link
-                href="https://www.linkedin.com/in/wang1/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-brand-primary"
-              >
-                Jake Wang
-              </Link>
-            </h3>
-            <p className="mt-1 text-sm text-brand-text-darker">
-              Founder
-            </p>
-            <p className="mt-3 text-sm leading-6">
-              I work as a software engineer at Pinterest. Before that, I worked
-              at MongoDB, LinkedIn, and Bloomberg.
-            </p>
-            <p className="mt-3 text-sm leading-6">
-              I&apos;m building Argon to make it easier to test and review
-              changes to MongoDB data.
-            </p>
-          </div>
-          <div className="border border-brand-edge bg-brand-surface p-8">
-            <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
-              <Image
-                src="/nootnoot.jpg"
-                alt="Noot Noot"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <h3 className="mt-5 text-lg font-medium text-brand-text">
-              <Link
-                href="https://www.instagram.com/energetic_nootnoot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-brand-primary"
-              >
-                Noot Noot
-              </Link>
-            </h3>
-            <p className="font-mono text-xs uppercase tracking-wider text-brand-primary">
-              Chief Emotional Support Officer
-            </p>
-            <p className="mt-3 text-sm leading-6">
-              Official team cat and professional morale booster. Keeps the
-              workplace pawsitive. His value: beyond measure (and very fluffy).
-            </p>
-          </div>
+          {team.map((member) => (
+            <article
+              key={member.name}
+              className="border border-brand-edge bg-brand-surface p-8"
+            >
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="mt-5 text-lg font-medium text-brand-text">
+                <Link
+                  href={member.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-primary"
+                >
+                  {member.name}
+                </Link>
+              </h3>
+              <p className="font-mono text-xs uppercase tracking-wider text-brand-primary sm:min-h-8 lg:min-h-4">
+                {member.role}
+              </p>
+              <div className="mt-3 space-y-3 text-sm leading-6">
+                {member.bio.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
