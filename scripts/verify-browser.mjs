@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
+const release = "2.1.1";
 const origin = process.env.SITE_URL || "http://127.0.0.1:13000";
 const out = process.env.ARTIFACT_DIR || "/tmp/argon-website-checks";
 await mkdir(out, { recursive: true });
@@ -45,6 +46,15 @@ try {
     );
   }
   await page.goto(origin);
+  const home = await page.locator("body").innerText();
+  assert.ok(home.includes(`Published release: v${release}`));
+  assert.ok(home.includes(`npm install -g argonctl@${release}`));
+  const structured = await page
+    .locator('script[type="application/ld+json"]')
+    .allTextContents();
+  assert.ok(
+    structured.some((text) => text.includes(`"softwareVersion":"${release}"`)),
+  );
   assert.equal(
     await page
       .getByRole("link", { name: "Open demo", exact: true })
@@ -57,6 +67,15 @@ try {
     .first()
     .click();
   await page.waitForURL("**/quickstart");
+  const quickstart = await page.locator("body").innerText();
+  assert.ok(quickstart.includes(`git clone --branch v${release}`));
+  assert.ok(quickstart.includes("git clone --branch v0.2.0"));
+  assert.equal(
+    await page
+      .getByRole("link", { name: "Open the complete, tested setup commands →" })
+      .getAttribute("href"),
+    `https://github.com/argon-lab/argon/blob/v${release}/docs/QUICK_START.md`,
+  );
   assert.equal(events.length, 0, "opt-out sends nothing");
   await page.goto(origin);
   await page.getByRole("checkbox").check();

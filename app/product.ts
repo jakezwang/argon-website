@@ -1,10 +1,10 @@
 // Shared product claims and links. Keep release checks pointed at this file.
 export const product = {
-  version: "2.1.0",
+  version: "2.1.1",
   sdkVersion: "0.2.0",
   demo: "https://console.argonlabs.tech",
   quickstart: "/quickstart",
-  guide: "https://github.com/argon-lab/argon/blob/v2.1.0/docs/QUICK_START.md",
+  guide: "https://github.com/argon-lab/argon/blob/v2.1.1/docs/QUICK_START.md",
   example:
     "https://github.com/argon-lab/argon-agents/blob/v0.2.0/examples/two_agent_review.py",
   roadmap: [
