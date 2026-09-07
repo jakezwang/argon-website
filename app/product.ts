@@ -1,12 +1,12 @@
 // Shared product claims and links. Keep release checks pointed at this file.
 export const product = {
-  version: "2.0.1",
-  upcomingVersion: "2.1.0",
+  version: "2.1.0",
+  sdkVersion: "0.2.0",
   demo: "https://console.argonlabs.tech",
   quickstart: "/quickstart",
-  guide: "https://github.com/argon-lab/argon/blob/master/docs/QUICK_START.md",
+  guide: "https://github.com/argon-lab/argon/blob/v2.1.0/docs/QUICK_START.md",
   example:
-    "https://github.com/argon-lab/argon-agents/blob/main/examples/two_agent_review.py",
+    "https://github.com/argon-lab/argon-agents/blob/v0.2.0/examples/two_agent_review.py",
   roadmap: [
     "GCS chunk-store backend",
     "Read-your-writes barrier for the wire proxy",

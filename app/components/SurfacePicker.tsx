@@ -6,6 +6,7 @@
 // "what you send → what you get back" for it.
 
 import { useState } from "react";
+import { product } from "../product";
 
 interface Exchange {
   sendLabel: string;
@@ -124,13 +125,12 @@ const surfaces: Surface[] = [
     who: "Python · LangGraph · Mem0",
     title: "Review external business data",
     setupLabel: "install",
-    setup: 'pip install "argon-agents[langgraph]"',
-    blurb:
-      "The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. The published SDK is 0.1.0; install the reviewed source for the upcoming hardened SDK workflow.",
+    setup: `pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`,
+    blurb: `The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. Install SDK ${product.sdkVersion} from its release tag and run the matching example below.`,
     exchange: {
       sendLabel: "run the reviewed source example",
       send: [
-        "git clone https://github.com/argon-lab/argon-agents.git",
+        `git clone --branch v${product.sdkVersion} https://github.com/argon-lab/argon-agents.git`,
         "cd argon-agents",
         "pip install -e .",
         "ARGON_API_URL=http://127.0.0.1:1818 python examples/two_agent_review.py",

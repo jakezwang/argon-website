@@ -18,7 +18,7 @@ npm run test:browser
 
 `SITE_URL` changes the preview URL. `ARTIFACT_DIR` changes the screenshot directory (default `/tmp/argon-website-checks`). The regression checks desktop/mobile routes and overflow, CTA and mobile navigation, browser errors, opt-out/opt-in/DNT behavior, event allowlists, size limits, and cross-origin rejection. Run this against a production build before deployment.
 
-`app/product.ts` separates the currently published release from the upcoming release. Promote the version after the engine release is published. Shared roadmap and capability copy feeds the homepage, Agents, Features and About. The reviewed CLI/Python setup is linked from `/quickstart`; validate these commands against the corresponding engine/agents refs during a coordinated release.
+`app/product.ts` records the published engine and SDK source release versions. Update these versions only after both releases are publicly available; the quickstart and example links use matching release tags. The SDK install commands use the tagged Git source and do not imply that the same version is available on PyPI. Shared roadmap and capability copy feeds the homepage, Agents, Features and About. The reviewed CLI/Python setup is linked from `/quickstart`; validate these commands against the corresponding engine/agents refs during a coordinated release.
 
 ## Anonymous counts
 

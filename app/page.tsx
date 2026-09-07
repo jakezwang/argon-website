@@ -57,9 +57,8 @@ export default function HomePage() {
         </div>
         <div className="border-t border-brand-edge px-6 py-4">
           <p className="mx-auto max-w-6xl text-sm leading-6">
-            Published release: v{product.version} · Preparing v
-            {product.upcomingVersion} · Branch databases, reviewable merges and
-            agent workflows. Next: {product.roadmap.join(" · ")}.
+            Published release: v{product.version} · Branch databases, reviewable
+            merges and agent workflows. Next: {product.roadmap.join(" · ")}.
           </p>
         </div>
       </section>

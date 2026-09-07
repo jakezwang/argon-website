@@ -19,13 +19,14 @@ export default function Quickstart() {
       </p>
       <h2>1 · Start the local engine</h2>
       <p>
-        These commands create a new disposable local replica set using the current MongoDB 7 patch image. Use a supported, current patch version for production. If doctor
-        reports no primary yet, wait for election and run doctor again. Keep the
-        console process running: it manages capture and expiry for API-created
-        sandboxes.
+        These commands create a new disposable local replica set using the
+        current MongoDB 7 patch image. Use a supported, current patch version
+        for production. If doctor reports no primary yet, wait for election and
+        run doctor again. Keep the console process running: it manages capture
+        and expiry for API-created sandboxes.
       </p>
       <pre>
-        <code>{`git clone https://github.com/argon-lab/argon.git
+        <code>{`git clone --branch v${product.version} https://github.com/argon-lab/argon.git
 cd argon
 (cd cli && go build -o ../bin/argon .)
 docker run -d --name argon-mongo -p 127.0.0.1:27017:27017 mongo:7 --replSet rs0
@@ -44,7 +45,7 @@ export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
         deployment, set ARGON_API_TOKEN locally.
       </p>
       <pre>
-        <code>{`git clone https://github.com/argon-lab/argon-agents.git
+        <code>{`git clone --branch v${product.sdkVersion} https://github.com/argon-lab/argon-agents.git
 cd argon-agents
 python3 -m venv .venv
 . .venv/bin/activate
