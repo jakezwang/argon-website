@@ -19,7 +19,7 @@ export default function Quickstart() {
       </p>
       <h2>1 · Start the local engine</h2>
       <p>
-        These commands create a new disposable local replica set. If doctor
+        These commands create a new disposable local replica set using the current MongoDB 7 patch image. Use a supported, current patch version for production. If doctor
         reports no primary yet, wait for election and run doctor again. Keep the
         console process running: it manages capture and expiry for API-created
         sandboxes.
@@ -28,7 +28,7 @@ export default function Quickstart() {
         <code>{`git clone https://github.com/argon-lab/argon.git
 cd argon
 (cd cli && go build -o ../bin/argon .)
-docker run -d --name argon-mongo -p 127.0.0.1:27017:27017 mongo:7.0.14 --replSet rs0
+docker run -d --name argon-mongo -p 127.0.0.1:27017:27017 mongo:7 --replSet rs0
 docker exec argon-mongo mongosh --quiet --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"localhost:27017"}]})'
 export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
 ./bin/argon doctor
