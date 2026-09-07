@@ -1,44 +1,44 @@
-// /Users/jakewang/dev/argon-website/app/privacy/page.tsx
 export const metadata = {
-  title: 'Privacy Policy',
-  description: 'How Argon Labs collects, uses, and safeguards your information.',
-  alternates: { canonical: '/privacy' },
+  title: "Privacy",
+  description:
+    "Data used by the Argon website and optional anonymous product counts.",
+  alternates: { canonical: "/privacy" },
 };
-
-export default function PrivacyPolicyPage() {
+export default function Privacy() {
   return (
-    <div className="max-w-4xl mx-auto px-6 lg:px-8 py-12 sm:py-16 text-brand-text">
-      <div className="bg-brand-surface p-8 rounded-lg shadow-xl">
-        <h1 className="text-3xl font-bold mb-6 text-brand-primary">Privacy Policy</h1>
-        <p className="mb-4 text-brand-text-darker">Last updated: May 28, 2025</p>
-        
-        <h2 className="text-2xl font-semibold mt-6 mb-3 text-brand-primary-light">1. Introduction</h2>
-        <p className="mb-4 text-brand-text-darker">
-          Welcome to Argon! Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-6 mb-3 text-brand-primary-light">2. Information We Collect</h2>
-        <p className="mb-4 text-brand-text-darker">
-          We may collect personal information that you voluntarily provide to us when you express an interest in obtaining information about us or our products and services, when you participate in activities on the website or otherwise when you contact us.
-        </p>
-        <p className="mb-4 text-brand-text-darker">
-          The personal information that we collect depends on the context of your interactions with us and the website, the choices you make and the products and features you use. The personal information we collect may include the following:
-        </p>
-        <ul className="list-disc list-inside mb-4 ml-4 text-brand-text-darker">
-          <li>Name and Contact Data (e.g., email address, phone number)</li>
-          <li>Usage Data (e.g., IP address, browser type, pages visited)</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-6 mb-3 text-brand-primary-light">3. How We Use Your Information</h2>
-        <p className="mb-4 text-brand-text-darker">
-          We use personal information collected via our website for a variety of business purposes described below. We process your personal information for these purposes in reliance on our legitimate business interests, in order to enter into or perform a contract with you, with your consent, and/or for compliance with our legal obligations.
-        </p>
-
-        {/* Add more sections as needed, e.g., Sharing Your Information, Security of Your Information, Your Privacy Rights, Contact Us */}
-        <p className="mt-8 text-brand-text-darker">
-          This is a placeholder Privacy Policy. You should replace this content with your own comprehensive policy tailored to your specific practices.
-        </p>
-      </div>
+    <div className="article mx-auto max-w-3xl px-6 py-16">
+      <h1 className="text-4xl font-semibold">Privacy</h1>
+      <p>Updated September 7, 2026.</p>
+      <h2>Optional usage counts</h2>
+      <p>
+        Sharing anonymous counts is off by default. If you enable it in the
+        footer, the website sends only a fixed event name when you open the demo
+        or local quickstart. It sends no project names, documents, connection
+        strings, identities or page URLs in the event payload. We use these
+        counts to improve the path to a first successful review.
+      </p>
+      <p>
+        The demo console has a separate choice for successful first diff, merge
+        and undo events. The website and console do not share an identifier. Do
+        Not Track disables these events. You can turn sharing off at any time;
+        the choice is saved in this browser.
+      </p>
+      <h2>Hosting and the demo</h2>
+      <p>
+        Infrastructure may process ordinary request metadata to serve pages and
+        operate the service. The anonymous demo uses a session cookie to isolate
+        temporary sample projects and expires them automatically. Do not upload
+        sensitive or production data to the public demo. Self-host Argon for
+        your own databases.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        Contact the maintainers through{" "}
+        <a href="https://github.com/argon-lab/argon/discussions">
+          the project discussions
+        </a>
+        . Do not post private data or credentials.
+      </p>
     </div>
   );
 }

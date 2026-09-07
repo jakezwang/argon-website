@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { product } from '../product';
 
 const installMethods = [
+  { label: 'npm', command: `npm install -g argonctl@${product.version}` },
   { label: 'brew', command: 'brew install argon-lab/tap/argonctl' },
-  { label: 'npm', command: 'npm install -g argonctl' },
-  { label: 'pip · sdk', command: 'pip install "argon-agents[langgraph]"' },
+  { label: 'pip · sdk', command: `pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"` },
 ];
 
 export default function QuickStartCommand() {

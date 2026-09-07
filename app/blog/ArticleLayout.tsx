@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import type { Post } from './posts';
+import Link from "next/link";
+import type { Post } from "./posts";
 
 type Faq = { q: string; a: string };
 
@@ -17,59 +17,80 @@ export default function ArticleLayout({
   children: React.ReactNode;
 }) {
   const url = `https://argonlabs.tech/blog/${post.slug}`;
-  const dateDisplay = new Date(post.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
+  const dateDisplay = new Date(post.date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
   });
 
   const articleLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: post.title,
     description: post.description,
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
-    author: { '@type': 'Organization', name: 'Argon Labs', url: 'https://argonlabs.tech' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Argon Labs',
-      logo: { '@type': 'ImageObject', url: 'https://argonlabs.tech/argon-logo.png' },
+    author: {
+      "@type": "Organization",
+      name: "Argon Labs",
+      url: "https://argonlabs.tech",
     },
-    image: 'https://argonlabs.tech/og.png',
+    publisher: {
+      "@type": "Organization",
+      name: "Argon Labs",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://argonlabs.tech/argon-logo.png",
+      },
+    },
+    image: "https://argonlabs.tech/og.png",
     mainEntityOfPage: url,
     url,
   };
 
   const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://argonlabs.tech/blog' },
-      { '@type': 'ListItem', position: 2, name: post.title, item: url },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Blog",
+        item: "https://argonlabs.tech/blog",
+      },
+      { "@type": "ListItem", position: 2, name: post.title, item: url },
     ],
   };
 
   const faqLd =
     faq && faq.length
       ? {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
           mainEntity: faq.map((f) => ({
-            '@type': 'Question',
+            "@type": "Question",
             name: f.q,
-            acceptedAnswer: { '@type': 'Answer', text: f.a },
+            acceptedAnswer: { "@type": "Answer", text: f.a },
           })),
         }
       : null;
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {faqLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
       )}
 
       <nav className="mb-8 font-mono text-xs text-brand-muted">
@@ -86,7 +107,9 @@ export default function ArticleLayout({
       <h1 className="text-3xl font-semibold tracking-tight text-brand-text sm:text-4xl">
         {post.title}
       </h1>
-      <p className="mt-5 text-lg leading-8 text-brand-text-darker">{post.description}</p>
+      <p className="mt-5 text-lg leading-8 text-brand-text-darker">
+        {post.description}
+      </p>
 
       <div className="mt-5 flex flex-wrap gap-2">
         {post.tags.map((t) => (
@@ -101,6 +124,15 @@ export default function ArticleLayout({
 
       <hr className="my-10 border-brand-edge" />
 
+      <p className="mb-6 border border-brand-edge p-4 text-sm leading-6">
+        Current capability notes: checkout materializes a physical database;
+        native actor attribution is per branch/run; undo needs complete images
+        and retained history. CLI sandboxes require watch and scheduled sweep.{" "}
+        <Link className="prose-link" href="/features#capabilities">
+          Read the capability matrix
+        </Link>
+        .
+      </p>
       <div className="article">{children}</div>
 
       {faq && faq.length > 0 && (
@@ -120,7 +152,9 @@ export default function ArticleLayout({
       )}
 
       <div className="mt-16 border-t border-brand-edge pt-10">
-        <p className="text-brand-text-darker">Argon is open source and MIT-licensed.</p>
+        <p className="text-brand-text-darker">
+          Argon is open source and MIT-licensed.
+        </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <a
             href="https://github.com/argon-lab/argon"

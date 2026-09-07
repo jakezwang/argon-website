@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import DemoPlayer, { DemoPanel, DemoStep } from './DemoPlayer';
-import { FlowGraph } from './GitGraph';
-import SurfacePicker from './SurfacePicker';
+import { useState } from "react";
+import DemoPlayer, { DemoPanel, DemoStep } from "./DemoPlayer";
+import { FlowGraph } from "./GitGraph";
+import SurfacePicker from "./SurfacePicker";
 
 // History graphs: lane 0 = main (lavender), lane 1 = branch (green),
 // lane 2 = second branch (amber). Nodes appear at the step index where
@@ -12,67 +12,143 @@ import SurfacePicker from './SurfacePicker';
 const cliGraph: FlowGraph = {
   height: 128,
   lanes: [
-    { name: 'main', y: 36 },
-    { name: 'feature-x', y: 94 },
+    { name: "main", y: 36 },
+    { name: "feature-x", y: 94 },
   ],
   nodes: [
-    { id: 'm0', x: 120, y: 36, lane: 0, sub: 'LSN 0', appearAt: 0 },
-    { id: 'm1', x: 280, y: 36, lane: 0, sub: 'LSN 3 · import', appearAt: 1 },
-    { id: 'b0', x: 430, y: 94, lane: 1, sub: 'fork @ 3', appearAt: 2 },
-    { id: 'b1', x: 620, y: 94, lane: 1, sub: 'LSN 5 · writes', appearAt: 4 },
-    { id: 'plan', x: 810, y: 36, lane: 0, sub: 'plan_7d31 · pending', appearAt: 6, hideAt: 7, ghost: true },
-    { id: 'm2', x: 810, y: 36, lane: 0, sub: 'LSN 8 · merge', appearAt: 7 },
+    { id: "m0", x: 120, y: 36, lane: 0, sub: "LSN 0", appearAt: 0 },
+    { id: "m1", x: 280, y: 36, lane: 0, sub: "LSN 3 · import", appearAt: 1 },
+    { id: "b0", x: 430, y: 94, lane: 1, sub: "fork @ 3", appearAt: 2 },
+    { id: "b1", x: 620, y: 94, lane: 1, sub: "LSN 5 · writes", appearAt: 4 },
+    {
+      id: "plan",
+      x: 810,
+      y: 36,
+      lane: 0,
+      sub: "plan_7d31 · pending",
+      appearAt: 6,
+      hideAt: 7,
+      ghost: true,
+    },
+    { id: "m2", x: 810, y: 36, lane: 0, sub: "LSN 8 · merge", appearAt: 7 },
   ],
   edges: [
-    { from: 'm0', to: 'm1', appearAt: 1 },
-    { from: 'm1', to: 'b0', appearAt: 2 },
-    { from: 'b0', to: 'b1', appearAt: 4 },
-    { from: 'b1', to: 'plan', appearAt: 6, hideAt: 7, ghost: true, curve: 'target' },
-    { from: 'm1', to: 'm2', appearAt: 7 },
-    { from: 'b1', to: 'm2', appearAt: 7, curve: 'target' },
+    { from: "m0", to: "m1", appearAt: 1 },
+    { from: "m1", to: "b0", appearAt: 2 },
+    { from: "b0", to: "b1", appearAt: 4 },
+    {
+      from: "b1",
+      to: "plan",
+      appearAt: 6,
+      hideAt: 7,
+      ghost: true,
+      curve: "target",
+    },
+    { from: "m1", to: "m2", appearAt: 7 },
+    { from: "b1", to: "m2", appearAt: 7, curve: "target" },
   ],
   steps: [
-    { head: 'm0', caption: 'project created — main is born at LSN 0' },
-    { head: 'm1', caption: 'import advances main to LSN 3' },
-    { head: 'b0', caption: 'feature-x forks from main @ LSN 3 — a pointer, no copies' },
-    { head: 'b0', caption: 'feature-x is now a physical database (argon_br_9f2c1a)' },
-    { head: 'b1', caption: 'captured driver writes advance feature-x to LSN 5' },
-    { head: 'b1', highlight: ['b1', 'm1'], caption: 'diff: feature-x head vs main @ the fork point' },
-    { head: 'b1', caption: 'merge plan (dashed = pending) targets main — nothing applied yet' },
-    { head: 'm2', caption: 'feature-x merges into main — LSN 8, attributed, exactly-once' },
-    { head: 'm2', highlight: ['m1'], caption: 'undo would rewind main past the merge — recorded as new history' },
+    { head: "m0", caption: "project created — main is born at LSN 0" },
+    { head: "m1", caption: "import advances main to LSN 3" },
+    {
+      head: "b0",
+      caption: "feature-x forks from main @ LSN 3 — a pointer, no copies",
+    },
+    {
+      head: "b0",
+      caption: "feature-x is now a physical database (argon_br_9f2c1a)",
+    },
+    {
+      head: "b1",
+      caption: "captured driver writes advance feature-x to LSN 5",
+    },
+    {
+      head: "b1",
+      highlight: ["b1", "m1"],
+      caption: "diff: feature-x head vs main @ the fork point",
+    },
+    {
+      head: "b1",
+      caption:
+        "merge plan (dashed = pending) targets main — nothing applied yet",
+    },
+    {
+      head: "m2",
+      caption: "feature-x merges into main — LSN 8, attributed, reviewed",
+    },
+    {
+      head: "m2",
+      highlight: ["m1"],
+      caption:
+        "undo would rewind main past the merge — recorded as new history",
+    },
   ],
 };
 
 const agentGraph: FlowGraph = {
   height: 168,
   lanes: [
-    { name: 'prod/main', y: 32 },
-    { name: 'sandbox-f81a', y: 88 },
-    { name: 'eval run', y: 140 },
+    { name: "prod/main", y: 32 },
+    { name: "sandbox-f81a", y: 88 },
+    { name: "eval run", y: 140 },
   ],
   nodes: [
-    { id: 'm0', x: 130, y: 32, lane: 0, sub: 'LSN 8112', appearAt: 0 },
-    { id: 's0', x: 330, y: 88, lane: 1, sub: 'fork · ttl 1h', appearAt: 0 },
-    { id: 's1', x: 530, y: 88, lane: 1, sub: '+3,214 writes', appearAt: 1 },
-    { id: 's2', x: 730, y: 88, lane: 1, sub: 'undo · compensations', appearAt: 3 },
-    { id: 'pin', x: 130, y: 10, lane: 2, sub: 'eval-2026-07', appearAt: 4, pin: true },
-    { id: 'e0', x: 530, y: 140, lane: 2, sub: 'fork from pin', appearAt: 5 },
+    { id: "m0", x: 130, y: 32, lane: 0, sub: "LSN 8112", appearAt: 0 },
+    { id: "s0", x: 330, y: 88, lane: 1, sub: "fork · ttl 1h", appearAt: 0 },
+    { id: "s1", x: 530, y: 88, lane: 1, sub: "+3,214 writes", appearAt: 1 },
+    {
+      id: "s2",
+      x: 730,
+      y: 88,
+      lane: 1,
+      sub: "undo · compensations",
+      appearAt: 3,
+    },
+    {
+      id: "pin",
+      x: 130,
+      y: 10,
+      lane: 2,
+      sub: "eval-2026-07",
+      appearAt: 4,
+      pin: true,
+    },
+    { id: "e0", x: 530, y: 140, lane: 2, sub: "fork from pin", appearAt: 5 },
   ],
   edges: [
-    { from: 'm0', to: 's0', appearAt: 0 },
-    { from: 's0', to: 's1', appearAt: 1 },
-    { from: 's1', to: 's2', appearAt: 3 },
-    { from: 'm0', to: 'pin', appearAt: 4, ghost: true },
-    { from: 'pin', to: 'e0', appearAt: 5 },
+    { from: "m0", to: "s0", appearAt: 0 },
+    { from: "s0", to: "s1", appearAt: 1 },
+    { from: "s1", to: "s2", appearAt: 3 },
+    { from: "m0", to: "pin", appearAt: 4, ghost: true },
+    { from: "pin", to: "e0", appearAt: 5 },
   ],
   steps: [
-    { head: 's0', caption: 'sandbox forks prod @ LSN 8112 — TTL reaps it in 1h' },
-    { head: 's1', caption: 'agent writes advance the sandbox head — prod untouched' },
-    { head: 's1', highlight: ['s1', 'm0'], caption: 'diff: sandbox head vs prod @ fork' },
-    { head: 's2', caption: 'undo: history moves forward, state moves back to the fork' },
-    { head: 's2', highlight: ['pin'], caption: 'pin freezes LSN 8112 by name — GC and reset can never touch it' },
-    { head: 'e0', caption: 'every eval run forks the pin — identical input, every time' },
+    {
+      head: "s0",
+      caption: "sandbox forks prod @ LSN 8112 — TTL reaps it in 1h",
+    },
+    {
+      head: "s1",
+      caption: "agent writes advance the sandbox head — prod untouched",
+    },
+    {
+      head: "s1",
+      highlight: ["s1", "m0"],
+      caption: "diff: sandbox head vs prod @ fork",
+    },
+    {
+      head: "s2",
+      caption: "undo: history moves forward, state moves back to the fork",
+    },
+    {
+      head: "s2",
+      highlight: ["pin"],
+      caption: "pin freezes LSN 8112 by name — GC and reset can never touch it",
+    },
+    {
+      head: "e0",
+      caption: "every eval run forks the pin — identical input, every time",
+    },
   ],
 };
 
@@ -81,11 +157,11 @@ const agentGraph: FlowGraph = {
 // Compass or mongosh) looks like after each command.
 
 const sourcePanel: DemoPanel = {
-  title: 'mongodb://localhost:27017 · shop',
-  note: 'your existing database, before Argon',
+  title: "mongodb://localhost:27017 · shop",
+  note: "your existing database, before Argon",
   sections: [
     {
-      name: 'products (3 documents)',
+      name: "products (3 documents)",
       lines: [
         { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
         { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -97,47 +173,60 @@ const sourcePanel: DemoPanel = {
 
 const cliSteps: DemoStep[] = [
   {
-    id: 'create',
-    command: 'argon projects create my-app',
-    description: 'Create a project — every write from here on is versioned',
-    output: ['Created project: my-app', 'Main branch ready'],
+    id: "create",
+    command: "argon projects create my-app",
+    description: "Create a project — capture records supported document writes",
+    output: ["Created project: my-app", "Main branch ready"],
     panel: {
-      title: 'my-app · main',
-      note: 'no collections yet — bring your data in next',
+      title: "my-app · main",
+      note: "no collections yet — bring your data in next",
       sections: [],
     },
   },
   {
-    id: 'import',
-    command: 'argon import database --uri mongodb://localhost:27017 --database shop --project my-app',
+    id: "import",
+    command:
+      "argon import database --uri mongodb://localhost:27017 --database shop --project my-app",
     description: 'Import existing data — "git clone" for your database',
-    output: ['3 documents imported from shop', 'History starts at LSN 1 → 3'],
+    output: ["3 documents imported from shop", "History starts at LSN 1 → 3"],
     panel: {
-      title: 'my-app · main @ LSN 3',
-      note: 'each document is now an LSN-addressed WAL entry',
+      title: "my-app · main @ LSN 3",
+      note: "each document is now an LSN-addressed WAL entry",
       sections: [
         {
-          name: 'products (3 documents)',
+          name: "products (3 documents)",
           lines: [
-            { text: '{ _id: "s1", name: "trail shoe", price: 49 }', status: 'added' },
-            { text: '{ _id: "s2", name: "road shoe", price: 89 }', status: 'added' },
-            { text: '{ _id: "s3", name: "track spike", price: 74 }', status: 'added' },
+            {
+              text: '{ _id: "s1", name: "trail shoe", price: 49 }',
+              status: "added",
+            },
+            {
+              text: '{ _id: "s2", name: "road shoe", price: 89 }',
+              status: "added",
+            },
+            {
+              text: '{ _id: "s3", name: "track spike", price: 74 }',
+              status: "added",
+            },
           ],
         },
       ],
     },
   },
   {
-    id: 'branch',
-    command: 'argon branches create feature-x -p my-app',
-    description: 'Branch — a metadata write, instant at any data size',
-    output: ['Branch created: feature-x', 'Forked from main @ LSN 3 — nothing copied'],
+    id: "branch",
+    command: "argon branches create feature-x -p my-app",
+    description: "Branch — a metadata write, instant at any data size",
+    output: [
+      "Branch created: feature-x",
+      "Forked from main @ LSN 3 — nothing copied",
+    ],
     panel: {
-      title: 'my-app · feature-x (fork @ LSN 3)',
-      note: 'same 3 documents, zero bytes copied — a branch is a pointer',
+      title: "my-app · feature-x (fork @ LSN 3)",
+      note: "same 3 documents, zero bytes copied — a branch is a pointer",
       sections: [
         {
-          name: 'products (3 documents, inherited)',
+          name: "products (3 documents, inherited)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
             { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -148,20 +237,20 @@ const cliSteps: DemoStep[] = [
     },
   },
   {
-    id: 'checkout',
-    command: 'argon checkout -p my-app -b feature-x',
-    description: 'Materialize the branch into a real MongoDB database',
+    id: "checkout",
+    command: "argon checkout -p my-app -b feature-x",
+    description: "Materialize the branch into a real MongoDB database",
     output: [
-      'Checked out at LSN 3: 1 collection, 3 documents',
-      'Connection string:',
-      '  mongodb://localhost:27017/argon_br_9f2c1a',
+      "Checked out at LSN 3: 1 collection, 3 documents",
+      "Connection string:",
+      "  mongodb://localhost:27017/argon_br_9f2c1a",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_9f2c1a',
-      note: 'a real database — open this URI in Compass or mongosh',
+      title: "mongodb://…/argon_br_9f2c1a",
+      note: "a real database — open this URI in Compass or mongosh",
       sections: [
         {
-          name: 'products (3 documents)',
+          name: "products (3 documents)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
             { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -172,114 +261,132 @@ const cliSteps: DemoStep[] = [
     },
   },
   {
-    id: 'watch',
-    command: 'argon watch -p my-app -b feature-x',
-    description: 'Capture direct driver writes into versioned history',
+    id: "watch",
+    command: "argon watch -p my-app -b feature-x",
+    description: "Capture direct driver writes into versioned history",
     output: [
-      'Watching for changes...',
-      'captured: insert products/s4 (LSN 4)',
-      'captured: update products/s2 (LSN 5)',
+      "Watching for changes...",
+      "captured: insert products/s4 (LSN 4)",
+      "captured: update products/s2 (LSN 5)",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_9f2c1a',
-      note: 'someone wrote with plain pymongo — both writes are now history',
+      title: "mongodb://…/argon_br_9f2c1a",
+      note: "someone wrote with plain pymongo — both writes are now history",
       sections: [
         {
-          name: 'products (4 documents)',
+          name: "products (4 documents)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
-            { text: '{ _id: "s2", name: "road shoe", price: 79 }', status: 'modified' },
+            {
+              text: '{ _id: "s2", name: "road shoe", price: 79 }',
+              status: "modified",
+            },
             { text: '{ _id: "s3", name: "track spike", price: 74 }' },
-            { text: '{ _id: "s4", name: "trail runner", price: 59 }', status: 'added' },
+            {
+              text: '{ _id: "s4", name: "trail runner", price: 59 }',
+              status: "added",
+            },
           ],
         },
       ],
     },
   },
   {
-    id: 'diff',
-    command: 'argon diff -p my-app -b feature-x',
-    description: 'Review the branch against its parent',
-    output: ['vs main @ fork LSN 3:', '  + 1 added · ~ 1 modified · 0 conflicts'],
-    panel: {
-      title: 'diff · feature-x vs main',
-      sections: [
-        {
-          name: 'products',
-          lines: [
-            { text: '{ _id: "s4", … } added', status: 'added' },
-            { text: '{ _id: "s2", price: 89 → 79 }', status: 'modified' },
-            { text: 's1, s3 unchanged', status: 'muted' },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    id: 'merge',
-    command: 'argon merge preview -p my-app -b feature-x',
-    description: 'A data pull request: persisted, reviewable, exactly-once',
+    id: "diff",
+    command: "argon diff -p my-app -b feature-x",
+    description: "Review the branch against its parent",
     output: [
-      'Merge plan persisted (pending): plan_7d31',
-      '2 changes, 0 conflicts',
-      'Apply with: argon merge apply plan_7d31',
+      "vs main @ fork LSN 3:",
+      "  + 1 added · ~ 1 modified · 0 conflicts",
     ],
     panel: {
-      title: 'merge plan plan_7d31 → main',
-      note: 'applies exactly once, only against the heads it was computed for',
+      title: "diff · feature-x vs main",
       sections: [
         {
-          name: 'planned changes',
+          name: "products",
           lines: [
-            { text: 'insert products/s4', status: 'added' },
-            { text: 'update products/s2 (price 89 → 79)', status: 'modified' },
+            { text: '{ _id: "s4", … } added', status: "added" },
+            { text: '{ _id: "s2", price: 89 → 79 }', status: "modified" },
+            { text: "s1, s3 unchanged", status: "muted" },
           ],
         },
       ],
     },
   },
   {
-    id: 'merge-apply',
-    command: 'argon merge apply plan_7d31',
-    description: 'The branch lands on main — attributed, exactly-once',
+    id: "merge",
+    command: "argon merge preview -p my-app -b feature-x",
+    description: "A data pull request: persisted and reviewable",
     output: [
-      'Applied against the exact heads the plan was computed for',
-      '2 changes on main · actor: merge:feature-x',
-      'main head: LSN 8',
+      "Merge plan persisted (pending): plan_7d31",
+      "2 changes, 0 conflicts",
+      "Apply with: argon merge apply plan_7d31",
     ],
     panel: {
-      title: 'my-app · main @ LSN 8',
-      note: 'the merge is ordinary history — attributed, and undoable',
+      title: "merge plan plan_7d31 → main",
+      note: "claims the reviewed plan atomically; stale heads require a fresh preview",
       sections: [
         {
-          name: 'products (4 documents)',
+          name: "planned changes",
+          lines: [
+            { text: "insert products/s4", status: "added" },
+            { text: "update products/s2 (price 89 → 79)", status: "modified" },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: "merge-apply",
+    command: "argon merge apply plan_7d31",
+    description: "The branch lands on main — attributed, reviewed",
+    output: [
+      "Applied against the exact heads the plan was computed for",
+      "2 changes on main · actor: merge:feature-x",
+      "main head: LSN 8",
+    ],
+    panel: {
+      title: "my-app · main @ LSN 8",
+      note: "the merge is ordinary history — attributed, and undoable",
+      sections: [
+        {
+          name: "products (4 documents)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
-            { text: '{ _id: "s2", name: "road shoe", price: 79 }', status: 'modified' },
+            {
+              text: '{ _id: "s2", name: "road shoe", price: 79 }',
+              status: "modified",
+            },
             { text: '{ _id: "s3", name: "track spike", price: 74 }' },
-            { text: '{ _id: "s4", name: "trail runner", price: 59 }', status: 'added' },
+            {
+              text: '{ _id: "s4", name: "trail runner", price: 59 }',
+              status: "added",
+            },
           ],
         },
       ],
     },
   },
   {
-    id: 'undo',
-    command: 'argon undo -p my-app -b main --from-lsn 6 --dry-run',
-    description: 'The undo button — even a merge is just a revertible range',
+    id: "undo",
+    command: "argon undo -p my-app -b main --from-lsn 6 --dry-run",
+    description: "The undo button — even a merge is just a revertible range",
     output: [
-      'Would revert 2 documents on main · 0 conflicts',
-      'Compensations are new history: auditable, undoable in turn',
+      "Would revert 2 documents on main · 0 conflicts",
+      "Compensations are new history: auditable, undoable in turn",
     ],
     panel: {
-      title: 'undo preview · main',
-      note: 'nothing changed yet — drop --dry-run to apply',
+      title: "undo preview · main",
+      note: "nothing changed yet — drop --dry-run to apply",
       sections: [
         {
-          name: 'products (would become)',
+          name: "products (would become)",
           lines: [
-            { text: '{ _id: "s4", … } would be deleted', status: 'removed' },
-            { text: '{ _id: "s2", price: 79 → 89 } would revert', status: 'modified' },
+            { text: '{ _id: "s4", … } would be deleted', status: "removed" },
+            {
+              text: '{ _id: "s2", price: 79 → 89 } would revert',
+              status: "modified",
+            },
           ],
         },
       ],
@@ -288,11 +395,11 @@ const cliSteps: DemoStep[] = [
 ];
 
 const agentInitialPanel: DemoPanel = {
-  title: 'prod · main @ LSN 8112',
-  note: 'production data — the thing the agent must never touch directly',
+  title: "prod · main @ LSN 8112",
+  note: "production data — the thing the agent must never touch directly",
   sections: [
     {
-      name: 'products (3 of 51,240 documents)',
+      name: "products (3 of 51,240 documents)",
       lines: [
         { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
         { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -304,20 +411,20 @@ const agentInitialPanel: DemoPanel = {
 
 const agentSteps: DemoStep[] = [
   {
-    id: 'sandbox',
-    command: 'argon sandbox create -p prod --ttl 1h',
-    description: 'Fork, checkout, and TTL-stamp in one command',
+    id: "sandbox",
+    command: "argon sandbox create -p prod --ttl 1h",
+    description: "Fork, checkout, and TTL-stamp in one command",
     output: [
-      'Sandbox: sandbox-f81a (expires in 1h)',
-      'Connection string:',
-      '  mongodb://localhost:27017/argon_br_f81a',
+      "Sandbox: sandbox-f81a (expires in 1h)",
+      "Connection string:",
+      "  mongodb://localhost:27017/argon_br_f81a",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_f81a',
-      note: 'an isolated copy of prod @ LSN 8112 — reaps itself on expiry',
+      title: "mongodb://…/argon_br_f81a",
+      note: "an isolated copy of prod @ LSN 8112 — reaps itself on expiry",
       sections: [
         {
-          name: 'products (3 of 51,240 documents)',
+          name: "products (3 of 51,240 documents)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
             { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -328,60 +435,64 @@ const agentSteps: DemoStep[] = [
     },
   },
   {
-    id: 'agent-writes',
+    id: "agent-writes",
     command: 'agent --db mongodb://…/argon_br_f81a --task "10% off all shoes"',
-    description: 'The agent works against a real database, unchanged',
+    description: "The agent works against a real database, unchanged",
     output: [
-      'agent updated 3,214 documents',
-      'every write captured with actor: agent:price-fixer',
+      "agent updated 3,214 documents",
+      "branch capture configured with actor: agent:price-fixer",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_f81a',
-      note: 'production untouched — but look at s3',
+      title: "mongodb://…/argon_br_f81a",
+      note: "production untouched — but look at s3",
       sections: [
         {
-          name: 'products (3 of 51,240 documents)',
+          name: "products (3 of 51,240 documents)",
           lines: [
-            { text: '{ _id: "s1", price: 49 → 44.1 }', status: 'modified' },
-            { text: '{ _id: "s2", price: 89 → 80.1 }', status: 'modified' },
-            { text: '{ _id: "s3", price: 74 → 0 }', status: 'removed' },
+            { text: '{ _id: "s1", price: 49 → 44.1 }', status: "modified" },
+            { text: '{ _id: "s2", price: 89 → 80.1 }', status: "modified" },
+            { text: '{ _id: "s3", price: 74 → 0 }', status: "removed" },
           ],
         },
       ],
     },
   },
   {
-    id: 'review',
-    command: 'argon diff -p prod -b sandbox-f81a',
-    description: 'Audit exactly what the agent changed',
-    output: ['~ 3,214 modified by agent:price-fixer', '12 documents flagged: price = 0'],
+    id: "review",
+    command: "argon diff -p prod -b sandbox-f81a",
+    description: "Audit exactly what the agent changed",
+    output: [
+      "~ 3,214 modified by agent:price-fixer",
+      "12 documents flagged: price = 0",
+    ],
     panel: {
-      title: 'diff · sandbox-f81a vs main',
+      title: "diff · sandbox-f81a vs main",
       sections: [
         {
-          name: 'products',
+          name: "products",
           lines: [
-            { text: '3,202 documents: price × 0.9', status: 'modified' },
-            { text: '12 documents: price → 0 (bug!)', status: 'removed' },
+            { text: "3,202 documents: price × 0.9", status: "modified" },
+            { text: "12 documents: price → 0 (bug!)", status: "removed" },
           ],
         },
       ],
     },
   },
   {
-    id: 'undo-actor',
-    command: 'argon undo -p prod -b sandbox-f81a --actor agent:price-fixer --from-lsn 8113',
-    description: 'Revert one agent’s entire session',
+    id: "undo-actor",
+    command:
+      "argon undo -p prod -b sandbox-f81a --actor agent:price-fixer --from-lsn 8113",
+    description: "Revert one agent’s entire session",
     output: [
-      '3,214 documents reverted · 0 conflicts',
-      'a document you had edited since would be reported, not clobbered',
+      "3,214 documents reverted · 0 conflicts",
+      "a document you had edited since would be reported, not clobbered",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_f81a',
-      note: 'back to the pre-session state — the undo itself is history',
+      title: "mongodb://…/argon_br_f81a",
+      note: "back to the pre-session state — the undo itself is history",
       sections: [
         {
-          name: 'products (3 of 51,240 documents)',
+          name: "products (3 of 51,240 documents)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
             { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -392,36 +503,39 @@ const agentSteps: DemoStep[] = [
     },
   },
   {
-    id: 'pin',
-    command: 'argon pin create -p prod -b main --name eval-2026-07',
-    description: 'Freeze a named dataset state for reproducible evals',
-    output: ['Pin created: eval-2026-07 @ LSN 8112', 'Immutable — GC and reset can never touch it'],
+    id: "pin",
+    command: "argon pin create -p prod -b main --name eval-2026-07",
+    description: "Freeze a named dataset state for reproducible evals",
+    output: [
+      "Pin created: eval-2026-07 @ LSN 8112",
+      "Immutable — GC and reset can never touch it",
+    ],
     panel: {
-      title: 'prod · pins',
+      title: "prod · pins",
       sections: [
         {
-          name: 'pins',
+          name: "pins",
           lines: [
-            { text: 'eval-2026-07 @ LSN 8112 · immutable', status: 'added' },
+            { text: "eval-2026-07 @ LSN 8112 · immutable", status: "added" },
           ],
         },
       ],
     },
   },
   {
-    id: 'eval-run',
-    command: 'argon sandbox create -p prod --from-pin eval-2026-07',
-    description: 'Every eval run forks the pin — identical input, every time',
+    id: "eval-run",
+    command: "argon sandbox create -p prod --from-pin eval-2026-07",
+    description: "Every eval run forks the pin — identical input, every time",
     output: [
-      'Sandbox from pin eval-2026-07',
-      'run #1, #17, or #1,000 — same input state, byte for byte',
+      "Sandbox from pin eval-2026-07",
+      "run #1, #17, or #1,000 — same input state, byte for byte",
     ],
     panel: {
-      title: 'mongodb://…/argon_br_a3d9',
-      note: 'the corpus keeps moving; your eval input never does',
+      title: "mongodb://…/argon_br_a3d9",
+      note: "the corpus keeps moving; your eval input never does",
       sections: [
         {
-          name: 'products (3 of 51,240 documents @ LSN 8112)',
+          name: "products (3 of 51,240 documents @ LSN 8112)",
           lines: [
             { text: '{ _id: "s1", name: "trail shoe", price: 49 }' },
             { text: '{ _id: "s2", name: "road shoe", price: 89 }' },
@@ -434,12 +548,14 @@ const agentSteps: DemoStep[] = [
 ];
 
 export default function InteractiveDemo() {
-  const [activeTab, setActiveTab] = useState<'cli' | 'agent' | 'surfaces'>('cli');
+  const [activeTab, setActiveTab] = useState<"cli" | "agent" | "surfaces">(
+    "cli",
+  );
 
   const tabs: { key: typeof activeTab; label: string }[] = [
-    { key: 'cli', label: 'CLI workflow' },
-    { key: 'agent', label: 'Agent & eval workflow' },
-    { key: 'surfaces', label: 'MCP · REST · proxy' },
+    { key: "cli", label: "CLI workflow" },
+    { key: "agent", label: "Agent & eval workflow" },
+    { key: "surfaces", label: "MCP · REST · proxy" },
   ];
 
   return (
@@ -453,8 +569,8 @@ export default function InteractiveDemo() {
               onClick={() => setActiveTab(tab.key)}
               className={`whitespace-nowrap px-4 py-2.5 font-mono text-sm transition-colors ${
                 activeTab === tab.key
-                  ? 'bg-brand-surface text-brand-primary'
-                  : 'text-brand-text-darker hover:text-brand-text'
+                  ? "bg-brand-surface text-brand-primary"
+                  : "text-brand-text-darker hover:text-brand-text"
               }`}
             >
               {tab.label}
@@ -466,16 +582,19 @@ export default function InteractiveDemo() {
       {/* Description */}
       <div className="mb-8 text-center">
         <p className="text-sm text-brand-text-darker">
-          {activeTab === 'cli' && 'The full loop, from branch to data PR — the terminal drives, the panels follow.'}
-          {activeTab === 'agent' && 'Sandbox an agent, audit it, undo it, pin the eval.'}
-          {activeTab === 'surfaces' && 'Four surfaces, one engine: CLI, MCP, REST, wire proxy.'}
+          {activeTab === "cli" &&
+            "The full loop, from branch to data PR — the terminal drives, the panels follow."}
+          {activeTab === "agent" &&
+            "Sandbox an agent, audit it, undo it, pin the eval."}
+          {activeTab === "surfaces" &&
+            "Four surfaces, one engine: CLI, MCP, REST, wire proxy."}
           <span className="opacity-60"> · simulated</span>
         </p>
       </div>
 
       {/* key per tab: switching flows remounts the player, so no stale
           timers or out-of-range steps can survive a tab change */}
-      {activeTab === 'cli' && (
+      {activeTab === "cli" && (
         <DemoPlayer
           key="cli"
           steps={cliSteps}
@@ -484,7 +603,7 @@ export default function InteractiveDemo() {
           graph={cliGraph}
         />
       )}
-      {activeTab === 'agent' && (
+      {activeTab === "agent" && (
         <DemoPlayer
           key="agent"
           steps={agentSteps}
@@ -493,7 +612,7 @@ export default function InteractiveDemo() {
           graph={agentGraph}
         />
       )}
-      {activeTab === 'surfaces' && <SurfacePicker />}
+      {activeTab === "surfaces" && <SurfacePicker />}
     </div>
   );
 }

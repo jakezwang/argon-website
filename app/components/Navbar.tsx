@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import PeriodicTile from './PeriodicTile';
+import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import PeriodicTile from "./PeriodicTile";
 
 const navLinks = [
-  { href: '/agents', label: 'Agents' },
-  { href: '/features', label: 'Features' },
-  { href: '/demo', label: 'Demo' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/about', label: 'About' },
+  { href: "/agents", label: "Agents" },
+  { href: "/features", label: "Features" },
+  { href: "/demo", label: "Demo" },
+  { href: "/quickstart", label: "Quickstart" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
 ];
 
 const GitHubIcon = () => (
@@ -27,7 +28,11 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/90 backdrop-blur">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex h-14 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Argon home">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5"
+            aria-label="Argon home"
+          >
             <PeriodicTile size="sm" />
             <span className="font-mono text-lg text-brand-text">argon</span>
           </Link>
@@ -42,8 +47,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`px-3 py-1.5 font-mono text-[13px] transition-colors ${
                     isActive
-                      ? 'text-brand-primary'
-                      : 'text-brand-text-darker hover:text-brand-text'
+                      ? "text-brand-primary"
+                      : "text-brand-text-darker hover:text-brand-text"
                   }`}
                 >
                   {link.label}
@@ -72,12 +77,34 @@ export default function Navbar() {
           >
             <span className="sr-only">Open main menu</span>
             {!isOpen ? (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             ) : (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             )}
           </button>
@@ -92,7 +119,9 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 className={`block px-2 py-2 font-mono text-sm ${
-                  pathname === link.href ? 'text-brand-primary' : 'text-brand-text-darker'
+                  pathname === link.href
+                    ? "text-brand-primary"
+                    : "text-brand-text-darker"
                 }`}
                 onClick={() => setIsOpen(false)}
               >

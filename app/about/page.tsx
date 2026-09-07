@@ -1,11 +1,12 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import { product } from "../product";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
-  title: { absolute: 'About Argon — The Versioning Layer for MongoDB' },
+  title: { absolute: "About Argon — The Versioning Layer for MongoDB" },
   description:
-    'MongoDB has no Neon, PlanetScale, or Dolt. Argon Labs builds the open-source versioning layer that brings Git-style branching and time travel to MongoDB.',
-  alternates: { canonical: '/about' },
+    "About Argon, an open-source tool for branching and reviewing MongoDB data, and its founder Jake Wang.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
@@ -13,12 +14,11 @@ export default function AboutPage() {
     <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
       <p className="kicker mb-4">About</p>
       <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
-        A small team with a specific obsession
+        About Argon
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8">
-        MongoDB has no equivalent of Neon, PlanetScale, or Dolt — no way to
-        branch, rewind, or audit your data the way you manage code. Argon
-        exists to fill that gap, correctly.
+        Argon adds branching and version history to MongoDB. You can try changes
+        in a separate database, review the diff, and decide what to merge.
       </p>
 
       {/* Team */}
@@ -27,7 +27,12 @@ export default function AboutPage() {
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="border border-brand-edge bg-brand-surface p-8">
             <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
-              <Image src="/jakewang.jpeg" alt="Jake Wang" fill className="object-cover" />
+              <Image
+                src="/jakewang.jpeg"
+                alt="Jake Wang"
+                fill
+                className="object-cover"
+              />
             </div>
             <h3 className="mt-5 text-lg font-medium text-brand-text">
               <Link
@@ -39,19 +44,26 @@ export default function AboutPage() {
                 Jake Wang
               </Link>
             </h3>
-            <p className="font-mono text-xs uppercase tracking-wider text-brand-primary">
+            <p className="mt-1 text-sm text-brand-text-darker">
               Founder
             </p>
             <p className="mt-3 text-sm leading-6">
-              Software engineer, previously at MongoDB, LinkedIn, and
-              Bloomberg. Building Argon to give MongoDB the Git-style
-              branching, merge, and time travel it never had — and to make
-              databases something AI agents can work in without fear.
+              I work as a software engineer at Pinterest. Before that, I worked
+              at MongoDB, LinkedIn, and Bloomberg.
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              I&apos;m building Argon to make it easier to test and review
+              changes to MongoDB data.
             </p>
           </div>
           <div className="border border-brand-edge bg-brand-surface p-8">
             <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
-              <Image src="/nootnoot.jpg" alt="Noot Noot" fill className="object-cover" />
+              <Image
+                src="/nootnoot.jpg"
+                alt="Noot Noot"
+                fill
+                className="object-cover"
+              />
             </div>
             <h3 className="mt-5 text-lg font-medium text-brand-text">
               <Link
@@ -68,8 +80,7 @@ export default function AboutPage() {
             </p>
             <p className="mt-3 text-sm leading-6">
               Official team cat and professional morale booster. Keeps the
-              workplace pawsitive. His value: beyond measure (and very
-              fluffy).
+              workplace pawsitive. His value: beyond measure (and very fluffy).
             </p>
           </div>
         </div>
@@ -86,7 +97,10 @@ export default function AboutPage() {
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
               <li>Deterministic WAL engine; public reproducible benchmarks</li>
-              <li>Branches check out as real MongoDB databases — real-driver validated in CI</li>
+              <li>
+                Branches check out as real MongoDB databases — real-driver
+                validated in CI
+              </li>
               <li>argon diff / merge — reviewable data PRs; per-actor undo</li>
               <li>TTL sandboxes, dataset pins, MCP server, argon-agents</li>
             </ul>
@@ -97,8 +111,9 @@ export default function AboutPage() {
               What&apos;s next
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>GCS chunk-store backend</li>
-              <li>Synchronous capture in the wire-protocol proxy</li>
+              {product.roadmap.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -117,7 +132,7 @@ export default function AboutPage() {
       {/* License + CTA */}
       <section className="mt-16 border-t border-brand-edge pt-10">
         <p className="leading-8">
-          Argon is licensed under the{' '}
+          Argon is licensed under the{" "}
           <Link
             href="https://github.com/argon-lab/argon/blob/master/LICENSE"
             target="_blank"
