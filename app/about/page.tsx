@@ -3,9 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-  title: { absolute: "About Argon — Data Sandboxes for AI Agents" },
+  title: { absolute: "About Argon — Database Workflows for AI Agents" },
   description:
-    "Meet the team behind Argon, an open-source tool that gives AI agents their own MongoDB sandboxes, with changes you can review, merge, or undo.",
+    "Why Argon exists: branching, time travel, isolated experiments, and reviewed data merges for AI agents working with MongoDB.",
   alternates: { canonical: "/about" },
 };
 
@@ -16,8 +16,7 @@ const team = [
     href: "https://www.linkedin.com/in/wang1/",
     role: "Founder",
     bio: [
-      "I'm building Argon for AI agents that work with MongoDB. Each agent gets its own sandbox, with changes you can review, merge, or undo.",
-      "I'm a software engineer at Pinterest. Before that, I worked at MongoDB, LinkedIn, and Bloomberg.",
+      "Software engineer at Pinterest. Previously at MongoDB, LinkedIn, and Bloomberg.",
     ],
   },
   {
@@ -36,53 +35,38 @@ export default function AboutPage() {
     <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
       <p className="kicker mb-4">About</p>
       <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
-        About Argon
+        Why Argon exists
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8">
-        Argon gives AI agents their own MongoDB sandboxes. Agents can read and
-        write data with their usual tools. You can compare their changes, decide
-        what to merge, and undo a run when it goes wrong.
+        Argon began in 2025 with a problem in the MongoDB workflow for AI
+        agents. An agent needed to branch its data, test a change, return to an
+        earlier state, and try another approach. Putting those steps together
+        took too much work.
       </p>
-
-      {/* Team */}
-      <section className="mt-16">
-        <p className="kicker mb-8">Team</p>
-        <div className="grid gap-6 sm:grid-cols-2">
-          {team.map((member) => (
-            <article
-              key={member.name}
-              className="border border-brand-edge bg-brand-surface p-8"
-            >
-              <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="mt-5 text-lg font-medium text-brand-text">
-                <Link
-                  href={member.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-brand-primary"
-                >
-                  {member.name}
-                </Link>
-              </h3>
-              <p className="font-mono text-xs uppercase tracking-wider text-brand-primary sm:min-h-8 lg:min-h-4">
-                {member.role}
-              </p>
-              <div className="mt-3 space-y-3 text-sm leading-6">
-                {member.bio.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <p className="mt-5 max-w-2xl leading-8">
+        Backups and rollback helped with recovery. Agents also needed a way to
+        inspect what they had changed and bring useful results back after
+        review. Argon brings branching, time travel, and reviewed merges to
+        MongoDB, so agents can experiment in their own sandboxes and teams can
+        decide what to keep.
+      </p>
+      <p className="mt-5 max-w-2xl text-sm leading-6">
+        Read more about the{" "}
+        <Link
+          href="/blog/disposable-mongodb-sandbox-for-ai-agents"
+          className="prose-link"
+        >
+          branch-per-agent workflow
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/blog/mongodb-time-travel-vs-point-in-time-recovery"
+          className="prose-link"
+        >
+          time travel versus recovery
+        </Link>
+        .
+      </p>
 
       {/* Status */}
       <section className="mt-16">
@@ -124,6 +108,46 @@ export default function AboutPage() {
           >
             Read the changelog →
           </Link>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="mt-16">
+        <p className="kicker mb-8">Team</p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {team.map((member) => (
+            <article
+              key={member.name}
+              className="border border-brand-edge bg-brand-surface p-8"
+            >
+              <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="mt-5 text-lg font-medium text-brand-text">
+                <Link
+                  href={member.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-primary"
+                >
+                  {member.name}
+                </Link>
+              </h3>
+              <p className="font-mono text-xs uppercase tracking-wider text-brand-primary sm:min-h-8 lg:min-h-4">
+                {member.role}
+              </p>
+              <div className="mt-3 space-y-3 text-sm leading-6">
+                {member.bio.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
