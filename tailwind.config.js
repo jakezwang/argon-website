@@ -12,7 +12,7 @@ module.exports = {
         'brand-dark': '#0B0E14', // page background
         'brand-surface': '#111521', // panels
         'brand-edge': '#222838', // 1px borders
-        'brand-muted': '#6E7891', // secondary labels
+        'brand-muted': '#8F9BB3', // secondary labels
         'brand-primary': '#96A7FF', // argon glow
         'brand-secondary': '#6D7FE0', // deeper glow (hover / fills)
         'brand-text': '#E8EBF2',

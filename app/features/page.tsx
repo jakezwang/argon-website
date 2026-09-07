@@ -1,3 +1,4 @@
+import Capabilities from "../components/Capabilities";
 const FeatureCard = ({
   index,
   title,
@@ -15,10 +16,10 @@ const FeatureCard = ({
 );
 
 export const metadata = {
-  title: 'Branching, Time Travel & Data PRs for MongoDB',
+  title: "Branching, Time Travel & Data PRs for MongoDB",
   description:
-    'Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.',
-  alternates: { canonical: '/features' },
+    "Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.",
+  alternates: { canonical: "/features" },
 };
 
 export default function FeaturesPage() {
@@ -29,44 +30,45 @@ export default function FeaturesPage() {
         Version control for your MongoDB data
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8">
-        Millisecond branching, time travel, and restore, built on a
+        Lightweight metadata branching, time travel, and restore, built on a
         deterministic write-ahead log. Open source and self-hosted.
       </p>
 
       {/* Key features */}
       <div className="mt-16 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2 lg:grid-cols-3">
         <FeatureCard index="/01" title="Millisecond branching">
-          One metadata write — no copies at any size. Measured: 0.86 ms
-          p50, 479 bytes per branch.
+          Metadata branches share history. Physical checkout creates a MongoDB
+          database and has dataset-dependent time and storage costs.
         </FeatureCard>
         <FeatureCard index="/02" title="Time-travel queries">
-          Inspect or restore any historical state, addressed by LSN or
-          timestamp.
+          Inspect retained historical states, addressed by log position (LSN) or
+          timestamp. Pins protect their referenced history.
         </FeatureCard>
         <FeatureCard index="/03" title="Deterministic by design">
           Same history, same state — byte for byte, property-tested in CI.
         </FeatureCard>
         <FeatureCard index="/04" title="Agent &amp; eval workflows">
-          TTL sandboxes, per-actor undo, GC-proof dataset pins, and a
+          Managed TTL sandboxes, branch-scoped actor undo, dataset pins, and a
           LangGraph checkpointer (argon-agents).
         </FeatureCard>
         <FeatureCard index="/05" title="Four surfaces, one engine">
-          CLI for humans · MCP for agents (13 tools) · REST for SDKs ·
-          wire proxy for stable URIs.
+          CLI for humans · MCP for agents (13 tools) · REST for SDKs · wire
+          proxy for stable URIs.
         </FeatureCard>
         <FeatureCard index="/06" title="Honest engineering">
-          Every number links to a benchmark you can run with docker compose
-          up. What we can&apos;t back, we don&apos;t publish.
+          Every number links to a benchmark you can run with docker compose up.
+          What we can&apos;t back, we don&apos;t publish.
         </FeatureCard>
       </div>
 
+      <Capabilities />
       {/* One idea, then the docs */}
       <div className="mt-16 max-w-3xl">
         <p className="text-lg leading-8">
-          Everything is a view over one append-only log: branches are
-          pointers into it, time-travel replays it (deterministically,
-          property-tested), and checkout materializes it into a real
-          MongoDB database. The deep dives:
+          Everything is a view over one append-only log: branches are pointers
+          into it, time-travel replays it (deterministically, property-tested),
+          and checkout materializes it into a real MongoDB database. The deep
+          dives:
         </p>
         <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
           <a

@@ -4,28 +4,30 @@
 
 @layer base {
   html {
-    background-color: theme('colors.brand-dark');
+    background-color: theme("colors.brand-dark");
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: theme('colors.brand-dark');
-    color: theme('colors.brand-text');
-    font-feature-settings: 'ss01' on, 'cv05' on;
+    background-color: theme("colors.brand-dark");
+    color: theme("colors.brand-text");
+    font-feature-settings:
+      "ss01" on,
+      "cv05" on;
   }
 
   p {
-    color: theme('colors.brand-text-darker');
+    color: theme("colors.brand-text-darker");
   }
 
   ::selection {
-    background-color: theme('colors.brand-secondary');
-    color: theme('colors.brand-text');
+    background-color: theme("colors.brand-secondary");
+    color: theme("colors.brand-text");
   }
 
   a:focus-visible,
   button:focus-visible {
-    outline: 1px solid theme('colors.brand-primary');
+    outline: 1px solid theme("colors.brand-primary");
     outline-offset: 2px;
   }
 }
@@ -115,5 +117,15 @@
   }
   .article td {
     @apply text-brand-text-darker;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
   }
 }

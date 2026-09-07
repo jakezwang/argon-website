@@ -6,10 +6,12 @@ Argon is to MongoDB what Neon is to Postgres and PlanetScale is to MySQL: a vers
 
 ## What Argon does
 
-- **Branch a MongoDB database** in milliseconds — an isolated copy that shares history, not storage.
-- **Time travel** to any point in a branch's history and query the data as it was.
-- **Data PRs**: diff two branches, review the change, and merge exactly-once. Conflicts are reported, never resolved silently.
-- **Per-actor undo**: every write is a revertible range, so an agent's changes can be undone without touching anyone else's.
+- **Branch a MongoDB database** with lightweight metadata that shares history. Checkout materializes a real MongoDB database and has separate time and storage costs.
+- **Time travel** within retained branch history and query the data as it was.
+- **Data PRs**: diff two branches, review the change, and apply a reviewed merge plan. Conflicts are reported, never resolved silently.
+- **Per-actor undo**: native writers share a branch/run actor; undo needs complete images and retained history, and refuses unsafe restoration.
+- **Lifecycle**: REST/MCP services manage capture and expiry while running. CLI sandboxes require watch and scheduled sweep.
+- **Unsupported DDL**: drop and rename mark capture incomplete.
 - **Agent surface**: an MCP server (13 tools), TTL sandboxes, and reproducible dataset pins for evals.
 
 ## Install
@@ -28,3 +30,7 @@ Argon is to MongoDB what Neon is to Postgres and PlanetScale is to MySQL: a vers
 - Features: https://argonlabs.tech/features
 - For AI agents: https://argonlabs.tech/agents
 - Live demo: https://argonlabs.tech/demo
+
+- Local quickstart: https://argonlabs.tech/quickstart
+- Capability matrix: https://argonlabs.tech/features#capabilities
+- Two-agent order example: https://github.com/argon-lab/argon-agents/blob/main/examples/two_agent_review.py
