@@ -5,7 +5,7 @@ import Image from "next/image";
 export const metadata = {
   title: { absolute: "About Argon — The Versioning Layer for MongoDB" },
   description:
-    "MongoDB has no Neon, PlanetScale, or Dolt. Argon Labs builds the open-source versioning layer that brings Git-style branching and time travel to MongoDB.",
+    "About Argon, an open-source tool for branching and reviewing MongoDB data, and its founder Jake Wang.",
   alternates: { canonical: "/about" },
 };
 
@@ -14,12 +14,11 @@ export default function AboutPage() {
     <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
       <p className="kicker mb-4">About</p>
       <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
-        A small team with a specific obsession
+        About Argon
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8">
-        MongoDB has no equivalent of Neon, PlanetScale, or Dolt — no way to
-        branch, rewind, or audit your data the way you manage code. Argon exists
-        to fill that gap, correctly.
+        Argon adds branching and version history to MongoDB. You can try changes
+        in a separate database, review the diff, and decide what to merge.
       </p>
 
       {/* Team */}
@@ -45,14 +44,16 @@ export default function AboutPage() {
                 Jake Wang
               </Link>
             </h3>
-            <p className="font-mono text-xs uppercase tracking-wider text-brand-primary">
+            <p className="mt-1 text-sm text-brand-text-darker">
               Founder
             </p>
             <p className="mt-3 text-sm leading-6">
-              Software engineer, previously at MongoDB, LinkedIn, and Bloomberg.
-              Building Argon to give MongoDB the Git-style branching, merge, and
-              time travel it never had — and to make databases something AI
-              agents can work in without fear.
+              I work as a software engineer at Pinterest. Before that, I worked
+              at MongoDB, LinkedIn, and Bloomberg.
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              I&apos;m building Argon to make it easier to test and review
+              changes to MongoDB data.
             </p>
           </div>
           <div className="border border-brand-edge bg-brand-surface p-8">
