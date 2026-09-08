@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "two-ai-agents-one-mongodb-document",
+    title: "What Happens When Two AI Agents Change the Same MongoDB Document?",
+    description:
+      "A Python walkthrough of database branches, merge conflicts, and undo, using one order and two competing price changes.",
+    date: "2026-09-08",
+    tags: ["AI Agents", "MongoDB", "Data Review"],
+    readingMinutes: 7,
+  },
+  {
     slug: "mongodb-mcp-server-versioned-sandboxes",
     title: "MCP + MongoDB: Versioned Sandboxes for Agent Tool-Calls",
     description:
