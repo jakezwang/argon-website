@@ -10,10 +10,12 @@ type Faq = { q: string; a: string };
 export default function ArticleLayout({
   post,
   faq,
+  capabilityNotes = true,
   children,
 }: {
   post: Post;
   faq?: Faq[];
+  capabilityNotes?: boolean;
   children: React.ReactNode;
 }) {
   const url = `https://argonlabs.tech/blog/${post.slug}`;
@@ -124,15 +126,17 @@ export default function ArticleLayout({
 
       <hr className="my-10 border-brand-edge" />
 
-      <p className="mb-6 border border-brand-edge p-4 text-sm leading-6">
-        Current capability notes: checkout materializes a physical database;
-        native actor attribution is per branch/run; undo needs complete images
-        and retained history. CLI sandboxes require watch and scheduled sweep.{" "}
-        <Link className="prose-link" href="/features#capabilities">
-          Read the capability matrix
-        </Link>
-        .
-      </p>
+      {capabilityNotes && (
+        <p className="mb-6 border border-brand-edge p-4 text-sm leading-6">
+          Current capability notes: checkout materializes a physical database;
+          native actor attribution is per branch/run; undo needs complete images
+          and retained history. CLI sandboxes require watch and scheduled sweep.{" "}
+          <Link className="prose-link" href="/features#capabilities">
+            Read the capability matrix
+          </Link>
+          .
+        </p>
+      )}
       <div className="article">{children}</div>
 
       {faq && faq.length > 0 && (
