@@ -559,15 +559,16 @@ export default function InteractiveDemo() {
   ];
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto min-w-0 max-w-6xl">
       {/* Tabs */}
-      <div className="mb-8 flex justify-center overflow-x-auto">
+      <div className="mb-8 flex justify-start overflow-x-auto sm:justify-center">
         <div className="flex min-w-max flex-nowrap border border-brand-edge">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`whitespace-nowrap px-4 py-2.5 font-mono text-sm transition-colors ${
+              aria-pressed={activeTab === tab.key}
+              className={`min-h-11 whitespace-nowrap px-4 py-2.5 font-mono text-sm transition-colors ${
                 activeTab === tab.key
                   ? "bg-brand-surface text-brand-primary"
                   : "text-brand-text-darker hover:text-brand-text"

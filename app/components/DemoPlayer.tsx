@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import GitGraph, { FlowGraph } from './GitGraph';
+import { useEffect, useRef, useState } from "react";
+import GitGraph, { FlowGraph } from "./GitGraph";
 
 export interface PanelLine {
   text: string;
-  status?: 'added' | 'modified' | 'removed' | 'muted';
+  status?: "added" | "modified" | "removed" | "muted";
 }
 export interface PanelSection {
   name: string;
@@ -36,26 +36,29 @@ const TYPE_MS = 16;
 const LINE_MS = 130;
 const DWELL_MS = 3000;
 
-const statusStyle: Record<NonNullable<PanelLine['status']> | 'default', string> = {
-  added: 'text-emerald-400',
-  modified: 'text-amber-400',
-  removed: 'text-red-400',
-  muted: 'text-brand-muted',
-  default: 'text-brand-text-darker',
+const statusStyle: Record<
+  NonNullable<PanelLine["status"]> | "default",
+  string
+> = {
+  added: "text-emerald-400",
+  modified: "text-amber-400",
+  removed: "text-red-400",
+  muted: "text-brand-muted",
+  default: "text-brand-text-darker",
 };
 
-const statusPrefix: Record<NonNullable<PanelLine['status']>, string> = {
-  added: '+ ',
-  modified: '~ ',
-  removed: '− ',
-  muted: '  ',
+const statusPrefix: Record<NonNullable<PanelLine["status"]>, string> = {
+  added: "+ ",
+  modified: "~ ",
+  removed: "− ",
+  muted: "  ",
 };
 
 export default function DemoPlayer({
   steps,
   initialPanel,
   terminalTitle,
-  panelKind = 'database view',
+  panelKind = "database view",
   graph,
 }: DemoPlayerProps) {
   const [idx, setIdx] = useState(0);
@@ -96,7 +99,8 @@ export default function DemoPlayer({
         outputTimer = setInterval(() => {
           l += 1;
           setLines(l);
-          if (l >= step.output.length && outputTimer) clearInterval(outputTimer);
+          if (l >= step.output.length && outputTimer)
+            clearInterval(outputTimer);
         }, LINE_MS);
       }
     }, TYPE_MS);
@@ -154,23 +158,27 @@ export default function DemoPlayer({
 
   // The data panel and graph reflect the world *after* the current command
   // ran; while it is still typing, show the previous step's state.
-  const panel = typingDone ? step.panel : safeIdx > 0 ? steps[safeIdx - 1].panel : initialPanel;
+  const panel = typingDone
+    ? step.panel
+    : safeIdx > 0
+      ? steps[safeIdx - 1].panel
+      : initialPanel;
   const graphStep = typingDone ? safeIdx : safeIdx - 1;
 
   return (
     <div
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'ArrowRight') {
+        if (e.key === "ArrowRight") {
           pause();
           next();
         }
-        if (e.key === 'ArrowLeft') {
+        if (e.key === "ArrowLeft") {
           pause();
           prev();
         }
       }}
-      className="outline-none focus-visible:outline-none"
+      className="min-w-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-primary focus-visible:outline-offset-4"
     >
       {/* Current step, one line */}
       <p className="mb-3 flex flex-wrap items-center gap-x-2 font-mono text-xs text-brand-text-darker">
@@ -188,9 +196,11 @@ export default function DemoPlayer({
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Terminal */}
-        <div className="flex flex-col border border-brand-edge bg-brand-surface">
-          <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
-            <p className="font-mono text-xs text-brand-muted">{terminalTitle}</p>
+        <div className="flex min-w-0 flex-col border border-brand-edge bg-brand-surface">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
+            <p className="font-mono text-xs text-brand-muted">
+              {terminalTitle}
+            </p>
             <p className="font-mono text-[10px] uppercase tracking-widest text-brand-muted">
               simulated
             </p>
@@ -201,9 +211,9 @@ export default function DemoPlayer({
               pause();
               skip();
             }}
-            title={done ? undefined : 'Click to skip the animation'}
+            title={done ? undefined : "Click to skip the animation"}
             className={`h-60 overflow-y-auto p-4 font-mono text-[13px] leading-6 ${
-              done ? '' : 'cursor-pointer'
+              done ? "" : "cursor-pointer"
             }`}
           >
             {steps.slice(0, safeIdx).map((s) => (
@@ -223,7 +233,9 @@ export default function DemoPlayer({
               <p className="text-brand-text">
                 <span className="select-none text-brand-muted">$ </span>
                 {step.command.slice(0, chars)}
-                {!typingDone && <span className="animate-pulse text-brand-primary">▍</span>}
+                {!typingDone && (
+                  <span className="animate-pulse text-brand-primary">▍</span>
+                )}
               </p>
               {step.output.slice(0, lines).map((line, i) => (
                 <p key={i} className="pl-4 text-brand-text-darker">
@@ -235,27 +247,32 @@ export default function DemoPlayer({
         </div>
 
         {/* Data panel — what the database looks like right now */}
-        <div className="flex flex-col border border-brand-edge bg-brand-surface">
-          <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
-            <p className="truncate font-mono text-xs text-brand-primary">{panel.title}</p>
+        <div className="flex min-w-0 flex-col border border-brand-edge bg-brand-surface">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
+            <p className="min-w-0 break-all font-mono text-xs text-brand-primary">
+              {panel.title}
+            </p>
             <p className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-brand-muted">
               {panelKind}
             </p>
           </div>
           <div className="h-60 overflow-y-auto p-4 font-mono text-xs leading-6">
-            {panel.note && <p className="mb-3 text-brand-muted">// {panel.note}</p>}
+            {panel.note && (
+              <p className="mb-3 text-brand-muted">// {panel.note}</p>
+            )}
             {panel.sections.length === 0 && !panel.note && (
               <p className="text-brand-muted">// empty</p>
             )}
             {panel.sections.map((section) => (
               <div key={section.name} className="mb-4">
-                <p className="mb-1 text-brand-text">
-                  {section.name}
-                </p>
+                <p className="mb-1 text-brand-text">{section.name}</p>
                 <div className="border-l border-brand-edge pl-3">
                   {section.lines.map((line, i) => (
-                    <p key={i} className={statusStyle[line.status ?? 'default']}>
-                      {line.status ? statusPrefix[line.status] : '  '}
+                    <p
+                      key={i}
+                      className={statusStyle[line.status ?? "default"]}
+                    >
+                      {line.status ? statusPrefix[line.status] : "  "}
                       {line.text}
                     </p>
                   ))}
@@ -269,11 +286,12 @@ export default function DemoPlayer({
       {/* History graph — where you are in branch/commit space */}
       {graph && (
         <div className="mt-4 border border-brand-edge bg-brand-surface">
-          <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
             <p className="font-mono text-xs text-brand-muted">
               {graphStep >= 0
-                ? graph.steps[Math.min(graphStep, graph.steps.length - 1)].caption
-                : '…'}
+                ? graph.steps[Math.min(graphStep, graph.steps.length - 1)]
+                    .caption
+                : "…"}
             </p>
             <p className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-brand-muted">
               history graph
@@ -287,12 +305,12 @@ export default function DemoPlayer({
 
       {/* Controls */}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={togglePlay}
             className="btn-solid px-5 py-1.5 font-mono text-sm"
           >
-            {playing ? '❙❙ Pause' : atEnd ? '↺ Replay' : '▶ Play'}
+            {playing ? "❙❙ Pause" : atEnd ? "↺ Replay" : "▶ Play"}
           </button>
           <button
             onClick={() => {
@@ -324,12 +342,12 @@ export default function DemoPlayer({
                 goTo(i, false);
               }}
               title={s.description}
-              className={`h-7 w-7 border font-mono text-[11px] transition-colors ${
+              className={`h-11 w-11 border font-mono text-xs transition-colors ${
                 i === safeIdx
-                  ? 'border-brand-primary text-brand-primary'
+                  ? "border-brand-primary text-brand-primary"
                   : i < safeIdx
-                    ? 'border-brand-edge text-brand-muted hover:text-brand-text'
-                    : 'border-brand-edge text-brand-text-darker hover:text-brand-text'
+                    ? "border-brand-edge text-brand-muted hover:text-brand-text"
+                    : "border-brand-edge text-brand-text-darker hover:text-brand-text"
               }`}
             >
               {i + 1}
@@ -347,7 +365,6 @@ export default function DemoPlayer({
           Restart
         </button>
       </div>
-
     </div>
   );
 }

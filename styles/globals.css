@@ -6,6 +6,7 @@
   html {
     background-color: theme("colors.brand-dark");
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
 
   body {
@@ -26,13 +27,19 @@
   }
 
   a:focus-visible,
-  button:focus-visible {
-    outline: 1px solid theme("colors.brand-primary");
-    outline-offset: 2px;
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  pre:focus-visible {
+    outline: 2px solid theme("colors.brand-primary");
+    outline-offset: 4px;
   }
 }
 
 @layer components {
+  .skip-link {
+    @apply fixed left-4 top-4 z-[100] -translate-y-24 bg-brand-primary px-5 py-3 text-brand-dark focus:translate-y-0;
+  }
   /* Mono uppercase section label, e.g. "01 — Branching" */
   .kicker {
     @apply font-mono text-xs uppercase tracking-[0.18em] text-brand-muted;
@@ -43,11 +50,11 @@
   }
 
   .btn-solid {
-    @apply inline-flex items-center gap-2 border border-brand-primary bg-brand-primary px-5 py-2.5 font-medium text-brand-dark transition-colors hover:bg-brand-secondary hover:border-brand-secondary hover:text-brand-text;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-primary bg-brand-primary px-5 py-2.5 font-medium text-brand-dark transition-colors hover:bg-brand-text hover:border-brand-text;
   }
 
   .btn-quiet {
-    @apply inline-flex items-center gap-2 border border-brand-edge px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-muted;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-edge px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-muted;
   }
 
   .status-dot {

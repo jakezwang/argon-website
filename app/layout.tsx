@@ -136,7 +136,7 @@ const Footer = () => (
           links={[
             { label: "Agents", href: "/agents" },
             { label: "Features", href: "/features" },
-            { label: "Demo", href: "/demo" },
+            { label: "How it works", href: "/demo" },
             { label: "Start locally", href: "/quickstart" },
             { label: "Blog", href: "/blog" },
             { label: "FAQ", href: "/faq" },
@@ -207,8 +207,13 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-grow">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

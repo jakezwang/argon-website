@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { track } from "./Funnel";
+import { product } from "../product";
 import { usePathname } from "next/navigation";
 import PeriodicTile from "./PeriodicTile";
 
 const navLinks = [
   { href: "/agents", label: "Agents" },
   { href: "/features", label: "Features" },
-  { href: "/demo", label: "Demo" },
+  { href: "/demo", label: "How it works" },
   { href: "/quickstart", label: "Quickstart" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
@@ -22,108 +24,40 @@ const GitHubIcon = () => (
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/90 backdrop-blur">
+    <nav
+      aria-label="Main navigation"
+      className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/95 backdrop-blur"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && isOpen) {
+          setIsOpen(false);
+          menuButton.current?.focus();
+        }
+      }}
+    >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex h-14 items-center justify-between">
+        <div className="flex h-16 items-center justify-between gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2.5"
+            className="flex min-h-11 items-center gap-2.5"
             aria-label="Argon home"
+            onClick={() => setIsOpen(false)}
           >
             <PeriodicTile size="sm" />
             <span className="font-mono text-lg text-brand-text">argon</span>
           </Link>
-
-          {/* Desktop */}
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`px-3 py-1.5 font-mono text-[13px] transition-colors ${
-                    isActive
-                      ? "text-brand-primary"
-                      : "text-brand-text-darker hover:text-brand-text"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-            <span className="mx-2 h-4 w-px bg-brand-edge" aria-hidden="true" />
-            <a
-              href="https://github.com/argon-lab/argon"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 border border-brand-edge px-3.5 py-1.5 font-mono text-[13px] text-brand-text transition-colors hover:border-brand-primary hover:text-brand-primary"
-            >
-              <GitHubIcon />
-              Star on GitHub
-            </a>
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            type="button"
-            className="p-2 text-brand-muted hover:text-brand-text md:hidden"
-            aria-controls="mobile-menu"
-            aria-expanded={isOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            {!isOpen ? (
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="border-t border-brand-edge md:hidden" id="mobile-menu">
-          <div className="space-y-1 px-4 py-3">
+          <div className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
               <Link
-                key={link.label}
+                key={link.href}
                 href={link.href}
-                className={`block px-2 py-2 font-mono text-sm ${
-                  pathname === link.href
-                    ? "text-brand-primary"
-                    : "text-brand-text-darker"
-                }`}
-                onClick={() => setIsOpen(false)}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={`inline-flex min-h-11 items-center px-2.5 font-mono text-[13px] transition-colors ${isActive(link.href) ? "text-brand-primary" : "text-brand-text-darker hover:text-brand-text"}`}
               >
                 {link.label}
               </Link>
@@ -132,11 +66,84 @@ export default function Navbar() {
               href="https://github.com/argon-lab/argon"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 block border border-brand-edge px-2 py-2 text-center font-mono text-sm text-brand-text"
-              onClick={() => setIsOpen(false)}
+              className="ml-2 inline-flex min-h-11 items-center gap-2 px-3 font-mono text-[13px] text-brand-text-darker hover:text-brand-text"
             >
-              Star on GitHub
+              <GitHubIcon />
+              GitHub
             </a>
+            <a
+              href={product.demo}
+              onClick={() => track("demo_opened")}
+              className="btn-solid ml-2 min-h-11 text-sm"
+            >
+              Try live demo
+            </a>
+          </div>
+          <button
+            ref={menuButton}
+            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center text-brand-muted hover:text-brand-text lg:hidden"
+            aria-controls="mobile-menu"
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "Close main menu" : "Open main menu"}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      {isOpen && (
+        <div
+          className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-brand-edge lg:hidden"
+          id="mobile-menu"
+        >
+          <div className="space-y-1 px-6 py-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={`flex min-h-11 items-center font-mono text-sm ${isActive(link.href) ? "text-brand-primary" : "text-brand-text-darker"}`}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="flex flex-wrap items-center gap-5 border-t border-brand-edge pt-4">
+              <a
+                href={product.demo}
+                onClick={() => {
+                  setIsOpen(false);
+                  track("demo_opened");
+                }}
+                className="btn-solid min-h-11 text-sm"
+              >
+                Try live demo
+              </a>
+              <a
+                href="https://github.com/argon-lab/argon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 font-mono text-sm text-brand-text-darker hover:text-brand-text"
+                onClick={() => setIsOpen(false)}
+              >
+                <GitHubIcon />
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
       )}
