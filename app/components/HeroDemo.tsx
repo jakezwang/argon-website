@@ -1,149 +1,316 @@
 "use client";
 
-// The homepage's ten-second pitch: an auto-looping scene that shows the
-// whole product — an agent gets a disposable branch, wrecks it, and one
-// command puts everything back. Graph, command, and data move together.
-
 import { useEffect, useState } from "react";
-import GitGraph, { FlowGraph } from "./GitGraph";
-
-const heroGraph: FlowGraph = {
-  width: 520,
-  height: 100,
-  lanes: [
-    { name: "prod", y: 26 },
-    { name: "agent", y: 72 },
-  ],
-  nodes: [
-    { id: "m0", x: 70, y: 26, lane: 0, appearAt: 0 },
-    { id: "s0", x: 200, y: 72, lane: 1, sub: "branch", appearAt: 0 },
-    { id: "s1", x: 340, y: 72, lane: 1, sub: "agent's work", appearAt: 1 },
-    { id: "m1", x: 470, y: 26, lane: 0, sub: "merged", appearAt: 3 },
-  ],
-  edges: [
-    { from: "m0", to: "s0", appearAt: 0 },
-    { from: "s0", to: "s1", appearAt: 1 },
-    { from: "m0", to: "m1", appearAt: 3 },
-    { from: "s1", to: "m1", appearAt: 3, curve: "target" },
-  ],
-  steps: [
-    { head: "s0", caption: "" },
-    { head: "s1", caption: "" },
-    { head: "s1", caption: "" },
-    { head: "m1", caption: "" },
-  ],
-};
 
 const scenes = [
   {
-    cmd: "argon sandbox create -p orders --name planner --ttl 1h",
-    note: "a local sandbox; run watch for CLI capture and schedule sweep for expiry",
-    state: "base",
+    label: "Branch",
+    title: "Start from the same data.",
+    description:
+      "Give the planner agent its own branch of orders. Both start with the same document.",
+    detail: "Branch point",
+    value: "price: 49",
+    status: "Same baseline",
   },
   {
-    cmd: "argon watch -p orders -b planner --actor agent:planner",
-    note: "native writes share this branch actor; keep capture running",
-    state: "proposed",
+    label: "Test",
+    title: "Let the agent try a change.",
+    description:
+      "The planner changes a price in its sandbox. The document on main stays at 49.",
+    detail: "Agent's change",
+    value: "49 → 44",
+    status: "Isolated edit",
   },
   {
-    cmd: "argon merge preview -p orders -b planner",
-    note: "review the diff and conflicts; preview returns the plan ID",
-    state: "proposed",
+    label: "Time travel",
+    title: "Read the earlier state.",
+    description:
+      "Inspect the document at the branch point. The agent's current price stays at 44.",
+    detail: "Historical read",
+    value: "price: 49",
+    status: "Current state",
   },
   {
-    cmd: "argon merge apply <plan-id>",
-    note: "replace <plan-id> with the reviewed plan; this changes its target",
-    state: "merged",
+    label: "Review",
+    title: "See exactly what would change.",
+    description:
+      "Preview the merge and review its diff. Nothing reaches main until the plan is applied.",
+    detail: "Merge preview",
+    value: "49 → 44",
+    status: "Ready for review",
+  },
+  {
+    label: "Merge",
+    title: "Apply the plan you reviewed.",
+    description:
+      "The reviewed change is now on main. Branching, testing and history led to one explicit merge.",
+    detail: "Reviewed plan",
+    value: "Applied to main",
+    status: "Reviewed change",
   },
 ] as const;
 
-const docData = [{ id: "order-1", base: "price: 49", after: "price: 44" }];
+const SCENE_MS = 5000;
+const controlClass =
+  "min-h-11 min-w-11 px-3 text-sm text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text focus-visible:outline focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
 
-const SCENE_MS = 2800;
+function BranchHistory({ scene }: { scene: number }) {
+  const edited = scene > 0;
+  const merged = scene === scenes.length - 1;
+  const history = scene === 2;
+
+  return (
+    <div className="grid grid-cols-[3.5rem_1fr] items-center border-b border-brand-edge bg-brand-dark/50 px-4 py-2">
+      <div className="flex h-20 flex-col justify-between py-3 font-mono text-xs text-brand-text-darker">
+        <span>main</span>
+        <span className="text-brand-primary">agent</span>
+      </div>
+      <svg
+        viewBox="0 0 400 104"
+        className="h-20 w-full overflow-visible"
+        aria-hidden="true"
+      >
+        <path
+          d="M 20 20 H 380 M 20 20 C 80 20 65 84 125 84 H 270 C 325 84 310 20 380 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-brand-edge"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M 20 20 C 80 20 65 84 125 84"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-brand-primary"
+          vectorEffect="non-scaling-stroke"
+        />
+        {edited && (
+          <path
+            d="M 125 84 H 270"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            className="text-brand-primary"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
+        {merged && (
+          <path
+            d="M 20 20 H 380 M 270 84 C 325 84 310 20 380 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            className="text-brand-primary"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
+        {[
+          { x: 20, y: 20, visible: true },
+          { x: 125, y: 84, visible: true },
+          { x: 270, y: 84, visible: edited },
+          { x: 380, y: 20, visible: merged },
+        ].map(({ x, y, visible }) => (
+          <circle
+            key={x}
+            cx={x}
+            cy={y}
+            r={5}
+            fill={visible ? "currentColor" : "#111521"}
+            stroke="currentColor"
+            strokeWidth="1.5"
+            className={visible ? "text-brand-primary" : "text-brand-edge"}
+            vectorEffect="non-scaling-stroke"
+          />
+        ))}
+        <circle
+          cx={merged ? 380 : edited ? 270 : 125}
+          cy={merged ? 20 : 84}
+          r={12}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          className="text-brand-primary"
+          vectorEffect="non-scaling-stroke"
+        />
+        {history && (
+          <circle
+            cx={20}
+            cy={20}
+            r={16}
+            fill="none"
+            stroke="currentColor"
+            strokeDasharray="3 4"
+            className="text-brand-text"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
+      </svg>
+    </div>
+  );
+}
 
 export default function HeroDemo() {
   const [scene, setScene] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const current = scenes[scene];
+  const merged = scene === scenes.length - 1;
 
   useEffect(() => {
-    const t = setInterval(() => {
-      if (
-        !paused &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      )
-        setScene((s) => (s + 1) % scenes.length);
-    }, SCENE_MS);
-    return () => clearInterval(t);
-  }, [paused]);
+    if (!playing) return;
 
-  const s = scenes[scene];
-  const state = s.state; // 'base' | 'proposed' | 'merged'
-  const showAfter = state !== "base";
-  const chipClass =
-    state === "merged"
-      ? "border-emerald-400/40 text-emerald-400"
-      : state === "proposed"
-        ? "border-amber-400/40 text-amber-400"
-        : "border-brand-edge text-brand-text-darker";
-  const badge =
-    state === "merged"
-      ? "merged to prod"
-      : state === "proposed"
-        ? "branch: agent's work"
-        : "branch: isolated";
+    const timer = window.setTimeout(() => {
+      if (scene === scenes.length - 2) setPlaying(false);
+      setScene((previous) => Math.min(previous + 1, scenes.length - 1));
+    }, SCENE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [playing, scene]);
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pauseForPreference = () => {
+      if (preference.matches) setPlaying(false);
+    };
+    preference.addEventListener("change", pauseForPreference);
+    return () => preference.removeEventListener("change", pauseForPreference);
+  }, []);
+
+  function selectScene(next: number) {
+    setPlaying(false);
+    setScene(next);
+  }
 
   return (
-    <div className="border border-brand-edge bg-brand-surface">
-      <div className="flex items-center justify-between border-b border-brand-edge px-4 py-2">
-        <p className="font-mono text-sm text-brand-muted">
-          local workflow · illustrated
-        </p>
-        <button
-          className="text-xs text-brand-primary"
-          onClick={() => setPaused(!paused)}
+    <section
+      aria-label="Illustrated agent workflow"
+      className="min-w-0 border border-brand-edge bg-brand-surface"
+    >
+      <div className="flex items-center justify-between gap-3 border-b border-brand-edge px-4 py-3">
+        <p className="font-mono text-xs text-brand-text">orders / order-1</p>
+        <span className="text-xs text-brand-muted">Illustration</span>
+      </div>
+
+      <div
+        role="group"
+        aria-label="Workflow steps"
+        className="grid grid-cols-5 border-b border-brand-edge"
+      >
+        {scenes.map((step, index) => (
+          <button
+            key={step.label}
+            type="button"
+            aria-pressed={scene === index}
+            aria-controls="hero-workflow-scene"
+            onClick={() => selectScene(index)}
+            className={`relative flex min-h-14 min-w-0 flex-col items-start gap-1 px-2 py-2 text-left focus-visible:z-10 focus-visible:outline focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 sm:px-3 ${
+              scene === index
+                ? "bg-brand-primary/10 text-brand-primary before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-brand-primary"
+                : "text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text"
+            }`}
+          >
+            <span aria-hidden="true" className="font-mono text-[10px]">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="text-xs leading-4">{step.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <div id="hero-workflow-scene">
+        <BranchHistory scene={scene} />
+
+        <div className="grid grid-cols-2 divide-x divide-brand-edge border-b border-brand-edge">
+          <div role="group" aria-label="main document" className="min-w-0 p-4">
+            <p className="font-mono text-sm text-brand-text">main</p>
+            <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
+              <dt className="text-xs text-brand-text-darker">price</dt>
+              <dd className="text-4xl leading-none tracking-tight text-brand-text">
+                {merged ? "44" : "49"}
+              </dd>
+            </dl>
+            <p className="mt-3 min-h-5 text-xs leading-4 text-brand-text-darker">
+              {merged ? "Merge applied" : "Unchanged"}
+            </p>
+          </div>
+          <div
+            role="group"
+            aria-label="planner document"
+            className="min-w-0 p-4"
+          >
+            <p className="font-mono text-sm text-brand-primary">planner</p>
+            <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
+              <dt className="text-xs text-brand-text-darker">price</dt>
+              <dd className="text-4xl leading-none tracking-tight text-brand-primary">
+                {scene === 0 ? "49" : "44"}
+              </dd>
+            </dl>
+            <p className="mt-3 min-h-5 text-xs leading-4 text-brand-text-darker">
+              {current.status}
+            </p>
+          </div>
+        </div>
+
+        <div
+          className={`flex min-h-11 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2 text-xs ${
+            scene === 2 ? "bg-brand-primary/10" : "bg-brand-dark/30"
+          }`}
         >
-          {paused ? "Play" : "Pause"}
-        </button>
-        <div className="flex items-center gap-1.5">
-          {scenes.map((_, i) => (
-            <span
-              key={i}
-              className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                i === scene ? "bg-brand-primary" : "bg-brand-edge"
-              }`}
-            />
+          <span className="text-brand-text-darker">{current.detail}</span>
+          <span className="font-mono text-brand-primary">{current.value}</span>
+        </div>
+
+        <div
+          aria-live={playing ? "off" : "polite"}
+          aria-atomic="true"
+          className="grid px-4 py-4"
+        >
+          {scenes.map((step, index) => (
+            <div
+              key={step.label}
+              aria-hidden={index !== scene}
+              className={`[grid-area:1/1] ${index === scene ? "visible" : "invisible"}`}
+            >
+              <h2 className="text-base font-medium leading-6 text-brand-text">
+                {step.title}
+              </h2>
+              <p className="mt-2 text-sm leading-6">{step.description}</p>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* history graph */}
-      <div className="border-b border-brand-edge px-4 pt-3">
-        <GitGraph graph={heroGraph} step={scene} />
+      <div className="flex items-center justify-between border-t border-brand-edge px-1">
+        <button
+          type="button"
+          className={controlClass}
+          disabled={scene === 0}
+          onClick={() => selectScene(scene - 1)}
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          className={`${controlClass} text-brand-primary`}
+          aria-pressed={playing}
+          aria-label={playing ? "Pause workflow" : "Play workflow"}
+          onClick={() => {
+            if (merged) setScene(0);
+            setPlaying((previous) => !previous);
+          }}
+        >
+          {playing ? "Pause" : "Play"}
+        </button>
+        <button
+          type="button"
+          className={controlClass}
+          disabled={merged}
+          onClick={() => selectScene(scene + 1)}
+        >
+          Next
+        </button>
       </div>
-
-      {/* command */}
-      <div className="border-b border-brand-edge px-4 py-3 font-mono text-sm break-words">
-        <p className="text-brand-text">
-          <span className="select-none text-brand-muted">$ </span>
-          {s.cmd}
-        </p>
-        <p className="mt-1 text-sm text-brand-muted">{s.note}</p>
-      </div>
-
-      {/* documents */}
-      <div className="flex flex-wrap gap-2 px-4 py-3">
-        {docData.map((d) => (
-          <span
-            key={d.id}
-            className={`border px-2.5 py-1 font-mono text-xs transition-colors duration-500 ${chipClass}`}
-          >
-            {d.id} · {showAfter ? d.after : d.base}
-          </span>
-        ))}
-        <span className="ml-auto self-center font-mono text-[10px] uppercase tracking-widest text-brand-muted">
-          {badge}
-        </span>
-      </div>
-    </div>
+    </section>
   );
 }

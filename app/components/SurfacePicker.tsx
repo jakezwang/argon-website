@@ -208,7 +208,7 @@ export default function SurfacePicker() {
 
         {/* send → receive */}
         <div className="grid gap-px bg-brand-edge lg:grid-cols-2">
-          <div className="bg-brand-surface p-5">
+          <div className="min-w-0 bg-brand-surface p-5">
             <p className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-brand-muted">
               <span className="status-dot bg-brand-primary" />
               {s.exchange.sendLabel}
@@ -217,7 +217,7 @@ export default function SurfacePicker() {
               <code>{s.exchange.send.join("\n")}</code>
             </pre>
           </div>
-          <div className="bg-brand-surface p-5">
+          <div className="min-w-0 bg-brand-surface p-5">
             <p className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-brand-muted">
               <span className="status-dot bg-emerald-400" />
               {s.exchange.recvLabel}

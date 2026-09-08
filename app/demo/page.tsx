@@ -3,7 +3,7 @@ import ReviewWorkflow from "../components/ReviewWorkflow";
 import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
 export const metadata = {
-  title: "Demo: Review MongoDB Changes",
+  title: "How it works: Review MongoDB Changes",
   description:
     "Open a session-scoped Argon demo, inspect changes and conflicts, apply a reviewed merge and undo sample writes.",
   alternates: { canonical: "/demo" },
@@ -11,7 +11,7 @@ export const metadata = {
 export default function DemoPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
-      <p className="kicker mb-4">Interactive demo</p>
+      <p className="kicker mb-4">How it works</p>
       <h1 className="text-4xl font-semibold">Make your first data review</h1>
       <p className="mt-4 max-w-2xl text-lg leading-8">
         Open the live console with sample orders and your own temporary session.
@@ -25,14 +25,14 @@ export default function DemoPage() {
           event="demo_opened"
           className="btn-solid"
         >
-          Open demo
+          Try live demo
         </ActionLink>
         <ActionLink
           href={product.quickstart}
           event="quickstart_opened"
           className="btn-quiet"
         >
-          Continue locally
+          Start locally
         </ActionLink>
       </div>
       <p className="mt-4 text-sm leading-7">

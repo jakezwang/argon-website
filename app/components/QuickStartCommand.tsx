@@ -1,64 +1,80 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { product } from '../product';
+import { useId, useState } from "react";
+import { product } from "../product";
+import CodeBlock from "./CodeBlock";
 
 const installMethods = [
-  { label: 'npm', command: `npm install -g argonctl@${product.version}` },
-  { label: 'brew', command: 'brew install argon-lab/tap/argonctl' },
-  { label: 'pip · sdk', command: `pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"` },
+  {
+    label: "npm",
+    command: `npm install -g argonctl@${product.version}`,
+    description: "Installs the argon CLI. Requires Node.js 18 or newer.",
+    codeLabel: "Install the CLI with npm",
+  },
+  {
+    label: "Homebrew",
+    command: "brew install argon-lab/tap/argonctl",
+    description: "Installs the argon CLI on macOS with Homebrew.",
+    codeLabel: "Install the CLI with Homebrew",
+  },
+  {
+    label: "Python SDK",
+    command: `python3 -m pip install \\\n  "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`,
+    description:
+      "Installs the Python adapter from its release tag. Requires Python 3.10+, Git and a running Argon server.",
+    codeLabel: "Install the Python SDK in a virtual environment",
+  },
 ];
 
-export default function QuickStartCommand() {
-  const [copied, setCopied] = useState(false);
+export default function QuickStartCommand({
+  showSdk = true,
+}: {
+  showSdk?: boolean;
+}) {
   const [selected, setSelected] = useState(0);
-
-  const current = installMethods[selected];
-
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(current.command)
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1600);
-      })
-      .catch(() => {});
-  };
+  const id = useId();
+  const methods = showSdk ? installMethods : installMethods.slice(0, 2);
+  const current = methods[selected] ?? methods[0];
 
   return (
-    <div className="w-full max-w-xl border border-brand-edge bg-brand-surface font-mono text-sm">
-      <div className="flex border-b border-brand-edge">
-        {installMethods.map((method, index) => (
+    <div className="w-full min-w-0 max-w-xl">
+      <div
+        className="flex flex-wrap border border-b-0 border-brand-edge bg-brand-surface"
+        role="group"
+        aria-label="Installation method"
+      >
+        {methods.map((method, index) => (
           <button
+            type="button"
             key={method.label}
-            onClick={() => {
-              setSelected(index);
-              setCopied(false);
-            }}
-            className={`px-4 py-2 text-xs transition-colors ${
+            onClick={() => setSelected(index)}
+            aria-pressed={selected === index}
+            aria-controls={id}
+            className={`min-h-11 px-4 py-2 font-mono text-xs transition-colors ${
               selected === index
-                ? 'bg-brand-dark text-brand-primary'
-                : 'text-brand-muted hover:text-brand-text'
+                ? "bg-brand-dark text-brand-primary shadow-[inset_0_-2px_0_0_currentColor]"
+                : "text-brand-muted hover:text-brand-text"
             }`}
           >
             {method.label}
           </button>
         ))}
       </div>
-      <div className="flex items-center justify-between gap-3 px-4 py-3">
-        <pre className="overflow-x-auto">
-          <code className="select-all">
-            <span className="text-brand-muted">$ </span>
-            <span className="text-brand-text">{current.command}</span>
-          </code>
-        </pre>
-        <button
-          title="Copy to clipboard"
-          onClick={handleCopy}
-          className="shrink-0 border border-brand-edge px-2 py-1 text-xs text-brand-muted transition-colors hover:border-brand-muted hover:text-brand-text"
-        >
-          {copied ? 'copied' : 'copy'}
-        </button>
+      <div id={id}>
+        <CodeBlock
+          key={current.label}
+          code={current.command}
+          label={current.codeLabel}
+          language="bash"
+        />
+        <p className="mt-3 max-w-lg text-xs leading-5 text-brand-muted">
+          {current.description}{" "}
+          {selected === 2 && (
+            <a className="prose-link" href="/agents#python">
+              Python setup
+            </a>
+          )}
+        </p>
       </div>
     </div>
   );
