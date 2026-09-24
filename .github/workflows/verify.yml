@@ -20,6 +20,7 @@ jobs:
           npm run test:browser
       - uses: actions/upload-artifact@v4
         if: always()
+        continue-on-error: true # Screenshots are optional evidence, not a test gate.
         with:
           name: website-screenshots
           path: /tmp/argon-website-checks
