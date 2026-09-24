@@ -1,9 +1,17 @@
+import { limits } from "../../product";
+import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
 const post = getPost("mongodb-time-travel-vs-point-in-time-recovery")!;
 
 export const metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -15,6 +23,7 @@ export const metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -29,7 +38,7 @@ const faq = [
   },
   {
     q: "Can I recover one dropped collection without restoring the whole database?",
-    a: "With PITR you typically restore the entire deployment (often to a separate cluster) and copy the collection back. With Argon time travel you branch from just before the drop and copy back only what you need — no full-cluster restore.",
+    a: "Use your backup or PITR procedure for a dropped collection. Argon capture marks unsupported drop/rename operations incomplete and refuses unsafe restoration; it must not be presented as a guaranteed recovery path for those operations.",
   },
   {
     q: "Does time travel replace backups?",
@@ -37,7 +46,7 @@ const faq = [
   },
   {
     q: "How far back can Argon time-travel?",
-    a: "To any point retained in the branch’s history. Argon keeps an ordered log of every operation, so any earlier state is available to query or branch from, bounded only by your retention configuration.",
+    a: `${limits.retention} ${limits.undo}`,
   },
 ];
 
@@ -75,17 +84,17 @@ export default function Page() {
             <tr>
               <td>Granularity</td>
               <td>Whole cluster / deployment</td>
-              <td>Per branch, any point in history</td>
+              <td>Per branch, supported retained history</td>
             </tr>
             <tr>
               <td>Effect on live data</td>
-              <td>Restores / overwrites (destructive)</td>
+              <td>Restore to another or existing deployment</td>
               <td>Non-destructive — present untouched</td>
             </tr>
             <tr>
               <td>Speed</td>
               <td>Minutes to hours</td>
-              <td>Milliseconds</td>
+              <td>Depends on history, query and checkout size</td>
             </tr>
             <tr>
               <td>Access pattern</td>
@@ -117,9 +126,10 @@ export default function Page() {
       <p>
         It is essential — and blunt. It operates on the whole database or
         cluster, it produces a restore (you typically spin up a new cluster or
-        overwrite the current one), it can take minutes to hours, and everything
-        written after your chosen timestamp is gone. It answers exactly one
-        question: “get the entire deployment back to how it was at time T.”
+        overwrite the current one), it can take minutes to hours, and the
+        restored copy does not include writes after the chosen timestamp. It
+        answers exactly one question: “get the entire deployment back to how it
+        was at time T.”
       </p>
 
       <h2>What time travel is</h2>
@@ -133,9 +143,9 @@ export default function Page() {
       <p>
         Because it is non-destructive, you use it constantly rather than only in
         emergencies: reproduce a bug on last Tuesday’s data, audit what a record
-        used to say, recover one accidentally-deleted collection by branching
-        from just before the delete, or diff two points in time. Production
-        keeps serving traffic the whole time.
+        used to say, inspect retained document states, or compare past changes.
+        Unsupported collection drops and renames mark capture incomplete; use
+        your backup recovery procedure for those cases.
       </p>
 
       <h2>Under the hood: oplog replay vs a write-ahead log</h2>
@@ -145,11 +155,12 @@ export default function Page() {
         full restored copy. Argon’s time travel comes from modeling the database
         as a{" "}
         <a href="/blog/mongodb-database-branching-explained">write-ahead log</a>{" "}
-        where every operation carries a log sequence number. Any past state is
-        just “replay the log up to that position,” and a branch is a pointer
-        into shared history plus later writes. Reading the past costs a query,
-        not a restore, and branching from a past point writes a few hundred
-        bytes of metadata instead of copying gigabytes. History becomes a
+        where supported captured operations carry log sequence numbers. A
+        retained state is just “replay the log up to that position,” and a
+        branch is a pointer into shared history plus later writes. Reading the
+        past costs a query, not a full-cluster restore; its cost depends on the
+        retained history. Branch metadata is lightweight, while checking it out
+        copies the materialized dataset into MongoDB. History becomes a
         first-class, queryable dimension rather than a backup you have to
         rebuild.
       </p>
@@ -162,33 +173,38 @@ export default function Page() {
         . Reach for time travel for everything short of catastrophe: debugging
         on historical data, audits, per-collection recovery, safe experiments,
         and giving AI agents branchable databases. Most teams want both — a
-        durable backup for the worst day, and cheap, instant history for every
-        other day.
+        durable backup for recovery, and queryable retained history for daily
+        work.
       </p>
 
       <h2>How to time-travel a MongoDB database with Argon</h2>
       <p>
-        Argon keeps full history, so you can branch a database as it existed at
-        an earlier point, or run recovery-style operations without a coarse
-        full-cluster restore:
+        First complete the <a href="/quickstart">local setup</a> and use a
+        project named <code>docs-review</code> with healthy capture and retained
+        history. Before the experiment, save its current LSN with the first
+        command. After the experiment, preview that state and fork a new branch
+        without resetting the source:
       </p>
       <pre>
-        <code>{`# preview what restoring to an earlier point would change — non-destructive
-argon restore preview main
+        <code data-cli-example="restore">{`# Save a baseline before the experiment (Python 3 is used to parse JSON)
+${cli.baseline}
 
-# fork an isolated branch rooted at a past point (great for debugging or recovery)
-argon restore branch main -o recovered
-# ...prints a MongoDB connection string. Point any driver at it.
+# After the experiment, preview and fork the retained baseline
+${cli.restorePreview}
+${cli.restoreBranch}
 
-# reset a branch to a past point when you really mean to rewind it
-argon restore reset main`}</code>
+# Materialize recovered into MongoDB; this prints its connection string
+${cli.checkoutRecovered}`}</code>
       </pre>
       <p>
         See the{" "}
         <a href="https://github.com/argon-lab/argon/tree/master/docs">
           documentation
         </a>{" "}
-        for selecting the exact point by timestamp or history position, and the{" "}
+        for selecting a retained point with <code>--lsn</code> or{" "}
+        <code>--time</code>. Keep a separate{" "}
+        <code>argon watch -p docs-review -b recovered</code>
+        process running if you write to the recovered database. See the{" "}
         <a href="/features">features</a> overview for how time travel fits with
         branching and merge.
       </p>

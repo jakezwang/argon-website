@@ -6,7 +6,7 @@
 // "what you send → what you get back" for it.
 
 import { useState } from "react";
-import { product } from "../product";
+import { product, install } from "../product";
 
 interface Exchange {
   sendLabel: string;
@@ -34,7 +34,7 @@ const surfaces: Surface[] = [
     who: "Claude Code · Cursor · any MCP client",
     title: "Agents drive the whole loop themselves",
     setupLabel: "register once",
-    setup: "claude mcp add argon -- argon mcp",
+    setup: install.mcp,
     blurb:
       "Exposes the workflow as 13 tools over stdio. The agent opens its own branch, works, diffs, and merges — and the server runs a change-stream capture ingester per sandbox, while the service runs; check capture health and image completeness.",
     exchange: {
@@ -72,7 +72,7 @@ const surfaces: Surface[] = [
     setupLabel: "start the control plane",
     setup: "argon console --no-browser  # 127.0.0.1:1818",
     blurb:
-      "Every operation the CLI does is a REST endpoint, so any language can drive Argon without a native SDK. The official Python and Go SDKs are thin clients over this.",
+      "Use HTTP to manage projects, sandboxes, history and reviewed merges from any language. The Python client wraps this API; ordinary MongoDB drivers handle sandbox data writes.",
     exchange: {
       sendLabel: "POST a sandbox",
       send: [
@@ -125,7 +125,7 @@ const surfaces: Surface[] = [
     who: "Python · LangGraph · Mem0",
     title: "Review external business data",
     setupLabel: "install",
-    setup: `pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`,
+    setup: install.langgraph,
     blurb: `The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. Install SDK ${product.sdkVersion} from its release tag and run the matching example below.`,
     exchange: {
       sendLabel: "run the reviewed source example",

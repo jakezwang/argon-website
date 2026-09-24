@@ -1,9 +1,9 @@
-export const metadata = {
-  title: "Privacy",
-  description:
-    "Data used by the Argon website and optional anonymous product counts.",
-  alternates: { canonical: "/privacy" },
-};
+import { pageMetadata } from "../metadata";
+export const metadata = pageMetadata(
+  "Privacy",
+  "Data used by the Argon website and optional anonymous product counts.",
+  "/privacy",
+);
 export default function Privacy() {
   return (
     <div className="article mx-auto max-w-3xl px-6 py-16">

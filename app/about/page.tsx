@@ -1,13 +1,13 @@
+import { pageMetadata } from "../metadata";
 import { product } from "../product";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata = {
-  title: { absolute: "About Argon — Database Workflows for AI Agents" },
-  description:
-    "Why Argon exists: branching, time travel, isolated experiments, and reviewed data merges for AI agents working with MongoDB.",
-  alternates: { canonical: "/about" },
-};
+export const metadata = pageMetadata(
+  "About Argon — Database Workflows for AI Agents",
+  "Why Argon exists: branching, time travel, isolated experiments, and reviewed data merges for AI agents working with MongoDB.",
+  "/about",
+);
 
 const team = [
   {

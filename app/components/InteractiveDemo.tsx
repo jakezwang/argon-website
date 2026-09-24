@@ -16,7 +16,7 @@ const cliGraph: FlowGraph = {
     { name: "feature-x", y: 94 },
   ],
   nodes: [
-    { id: "m0", x: 120, y: 36, lane: 0, sub: "LSN 0", appearAt: 0 },
+    { id: "m0", x: 120, y: 36, lane: 0, sub: "LSN 0", appearAt: 1 },
     { id: "m1", x: 280, y: 36, lane: 0, sub: "LSN 3 · import", appearAt: 1 },
     { id: "b0", x: 430, y: 94, lane: 1, sub: "fork @ 3", appearAt: 2 },
     { id: "b1", x: 620, y: 94, lane: 1, sub: "LSN 5 · writes", appearAt: 4 },
@@ -25,7 +25,7 @@ const cliGraph: FlowGraph = {
       x: 810,
       y: 36,
       lane: 0,
-      sub: "plan_7d31 · pending",
+      sub: "000000000000000000007d31 · pending",
       appearAt: 6,
       hideAt: 7,
       ghost: true,
@@ -48,7 +48,7 @@ const cliGraph: FlowGraph = {
     { from: "b1", to: "m2", appearAt: 7, curve: "target" },
   ],
   steps: [
-    { head: "m0", caption: "project created — main is born at LSN 0" },
+    { caption: "preview the source — no target project created yet" },
     { head: "m1", caption: "import advances main to LSN 3" },
     {
       head: "b0",
@@ -143,7 +143,7 @@ const agentGraph: FlowGraph = {
     {
       head: "s2",
       highlight: ["pin"],
-      caption: "pin freezes LSN 8112 by name — GC and reset can never touch it",
+      caption: "pin protects LSN 8112 while the pin exists",
     },
     {
       head: "e0",
@@ -173,21 +173,18 @@ const sourcePanel: DemoPanel = {
 
 const cliSteps: DemoStep[] = [
   {
-    id: "create",
-    command: "argon projects create my-app",
-    description: "Create a project — capture records supported document writes",
-    output: ["Created project: my-app", "Main branch ready"],
-    panel: {
-      title: "my-app · main",
-      note: "no collections yet — bring your data in next",
-      sections: [],
-    },
+    id: "preview",
+    command:
+      "argon import preview --uri mongodb://localhost:27017 --database shop",
+    description: "Preview the source before creating a new target project",
+    output: ["1 collection · 3 documents", "No target data created"],
+    panel: sourcePanel,
   },
   {
     id: "import",
     command:
-      "argon import database --uri mongodb://localhost:27017 --database shop --project my-app",
-    description: 'Import existing data — "git clone" for your database',
+      "argon import database --uri mongodb://localhost:27017 --database shop --project my-app --source-quiesced",
+    description: "Import an offline source — stop writes and DDL first",
     output: ["3 documents imported from shop", "History starts at LSN 1 → 3"],
     panel: {
       title: "my-app · main @ LSN 3",
@@ -216,7 +213,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "branch",
     command: "argon branches create feature-x -p my-app",
-    description: "Branch — a metadata write, instant at any data size",
+    description: "Branch — lightweight metadata; checkout has separate costs",
     output: [
       "Branch created: feature-x",
       "Forked from main @ LSN 3 — nothing copied",
@@ -318,12 +315,12 @@ const cliSteps: DemoStep[] = [
     command: "argon merge preview -p my-app -b feature-x",
     description: "A data pull request: persisted and reviewable",
     output: [
-      "Merge plan persisted (pending): plan_7d31",
+      "Merge plan persisted (pending): 000000000000000000007d31",
       "2 changes, 0 conflicts",
-      "Apply with: argon merge apply plan_7d31",
+      "Apply with: argon merge apply 000000000000000000007d31",
     ],
     panel: {
-      title: "merge plan plan_7d31 → main",
+      title: "merge plan 000000000000000000007d31 → main",
       note: "claims the reviewed plan atomically; stale heads require a fresh preview",
       sections: [
         {
@@ -338,7 +335,7 @@ const cliSteps: DemoStep[] = [
   },
   {
     id: "merge-apply",
-    command: "argon merge apply plan_7d31",
+    command: "argon merge apply 000000000000000000007d31",
     description: "The branch lands on main — attributed, reviewed",
     output: [
       "Applied against the exact heads the plan was computed for",
@@ -370,7 +367,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "undo",
     command: "argon undo -p my-app -b main --from-lsn 6 --dry-run",
-    description: "The undo button — even a merge is just a revertible range",
+    description: "Preview undo of a completely captured, retained merge",
     output: [
       "Would revert 2 documents on main · 0 conflicts",
       "Compensations are new history: auditable, undoable in turn",
@@ -418,10 +415,12 @@ const agentSteps: DemoStep[] = [
       "Sandbox: sandbox-f81a (expires in 1h)",
       "Connection string:",
       "  mongodb://localhost:27017/argon_br_f81a",
+      "Keep capture running: argon watch -p prod -b sandbox-f81a --actor agent:price-fixer",
+      "Schedule expiry cleanup: argon sandbox sweep -p prod",
     ],
     panel: {
       title: "mongodb://…/argon_br_f81a",
-      note: "an isolated copy of prod @ LSN 8112 — reaps itself on expiry",
+      note: "separate branch at LSN 8112 — schedule sandbox sweep for expiry",
       sections: [
         {
           name: "products (3 of 51,240 documents)",
@@ -482,7 +481,7 @@ const agentSteps: DemoStep[] = [
     id: "undo-actor",
     command:
       "argon undo -p prod -b sandbox-f81a --actor agent:price-fixer --from-lsn 8113",
-    description: "Revert one agent’s entire session",
+    description: "Undo a branch actor’s complete, retained write range",
     output: [
       "3,214 documents reverted · 0 conflicts",
       "a document you had edited since would be reported, not clobbered",
@@ -508,7 +507,7 @@ const agentSteps: DemoStep[] = [
     description: "Freeze a named dataset state for reproducible evals",
     output: [
       "Pin created: eval-2026-07 @ LSN 8112",
-      "Immutable — GC and reset can never touch it",
+      "Protects the referenced state while the pin exists",
     ],
     panel: {
       title: "prod · pins",
@@ -524,7 +523,7 @@ const agentSteps: DemoStep[] = [
   },
   {
     id: "eval-run",
-    command: "argon sandbox create -p prod --from-pin eval-2026-07",
+    command: "argon pin sandbox -p prod --name eval-2026-07 --ttl 1h",
     description: "Every eval run forks the pin — identical input, every time",
     output: [
       "Sandbox from pin eval-2026-07",

@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
-const release = "2.1.1";
+import releases from "../app/release.json" with { type: "json" };
+import cliExamples from "../app/cli-examples.json" with { type: "json" };
+const release = releases.version;
 const origin = process.env.SITE_URL || "http://127.0.0.1:13000";
 const out = process.env.ARTIFACT_DIR || "/tmp/argon-website-checks";
 await mkdir(out, { recursive: true });
@@ -263,7 +265,7 @@ async function verifyClipboard() {
       window.getSelection()?.toString(),
     );
     assert.ok(selectedCode?.includes("python3 -m pip install"));
-    assert.ok(selectedCode?.includes("@v0.2.0"));
+    assert.ok(selectedCode?.includes(`@v${releases.sdkVersion}`));
     assert.ok(
       selectedCode?.includes("\n"),
       "Clipboard fallback selects every line",
@@ -279,17 +281,24 @@ async function verifyClipboard() {
 }
 
 try {
-  for (const route of [
-    "/",
-    "/agents",
-    "/features",
-    "/demo",
-    "/about",
-    "/quickstart",
-    "/privacy",
-    "/faq",
-    "/blog",
-  ]) {
+  const sitemapResponse = await context.request.get(origin + "/sitemap.xml");
+  assert.equal(sitemapResponse.status(), 200);
+  const sitemap = await sitemapResponse.text();
+  const routes = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+    (match) => new URL(match[1]).pathname,
+  );
+  const { readdir } = await import("node:fs/promises");
+  const sourcePages = (
+    await readdir(new URL("../app", import.meta.url), { recursive: true })
+  )
+    .filter((path) => /(^|\/)page\.tsx$/.test(path))
+    .map((path) => "/" + path.replace(/(^|\/)page\.tsx$/, ""));
+  assert.deepEqual(
+    [...routes].sort(),
+    sourcePages.sort(),
+    "Sitemap covers every page",
+  );
+  for (const route of routes) {
     const response = await page.goto(origin + route);
     assert.equal(response.status(), 200, route);
     assert.ok(
@@ -301,7 +310,104 @@ try {
       0,
     );
     await assertNoOverflow(page, `${route} desktop`);
+    const content = await page.locator("body").innerText();
+    const schemas = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    const searchable = [content, ...schemas].join("\n");
+    assert.doesNotMatch(
+      searchable,
+      /placeholder Terms|replace this content|milliseconds at any data size|any change (?:an agent made is|reversible)|GC and reset can never touch|instant, isolated copy/i,
+      `${route}: no obsolete promises or unfinished copy`,
+    );
+    assert.doesNotMatch(
+      searchable,
+      /pip install ["']?argon-agents(?:\[langgraph\])?["']?(?:\.|$|\s*\n)/m,
+      `${route}: SDK install must use a verified release reference`,
+    );
+    for (const match of searchable.matchAll(
+      /argon-agents\.git@v(\d+\.\d+\.\d+)/g,
+    )) {
+      assert.equal(
+        match[1],
+        releases.sdkVersion,
+        `${route}: consistent SDK Git release`,
+      );
+    }
+    for (const match of searchable.matchAll(/argonctl@(\d+\.\d+\.\d+)/g)) {
+      assert.equal(match[1], release, `${route}: consistent CLI release`);
+    }
+    for (const schema of schemas.map((value) => JSON.parse(value))) {
+      if (schema["@type"] === "FAQPage") {
+        for (const question of schema.mainEntity) {
+          assert.ok(
+            content
+              .replace(/\s+/g, " ")
+              .includes(question.acceptedAnswer.text.replace(/\s+/g, " ")),
+            `${route}: FAQ JSON-LD matches visible answer`,
+          );
+        }
+      }
+    }
+    const canonical = await page
+      .locator('link[rel="canonical"]')
+      .getAttribute("href");
+    const ogURL = await page
+      .locator('meta[property="og:url"]')
+      .getAttribute("content");
+    assert.equal(new URL(canonical).pathname, route);
+    assert.equal(
+      new URL(ogURL).pathname,
+      route,
+      `${route}: social URL identifies its destination`,
+    );
+    if (route !== "/")
+      assert.equal(
+        await page
+          .locator('meta[property="og:description"]')
+          .getAttribute("content"),
+        await page.locator('meta[name="description"]').getAttribute("content"),
+        `${route}: social description matches destination`,
+      );
+    if (route.endsWith("mongodb-database-branching-explained")) {
+      const code = await page
+        .locator('[data-cli-example="branch"]')
+        .textContent();
+      for (const name of [
+        "sandbox",
+        "watchSandbox",
+        "diff",
+        "mergePreview",
+        "sweep",
+      ])
+        assert.ok(code.includes(cliExamples[name]), name);
+    }
+    if (route.endsWith("mongodb-time-travel-vs-point-in-time-recovery")) {
+      const code = await page
+        .locator('[data-cli-example="restore"]')
+        .textContent();
+      for (const name of [
+        "baseline",
+        "restorePreview",
+        "restoreBranch",
+        "checkoutRecovered",
+      ])
+        assert.ok(code.includes(cliExamples[name]), name);
+    }
   }
+
+  const llmsResponse = await context.request.get(origin + "/llms.txt");
+  assert.equal(llmsResponse.status(), 200);
+  const llms = await llmsResponse.text();
+  assert.ok(llms.includes(`argonctl@${release}`));
+  assert.ok(llms.includes(`argon-agents.git@v${releases.sdkVersion}`));
+  assert.ok(
+    llms.includes(`blob/v${releases.sdkVersion}/examples/two_agent_review.py`),
+  );
+  assert.ok(
+    llms.includes("Undo requires complete images and retained history"),
+  );
+  assert.doesNotMatch(llms, /pip install "argon-agents\[langgraph\]"/);
 
   await page.goto(origin);
   const home = await page.locator("body").innerText();
@@ -379,7 +485,7 @@ try {
   );
   assert.ok(
     (await page.locator("body").innerText()).includes(
-      "git clone --branch v0.2.0",
+      `git clone --branch v${releases.sdkVersion}`,
     ),
   );
   assert.equal(
@@ -406,14 +512,7 @@ try {
 
   for (const width of [320, 390, 768, 1024]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of [
-      "/",
-      "/agents",
-      "/features",
-      "/demo",
-      "/about",
-      "/quickstart",
-    ]) {
+    for (const route of routes) {
       await page.goto(origin + route);
       await assertNoOverflow(page, `${route} at ${width}px`);
       if (route === "/demo" && width <= 390) {
@@ -436,7 +535,7 @@ try {
       }
       if (width === 390) {
         await page.screenshot({
-          path: `${out}/${route.slice(1) || "home"}-mobile.png`,
+          path: `${out}/${route.slice(1).replaceAll("/", "-") || "home"}-mobile.png`,
           fullPage: true,
         });
       }
@@ -535,7 +634,7 @@ try {
   await dnt.close();
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: routes, CTA destinations, integration anchors, CLI/source onboarding, isolated data/history/merge states, manual and reduced-motion workflow, clipboard fallback, responsive layouts, keyboard menu, no page errors, opt-in event schema, origin and DNT checks",
+    "PASS: all sitemap pages, visible/JSON-LD claims, release references, executable CLI examples, per-page metadata, CTA destinations, integration anchors, CLI/source onboarding, isolated data/history/merge states, manual and reduced-motion workflow, clipboard fallback, responsive layouts, keyboard menu, no page errors, opt-in event schema, origin and DNT checks",
   );
 } finally {
   await browser.close();

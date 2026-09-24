@@ -1,0 +1,15 @@
+{
+  "project": "argon projects create docs-review",
+  "checkout": "argon checkout -p docs-review -b main",
+  "prepare": "argon collections prepare orders -p docs-review -b main",
+  "watch": "argon watch -p docs-review -b main",
+  "sandbox": "argon sandbox create -p docs-review --from main --name agent-review --ttl 1h",
+  "watchSandbox": "argon watch -p docs-review -b agent-review",
+  "diff": "argon diff -p docs-review -b agent-review",
+  "mergePreview": "argon merge preview -p docs-review -b agent-review",
+  "restorePreview": "argon restore preview -p docs-review -b main --lsn \"$BASELINE_LSN\"",
+  "restoreBranch": "argon restore branch -p docs-review -b main --lsn \"$BASELINE_LSN\" --as recovered",
+  "checkoutRecovered": "argon checkout -p docs-review -b recovered",
+  "sweep": "argon sandbox sweep -p docs-review",
+  "baseline": "export BASELINE_LSN=\"$(argon time-travel info -p docs-review -b main --output json | python3 -c 'import json,sys; print(json.load(sys.stdin)[\"latest_lsn\"])')\""
+}

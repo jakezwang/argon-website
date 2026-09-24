@@ -1,9 +1,17 @@
+import { install, limits } from "../../product";
+import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
 const post = getPost("disposable-mongodb-sandbox-for-ai-agents")!;
 
 export const metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -15,6 +23,7 @@ export const metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -45,9 +54,9 @@ export default function Page() {
         connection to production. The agent is capable and confident, and it
         will occasionally do exactly the wrong thing at full speed. The fix is
         not to keep agents read-only forever — it is to give each one a{" "}
-        <strong>disposable database it cannot destroy</strong>: a real MongoDB
-        it can read, write, and wreck freely, because throwing it away costs
-        nothing and production never saw it.
+        <strong>separate database for experiments</strong>. The agent can modify
+        that branch while you review which changes to apply to its parent.
+        Physical copies use storage; scope credentials to the intended database.
       </p>
       <p>
         That is the branch-per-agent pattern, and{" "}
@@ -59,8 +68,8 @@ export default function Page() {
       <ol>
         <li>
           <strong>Fork a branch.</strong> Create a sandbox off production (or
-          off a pinned dataset), optionally with a time-to-live so it cleans
-          itself up.
+          off a pinned dataset), optionally with a time-to-live. REST/MCP manage
+          expiry while running; standalone CLI use requires a scheduled sweep.
         </li>
         <li>
           <strong>Let the agent work.</strong> Hand it the branch’s connection
@@ -73,25 +82,29 @@ export default function Page() {
         </li>
         <li>
           <strong>Merge or discard.</strong> Merge the good work back as a
-          reviewed, reviewed data PR — or throw the whole branch away. Either
-          way, production only ever sees changes you approved.
+          reviewed data PR — or throw the whole branch away. Either way,
+          production only ever sees changes you approved.
         </li>
       </ol>
       <p>
         Because a fully captured, retained write range can be reverted, you also
         get a safety net after the fact: if something slips through, you can{" "}
-        <a href="/blog/mongodb-database-branching-explained">undo</a> one
-        agent’s changes without touching anyone else’s.
+        <a href="/blog/mongodb-database-branching-explained">undo</a> one branch
+        actor’s captured changes. Separate agents need separate branches; undo
+        can refuse a range when required history or images are incomplete.
       </p>
 
       <h2>Wiring it up</h2>
       <p>
-        Argon exposes the loop three ways so it fits however your agents run.
+        Start with the <a href="/quickstart">local setup</a>. The MCP example
+        also needs the project initialization on the{" "}
+        <a href="/agents#mcp">agents page</a>. Argon exposes the loop through
+        these interfaces:
       </p>
 
       <h3>Over MCP (Claude Code, Cursor, any MCP client)</h3>
       <pre>
-        <code>{`claude mcp add argon -- argon mcp`}</code>
+        <code>{install.mcp}</code>
       </pre>
       <p>
         The agent gets 13 tools — open a sandbox, diff, merge, time-travel, undo
@@ -101,17 +114,22 @@ export default function Page() {
 
       <h3>From the CLI or CI</h3>
       <pre>
-        <code>{`argon sandbox create -p prod --ttl 1h
-# prints a real MongoDB URI — point the agent at it`}</code>
+        <code>{`# Existing docs-review project; create a new agent-review sandbox
+${cli.sandbox}
+# Keep capture running before the agent writes
+${cli.watchSandbox}
+# In a scheduled job, clean up expired CLI sandboxes
+${cli.sweep}`}</code>
       </pre>
 
       <h3>From Python (LangGraph, Mem0)</h3>
       <pre>
-        <code>{`pip install "argon-agents[langgraph]"`}</code>
+        <code>{install.langgraph}</code>
       </pre>
       <p>
-        A checkpointer that forks and rewinds conversation state on the same
-        engine, plus a Mem0 sandbox factory for agent memory.
+        Install in a Python virtual environment; this uses the matching Git
+        release tag. The package supplies a LangGraph checkpointer and a Mem0
+        sandbox factory. Prepare exact images on new collections before updates.
       </p>
 
       <h2>Reproducible evals with pins</h2>
@@ -119,8 +137,7 @@ export default function Page() {
         Evaluations are only meaningful if every run starts from the same data.
         A <strong>dataset pin</strong> is an immutable, named state of the
         database; each eval run forks a fresh branch from the pin, so the input
-        is identical every time and runs are comparable. Pins survive resets and
-        garbage collection, so a benchmark you ran last month reproduces today.
+        is identical for that retained pin. {limits.retention}
       </p>
 
       <h2>Why this matters now</h2>

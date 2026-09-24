@@ -1,13 +1,13 @@
+import { pageMetadata } from "../metadata";
 import InteractiveDemo from "../components/InteractiveDemo";
 import ReviewWorkflow from "../components/ReviewWorkflow";
 import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
-export const metadata = {
-  title: "How it works: Review MongoDB Changes",
-  description:
-    "Open a session-scoped Argon demo, inspect changes and conflicts, apply a reviewed merge and undo sample writes.",
-  alternates: { canonical: "/demo" },
-};
+export const metadata = pageMetadata(
+  "How it works: Review MongoDB Changes",
+  "Open a session-scoped Argon demo, inspect changes and conflicts, apply a reviewed merge and undo sample writes.",
+  "/demo",
+);
 export default function DemoPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">

@@ -17,6 +17,7 @@ export const posts: Post[] = [
     description:
       "A Python walkthrough of database branches, merge conflicts, and undo, using one order and two competing price changes.",
     date: "2026-09-08",
+    updated: "2026-09-24",
     tags: ["AI Agents", "MongoDB", "Data Review"],
     readingMinutes: 7,
   },
@@ -26,6 +27,7 @@ export const posts: Post[] = [
     description:
       "Connecting an AI agent to MongoDB over MCP usually means handing it a live database. Argon’s MCP server gives each agent a versioned, branchable MongoDB instead — 13 tools to open a sandbox, diff, merge, time-travel, and undo.",
     date: "2026-07-08",
+    updated: "2026-09-24",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 7,
   },
@@ -35,6 +37,7 @@ export const posts: Post[] = [
     description:
       "Time travel and point-in-time recovery (PITR) both go back in time in MongoDB, but they solve opposite problems: PITR restores a whole database for disaster recovery, while time travel queries or branches a retained past state without touching the present. How each works, and when to use which.",
     date: "2026-07-08",
+    updated: "2026-09-24",
     tags: ["MongoDB", "Time Travel", "Backup"],
     readingMinutes: 8,
   },
@@ -44,6 +47,7 @@ export const posts: Post[] = [
     description:
       "What database branching means for MongoDB, why MongoDB has no native equivalent of Neon or PlanetScale, how it works under the hood, and how to branch a MongoDB database today with Argon.",
     date: "2026-07-08",
+    updated: "2026-09-24",
     tags: ["MongoDB", "Branching", "Database"],
     readingMinutes: 8,
   },
@@ -54,6 +58,7 @@ export const posts: Post[] = [
     description:
       "A practical map of the database branching landscape — what Neon, PlanetScale, Dolt, lakeFS, and Argon each branch, how they compare on merge, time travel, and licensing, and which one fits MongoDB.",
     date: "2026-07-08",
+    updated: "2026-09-24",
     tags: ["Comparison", "Branching", "Database"],
     readingMinutes: 9,
   },
@@ -63,6 +68,7 @@ export const posts: Post[] = [
     description:
       "Why AI agents need their own database, how a branch-per-agent workflow keeps production safe, and how to wire it up with Argon’s MCP server, TTL sandboxes, and reproducible dataset pins.",
     date: "2026-07-08",
+    updated: "2026-09-24",
     tags: ["AI Agents", "MCP", "MongoDB"],
     readingMinutes: 7,
   },

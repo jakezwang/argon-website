@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:browser": "node scripts/verify-browser.mjs"
+    "test:browser": "node scripts/verify-browser.mjs",
+    "test:docs": "python3 scripts/verify-cli-examples.py",
+    "test:releases": "node scripts/verify-releases.mjs"
   },
   "dependencies": {
     "next": "16.3.4",

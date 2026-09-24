@@ -1,9 +1,16 @@
+import { install, limits } from "../../product";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
 const post = getPost("mongodb-mcp-server-versioned-sandboxes")!;
 
 export const metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -15,6 +22,7 @@ export const metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -29,11 +37,11 @@ const faq = [
   },
   {
     q: "How do I add Argon to Claude Code or Cursor?",
-    a: "Run `claude mcp add argon -- argon mcp` (or the equivalent MCP config for your client). Argon is also listed in the official MCP Registry as io.github.argon-lab/argon, so MCP-aware clients can discover it.",
+    a: "Install the CLI, configure a MongoDB replica set and create a project using the local quickstart. Then use the Claude Code or Cursor configuration on the agents page, including the MONGODB_URI environment variable.",
   },
   {
     q: "Is it safe to let an AI agent write to MongoDB over MCP?",
-    a: "Yes, when it writes to a branch instead of production. The agent works in an isolated sandbox; you review the diff and merge what works or discard the branch. Per-actor undo makes any change reversible without a full restore.",
+    a: `${limits.isolation} ${limits.undo} ${limits.attribution}`,
   },
   {
     q: "How do I make agent runs reproducible?",
@@ -51,9 +59,8 @@ export default function Page() {
         read, and it can write, straight to real data. That is powerful and
         dangerous. <a href="https://github.com/argon-lab/argon">Argon</a>’s MCP
         server takes a different approach: instead of one shared database, it
-        gives each agent a versioned, branchable MongoDB it can’t break — 13
-        tools to open a sandbox, write freely, then diff, merge, time-travel, or
-        undo.
+        gives each agent a separate branch database for experiments — 13 tools
+        to open a sandbox, write freely, then diff, merge, time-travel, or undo.
       </p>
 
       <h2>A 30-second MCP refresher</h2>
@@ -82,10 +89,10 @@ export default function Page() {
         Argon exposes MongoDB over MCP too, but every agent works inside its own{" "}
         <a href="/blog/mongodb-database-branching-explained">branch</a> — a
         real, isolated MongoDB rooted at your data. The agent reads and writes
-        normally; production never sees it. When the agent is done, you (or
-        another tool call) diff the branch, then merge the good work as a
-        reviewed, reviewed data PR — or discard it. The 13 tools cover the whole
-        loop:
+        through the sandbox connection; scope its credentials to that database.
+        When the agent is done, you (or another tool call) diff the branch, then
+        merge the good work as a reviewed data PR — or discard it. The 13 tools
+        cover the whole loop:
       </p>
       <ul>
         <li>Open a TTL sandbox off production (or off a pinned dataset).</li>
@@ -94,28 +101,30 @@ export default function Page() {
         <li>
           Preview and apply a merge — conflicts are reported, never silent.
         </li>
-        <li>Time-travel: query the branch as of any point in its history.</li>
+        <li>Time-travel: query supported states within retained history.</li>
         <li>
-          Undo: revert one actor’s writes as a range, leaving others intact.
+          Undo: revert a captured branch/run actor’s range when required images
+          and history are complete.
         </li>
         <li>
           Pins: freeze an immutable dataset so every eval run starts identical.
         </li>
       </ul>
       <p>
-        The agent gets a disposable MongoDB it cannot destroy, and you get a
-        review step before anything lands on production.
+        {limits.lifecycle} {limits.attribution}
       </p>
 
-      <h2>Add it to your agent in one line</h2>
+      <h2>Connect a local deployment</h2>
       <p>
         Argon’s MCP server is a subcommand of the CLI, and it’s listed in the
         official <strong>MCP Registry</strong> as{" "}
         <code>io.github.argon-lab/argon</code>, so MCP-aware clients can
-        discover it. To wire it into Claude Code, Cursor, or any MCP client:
+        discover it. Complete the <a href="/quickstart">local MongoDB setup</a>
+        and <a href="/agents#mcp">project initialization</a> first, then
+        register the local process in Claude Code:
       </p>
       <pre>
-        <code>{`claude mcp add argon -- argon mcp`}</code>
+        <code>{install.mcp}</code>
       </pre>
       <p>The agent now has Argon’s tools over stdio.</p>
 
@@ -137,8 +146,8 @@ export default function Page() {
         </li>
       </ol>
       <p>
-        If something slips through, <strong>undo</strong> reverts just that
-        agent’s writes — no full restore. And because pins give every run
+        With complete images and retained history, <strong>undo</strong> can
+        revert a supported captured range on the agent’s branch. Pins give runs
         identical input, agent evaluations are reproducible. See the{" "}
         <a href="/agents">agents page</a> for the full picture, or the{" "}
         <a href="https://github.com/argon-lab/argon/tree/master/docs">docs</a>{" "}

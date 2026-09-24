@@ -1,13 +1,13 @@
+import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
 
-export const metadata = {
-  title: "Connect Your AI Agent to Argon",
-  description:
-    "Connect Claude or Cursor through MCP, use the Python and LangGraph adapter, or create MongoDB sandboxes through the REST API.",
-  alternates: { canonical: "/agents" },
-};
+export const metadata = pageMetadata(
+  "Connect Your AI Agent to Argon",
+  "Connect Claude or Cursor through MCP, use the Python and LangGraph adapter, or create MongoDB sandboxes through the REST API.",
+  "/agents",
+);
 
 const integrations = [
   {
