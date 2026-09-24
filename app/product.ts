@@ -1,12 +1,12 @@
+import release from "./release.json";
+
 // Shared product claims and links. Keep release checks pointed at this file.
 export const product = {
-  version: "2.1.1",
-  sdkVersion: "0.2.0",
+  ...release,
   demo: "https://console.argonlabs.tech",
   quickstart: "/quickstart",
-  guide: "https://github.com/argon-lab/argon/blob/v2.1.1/docs/QUICK_START.md",
-  example:
-    "https://github.com/argon-lab/argon-agents/blob/v0.2.0/examples/two_agent_review.py",
+  guide: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/QUICK_START.md`,
+  example: `https://github.com/argon-lab/argon-agents/blob/v${release.sdkVersion}/examples/two_agent_review.py`,
   roadmap: [
     "GCS chunk-store backend",
     "Read-your-writes barrier for the wire proxy",
@@ -60,3 +60,19 @@ export const reviewSteps = [
     "Undo the executor proposal on its branch, then discard it. You can also undo the accepted merge to restore $49; that recovery is recorded in history.",
   ],
 ] as const;
+
+export const install = {
+  cli: `npm install -g argonctl@${release.version}`,
+  python: `python3 -m pip install "argon-agents @ git+https://github.com/argon-lab/argon-agents.git@v${release.sdkVersion}"`,
+  langgraph: `python3 -m pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${release.sdkVersion}"`,
+  mcp: `claude mcp add --transport stdio --env MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0' argon -- argon mcp`,
+};
+
+export const limits = {
+  branching: capabilities[0][1],
+  isolation: capabilities[1][1],
+  attribution: capabilities[2][1],
+  undo: capabilities[3][1],
+  retention: capabilities[4][1],
+  lifecycle: capabilities[5][1],
+};

@@ -1,12 +1,12 @@
-import Link from 'next/link';
-import { sortedPosts } from './posts';
+import { pageMetadata } from "../metadata";
+import Link from "next/link";
+import { sortedPosts } from "./posts";
 
-export const metadata = {
-  title: 'Blog',
-  description:
-    'Guides on MongoDB branching, time travel, data versioning, and giving AI agents safe, disposable databases.',
-  alternates: { canonical: '/blog' },
-};
+export const metadata = pageMetadata(
+  "Blog",
+  "Guides on MongoDB branching, time travel, data versioning, and giving AI agents safe, disposable databases.",
+  "/blog",
+);
 
 export default function BlogIndex() {
   const posts = sortedPosts();
@@ -26,12 +26,12 @@ export default function BlogIndex() {
           <li key={p.slug}>
             <Link href={`/blog/${p.slug}`} className="group block py-6">
               <p className="font-mono text-xs text-brand-muted">
-                {new Date(p.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'UTC',
-                })}{' '}
+                {new Date(p.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  timeZone: "UTC",
+                })}{" "}
                 · {p.readingMinutes} min read
               </p>
               <h2 className="mt-2 text-lg font-medium text-brand-text transition-colors group-hover:text-brand-primary">

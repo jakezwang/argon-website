@@ -1,13 +1,19 @@
+import { product } from "../../product";
 import type { Metadata } from "next";
 import CodeBlock from "../../components/CodeBlock";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
 const post = getPost("two-ai-agents-one-mongodb-document")!;
-const exampleUrl =
-  "https://github.com/argon-lab/argon-agents/blob/v0.2.0/examples/two_agent_review.py";
+const exampleUrl = product.example;
 
 export const metadata: Metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -19,6 +25,7 @@ export const metadata: Metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -318,7 +325,9 @@ argon.undo(
         Capture now has an explicit readiness check and reports degraded history
         when it cannot record an update correctly. Native-driver tests exercise
         PyMongo and Mongoose writes through capture and undo. The{" "}
-        <a href="https://github.com/argon-lab/argon/blob/v2.1.1/docs/RELEASE_2_1.md">
+        <a
+          href={`https://github.com/argon-lab/argon/blob/v${product.version}/docs/RELEASE_2_1.md`}
+        >
           2.1 release notes
         </a>{" "}
         link each change to its regression coverage. Version 2.1.1 also fixes a
@@ -336,8 +345,9 @@ argon.undo(
         a MongoDB replica set, and runs <code>argon doctor</code> to check
         capture readiness. Keep <code>argon console --no-browser</code> running
         while the example runs; that process manages capture for the API
-        sandboxes. The guide also checks out SDK tag <code>v0.2.0</code> and
-        installs it in a Python virtual environment.
+        sandboxes. The guide also checks out SDK tag{" "}
+        <code>v{product.sdkVersion}</code> and installs it in a Python virtual
+        environment.
       </p>
       <p>
         From that SDK checkout, with the virtual environment active and the

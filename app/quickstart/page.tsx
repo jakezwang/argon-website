@@ -1,14 +1,14 @@
+import { pageMetadata } from "../metadata";
 import type { ReactNode } from "react";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
 import { product } from "../product";
 
-export const metadata = {
-  title: "Local quickstart",
-  description:
-    "Install the Argon CLI, start local MongoDB, then run two agent proposals through a real branch, review, merge and undo workflow.",
-  alternates: { canonical: "/quickstart" },
-};
+export const metadata = pageMetadata(
+  "Local quickstart",
+  "Install the Argon CLI, start local MongoDB, then run two agent proposals through a real branch, review, merge and undo workflow.",
+  "/quickstart",
+);
 
 function Step({
   id,

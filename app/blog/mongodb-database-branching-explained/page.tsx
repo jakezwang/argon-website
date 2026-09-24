@@ -1,9 +1,17 @@
+import { limits } from "../../product";
+import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
 const post = getPost("mongodb-database-branching-explained")!;
 
 export const metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -15,6 +23,7 @@ export const metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -25,11 +34,11 @@ const faq = [
   },
   {
     q: "How is branching different from mongodump and mongorestore?",
-    a: "mongodump and mongorestore produce a full, standalone copy with no shared history and no way to merge changes back — that is a backup. A branch shares history with its parent, is created in milliseconds, supports time travel to any earlier point, and can be diffed and merged back like a pull request.",
+    a: `A dump is a standalone copy without Argon branch history or reviewed merge. ${limits.branching} ${limits.retention}`,
   },
   {
     q: "How fast is it to create a MongoDB branch?",
-    a: "Milliseconds. A branch stores a small amount of metadata rather than copying documents, so creation time stays roughly constant regardless of database size. Reproducible numbers live in the open Argon benchmark suite.",
+    a: limits.branching,
   },
   {
     q: "Can I use my existing MongoDB driver with a branch?",
@@ -41,7 +50,7 @@ const faq = [
   },
   {
     q: "Why is database branching useful for AI agents?",
-    a: "It gives each agent its own isolated, disposable database. The agent writes freely in a branch; you review the diff and merge what works or discard the rest. Per-actor undo means any change an agent made is reversible without a full restore.",
+    a: `${limits.isolation} ${limits.undo}`,
   },
 ];
 
@@ -49,12 +58,12 @@ export default function Page() {
   return (
     <ArticleLayout post={post} faq={faq}>
       <p>
-        <strong>MongoDB database branching</strong> is the ability to create an
-        instant, isolated copy of a database — a <em>branch</em> — that shares
-        history with its parent but can be written to, reviewed, merged, or
-        thrown away on its own. It is the idea Git brought to source code,
-        applied to your data: cheap branches, a full history you can rewind, and
-        a review step before changes reach production.
+        <strong>MongoDB database branching</strong> is the ability to create a
+        separate workspace for database changes — a <em>branch</em> — that
+        shares history with its parent but can be written to, reviewed, merged,
+        or thrown away on its own. It is the idea Git brought to source code,
+        applied to your data: shared branch history, retained past states, and a
+        review step before changes reach production.
       </p>
       <p>
         MongoDB has no native branching. This guide explains what branching
@@ -85,18 +94,15 @@ export default function Page() {
       <ul>
         <li>
           <strong>Isolation.</strong> Every branch is a real, separate MongoDB
-          database with its own connection string. Point any driver at it and
-          nothing you do touches production.
+          database after checkout. Use its connection string for experiment
+          writes, and restrict credentials and network access to the intended
+          database.
         </li>
         <li>
-          <strong>Instant creation.</strong> A branch shares history with its
-          parent instead of copying data, so it is created in milliseconds
-          rather than minutes.
+          <strong>Metadata creation.</strong> {limits.branching}
         </li>
         <li>
-          <strong>Time travel.</strong> Because the full history is retained,
-          you can query a branch as it existed at any earlier point, or restore
-          to it.
+          <strong>Time travel.</strong> {limits.retention}
         </li>
         <li>
           <strong>Review and merge.</strong> Diff two branches, review the
@@ -104,9 +110,7 @@ export default function Page() {
           never resolved silently.
         </li>
         <li>
-          <strong>Undo.</strong> Every write is a revertible range, so a bad
-          change — or one specific actor’s changes — can be undone without a
-          full restore.
+          <strong>Undo.</strong> {limits.undo} {limits.attribution}
         </li>
       </ul>
 
@@ -140,31 +144,37 @@ export default function Page() {
       <p>
         Argon exposes this to agents directly through an{" "}
         <a href="/agents">MCP server</a>, TTL sandboxes, and reproducible
-        dataset pins so every evaluation run starts from identical data. Each
-        agent gets a disposable MongoDB it cannot destroy.
+        dataset pins so runs can start from the same retained input. Each agent
+        works in a separate branch database with explicitly scoped access.
       </p>
 
       <h2>How to branch a MongoDB database with Argon</h2>
       <p>
-        Argon is open source (MIT) and self-hosted. Install the CLI and create a
-        branch:
+        Complete the <a href="/quickstart">local MongoDB setup</a> first. With
+        an existing project named <code>docs-review</code>, fork its main branch
+        into a new sandbox named <code>agent-review</code>:
       </p>
       <pre>
-        <code>{`# install the CLI
-brew install argon-lab/tap/argonctl
+        <code data-cli-example="branch">{`# Terminal A: create a sandbox, then keep capture running
+${cli.sandbox}
+${cli.watchSandbox}
 
-# create a time-boxed sandbox branch off prod
-argon sandbox create -p prod --ttl 1h
-# ...prints a real MongoDB connection string.
-# point any driver, mongosh, or Compass at it.
+# Terminal B: after writes through the printed sandbox URI
+${cli.diff}
+${cli.mergePreview}
 
-# review what changed, then merge or discard
-argon diff main my-branch
-argon merge preview main my-branch`}</code>
+# Schedule this sweep while using CLI-managed TTL sandboxes
+${cli.sweep}`}</code>
       </pre>
       <p>
-        For the full command set, see the <a href="/features">features</a>{" "}
-        overview or the{" "}
+        Prepare exact images on new collections before updates with{" "}
+        <code>
+          argon collections prepare orders -p docs-review -b agent-review
+        </code>
+        . The preview prints a plan ID; inspect that plan before explicitly
+        applying it. Stop sandbox writers and capture before discarding or
+        letting expiry cleanup run. For the full command set, see the{" "}
+        <a href="/features">features</a> overview or the{" "}
         <a href="https://github.com/argon-lab/argon/tree/master/docs">
           documentation
         </a>

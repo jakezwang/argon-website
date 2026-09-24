@@ -1,3 +1,4 @@
+import { pageMetadata } from "../metadata";
 import Capabilities from "../components/Capabilities";
 const FeatureCard = ({
   index,
@@ -15,12 +16,11 @@ const FeatureCard = ({
   </div>
 );
 
-export const metadata = {
-  title: "Branching, Time Travel & Data PRs for MongoDB",
-  description:
-    "Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.",
-  alternates: { canonical: "/features" },
-};
+export const metadata = pageMetadata(
+  "Branching, Time Travel & Data PRs for MongoDB",
+  "Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.",
+  "/features",
+);
 
 export default function FeaturesPage() {
   return (

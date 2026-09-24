@@ -4,6 +4,12 @@ import { getPost } from "../posts";
 const post = getPost("database-branching-tools-compared")!;
 
 export const metadata = {
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: ["/og.png"],
+  },
   title: post.title,
   description: post.description,
   alternates: { canonical: `/blog/${post.slug}` },
@@ -15,6 +21,7 @@ export const metadata = {
     description: post.description,
     images: [{ url: "/og.png", width: 1200, height: 630 }],
     publishedTime: post.date,
+    modifiedTime: post.updated,
   },
 };
 
@@ -107,7 +114,7 @@ export default function Page() {
               <td>MongoDB (documents)</td>
               <td>Yes</td>
               <td>Yes (reviewable data PRs)</td>
-              <td>Yes (query at any point)</td>
+              <td>Yes (supported retained history)</td>
               <td>Yes (MIT)</td>
               <td>Yes (MCP, sandboxes, pins)</td>
             </tr>
@@ -165,8 +172,9 @@ export default function Page() {
       <p>
         Argon fills the MongoDB-shaped hole in this list. It models a MongoDB
         database as a write-ahead log, so a branch is a pointer into shared
-        history rather than a copy of your documents: instant to create, cheap
-        to keep, and rewindable to any earlier point. You can{" "}
+        history. Metadata creation and physical checkout have different costs;
+        checkout materializes a real MongoDB database. Queries and restoration
+        require supported retained history and complete capture. You can{" "}
         <a href="/blog/mongodb-database-branching-explained">
           diff two branches
         </a>
