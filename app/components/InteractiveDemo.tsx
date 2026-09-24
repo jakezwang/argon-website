@@ -16,7 +16,7 @@ const cliGraph: FlowGraph = {
     { name: "feature-x", y: 94 },
   ],
   nodes: [
-    { id: "m0", x: 120, y: 36, lane: 0, sub: "LSN 0", appearAt: 0 },
+    { id: "m0", x: 120, y: 36, lane: 0, sub: "LSN 0", appearAt: 1 },
     { id: "m1", x: 280, y: 36, lane: 0, sub: "LSN 3 · import", appearAt: 1 },
     { id: "b0", x: 430, y: 94, lane: 1, sub: "fork @ 3", appearAt: 2 },
     { id: "b1", x: 620, y: 94, lane: 1, sub: "LSN 5 · writes", appearAt: 4 },
@@ -48,7 +48,7 @@ const cliGraph: FlowGraph = {
     { from: "b1", to: "m2", appearAt: 7, curve: "target" },
   ],
   steps: [
-    { head: "m0", caption: "project created — main is born at LSN 0" },
+    { caption: "preview the source — no target project created yet" },
     { head: "m1", caption: "import advances main to LSN 3" },
     {
       head: "b0",
@@ -173,20 +173,17 @@ const sourcePanel: DemoPanel = {
 
 const cliSteps: DemoStep[] = [
   {
-    id: "create",
-    command: "argon projects create my-app",
-    description: "Create a project — capture records supported document writes",
-    output: ["Created project: my-app", "Main branch ready"],
-    panel: {
-      title: "my-app · main",
-      note: "no collections yet — bring your data in next",
-      sections: [],
-    },
+    id: "preview",
+    command:
+      "argon import preview --uri mongodb://localhost:27017 --database shop",
+    description: "Preview the source before creating a new target project",
+    output: ["1 collection · 3 documents", "No target data created"],
+    panel: sourcePanel,
   },
   {
     id: "import",
     command:
-      "argon import database --uri mongodb://localhost:27017 --database shop --project my-app",
+      "argon import database --uri mongodb://localhost:27017 --database shop --project my-app --source-quiesced",
     description: "Import an offline source — stop writes and DDL first",
     output: ["3 documents imported from shop", "History starts at LSN 1 → 3"],
     panel: {

@@ -31,6 +31,7 @@ if any(host not in {"localhost", "127.0.0.1", "::1"} for host, _ in parse_uri(ur
     raise SystemExit("CLI example smoke tests only accept a local MongoDB deployment")
 argon = os.environ.get("ARGON_BIN", "argon")
 metadata = "argon_website_docs_" + uuid.uuid4().hex
+source_database = "argon_website_source_" + uuid.uuid4().hex
 mongo = MongoClient(uri, serverSelectionTimeoutMS=10000, socketTimeoutMS=10000)
 mongo.admin.command("ping")
 env = {**os.environ, "MONGODB_URI": uri, "ARGON_METADATA_DB": metadata}
@@ -79,11 +80,44 @@ try:
     # The visual terminal contains abbreviated sample output, but every shown
     # Argon command must still use a command/flag supported by this release.
     demo_source = (ROOT / "app/components/InteractiveDemo.tsx").read_text()
-    for raw in re.findall(r'command:\s*("(?:[^"\\]|\\.)*")', demo_source):
-        command = json.loads(raw)
+    demo_commands = [json.loads(raw) for raw in re.findall(r'command:\s*("(?:[^"\\]|\\.)*")', demo_source)]
+    for command in demo_commands:
         if command.startswith("argon "):
             result = subprocess.run([argon, *shlex.split(command)[1:], "--help"], env=env, text=True, capture_output=True, timeout=30)
             assert result.returncode == 0, f"Unsupported illustrated command: {command}: {result.stderr}"
+
+    # Execute the illustrated preview -> import sequence on a source owned by
+    # this test. No source writes/DDL run during the import. Only connection and
+    # database arguments vary; --yes supplies the interactive confirmation.
+    assert demo_commands[0].startswith("argon import preview ")
+    assert demo_commands[1].startswith("argon import database ")
+    assert "--source-quiesced" in shlex.split(demo_commands[1])
+    source = mongo[source_database]
+    source.products.insert_many([
+        {"_id": "s1", "name": "trail shoe", "price": 49},
+        {"_id": "s2", "name": "road shoe", "price": 89},
+        {"_id": "s3", "name": "track spike", "price": 74},
+    ])
+    for index, command in enumerate(demo_commands[:2]):
+        args = shlex.split(command)
+        args[0] = argon
+        args[args.index("--uri") + 1] = uri
+        args[args.index("--database") + 1] = source_database
+        args += ["--output", "json"]
+        if index == 1:
+            args += ["--yes"]
+            refused = subprocess.run([arg for arg in args if arg != "--source-quiesced"], env=env, text=True, capture_output=True, timeout=60)
+            assert refused.returncode != 0 and "--source-quiesced" in refused.stderr, refused
+        result = subprocess.run(args, env=env, text=True, capture_output=True, timeout=60)
+        assert result.returncode == 0, f"Illustrated import failed: {result.stderr}"
+        payload = json.loads(result.stdout)
+        assert payload["total_documents" if index == 0 else "imported_documents"] == 3, payload
+    imported = subprocess.run([argon, "checkout", "-p", "my-app", "-b", "main", "--output", "json"], env=env, text=True, capture_output=True, timeout=60)
+    assert imported.returncode == 0, imported.stderr
+    imported_db = json.loads(imported.stdout)["physical_db"]
+    physical.add(imported_db)
+    assert list(mongo[imported_db].products.find().sort("_id")) == list(source.products.find().sort("_id"))
+    print("PASS: illustrated import previews the source, requires explicit quiescence, and imports three documents into a new target")
     run("project", True)
     main = run("checkout", True)
     run("prepare")
@@ -142,4 +176,5 @@ finally:
         if name.startswith("argon_br_"):
             mongo.drop_database(name)
     mongo.drop_database(metadata)
+    mongo.drop_database(source_database)
     mongo.close()

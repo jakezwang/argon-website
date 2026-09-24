@@ -334,6 +334,12 @@ argon.undo(
         monitor shutdown deadlock found during the release checks.
       </p>
       <p>
+        Version 2.1.2 synchronizes captured parent writes before a REST branch
+        fork and requires <code>--source-quiesced</code> for imports. Stop source
+        writes and DDL for the entire import; the import creates its own new
+        target project.
+      </p>
+      <p>
         We ran the full example with the published Argon 2.1.1 CLI, SDK 0.2.0,
         and a fresh MongoDB 7.0.25 replica set. It accepted 44, reported one
         conflict, and restored 49.

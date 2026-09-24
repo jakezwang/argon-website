@@ -6,12 +6,15 @@ async function read(url) {
   assert.ok(response.ok, `${url}: ${response.status}`);
   return response;
 }
-const [npm, engineGuide, sdkMetadata, example] = await Promise.all([
+const [npm, engineGuide, engineCLI, sdkMetadata, example] = await Promise.all([
   read(`https://registry.npmjs.org/argonctl/${release.version}`).then((r) =>
     r.json(),
   ),
   read(
     `https://raw.githubusercontent.com/argon-lab/argon/v${release.version}/docs/QUICK_START.md`,
+  ).then((r) => r.text()),
+  read(
+    `https://raw.githubusercontent.com/argon-lab/argon/v${release.version}/docs/CLI.md`,
   ).then((r) => r.text()),
   read(
     `https://raw.githubusercontent.com/argon-lab/argon-agents/v${release.sdkVersion}/pyproject.toml`,
@@ -22,10 +25,12 @@ const [npm, engineGuide, sdkMetadata, example] = await Promise.all([
 ]);
 assert.equal(npm.version, release.version);
 assert.ok(engineGuide.includes("argon"));
+assert.ok(engineCLI.includes("--source-quiesced"));
+assert.ok(engineCLI.includes("argon import cleanup"));
 assert.ok(sdkMetadata.includes(`version = "${release.sdkVersion}"`));
 assert.ok(
   example.includes("reviewed_price") && example.includes("restored_price"),
 );
 console.log(
-  `PASS: npm CLI ${release.version}, engine guide, SDK Git ${release.sdkVersion}, and matching review example are public`,
+  `PASS: npm CLI ${release.version}, engine guide/import contract, SDK Git ${release.sdkVersion}, and matching review example are public`,
 );
