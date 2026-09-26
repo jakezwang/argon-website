@@ -1,6 +1,6 @@
 # Argon website
 
-Next.js website with shared product claims in `app/product.ts`, a local quickstart and an opt-in, fixed-event analytics endpoint. Runtime: Node.js 22+ (Node 24 recommended).
+Next.js website with shared product claims in `app/product.ts`, a local quickstart, Vercel Web Analytics and an opt-in, fixed-event analytics endpoint. Runtime: Node.js 22+ (Node 24 recommended).
 
 ```bash
 npm ci
@@ -20,7 +20,28 @@ npm run test:browser
 
 `app/release.json` records the published engine and SDK source release versions; `app/product.ts` derives links and install commands from it. Update these versions only after both releases are publicly available; the quickstart and example links use matching release tags. The SDK install commands use the tagged Git source and do not imply that the same version is available on PyPI. Shared roadmap and capability copy feeds the homepage, Agents, Features and About. The reviewed CLI/Python setup is linked from `/quickstart`; validate these commands against the corresponding engine/agents refs during a coordinated release.
 
-## Anonymous counts
+## Vercel Web Analytics
+
+The root layout mounts `WebsiteAnalytics` once, using `@vercel/analytics/next`
+for initial page views and client-side navigation. These cookieless page views
+are enabled by default, independently of the optional button counts below.
+The `beforeSend` hook respects Do Not Track and removes query parameters and
+fragments from page URLs. `/privacy` describes both types of measurement.
+
+The SDK alone does not enable the Vercel project setting. Open the
+[project's Analytics dashboard](https://vercel.com/jake-wangs-projects-c28e93e2/argon-website/analytics),
+click **Enable** if it is offered, then redeploy the website so Vercel provisions
+the analytics routes. No application API key or additional environment variable
+is required. Follow the [official setup guide](https://vercel.com/docs/analytics/quickstart).
+
+Verify on the deployed site that the analytics script loads and page-view
+requests succeed, then check the dashboard for incoming data. With SDK v2,
+Vercel may supply generated script/intake paths instead of the default
+`/_vercel/insights/*`. A standalone local `next start` does not serve those
+Vercel-managed endpoints. Existing `/api/events` logs are not Vercel page views,
+and enabling Web Analytics does not backfill historical visits.
+
+## Optional button counts
 
 Off by default; the footer checkbox saves the browser's choice. `/api/events` logs only fixed event names (`demo_opened`, `quickstart_opened`) as structured `argon_funnel` records. There are no event identifiers, query strings or document contents. Infrastructure may still process ordinary request metadata. Website and console have separate choices and no joining identity, so count ratios are directional aggregates, not cross-domain unique-user conversion rates. Log retention and access controls belong to the deployment configuration.
 
