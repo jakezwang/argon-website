@@ -1,14 +1,30 @@
 import { pageMetadata } from "../metadata";
 export const metadata = pageMetadata(
   "Privacy",
-  "Data used by the Argon website and optional anonymous product counts.",
+  "How the Argon website uses cookieless page analytics and optional product counts.",
   "/privacy",
 );
 export default function Privacy() {
   return (
     <div className="article mx-auto max-w-3xl px-6 py-16">
       <h1 className="text-4xl font-semibold">Privacy</h1>
-      <p>Updated September 7, 2026.</p>
+      <p>Updated September 26, 2026.</p>
+      <h2>Website traffic</h2>
+      <p>
+        We use Vercel Web Analytics to understand visits to this website,
+        including page views, referral sources, device types and approximate
+        geographic information. It does not use analytics cookies. Page-view
+        statistics are enabled by default, independently of the optional button
+        counts below. We remove query parameters and fragments from the page URL
+        before sending it, and Do Not Track disables these analytics events.
+      </p>
+      <p>
+        See{" "}
+        <a href="https://vercel.com/docs/analytics/privacy-policy">
+          Vercel&apos;s Web Analytics privacy documentation
+        </a>{" "}
+        for details about how the service processes visitor data.
+      </p>
       <h2>Optional usage counts</h2>
       <p>
         Sharing anonymous counts is off by default. If you enable it in the
