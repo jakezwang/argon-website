@@ -337,6 +337,27 @@ try {
     for (const match of searchable.matchAll(/argonctl@(\d+\.\d+\.\d+)/g)) {
       assert.equal(match[1], release, `${route}: consistent CLI release`);
     }
+    if (route.startsWith("/blog/")) {
+      const article = schemas
+        .map(JSON.parse)
+        .find((schema) => schema["@type"] === "Article");
+      assert.ok(article, `${route}: article schema`);
+      assert.ok(
+        await page.locator(`time[datetime="${article.dateModified}"]`).count(),
+        `${route}: visible modification date matches schema`,
+      );
+      const nextSteps = page
+        .locator("article ul")
+        .filter({ has: page.locator('a[href^="/blog/"]') });
+      assert.ok(
+        (await nextSteps.locator('a[href^="/blog/"]').count()) >= 3,
+        `${route}: related guides`,
+      );
+      assert.equal(
+        await page.locator('article a[href="/about"]').innerText(),
+        "Argon Labs",
+      );
+    }
     for (const schema of schemas.map((value) => JSON.parse(value))) {
       if (schema["@type"] === "FAQPage") {
         for (const question of schema.mainEntity) {

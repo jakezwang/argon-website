@@ -1,4 +1,5 @@
 import { capabilities, install, product } from "../product";
+import { posts } from "../blog/posts";
 
 export const dynamic = "force-static";
 
@@ -29,6 +30,10 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - Agent setup: https://argonlabs.tech/agents
 - Live sample-data demo: ${product.demo}
 - Two-agent example: ${product.example}
+
+## Guides
+
+${posts.map((post) => `- [${post.title}](https://argonlabs.tech/blog/${post.slug}): ${post.description}`).join("\n")}
 `;
   return new Response(text, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
