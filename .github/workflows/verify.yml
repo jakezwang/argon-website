@@ -18,6 +18,8 @@ jobs:
       - run: |
           for i in $(seq 1 30); do curl --fail --silent http://127.0.0.1:13000 >/dev/null && break; sleep 1; done
           npm run test:browser
+      - name: Check search-visible HTML and crawler directives
+        run: python3 scripts/audit-search.py --output /tmp/argon-website-checks/search-audit.json
       - uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true # Screenshots are optional evidence, not a test gate.

@@ -17,8 +17,8 @@ export default function BlogIndex() {
         Notes on branching your data
       </h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-brand-text-darker">
-        Guides on MongoDB branching, time travel, and giving AI agents databases
-        they can’t destroy.
+        Guides on MongoDB branching, time travel, and reviewing AI agent changes
+        in separate database sandboxes.
       </p>
 
       <ul className="mt-12 divide-y divide-brand-edge border-y border-brand-edge">

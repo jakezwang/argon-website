@@ -25,7 +25,7 @@ export const posts: Post[] = [
     slug: "mongodb-mcp-server-versioned-sandboxes",
     title: "MCP + MongoDB: Versioned Sandboxes for Agent Tool-Calls",
     description:
-      "Connecting an AI agent to MongoDB over MCP usually means handing it a live database. Argon’s MCP server gives each agent a versioned, branchable MongoDB instead — 13 tools to open a sandbox, diff, merge, time-travel, and undo.",
+      "Use Argon’s MongoDB MCP server for versioned agent sandboxes, reviewed merges, time travel, and undo. Includes setup requirements and operating limits.",
     date: "2026-07-08",
     updated: "2026-09-24",
     tags: ["MCP", "AI Agents", "MongoDB"],
@@ -35,7 +35,7 @@ export const posts: Post[] = [
     slug: "mongodb-time-travel-vs-point-in-time-recovery",
     title: "MongoDB Time Travel vs Point-in-Time Recovery",
     description:
-      "Time travel and point-in-time recovery (PITR) both go back in time in MongoDB, but they solve opposite problems: PITR restores a whole database for disaster recovery, while time travel queries or branches a retained past state without touching the present. How each works, and when to use which.",
+      "Compare MongoDB point-in-time recovery with Argon historical reads and branches: recovery scope, retained history, and when to use each workflow.",
     date: "2026-07-08",
     updated: "2026-09-24",
     tags: ["MongoDB", "Time Travel", "Backup"],
@@ -45,7 +45,7 @@ export const posts: Post[] = [
     slug: "mongodb-database-branching-explained",
     title: "MongoDB Database Branching, Explained",
     description:
-      "What database branching means for MongoDB, why MongoDB has no native equivalent of Neon or PlanetScale, how it works under the hood, and how to branch a MongoDB database today with Argon.",
+      "Learn how MongoDB branching works with Argon: lightweight branch metadata, physical checkout, document diffs, and an explicit merge review workflow.",
     date: "2026-07-08",
     updated: "2026-09-24",
     tags: ["MongoDB", "Branching", "Database"],
@@ -56,9 +56,9 @@ export const posts: Post[] = [
     title:
       "Database Branching Tools Compared: Neon, PlanetScale, Dolt, lakeFS, and Argon",
     description:
-      "A practical map of the database branching landscape — what Neon, PlanetScale, Dolt, lakeFS, and Argon each branch, how they compare on merge, time travel, and licensing, and which one fits MongoDB.",
+      "Compare Neon, PlanetScale Vitess and Postgres, Dolt, lakeFS, and Argon by data model, branch workflow, and review boundaries. Sources checked September 2026.",
     date: "2026-07-08",
-    updated: "2026-09-24",
+    updated: "2026-09-26",
     tags: ["Comparison", "Branching", "Database"],
     readingMinutes: 9,
   },
@@ -66,7 +66,7 @@ export const posts: Post[] = [
     slug: "disposable-mongodb-sandbox-for-ai-agents",
     title: "A Disposable MongoDB Sandbox for Every AI Agent",
     description:
-      "Why AI agents need their own database, how a branch-per-agent workflow keeps production safe, and how to wire it up with Argon’s MCP server, TTL sandboxes, and reproducible dataset pins.",
+      "Give each AI agent a MongoDB sandbox with Argon. Learn branch-per-agent isolation, dataset pins, TTL cleanup, and the capture requirements for undo.",
     date: "2026-07-08",
     updated: "2026-09-24",
     tags: ["AI Agents", "MCP", "MongoDB"],

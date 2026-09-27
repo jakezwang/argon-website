@@ -27,193 +27,211 @@ export const metadata = {
 
 const faq = [
   {
-    q: "Is there a Neon for MongoDB?",
-    a: "Argon is the closest equivalent. Neon brings branching and time travel to Postgres; Argon brings branching, time travel, and merge to MongoDB, as an open-source, self-hosted engine.",
+    q: "Is there a Neon-style branching workflow for MongoDB?",
+    a: "Argon provides branching, retained-history reads, reviewed merge, and undo for MongoDB. It is a self-hosted engine, not a managed Postgres service. A lightweight branch must be checked out into a physical MongoDB database before native drivers can query it.",
   },
   {
-    q: "What is the difference between Dolt and Argon?",
-    a: "Dolt is a MySQL-compatible SQL database with Git-style versioning built in — you adopt Dolt as your database. Argon adds branching and versioning to MongoDB without replacing it: you keep MongoDB and connect any driver to a branch.",
+    q: "Does PlanetScale only support MySQL?",
+    a: "No. PlanetScale offers both Vitess (MySQL-compatible) and Postgres. Their branch workflows differ: Vitess supports schema deploy requests; Postgres provides isolated deployments, including branches restored from backups. Neither of those offerings is MongoDB.",
   },
   {
-    q: "Does Neon or PlanetScale work with MongoDB?",
-    a: "No. Neon is Postgres and PlanetScale is MySQL. Neither supports MongoDB. For branching a MongoDB (document) database, Argon is the tool built for that data model.",
+    q: "Can AI agents use Neon as well as Argon?",
+    a: "Yes. Neon provides an MCP server and agent integrations for Postgres. Argon provides MCP tools and a Python SDK for MongoDB sandbox, history, and review workflows. Choose for your database and operating requirements; MCP support alone is not an exclusive differentiator.",
   },
   {
-    q: "Which database branching tools are open source?",
-    a: "Neon, Dolt, lakeFS, and Argon are open source; Argon is MIT-licensed and self-hosted. PlanetScale is a proprietary managed service. Always check each project’s current license, as they change over time.",
+    q: "Does database branching replace backups?",
+    a: "No. Branches are useful for isolated work and review. Keep an independent backup and recovery strategy. Argon historical reads and undo require complete capture and retained history; physical checkout also consumes time and storage.",
   },
 ];
 
 export default function Page() {
   return (
     <ArticleLayout post={post} faq={faq}>
+      <h2>The short answer</h2>
       <p>
-        “Database branching” has quietly become a category. Postgres has{" "}
-        <strong>Neon</strong>, MySQL has <strong>PlanetScale</strong>, the SQL
-        world has <strong>Dolt</strong>, data lakes have <strong>lakeFS</strong>
-        , and MongoDB has <a href="https://github.com/argon-lab/argon">Argon</a>
-        . They all borrow the same idea from Git — cheap branches, a history you
-        can rewind, and a review step before changes land — but they apply it to
-        very different data. This guide maps how they compare and which one fits
-        MongoDB.
+        Choose a branching tool by the data it operates on and the change you
+        need to review. Neon branches Postgres; PlanetScale has separate Vitess
+        and Postgres workflows; Dolt versions a SQL database; lakeFS versions
+        objects in a data lake. Argon adds branch history and reviewed document
+        changes to MongoDB. These products solve related, but different,
+        problems.
+      </p>
+      <p>
+        This comparison is written by the Argon maintainers. The linked primary
+        documentation was checked on September 26, 2026. It is a workflow
+        comparison, not a performance benchmark or an exhaustive product
+        ranking.
       </p>
 
-      <h2>The short version</h2>
+      <h2>What each tool branches</h2>
       <div className="overflow-x-auto">
         <table>
+          <caption className="sr-only">
+            Database branching workflows and their review boundaries
+          </caption>
           <thead>
             <tr>
-              <th>Tool</th>
-              <th>Data model</th>
-              <th>Branch</th>
-              <th>Merge</th>
-              <th>Time travel</th>
-              <th>Open source</th>
-              <th>Agent-native</th>
+              <th scope="col">Tool</th>
+              <th scope="col">Data model</th>
+              <th scope="col">Branch workflow</th>
+              <th scope="col">Review boundary</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Neon</td>
+              <th scope="row">Neon</th>
               <td>Postgres</td>
-              <td>Yes (copy-on-write)</td>
-              <td>No native branch merge</td>
-              <td>History / point-in-time restore</td>
-              <td>Yes (Apache 2.0)</td>
-              <td>No</td>
+              <td>Copy-on-write database branches</td>
+              <td>
+                Isolated development; evaluate schema migration separately
+              </td>
             </tr>
             <tr>
-              <td>PlanetScale</td>
-              <td>MySQL (Vitess)</td>
-              <td>Yes (schema branches)</td>
-              <td>Deploy requests (schema)</td>
-              <td>No</td>
-              <td>No (proprietary)</td>
-              <td>No</td>
+              <th scope="row">PlanetScale Vitess</th>
+              <td>MySQL-compatible</td>
+              <td>Schema branches</td>
+              <td>Schema deploy requests</td>
             </tr>
             <tr>
-              <td>Dolt</td>
+              <th scope="row">PlanetScale Postgres</th>
+              <td>Postgres</td>
+              <td>Isolated deployments, empty or restored from backup</td>
+              <td>
+                Apply schema changes separately; no automated schema merge
+                between branches
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Dolt</th>
               <td>MySQL-compatible SQL</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>Yes (as-of queries)</td>
-              <td>Yes (Apache 2.0)</td>
-              <td>No</td>
+              <td>Versioned tables and schema</td>
+              <td>Git-style diff, commit, branch, and merge</td>
             </tr>
             <tr>
-              <td>lakeFS</td>
-              <td>Data lake / object store</td>
-              <td>Yes</td>
-              <td>Yes</td>
-              <td>Yes (commits)</td>
-              <td>Yes (Apache 2.0)</td>
-              <td>No</td>
+              <th scope="row">lakeFS</th>
+              <td>Object storage</td>
+              <td>Versioned object collections</td>
+              <td>Commits and merges at the object level</td>
             </tr>
             <tr>
-              <td>Argon</td>
-              <td>MongoDB (documents)</td>
-              <td>Yes</td>
-              <td>Yes (reviewable data PRs)</td>
-              <td>Yes (supported retained history)</td>
-              <td>Yes (MIT)</td>
-              <td>Yes (MCP, sandboxes, pins)</td>
+              <th scope="row">Argon</th>
+              <td>MongoDB documents</td>
+              <td>Metadata branches with physical database checkout</td>
+              <td>Document diff and explicitly applied merge plans</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p>
-        Capabilities move quickly, so treat this as a starting map rather than a
-        spec sheet, and check each project for current details. What does not
-        change is the axis that matters most:{" "}
-        <strong>what each tool branches</strong>.
-      </p>
 
-      <h2>Neon — branching for Postgres</h2>
+      <h2>Neon: Postgres branches and agent tooling</h2>
       <p>
-        Neon separates storage from compute and makes a branch a copy-on-write
-        fork of your Postgres data. Branches are near-instant and cheap, which
-        is why teams use them for preview environments and per-pull-request
-        databases. Neon focuses on the branch-and-throw-away workflow; it does
-        not merge one branch’s data changes back into another the way you merge
-        code. If you are on Postgres, Neon is the obvious choice.
-      </p>
-
-      <h2>PlanetScale — schema branches for MySQL</h2>
-      <p>
-        PlanetScale, built on Vitess, made its name with <em>schema</em>{" "}
-        branching: you branch the database to make schema changes, then open a
-        “deploy request” to merge those changes back to production without
-        blocking writes. It is a strong fit for MySQL schema workflows at scale.
-        Its branching is oriented around schema and deploys rather than
-        general-purpose data branches, and it is a proprietary managed service.
-      </p>
-
-      <h2>Dolt — “Git for data”</h2>
-      <p>
-        Dolt is a SQL database that is versioned like a Git repository:{" "}
-        <code>dolt branch</code>, <code>dolt merge</code>,{" "}
-        <code>dolt diff</code>, and commit history are first-class. The catch is
-        that Dolt <em>is</em> your database — you adopt a MySQL-compatible
-        engine to get the versioning. That is exactly right for some workloads
-        and a non-starter for teams already committed to another database.
-      </p>
-
-      <h2>lakeFS — version control for data lakes</h2>
-      <p>
-        lakeFS brings Git-like branches, commits, and merges to object storage
-        (S3 and friends), so data engineers can branch a data lake, run a
-        pipeline in isolation, and merge results atomically. It operates at the
-        file/object level over a lake rather than at the record level inside an
-        operational database — a different layer of the stack from the others
-        here.
-      </p>
-
-      <h2>Argon — branching for MongoDB</h2>
-      <p>
-        Argon fills the MongoDB-shaped hole in this list. It models a MongoDB
-        database as a write-ahead log, so a branch is a pointer into shared
-        history. Metadata creation and physical checkout have different costs;
-        checkout materializes a real MongoDB database. Queries and restoration
-        require supported retained history and complete capture. You can{" "}
-        <a href="/blog/mongodb-database-branching-explained">
-          diff two branches
+        Neon uses copy-on-write branches for separate Postgres environments. It
+        also provides an MCP server and agent integrations. AI tooling is
+        therefore not unique to Argon: the database and review semantics matter.
+        See{" "}
+        <a href="https://neon.com/docs/introduction/branching">
+          Neon branching
+        </a>{" "}
+        and{" "}
+        <a href="https://neon.com/docs/ai/ai-rules-neon-toolkit">
+          Neon agent integrations
         </a>
-        , review the change as a data PR, and merge reviewed, with conflicts
-        reported rather than resolved silently.
-      </p>
-      <p>
-        Two things set it apart. First, it does not replace MongoDB — checking
-        out a branch hands you an ordinary connection string, so any driver,
-        mongosh, or Compass just works. Second, it is{" "}
-        <strong>agent-native</strong>: an <a href="/agents">MCP server</a>, TTL
-        sandboxes, and reproducible dataset pins make it the natural place to
-        give an AI agent its own database. It is open source under the MIT
-        license and self-hosted.
+        .
       </p>
 
-      <h2>Which should you pick?</h2>
-      <ul>
-        <li>
-          <strong>On Postgres?</strong> Neon.{" "}
-          <strong>On MySQL and want schema deploys?</strong> PlanetScale.
-        </li>
-        <li>
-          <strong>Want the database itself to be versioned like Git?</strong>{" "}
-          Dolt.
-        </li>
-        <li>
-          <strong>Versioning a data lake?</strong> lakeFS.
-        </li>
-        <li>
-          <strong>
-            On MongoDB — or giving AI agents disposable databases?
-          </strong>{" "}
-          <a href="https://github.com/argon-lab/argon">Argon</a>.
-        </li>
-      </ul>
+      <h2>PlanetScale: distinguish Vitess from Postgres</h2>
       <p>
-        The category is converging on a simple expectation: your data should be
-        as branchable as your code. Pick the tool that speaks your database.
+        PlanetScale Vitess uses schema branches and deploy requests. PlanetScale
+        Postgres provides isolated deployments that can start empty or be
+        restored from a backup; schema changes are applied separately rather
+        than automatically merged between branches. Calling all PlanetScale
+        branches “MySQL schema branches” misses the Postgres offering. See{" "}
+        <a href="https://planetscale.com/docs/vitess/schema-changes/branching">
+          Vitess branching
+        </a>{" "}
+        and{" "}
+        <a href="https://planetscale.com/docs/postgres/branching">
+          Postgres branching
+        </a>
+        .
+      </p>
+
+      <h2>Dolt: a versioned SQL database</h2>
+      <p>
+        Dolt combines a MySQL-compatible database with Git-style operations on
+        tables and schema. Choosing it means adopting a versioned SQL engine; it
+        does not add versioning to an existing MongoDB deployment. See{" "}
+        <a href="https://www.dolthub.com/docs/introduction/what-is-dolt/">
+          What is Dolt?
+        </a>
+        .
+      </p>
+
+      <h2>lakeFS: version control over objects</h2>
+      <p>
+        lakeFS organizes object storage into repositories, branches, and
+        commits. This is useful for data-lake and pipeline workflows. Its unit
+        of versioning is an object rather than an individual MongoDB document.
+        See{" "}
+        <a href="https://docs.lakefs.io/latest/understand/model/">
+          the lakeFS object model
+        </a>
+        .
+      </p>
+
+      <h2>Argon: review MongoDB document changes</h2>
+      <p>
+        Argon is an MIT-licensed, self-hosted engine. A branch records a
+        position in captured history; checkout materializes a real MongoDB
+        database for native drivers. Agents can work on separate branches,
+        inspect differences, and propose a merge for explicit review and
+        application.
+      </p>
+      <p>
+        Checkout readiness and storage depend on the dataset. Undo and
+        historical reads require complete images and retained history. Branches
+        do not replace MongoDB access controls or backups. The anonymous hosted
+        demo uses temporary sample data; native database connections belong in
+        your local deployment. See the{" "}
+        <a href="/features#capabilities">capability matrix</a> and{" "}
+        <a href="/blog/two-ai-agents-one-mongodb-document">
+          two-agent review walkthrough
+        </a>
+        .
+      </p>
+
+      <h2>A practical selection checklist</h2>
+      <ol>
+        <li>
+          Start with your database: Postgres, MySQL-compatible SQL, objects, or
+          MongoDB.
+        </li>
+        <li>
+          Identify what must be reviewed: schema, document changes, table
+          changes, or objects.
+        </li>
+        <li>
+          Measure time to a usable database, storage, cleanup, and recovery on
+          your own workload.
+        </li>
+        <li>
+          Check credentials, retained history, conflict handling, and backup
+          requirements.
+        </li>
+        <li>
+          Run one representative change and its rejection or recovery path
+          before adopting the workflow.
+        </li>
+      </ol>
+      <p>
+        For MongoDB, begin with the{" "}
+        <a href="/quickstart">local Argon quickstart</a>. For performance
+        evidence, read the{" "}
+        <a href="https://github.com/argon-lab/benchmarks">
+          reproducible benchmark reports
+        </a>{" "}
+        and their workload limits. Metadata branch creation is not a measure of
+        physical sandbox readiness.
       </p>
     </ArticleLayout>
   );

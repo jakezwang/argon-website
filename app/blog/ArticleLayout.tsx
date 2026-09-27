@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Post } from "./posts";
+import { posts, type Post } from "./posts";
 
 type Faq = { q: string; a: string };
 
@@ -19,6 +19,14 @@ export default function ArticleLayout({
   children: React.ReactNode;
 }) {
   const url = `https://argonlabs.tech/blog/${post.slug}`;
+  const related = posts
+    .filter((candidate) => candidate.slug !== post.slug)
+    .map((candidate) => ({
+      post: candidate,
+      score: candidate.tags.filter((tag) => post.tags.includes(tag)).length,
+    }))
+    .sort((a, b) => b.score - a.score || b.post.date.localeCompare(a.post.date))
+    .slice(0, 3);
   const dateDisplay = new Date(post.date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -35,11 +43,13 @@ export default function ArticleLayout({
     dateModified: post.updated ?? post.date,
     author: {
       "@type": "Organization",
+      "@id": "https://argonlabs.tech/#organization",
       name: "Argon Labs",
-      url: "https://argonlabs.tech",
+      url: "https://argonlabs.tech/about",
     },
     publisher: {
       "@type": "Organization",
+      "@id": "https://argonlabs.tech/#organization",
       name: "Argon Labs",
       logo: {
         "@type": "ImageObject",
@@ -95,7 +105,10 @@ export default function ArticleLayout({
         />
       )}
 
-      <nav className="mb-8 font-mono text-xs text-brand-muted">
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-8 font-mono text-xs text-brand-muted"
+      >
         <Link href="/blog" className="hover:text-brand-text">
           Blog
         </Link>
@@ -104,7 +117,20 @@ export default function ArticleLayout({
       </nav>
 
       <p className="kicker mb-4">
-        {dateDisplay} · {post.readingMinutes} min read
+        <time dateTime={post.date}>{dateDisplay}</time> · {post.readingMinutes}{" "}
+        min read
+      </p>
+      <p className="mb-4 text-sm text-brand-muted">
+        By{" "}
+        <Link className="prose-link" href="/about">
+          Argon Labs
+        </Link>
+        {post.updated && (
+          <>
+            {" "}
+            · Updated <time dateTime={post.updated}>{post.updated}</time>
+          </>
+        )}
       </p>
       <h1 className="text-3xl font-semibold tracking-tight text-brand-text sm:text-4xl">
         {post.title}
@@ -156,10 +182,25 @@ export default function ArticleLayout({
       )}
 
       <div className="mt-16 border-t border-brand-edge pt-10">
+        <h2 className="text-xl font-semibold text-brand-text">
+          Continue reading
+        </h2>
+        <ul className="my-6 space-y-3">
+          {related.map(({ post: item }) => (
+            <li key={item.slug}>
+              <Link className="prose-link" href={`/blog/${item.slug}`}>
+                {item.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
         <p className="text-brand-text-darker">
           Argon is open source and MIT-licensed.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/quickstart" className="btn-solid">
+            Start with MongoDB locally
+          </Link>
           <a
             href="https://github.com/argon-lab/argon"
             target="_blank"

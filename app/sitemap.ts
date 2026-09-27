@@ -22,10 +22,10 @@ const staticRoutes: {
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Do not report deploy time as a content edit. Omit lastmod where a
+  // maintained editorial date is unavailable; article dates are explicit.
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
     url: `${base}${r.path}`,
-    lastModified: now,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }));
