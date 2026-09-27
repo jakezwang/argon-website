@@ -38,11 +38,11 @@ const faq = [
   },
   {
     q: "What is an MCP server for MongoDB?",
-    a: "Model Context Protocol (MCP) is a standard way to expose tools to AI agents. Argon ships an MCP server with 13 tools so an agent can branch, diff, merge, time-travel, and undo a MongoDB database directly from clients like Claude or Cursor.",
+    a: "Model Context Protocol (MCP) is a standard way to expose tools to AI agents. Argon ships 13 MCP tools for sandboxes, branch connections, diffs, merge plans, undo, snapshots, and pins. Document reads and writes use the returned MongoDB connection through a driver; retained-history queries use Argon’s CLI or REST API.",
   },
   {
     q: "How do I make agent evaluations reproducible?",
-    a: "Use dataset pins: an immutable, named snapshot of the data. Every eval run forks from the same pin, so each run starts from byte-identical input and results are comparable.",
+    a: "Use dataset pins: named references to captured document states. Fork each run from the same retained pin to control its starting document state. Matching input does not make agent outputs deterministic or guarantee identical physical database files.",
   },
 ];
 
@@ -107,9 +107,13 @@ export default function Page() {
         <code>{install.mcp}</code>
       </pre>
       <p>
-        The agent gets 13 tools — open a sandbox, diff, merge, time-travel, undo
-        — as first-class actions over stdio. It manages its own database without
-        you writing glue code.
+        The agent gets 13 control tools over stdio, including sandbox creation,
+        diff, merge, undo, snapshots, and pins. It uses a MongoDB driver with
+        the returned connection for data reads and writes. See the{" "}
+        <a href="/blog/mongodb-mcp-server-versioned-sandboxes">
+          MCP tool boundaries
+        </a>{" "}
+        for the available interfaces.
       </p>
 
       <h3>From the CLI or CI</h3>

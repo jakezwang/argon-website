@@ -30,11 +30,11 @@ export const metadata = {
 const faq = [
   {
     q: "Does MongoDB have built-in time travel?",
-    a: "Not for querying or branching past states. MongoDB offers point-in-time recovery (via Atlas continuous backup, Ops Manager, or backup tools) to restore a whole deployment to an earlier moment, but no built-in way to read or fork a past state without changing the live database. Argon adds that.",
+    a: "MongoDB supports recent snapshot reads: from MongoDB 5.0, certain reads outside transactions can use read concern snapshot with atClusterTime, within the retained snapshot-history window. Backup/PITR can restore older states when covered by backups. Argon provides a separate captured-history workflow with named branches, diffs, and reviewed merges.",
   },
   {
     q: "Is point-in-time recovery the same as time travel?",
-    a: "No — they solve opposite problems. PITR restores the entire deployment to a past moment; it is disaster recovery, and it replaces live data. Time travel reads or branches a retained past state non-destructively, so the present keeps running untouched.",
+    a: "PITR reconstructs backed-up data at a selected time into a restore target, which can be separate from the source. Scope and overwrite behavior depend on the backup product and restore mode. Argon reads or branches supported states from its retained captured history. Both can preserve the current source when used with a separate target.",
   },
   {
     q: "Can I recover one dropped collection without restoring the whole database?",
@@ -42,7 +42,7 @@ const faq = [
   },
   {
     q: "Does time travel replace backups?",
-    a: "No. Keep a real backup or PITR for genuine disaster recovery — hardware loss, region failure, ransomware. Time travel is for everything short of catastrophe: debugging, audits, and per-collection recovery. The two are complementary.",
+    a: "No. Keep independent backups and a tested recovery procedure for data loss, including hardware failure and ransomware. Argon can inspect or branch supported captured document states while the required history remains available. It does not cover every operation or replace backup recovery.",
   },
   {
     q: "How far back can Argon time-travel?",
@@ -56,13 +56,12 @@ export default function Page() {
       <p>
         MongoDB <strong>time travel</strong> and{" "}
         <strong>point-in-time recovery</strong> (PITR) both let you go back to
-        an earlier state of your data — but they solve opposite problems. PITR
-        is <em>disaster recovery</em>: it restores your whole database to a
-        moment in the past to undo a catastrophe. Time travel is a{" "}
-        <em>read and branch</em> operation: it lets you query or fork a retained
-        past state while the present keeps running, untouched. This guide
-        explains the difference, how each works under the hood, and when to
-        reach for which.
+        an earlier state of your data through different workflows. PITR
+        reconstructs backed-up data at a selected time into a restore target.
+        Argon time travel is a <em>read and branch</em> operation: it lets you
+        query or fork a retained past state while the present keeps running,
+        untouched. This guide explains the difference, how each works under the
+        hood, and when to reach for which.
       </p>
 
       <h2>The short version</h2>
@@ -83,17 +82,19 @@ export default function Page() {
             </tr>
             <tr>
               <td>Granularity</td>
-              <td>Whole cluster / deployment</td>
+              <td>
+                Cluster or selected databases/collections, where supported
+              </td>
               <td>Per branch, supported retained history</td>
             </tr>
             <tr>
               <td>Effect on live data</td>
-              <td>Restore to another or existing deployment</td>
+              <td>Depends on restore target and overwrite mode</td>
               <td>Non-destructive — present untouched</td>
             </tr>
             <tr>
               <td>Speed</td>
-              <td>Minutes to hours</td>
+              <td>Depends on backup, data volume and restore mode</td>
               <td>Depends on history, query and checkout size</td>
             </tr>
             <tr>
@@ -114,28 +115,45 @@ export default function Page() {
       <p>
         PITR is the backup-and-restore feature you turn to when something has
         gone catastrophically wrong — a bad migration, a dropped collection in
-        production, ransomware. It rewinds an entire deployment to a chosen
-        timestamp. Under the hood it takes periodic snapshots and continuously
+        production, ransomware. It reconstructs backed-up data at a chosen
+        timestamp. A common approach takes periodic snapshots and continuously
         captures the oplog (the replica set’s operation log); to restore to time
-        T, it loads the nearest snapshot before T and replays the oplog up to
-        exactly T. MongoDB Atlas offers this as continuous cloud backup with
-        PITR (restore to any second within a retention window); self-managed
-        setups use Ops Manager, Percona Backup for MongoDB, or hand-rolled
-        snapshot-plus-oplog replay.
+        T, it loads the nearest snapshot before T and replays the oplog up to T.
+        MongoDB Atlas offers{" "}
+        <a href="https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-from-continuous/">
+          Continuous Cloud Backup restores
+        </a>{" "}
+        on eligible dedicated clusters; self-managed setups use Ops Manager,
+        Percona Backup for MongoDB, or hand-rolled snapshot-plus-oplog replay.
       </p>
       <p>
-        It is essential — and blunt. It operates on the whole database or
-        cluster, it produces a restore (you typically spin up a new cluster or
-        overwrite the current one), it can take minutes to hours, and the
-        restored copy does not include writes after the chosen timestamp. It
-        answers exactly one question: “get the entire deployment back to how it
-        was at time T.”
+        Restoring to a separate target can leave the source running. A
+        cluster-level Atlas restore replaces data on its target. Atlas also
+        supports{" "}
+        <a href="https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-from-db-coll/">
+          selected database and collection restores
+        </a>{" "}
+        from supported backups, with create-as-new or overwrite behavior.
+        Restrictions apply, including no individual time-series collection
+        restores and no collection-level restores on NVMe clusters. Selective
+        restoration is not a guarantee of a shorter recovery time.
       </p>
 
       <h2>What time travel is</h2>
       <p>
-        Time travel treats history as something you can <em>read</em>, not just
-        restore. Instead of rewinding the live database, you ask: “what did this
+        MongoDB itself supports{" "}
+        <a href="https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/">
+          snapshot reads with <code>atClusterTime</code>
+        </a>
+        . From MongoDB 5.0, supported reads such as <code>find</code> and{" "}
+        <code>aggregate</code> can use this outside transactions. The requested
+        timestamp must remain in the storage engine&apos;s snapshot-history
+        window. This is useful for recent consistent reads; it does not create a
+        writable branch or keep an arbitrary old state indefinitely.
+      </p>
+      <p>
+        Argon treats captured history as something you can <em>read</em> and
+        branch. Instead of rewinding the live database, you ask: “what did this
         data look like at time T?” — and get an answer without changing anything
         that’s running now. You can query a past state in place, or branch from
         it to get an isolated, writable copy rooted at that moment.
@@ -151,9 +169,8 @@ export default function Page() {
       <h2>Under the hood: oplog replay vs a write-ahead log</h2>
       <p>
         PITR reconstructs a past state by replaying the oplog on top of a
-        snapshot — work proportional to how much happened, materialized into a
-        full restored copy. Argon’s time travel comes from modeling the database
-        as a{" "}
+        snapshot, producing restored data in the selected target. Argon’s time
+        travel comes from modeling the database as a{" "}
         <a href="/blog/mongodb-database-branching-explained">write-ahead log</a>{" "}
         where supported captured operations carry log sequence numbers. A
         retained state is just “replay the log up to that position,” and a
@@ -167,14 +184,14 @@ export default function Page() {
 
       <h2>They’re complementary — use both</h2>
       <p>
-        This is not Argon versus Atlas. Keep PITR (or your backup of choice) for
-        genuine disaster recovery — hardware loss, region failure, ransomware.
-        That is what it is for, and <strong>time travel is not a backup</strong>
-        . Reach for time travel for everything short of catastrophe: debugging
-        on historical data, audits, per-collection recovery, safe experiments,
-        and giving AI agents branchable databases. Most teams want both — a
-        durable backup for recovery, and queryable retained history for daily
-        work.
+        Keep independent backups or PITR and a tested recovery procedure for
+        data loss. <strong>Time travel is not a backup.</strong> Use Argon to
+        inspect or branch supported captured document states for debugging,
+        audits, or experiments while the required history remains available.
+        Recovery through undo also requires complete images and a supported
+        write range; it can refuse incomplete or conflicting history. Use your
+        backup recovery procedure for unsupported operations such as collection
+        drops or renames.
       </p>
 
       <h2>How to time-travel a MongoDB database with Argon</h2>

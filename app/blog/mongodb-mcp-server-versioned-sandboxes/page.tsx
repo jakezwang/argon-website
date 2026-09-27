@@ -1,4 +1,4 @@
-import { install, limits } from "../../product";
+import { install, limits, product } from "../../product";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
@@ -29,11 +29,11 @@ export const metadata = {
 const faq = [
   {
     q: "What is an MCP server for MongoDB?",
-    a: "An MCP (Model Context Protocol) server for MongoDB exposes database operations as tools an AI agent can call. Argon’s MCP server goes beyond raw queries: it exposes 13 tools for branching, diffing, merging, time-travel, and undo, so an agent works against a versioned database rather than a live one.",
+    a: "An MCP (Model Context Protocol) server exposes tools an AI agent can call. Argon’s 13 MCP tools manage sandboxes, branch connections, diffs, merge plans, undo, snapshots, and pins. Data reads and writes use the returned MongoDB connection; retained-history queries are available through Argon’s CLI and REST API.",
   },
   {
     q: "How is Argon’s MCP server different from a standard MongoDB MCP server?",
-    a: "A standard MongoDB MCP server connects the agent directly to a live database. Argon gives each agent its own branch — an isolated, writable MongoDB rooted at your data — plus diff, merge, and undo. Writes are reviewable and reversible instead of hitting production directly.",
+    a: "MongoDB’s MCP server provides database tools and supports read-only configuration against the deployment you choose. Argon adds a branch-and-review workflow: create a separate sandbox, use its MongoDB connection for data operations, then inspect a diff and explicitly apply a merge plan. Capture, retained history, and scoped credentials are still required.",
   },
   {
     q: "How do I add Argon to Claude Code or Cursor?",
@@ -45,7 +45,7 @@ const faq = [
   },
   {
     q: "How do I make agent runs reproducible?",
-    a: "Use dataset pins — immutable, named states of the database that each run branches from. Every run starts from byte-identical data, so evaluations are comparable.",
+    a: "Use dataset pins — named references to captured document states that each run branches from. A retained pin gives runs the same starting document state; it does not make agent outputs deterministic or guarantee identical physical database files.",
   },
 ];
 
@@ -54,13 +54,11 @@ export default function Page() {
     <ArticleLayout post={post} faq={faq}>
       <p>
         The Model Context Protocol (MCP) lets an AI agent call tools — and
-        increasingly, one of those tools is your database. But wiring an agent
-        to MongoDB over MCP usually means handing it a live connection: it can
-        read, and it can write, straight to real data. That is powerful and
-        dangerous. <a href="https://github.com/argon-lab/argon">Argon</a>’s MCP
-        server takes a different approach: instead of one shared database, it
-        gives each agent a separate branch database for experiments — 13 tools
-        to open a sandbox, write freely, then diff, merge, time-travel, or undo.
+        increasingly, one of those tools is your database. The deployment,
+        credentials, and enabled tools determine what the agent can change.{" "}
+        <a href="https://github.com/argon-lab/argon">Argon</a> adds a separate
+        branch database for experiments, with 13 MCP tools to manage sandboxes,
+        connections, document diffs, merge plans, undo, snapshots, and pins.
       </p>
 
       <h2>A 30-second MCP refresher</h2>
@@ -75,13 +73,16 @@ export default function Page() {
 
       <h2>The problem with a live MongoDB over MCP</h2>
       <p>
-        A straightforward MongoDB MCP server connects the agent to a database
-        and exposes find, insert, update, and delete as tools. For read-only
-        analysis that is genuinely useful. For anything that writes, the blast
-        radius is your production data: an agent that misreads an instruction
-        can corrupt or delete records at tool-call speed, and you often can’t
-        tell what changed until later. There is no branch, no diff, no undo —
-        just the live database and an optimistic model.
+        A MongoDB MCP server can expose query and mutation tools against the
+        database you configure. The{" "}
+        <a href="https://github.com/mongodb-js/mongodb-mcp-server#manual-setup">
+          official MongoDB MCP setup
+        </a>{" "}
+        includes a read-only option and can use a local or Atlas deployment. If
+        you enable writes against production with broad credentials, an
+        incorrect tool call can change production data. For experiments that
+        need writes, choose a separate database and define how changes will be
+        reviewed before adoption.
       </p>
 
       <h2>Argon’s MCP server: a sandbox per agent</h2>
@@ -90,26 +91,39 @@ export default function Page() {
         <a href="/blog/mongodb-database-branching-explained">branch</a> — a
         real, isolated MongoDB rooted at your data. The agent reads and writes
         through the sandbox connection; scope its credentials to that database.
-        When the agent is done, you (or another tool call) diff the branch, then
-        merge the good work as a reviewed data PR — or discard it. The 13 tools
-        cover the whole loop:
+        When the agent is done, inspect its MongoDB document changes and
+        conflicts in a merge preview. Explicitly applying that plan changes the
+        target branch&apos;s database; discarding the sandbox rejects its work.
+        The MCP control tools and the MongoDB connection support this loop:
       </p>
       <ul>
         <li>Open a TTL sandbox off production (or off a pinned dataset).</li>
-        <li>Read and write with ordinary MongoDB operations.</li>
+        <li>Read and write through a MongoDB driver using the sandbox URI.</li>
         <li>Diff a branch against its parent to see exactly what changed.</li>
         <li>
           Preview and apply a merge — conflicts are reported, never silent.
         </li>
-        <li>Time-travel: query supported states within retained history.</li>
+        <li>Create a snapshot at the branch head.</li>
         <li>
           Undo: revert a captured branch/run actor’s range when required images
           and history are complete.
         </li>
         <li>
-          Pins: freeze an immutable dataset so every eval run starts identical.
+          Pins: name a retained captured document state as the starting point
+          for later sandbox runs.
         </li>
       </ul>
+      <p>
+        The{" "}
+        <a
+          href={`https://github.com/argon-lab/argon/blob/v${product.version}/pkg/mcpserver/tools.go`}
+        >
+          released MCP tool definitions
+        </a>{" "}
+        do not include a general document-query or time-travel-query tool. Use a
+        driver for document operations and the CLI or REST API for
+        retained-history queries.
+      </p>
       <p>
         {limits.lifecycle} {limits.attribution}
       </p>
@@ -141,14 +155,14 @@ export default function Page() {
           <strong>diff</strong> — it (or you) inspects exactly what changed.
         </li>
         <li>
-          <strong>merge</strong> — the reviewed change lands on prod exactly
-          once, or the branch is discarded.
+          <strong>merge</strong> — explicitly apply the reviewed plan to its
+          target branch, or discard the sandbox.
         </li>
       </ol>
       <p>
         With complete images and retained history, <strong>undo</strong> can
         revert a supported captured range on the agent’s branch. Pins give runs
-        identical input, agent evaluations are reproducible. See the{" "}
+        the same starting document state; agent outputs can still vary. See the{" "}
         <a href="/agents">agents page</a> for the full picture, or the{" "}
         <a href="https://github.com/argon-lab/argon/tree/master/docs">docs</a>{" "}
         for every tool.

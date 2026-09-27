@@ -30,7 +30,7 @@ export const metadata = {
 const faq = [
   {
     q: "Does MongoDB support branching natively?",
-    a: "No. MongoDB has no built-in branching, time travel, or merge. You can approximate isolation with mongodump/mongorestore or by cloning a cluster, but those copy all of your data, are slow, and cannot merge changes back. Argon adds true branching as an open-source layer on top of MongoDB.",
+    a: "MongoDB does not provide Argon’s branch-and-reviewed-merge workflow. It does support recent point-in-time snapshot reads, and its backup tools can restore data into another deployment. Argon adds named branches, captured document history, diffs, and explicitly applied merge plans.",
   },
   {
     q: "How is branching different from mongodump and mongorestore?",
@@ -73,21 +73,32 @@ export default function Page() {
         engine that adds branching, time travel, and merge to MongoDB.
       </p>
 
-      <h2>Why MongoDB has no branching (and Postgres sort of does)</h2>
+      <h2>Branching workflows differ by database</h2>
       <p>
-        Postgres developers reach for Neon; MySQL developers reach for
-        PlanetScale. Both give you database branches: a lightweight,
-        copy-on-write fork of your data you can spin up per pull request, per
-        preview environment, or per experiment. MongoDB — the default database
-        for a generation of application developers — has never had an
-        equivalent.
+        Neon offers copy-on-write data branches for Postgres. PlanetScale Vitess
+        development branches copy the schema by default; adding data requires a
+        separate data-branching or restore workflow. PlanetScale also offers
+        Postgres with different branch behavior. See the{" "}
+        <a href="https://planetscale.com/docs/vitess/schema-changes/branching">
+          PlanetScale Vitess documentation
+        </a>{" "}
+        and our <a href="/blog/database-branching-tools-compared">comparison</a>{" "}
+        for the relevant data model and review boundary.
       </p>
       <p>
-        The usual workarounds are blunt. You <code>mongodump</code> and{" "}
-        <code>mongorestore</code> a whole database, or you clone a cluster. Both
-        copy every byte, take minutes to hours, cost real storage, and leave you
-        with a dead snapshot: no shared history, no way to merge changes back.
-        That is a backup, not a branch.
+        For MongoDB, <code>mongodump</code> and <code>mongorestore</code> can
+        create a separate working copy. The{" "}
+        <a href="https://www.mongodb.com/docs/database-tools/mongodump/">
+          dump options
+        </a>{" "}
+        can select a database, collection, or matching documents. Copying takes
+        time and storage according to that scope, and does not create Argon
+        branch ancestry or reviewed merge plans. MongoDB also supports recent{" "}
+        <a href="https://www.mongodb.com/docs/manual/reference/read-concern-snapshot/">
+          snapshot reads
+        </a>{" "}
+        within its retained snapshot window; those reads do not create a
+        writable branch.
       </p>
 
       <h2>What database branching actually gives you</h2>
@@ -117,16 +128,16 @@ export default function Page() {
       <h2>How branching works under the hood</h2>
       <p>
         Argon models a MongoDB database as a <strong>write-ahead log</strong>:
-        an ordered record of every operation, each stamped with a log sequence
-        number. A branch is not a copy of your documents — it is a pointer into
-        that shared log plus the writes made after the branch point. Reading a
-        branch replays the log deterministically up to the position you ask for.
+        an ordered record of supported captured changes, each stamped with a log
+        sequence number. A branch is not a copy of your documents — it is a
+        pointer into that shared log plus the writes made after the branch
+        point. Reading a branch replays the log deterministically up to the
+        position you ask for.
       </p>
       <p>
-        This is why branches are cheap and time travel is effectively free: the
-        data already exists as history. Creating a branch writes a few hundred
-        bytes of metadata, not gigabytes of documents, and asking for the state
-        at an earlier position just replays fewer entries. When you{" "}
+        Creating branch metadata does not copy the documents. Historical reads
+        still reconstruct state from retained snapshots and log entries, so
+        their cost depends on the history and data involved. When you{" "}
         <code>checkout</code> a branch, Argon materializes it into a physical
         MongoDB database and hands you a connection string, so your application
         and tools talk to ordinary MongoDB.
@@ -135,11 +146,12 @@ export default function Page() {
       <h2>Branching for AI agents</h2>
       <p>
         Branching stopped being a nice-to-have the moment AI agents started
-        writing to databases. An agent let loose on production is a liability;
-        an agent given its own branch is safe by construction. The pattern is
-        simple: fork a branch (optionally with a time-to-live), let the agent
-        read and write freely, then review the diff and either merge what it did
-        or discard the branch entirely.
+        writing to databases. An agent let loose on production is a liability; a
+        branch gives it a separate workspace when its database access is scoped
+        correctly. Fork a branch (optionally with a time-to-live), let the agent
+        work there, then review the diff and either merge what it did or discard
+        the branch. Keep application validation and MongoDB access controls in
+        place.
       </p>
       <p>
         Argon exposes this to agents directly through an{" "}
