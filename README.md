@@ -47,13 +47,13 @@ Off by default; the footer checkbox saves the browser's choice. `/api/events` lo
 
 ## Security migration
 
-The hardening update moves Next.js 14 to 16.3.4 with React 19.2.8, following the [official migration guide](https://nextjs.org/docs/app/guides/upgrading/version-16). The app has no dynamic route params, async request APIs, middleware or custom webpack config requiring codemods. Dependency advisories, including build and test tooling, are checked with npm audit in CI.
+The hardening update moves Next.js 14 to 16.3.8 with React 19.2.8, following the [official migration guide](https://nextjs.org/docs/app/guides/upgrading/version-16). The app has no dynamic route params, async request APIs, middleware or custom webpack config requiring codemods. Dependency advisories, including build and test tooling, are checked with npm audit in CI.
 
 ## Content and example verification
 
 `npm run test:releases` checks that the documented npm CLI, tagged engine guide,
-SDK Git release and matching Python example are publicly available. Git-tag SDK
-installation remains explicit until the corresponding package distribution is verified.
+SDK Git release, non-yanked PyPI wheel and matching Python example are publicly
+available. The install commands pin the verified PyPI SDK release.
 
 The browser regression discovers every route from the sitemap, checks it against
 source pages, and verifies desktop/mobile rendering, destination-specific social
