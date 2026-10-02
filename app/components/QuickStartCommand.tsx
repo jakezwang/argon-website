@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { product } from "../product";
+import { install, product } from "../product";
 import CodeBlock from "./CodeBlock";
 
 const installMethods = [
@@ -19,9 +19,9 @@ const installMethods = [
   },
   {
     label: "Python SDK",
-    command: `python3 -m pip install \\\n  "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`,
+    command: install.langgraph,
     description:
-      "Installs the Python adapter from its release tag. Requires Python 3.10+, Git and a running Argon server.",
+      "Installs the Python adapter from PyPI. Requires Python 3.10+ and a running Argon server.",
     codeLabel: "Install the Python SDK in a virtual environment",
   },
 ];

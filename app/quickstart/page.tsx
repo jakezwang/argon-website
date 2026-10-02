@@ -2,7 +2,7 @@ import { pageMetadata } from "../metadata";
 import type { ReactNode } from "react";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { product } from "../product";
+import { install, product } from "../product";
 
 export const metadata = pageMetadata(
   "Local quickstart",
@@ -178,9 +178,9 @@ argon doctor`}
 
       <Step id="review" number="04" title="Run the example">
         <p>
-          Open terminal B. Download the matching Python SDK release and its
-          example, then install it in a virtual environment. Git is required for
-          this step.
+          Open terminal B. Download the matching example source, then install
+          the Python SDK from PyPI in a virtual environment. Git is required to
+          download the example.
         </p>
         <CodeBlock
           label="Terminal B · Get the example"
@@ -193,7 +193,7 @@ cd argon-agents`}
           language="bash"
           code={`python3 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install -e .`}
+${install.python}`}
         />
         <CodeBlock
           label="Terminal B · Run the two-agent review"

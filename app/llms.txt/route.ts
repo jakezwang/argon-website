@@ -15,7 +15,7 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 ## Releases and installation
 
 - Engine: ${product.version}. CLI: \`${install.cli}\` (command: \`argon\`).
-- Python SDK: ${product.sdkVersion}, installed from its Git release tag in a virtual environment: \`${install.langgraph}\`.
+- Python SDK: ${product.sdkVersion}, installed from PyPI in a virtual environment: \`${install.langgraph}\`.
 - MCP: follow the MongoDB and project prerequisites at https://argonlabs.tech/agents#mcp, then \`${install.mcp}\`.
 - Start with the complete local setup: https://argonlabs.tech/quickstart
 

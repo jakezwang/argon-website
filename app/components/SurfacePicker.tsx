@@ -126,13 +126,13 @@ const surfaces: Surface[] = [
     title: "Review external business data",
     setupLabel: "install",
     setup: install.langgraph,
-    blurb: `The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. Install SDK ${product.sdkVersion} from its release tag and run the matching example below.`,
+    blurb: `The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. Install SDK ${product.sdkVersion} from PyPI and run the matching example below.`,
     exchange: {
       sendLabel: "run the reviewed source example",
       send: [
         `git clone --branch v${product.sdkVersion} https://github.com/argon-lab/argon-agents.git`,
         "cd argon-agents",
-        "pip install -e .",
+        install.python,
         "ARGON_API_URL=http://127.0.0.1:1818 python examples/two_agent_review.py",
       ],
       recvLabel: "asserted outcomes",

@@ -264,11 +264,10 @@ async function verifyClipboard() {
     const selectedCode = await copyPage.evaluate(() =>
       window.getSelection()?.toString(),
     );
-    assert.ok(selectedCode?.includes("python3 -m pip install"));
-    assert.ok(selectedCode?.includes(`@v${releases.sdkVersion}`));
-    assert.ok(
-      selectedCode?.includes("\n"),
-      "Clipboard fallback selects every line",
+    assert.equal(
+      selectedCode,
+      `python3 -m pip install "argon-agents[langgraph]==${releases.sdkVersion}"`,
+      "Clipboard fallback selects the complete pinned PyPI install command",
     );
     await assertNoOverflow(copyPage, "Long Python install command on mobile");
     await copyPage.screenshot({
@@ -332,6 +331,15 @@ try {
         match[1],
         releases.sdkVersion,
         `${route}: consistent SDK Git release`,
+      );
+    }
+    for (const match of searchable.matchAll(
+      /argon-agents(?:\[langgraph\])?==(\d+\.\d+\.\d+)/g,
+    )) {
+      assert.equal(
+        match[1],
+        releases.sdkVersion,
+        `${route}: consistent SDK PyPI release`,
       );
     }
     for (const match of searchable.matchAll(/argonctl@(\d+\.\d+\.\d+)/g)) {
@@ -421,7 +429,7 @@ try {
   assert.equal(llmsResponse.status(), 200);
   const llms = await llmsResponse.text();
   assert.ok(llms.includes(`argonctl@${release}`));
-  assert.ok(llms.includes(`argon-agents.git@v${releases.sdkVersion}`));
+  assert.ok(llms.includes(`argon-agents[langgraph]==${releases.sdkVersion}`));
   assert.ok(
     llms.includes(`blob/v${releases.sdkVersion}/examples/two_agent_review.py`),
   );
