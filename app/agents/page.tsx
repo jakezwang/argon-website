@@ -1,7 +1,7 @@
 import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import { ActionLink } from "../components/Funnel";
-import { product } from "../product";
+import { install, product } from "../product";
 
 export const metadata = pageMetadata(
   "Connect Your AI Agent to Argon",
@@ -192,16 +192,14 @@ argon projects create agent-lab`}
         </div>
         <div className="space-y-5 text-sm leading-7 sm:ml-[15.5rem]">
           <p>
-            Use Python 3.10+ and Git. This installs SDK {product.sdkVersion}{" "}
-            from its release tag.
+            Use Python 3.10+. This installs SDK {product.sdkVersion} from PyPI.
           </p>
           <CodeBlock
             label="Create a Python environment"
             language="bash"
             code={`python3 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install \\
-  "argon-agents @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`}
+${install.python}`}
           />
           <p>
             Save this as <code>agent_run.py</code> and run{" "}
@@ -244,8 +242,7 @@ print("Review this plan:", plan["id"])
               <CodeBlock
                 label="Install the LangGraph adapter"
                 language="bash"
-                code={`python3 -m pip install \\
-  "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${product.sdkVersion}"`}
+                code={install.langgraph}
               />
               <p>
                 In an existing LangGraph application, replace its checkpointer

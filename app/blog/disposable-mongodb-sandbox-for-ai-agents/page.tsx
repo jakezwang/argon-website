@@ -131,8 +131,8 @@ ${cli.sweep}`}</code>
         <code>{install.langgraph}</code>
       </pre>
       <p>
-        Install in a Python virtual environment; this uses the matching Git
-        release tag. The package supplies a LangGraph checkpointer and a Mem0
+        Install in a Python virtual environment; this uses the matching PyPI
+        release. The package supplies a LangGraph checkpointer and a Mem0
         sandbox factory. Prepare exact images on new collections before updates.
       </p>
 

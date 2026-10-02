@@ -63,8 +63,8 @@ export const reviewSteps = [
 
 export const install = {
   cli: `npm install -g argonctl@${release.version}`,
-  python: `python3 -m pip install "argon-agents @ git+https://github.com/argon-lab/argon-agents.git@v${release.sdkVersion}"`,
-  langgraph: `python3 -m pip install "argon-agents[langgraph] @ git+https://github.com/argon-lab/argon-agents.git@v${release.sdkVersion}"`,
+  python: `python3 -m pip install "argon-agents==${release.sdkVersion}"`,
+  langgraph: `python3 -m pip install "argon-agents[langgraph]==${release.sdkVersion}"`,
   mcp: `claude mcp add --transport stdio --env MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0' argon -- argon mcp`,
 };
 
