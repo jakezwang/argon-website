@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <nav
       aria-label="Main navigation"
-      className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/95 backdrop-blur"
+      className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/95 backdrop-blur-sm"
       onKeyDown={(event) => {
         if (event.key === "Escape" && isOpen) {
           setIsOpen(false);

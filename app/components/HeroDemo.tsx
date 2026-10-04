@@ -52,7 +52,7 @@ const scenes = [
 
 const SCENE_MS = 5000;
 const controlClass =
-  "min-h-11 min-w-11 px-3 text-sm text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text focus-visible:outline focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
+  "min-h-11 min-w-11 px-3 text-sm text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
 
 function BranchHistory({ scene }: { scene: number }) {
   const edited = scene > 0;
@@ -204,7 +204,7 @@ export default function HeroDemo() {
             aria-pressed={scene === index}
             aria-controls="hero-workflow-scene"
             onClick={() => selectScene(index)}
-            className={`relative flex min-h-14 min-w-0 flex-col items-start gap-1 px-2 py-2 text-left focus-visible:z-10 focus-visible:outline focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 sm:px-3 ${
+            className={`relative flex min-h-14 min-w-0 flex-col items-start gap-1 px-2 py-2 text-left focus-visible:z-10 focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 sm:px-3 ${
               scene === index
                 ? "bg-brand-primary/10 text-brand-primary before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-brand-primary"
                 : "text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text"

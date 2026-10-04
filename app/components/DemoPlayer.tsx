@@ -178,7 +178,7 @@ export default function DemoPlayer({
           prev();
         }
       }}
-      className="min-w-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-primary focus-visible:outline-offset-4"
+      className="min-w-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-brand-primary focus-visible:outline-offset-4"
     >
       {/* Current step, one line */}
       <p className="mb-3 flex flex-wrap items-center gap-x-2 font-mono text-xs text-brand-text-darker">

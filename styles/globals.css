@@ -1,29 +1,164 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-brand-dark: #0b0e14;
+  --color-brand-surface: #111521;
+  --color-brand-edge: #222838;
+  --color-brand-muted: #8f9bb3;
+  --color-brand-primary: #96a7ff;
+  --color-brand-secondary: #6d7fe0;
+  --color-brand-text: #e8ebf2;
+  --color-brand-text-darker: #9aa3b5;
+
+}
+
+@theme inline {
+  --font-sans: var(--font-argon-sans), system-ui, sans-serif;
+  --font-mono: var(--font-argon-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility skip-link {
+  @apply fixed left-4 top-4 z-100 -translate-y-24 bg-brand-primary px-5 py-3 text-brand-dark focus:translate-y-0;
+}
+
+@utility kicker {
+  /* Mono uppercase section label, e.g. "01 — Branching" */
+  @apply font-mono text-xs uppercase tracking-[0.18em] text-brand-muted;
+}
+
+@utility prose-link {
+  @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
+}
+
+@utility btn-solid {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-primary bg-brand-primary px-5 py-2.5 font-medium text-brand-dark transition-colors hover:bg-brand-text hover:border-brand-text;
+}
+
+@utility btn-quiet {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-edge px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-muted;
+}
+
+@utility status-dot {
+  @apply inline-block h-[7px] w-[7px] rounded-full;
+}
+
+@utility article {
+  /* Long-form article typography (no @tailwindcss/typography dependency) */
+  @apply text-brand-text-darker;
+  & p {
+    @apply mt-5;
+  }
+  & ul {
+    @apply mt-5;
+  }
+  & ol {
+    @apply mt-5;
+  }
+  & pre {
+    @apply mt-5;
+  }
+  & blockquote {
+    @apply mt-5;
+  }
+  & p {
+    @apply leading-7;
+  }
+  & li {
+    @apply leading-7;
+  }
+  & h2 {
+    @apply mt-12 text-xl font-semibold tracking-tight text-brand-text;
+  }
+  & h2 + p {
+    @apply mt-4;
+  }
+  & h3 {
+    @apply mt-8 text-lg font-medium text-brand-text;
+  }
+  & h3 + p {
+    @apply mt-3;
+  }
+  & a {
+    @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
+  }
+  & ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+  & ol {
+    @apply list-decimal space-y-2 pl-5;
+  }
+  & strong {
+    @apply font-medium text-brand-text;
+  }
+  & code {
+    @apply rounded-sm bg-brand-surface px-1.5 py-0.5 font-mono text-[0.85em] text-brand-text;
+  }
+  & pre {
+    @apply overflow-x-auto border border-brand-edge bg-brand-surface p-4 font-mono text-sm leading-6 text-brand-text;
+  }
+  & pre code {
+    @apply bg-transparent p-0 text-[0.9em];
+  }
+  & blockquote {
+    @apply border-l-2 border-brand-primary pl-4 text-brand-text;
+  }
+  & table {
+    @apply mt-6 w-full border-collapse text-sm;
+  }
+  & th {
+    @apply border border-brand-edge px-3 py-2 text-left align-top;
+  }
+  & td {
+    @apply border border-brand-edge px-3 py-2 text-left align-top;
+  }
+  & th {
+    @apply font-mono text-xs uppercase tracking-wide text-brand-text;
+  }
+  & td {
+    @apply text-brand-text-darker;
+  }
+}
 
 @layer base {
   html {
-    background-color: theme("colors.brand-dark");
+    background-color: var(--color-brand-dark);
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
   }
 
   body {
-    background-color: theme("colors.brand-dark");
-    color: theme("colors.brand-text");
+    background-color: var(--color-brand-dark);
+    color: var(--color-brand-text);
     font-feature-settings:
       "ss01" on,
       "cv05" on;
   }
 
   p {
-    color: theme("colors.brand-text-darker");
+    color: var(--color-brand-text-darker);
   }
 
   ::selection {
-    background-color: theme("colors.brand-secondary");
-    color: theme("colors.brand-text");
+    background-color: var(--color-brand-secondary);
+    color: var(--color-brand-text);
   }
 
   a:focus-visible,
@@ -31,99 +166,8 @@
   summary:focus-visible,
   input:focus-visible,
   pre:focus-visible {
-    outline: 2px solid theme("colors.brand-primary");
+    outline: 2px solid var(--color-brand-primary);
     outline-offset: 4px;
-  }
-}
-
-@layer components {
-  .skip-link {
-    @apply fixed left-4 top-4 z-[100] -translate-y-24 bg-brand-primary px-5 py-3 text-brand-dark focus:translate-y-0;
-  }
-  /* Mono uppercase section label, e.g. "01 — Branching" */
-  .kicker {
-    @apply font-mono text-xs uppercase tracking-[0.18em] text-brand-muted;
-  }
-
-  .prose-link {
-    @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
-  }
-
-  .btn-solid {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-primary bg-brand-primary px-5 py-2.5 font-medium text-brand-dark transition-colors hover:bg-brand-text hover:border-brand-text;
-  }
-
-  .btn-quiet {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-edge px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-muted;
-  }
-
-  .status-dot {
-    @apply inline-block h-[7px] w-[7px] rounded-full;
-  }
-
-  /* Long-form article typography (no @tailwindcss/typography dependency) */
-  .article {
-    @apply text-brand-text-darker;
-  }
-  .article p,
-  .article ul,
-  .article ol,
-  .article pre,
-  .article blockquote {
-    @apply mt-5;
-  }
-  .article p,
-  .article li {
-    @apply leading-7;
-  }
-  .article h2 {
-    @apply mt-12 text-xl font-semibold tracking-tight text-brand-text;
-  }
-  .article h2 + p {
-    @apply mt-4;
-  }
-  .article h3 {
-    @apply mt-8 text-lg font-medium text-brand-text;
-  }
-  .article h3 + p {
-    @apply mt-3;
-  }
-  .article a {
-    @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
-  }
-  .article ul {
-    @apply list-disc space-y-2 pl-5;
-  }
-  .article ol {
-    @apply list-decimal space-y-2 pl-5;
-  }
-  .article strong {
-    @apply font-medium text-brand-text;
-  }
-  .article code {
-    @apply rounded bg-brand-surface px-1.5 py-0.5 font-mono text-[0.85em] text-brand-text;
-  }
-  .article pre {
-    @apply overflow-x-auto border border-brand-edge bg-brand-surface p-4 font-mono text-sm leading-6 text-brand-text;
-  }
-  .article pre code {
-    @apply bg-transparent p-0 text-[0.9em];
-  }
-  .article blockquote {
-    @apply border-l-2 border-brand-primary pl-4 text-brand-text;
-  }
-  .article table {
-    @apply mt-6 w-full border-collapse text-sm;
-  }
-  .article th,
-  .article td {
-    @apply border border-brand-edge px-3 py-2 text-left align-top;
-  }
-  .article th {
-    @apply font-mono text-xs uppercase tracking-wide text-brand-text;
-  }
-  .article td {
-    @apply text-brand-text-darker;
   }
 }
 

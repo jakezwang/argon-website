@@ -7,10 +7,10 @@ import Navbar from "./components/Navbar";
 import PeriodicTile from "./components/PeriodicTile";
 import WebsiteAnalytics from "./components/WebsiteAnalytics";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-argon-sans" });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-argon-mono",
 });
 
 export const metadata = {
@@ -212,7 +212,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <Navbar />
-        <main id="main-content" tabIndex={-1} className="flex-grow">
+        <main id="main-content" tabIndex={-1} className="grow">
           {children}
         </main>
         <Footer />

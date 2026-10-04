@@ -68,7 +68,7 @@ export const posts: Post[] = [
     description:
       "Give each AI agent a MongoDB sandbox with Argon. Learn branch-per-agent isolation, dataset pins, TTL cleanup, and the capture requirements for undo.",
     date: "2026-07-08",
-    updated: "2026-09-27",
+    updated: "2026-10-04",
     tags: ["AI Agents", "MCP", "MongoDB"],
     readingMinutes: 7,
   },

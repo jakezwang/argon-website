@@ -82,7 +82,7 @@ export default function CodeBlock({
         ref={scrollRef}
         tabIndex={0}
         aria-labelledby={`${id}-label`}
-        className="m-0 max-w-full overflow-x-auto border-0 bg-transparent p-4 font-mono text-sm leading-6 text-brand-text focus-visible:outline focus-visible:outline-1 focus-visible:outline-brand-primary"
+        className="m-0 max-w-full overflow-x-auto border-0 bg-transparent p-4 font-mono text-sm leading-6 text-brand-text focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary"
       >
         <code
           ref={codeRef}
