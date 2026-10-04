@@ -136,6 +136,33 @@ ${cli.sweep}`}</code>
         sandbox factory. Prepare exact images on new collections before updates.
       </p>
 
+      <h2>Review MongoDB documents before merging</h2>
+      <p>
+        A reviewed merge here means reviewing changes to database documents.
+        It is separate from a GitHub or GitLab code pull request. Give two agents
+        separate branches from the same retained pin, compare their proposed
+        changes, and inspect the merge plan before applying it. A conflicting
+        edit needs a resolution decision; creating a sandbox does not approve
+        its writes. Follow the <a href="/quickstart#review">two-agent review example</a>{" "}
+        to inspect a conflict and the resulting document values.
+      </p>
+
+      <h2>Sandbox TTL versus MongoDB document TTL</h2>
+      <p>
+        MongoDB <a href="https://www.mongodb.com/docs/manual/core/index-ttl/">TTL indexes</a>{" "}
+        delete expired documents from a collection in the background. They do
+        not replace a job that discards an entire agent sandbox, and expiration
+        does not guarantee immediate deletion.
+      </p>
+      <p>
+        Argon sandbox TTL marks a branch for cleanup. REST and MCP manage that
+        lifecycle while their service is running. With standalone CLI commands,
+        schedule <code>argon sandbox sweep</code> for the project, as shown above,
+        and inspect its result. A TTL value alone does not run the cleanup
+        process. Finish any review or export you need before discarding the
+        sandbox; keeping data for review and expiring it are different decisions.
+      </p>
+
       <h2>Reproducible evals with pins</h2>
       <p>
         Evaluations are only meaningful if every run starts from the same data.
