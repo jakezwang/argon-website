@@ -96,7 +96,7 @@ export default function AgentsPage() {
             </p>
           </div>
         </div>
-        <div className="space-y-5 text-sm leading-7 sm:ml-[15.5rem]">
+        <div className="space-y-5 text-sm leading-7 sm:ml-62">
           <p>
             After the{" "}
             <a className="prose-link" href="/quickstart#mongodb">
@@ -190,7 +190,7 @@ argon projects create agent-lab`}
             </p>
           </div>
         </div>
-        <div className="space-y-5 text-sm leading-7 sm:ml-[15.5rem]">
+        <div className="space-y-5 text-sm leading-7 sm:ml-62">
           <p>
             Use Python 3.10+. This installs SDK {product.sdkVersion} from PyPI.
           </p>
@@ -300,7 +300,7 @@ graph = builder.compile(checkpointer=saver)
             </p>
           </div>
         </div>
-        <div className="space-y-5 text-sm leading-7 sm:ml-[15.5rem]">
+        <div className="space-y-5 text-sm leading-7 sm:ml-62">
           <p>Create this example project once:</p>
           <CodeBlock
             label="Create a project over REST"

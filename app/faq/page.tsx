@@ -111,7 +111,7 @@ export default function FaqPage() {
               </span>
               <span className="font-medium">{q}</span>
             </dt>
-            <dd className="mt-2 break-words pl-10 text-sm leading-6 text-brand-text-darker">
+            <dd className="mt-2 wrap-break-word pl-10 text-sm leading-6 text-brand-text-darker">
               {a}{" "}
               <Link className="prose-link" href={href}>
                 {label}
