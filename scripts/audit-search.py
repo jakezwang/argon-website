@@ -7,12 +7,13 @@ Run: python3 scripts/audit-search.py --origin https://argonlabs.tech --output re
 import argparse
 import datetime as dt
 import json
+import hashlib
 import sys
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.error import HTTPError
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 from urllib.robotparser import RobotFileParser
 from xml.etree import ElementTree
@@ -29,9 +30,21 @@ class Page(HTMLParser):
         self.schemas = []
         self.capture = None
         self.buffer = ""
+        self.ids = set()
+        self.in_main = False
+        self.ignored_depth = 0
+        self.main_text = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if attrs.get("id"):
+            self.ids.add(attrs["id"])
+        if tag == "a" and attrs.get("name"):
+            self.ids.add(attrs["name"])
+        if tag == "main":
+            self.in_main = True
+        if tag in ("script", "style", "template"):
+            self.ignored_depth += 1
         if tag in ("title", "h1") or (tag == "script" and attrs.get("type") == "application/ld+json"):
             self.capture = tag
             self.buffer = ""
@@ -43,10 +56,16 @@ class Page(HTMLParser):
             self.links.append(attrs["href"])
 
     def handle_data(self, data):
+        if self.in_main and not self.ignored_depth:
+            self.main_text.append(data)
         if self.capture:
             self.buffer += data
 
     def handle_endtag(self, tag):
+        if tag == "main":
+            self.in_main = False
+        if tag in ("script", "style", "template"):
+            self.ignored_depth = max(0, self.ignored_depth - 1)
         if tag != self.capture:
             return
         if tag == "title":
@@ -89,6 +108,7 @@ def run(origin):
     seen = set()
     internal = set()
     titles, descriptions = [], []
+    parsed_pages = {}
     for entry in entries:
         canonical = entry.findtext("s:loc", namespaces=ns)
         path = urlsplit(canonical).path or "/"
@@ -98,6 +118,9 @@ def run(origin):
         status, final, headers, html = fetch(origin + path)
         page = Page()
         page.feed(html)
+        parsed_pages[path] = page
+        main_text = " ".join(" ".join(page.main_text).split())
+        check(bool(main_text), f"{path}: missing raw-HTML main content")
         check(status == 200, f"{path}: HTTP {status}")
         check(urlsplit(final).path == path, f"{path}: redirects to {final}")
         check(len(page.h1) == 1 and bool(page.h1[0]), f"{path}: requires one raw-HTML H1")
@@ -123,14 +146,44 @@ def run(origin):
             check(dt.datetime.fromisoformat(lastmod.replace("Z", "+00:00")).date() <= dt.datetime.now(dt.timezone.utc).date(), f"{path}: future lastmod")
         report["pages"].append({"path": path, "status": status, "title": page.title,
                                 "description": page.meta.get("description"), "h1": page.h1,
-                                "canonical": page.canonicals, "lastmod": lastmod})
+                                "canonical": page.canonicals, "lastmod": lastmod,
+                                "main_characters": len(main_text),
+                                "main_sha256": hashlib.sha256(main_text.encode()).hexdigest()})
     for label, values in (("title", titles), ("description", descriptions)):
         for value, count in Counter(values).items():
             check(count == 1, f"duplicate {label}: {value}")
     known = {urlsplit(url).path or "/" for url in seen}
     for path in sorted(internal - known):
-        status, _, _, _ = fetch(origin + path)
+        status, _, _, html = fetch(origin + path)
         check(status < 400, f"broken internal page link: {path} ({status})")
+        extra = Page()
+        extra.feed(html)
+        parsed_pages[path] = extra
+    inbound = {path: set() for path in known}
+    fragments = set()
+    fragment_count = 0
+    for source in sorted(known):
+        for link in parsed_pages[source].links:
+            target = urlsplit(urljoin(canonical_origin + source, link))
+            if target.netloc != "argonlabs.tech" or target.query:
+                continue  # Query variants may render different content.
+            path = target.path or "/"
+            if path in inbound and source != path:
+                inbound[path].add(source)
+            fragment = unquote(target.fragment.split(":~:", 1)[0])
+            if fragment:
+                fragment_count += 1
+                fragments.add((path, fragment))
+                check(path in parsed_pages and fragment in parsed_pages[path].ids,
+                      f"{source}: broken internal fragment {link}")
+    for path, sources in sorted(inbound.items()):
+        check(bool(sources), f"{path}: no inbound link from another sitemap page")
+    report["content_links"] = {
+        "fragment_link_occurrences": fragment_count,
+        "unique_fragment_targets": len(fragments),
+        "inbound_page_counts": {path: len(sources) for path, sources in sorted(inbound.items())},
+        "query_variants_checked": False,
+    }
     status, _, _, llms = fetch(origin + "/llms.txt")
     check(status == 200 and "# Argon" in llms, "llms.txt missing or invalid")
     missing_guides = [path for path in known if path.startswith("/blog/") and path not in llms]
