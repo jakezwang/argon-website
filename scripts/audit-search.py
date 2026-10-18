@@ -8,6 +8,7 @@ import argparse
 import datetime as dt
 import json
 import hashlib
+import re
 import sys
 from collections import Counter
 from html.parser import HTMLParser
@@ -25,6 +26,7 @@ class Page(HTMLParser):
         self.title = ""
         self.h1 = []
         self.meta = {}
+        self.robot_directives = []
         self.canonicals = []
         self.links = []
         self.schemas = []
@@ -50,6 +52,8 @@ class Page(HTMLParser):
             self.buffer = ""
         if tag == "meta":
             self.meta[attrs.get("name", attrs.get("property", "")).lower()] = attrs.get("content", "")
+            if attrs.get("name", "").lower() in ("robots", "googlebot", "bingbot"):
+                self.robot_directives.append(attrs.get("content", ""))
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonicals.append(attrs.get("href"))
         if tag == "a" and attrs.get("href"):
@@ -83,7 +87,11 @@ def fetch(url, agent="ArgonSearchAudit/1.0"):
     except HTTPError as error:
         response = error
     with response:
-        return response.status, response.geturl(), dict(response.headers), response.read().decode("utf-8", errors="replace")
+        headers = dict(response.headers)
+        # Preserve every restriction when a server sends repeated header fields.
+        headers = {k: v for k, v in headers.items() if k.lower() != "x-robots-tag"}
+        headers["X-Robots-Tag"] = ", ".join(response.headers.get_all("X-Robots-Tag", []))
+        return response.status, response.geturl(), headers, response.read().decode("utf-8", errors="replace")
 
 
 def run(origin):
@@ -128,10 +136,13 @@ def run(origin):
         check(bool(page.meta.get("description")), f"{path}: missing description")
         check(page.canonicals == [canonical_origin + (path if path != "/" else "")]
               or page.canonicals == [canonical_origin + path], f"{path}: wrong canonical {page.canonicals}")
-        directives = " ".join([page.meta.get("robots", ""), page.meta.get("googlebot", ""),
-                               next((v for k, v in headers.items() if k.lower() == "x-robots-tag"), "")]).lower()
-        check("noindex" not in directives, f"{path}: noindex")
-        check("nosnippet" not in directives, f"{path}: nosnippet")
+        directives = " ".join(page.robot_directives + [
+            v for k, v in headers.items() if k.lower() == "x-robots-tag"
+        ]).lower()
+        # 'none' means noindex,nofollow; do not confuse max-image-preview:none.
+        rules = {rule for rule in re.split(r"[,\s]+", directives) if rule}
+        check("noindex" not in rules and "none" not in rules, f"{path}: noindex")
+        check("nosnippet" not in rules, f"{path}: nosnippet")
         for agent in ("Googlebot", "bingbot", "OAI-SearchBot", "PerplexityBot"):
             check(robots.can_fetch(agent, canonical), f"{path}: robots blocks {agent}")
         check(bool(page.schemas), f"{path}: missing JSON-LD")
