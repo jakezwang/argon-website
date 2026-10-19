@@ -1,14 +1,15 @@
 "use client";
 
 import { useId, useState } from "react";
-import { install, product } from "../product";
+import { install } from "../product";
 import CodeBlock from "./CodeBlock";
 
 const installMethods = [
   {
     label: "npm",
-    command: `npm install -g argonctl@${product.version}`,
-    description: "Installs the argon CLI. Requires Node.js 18 or newer.",
+    command: install.cli,
+    description:
+      "Installs the argon CLI with npm 11.16+ and a supported Node.js version. Allows only argonctl's binary installer.",
     codeLabel: "Install the CLI with npm",
   },
   {

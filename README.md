@@ -55,6 +55,12 @@ The hardening update moves Next.js 14 to 16.3.8 with React 19.2.8, following the
 SDK Git release, non-yanked PyPI wheel and matching Python example are publicly
 available. The install commands pin the verified PyPI SDK release.
 
+CLI commands use npm 11.16+ and approve only `argonctl`'s binary download script
+with `--allow-scripts=argonctl`; npm 12 blocks dependency install scripts by
+default. CI exercises the complete MongoDB example with npm 11.19.1 and checks
+fresh global and `npm exec` installations of the published CLI with npm 12.2.0.
+Workflow actions use reviewed Node 24 releases pinned to exact commits.
+
 The browser regression discovers every route from the sitemap, checks it against
 source pages, and verifies desktop/mobile rendering, destination-specific social
 metadata, visible FAQ/JSON-LD agreement, placeholder removal and release references.

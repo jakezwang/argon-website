@@ -222,7 +222,7 @@ async function verifyClipboard() {
     await copyPage.waitForFunction(() => window.__copiedText.length > 0);
     assert.equal(
       await copyPage.evaluate(() => window.__copiedText),
-      `npm install -g argonctl@${release}`,
+      `npm install -g argonctl@${release} --allow-scripts=argonctl`,
       "Copy receives the complete command without a shell prompt",
     );
     assert.equal(await npmCopy.innerText(), "Copied", "Visible copy success");
@@ -441,7 +441,9 @@ try {
   await page.goto(origin);
   const home = await page.locator("body").innerText();
   assert.ok(home.includes(`Published release: v${release}`));
-  assert.ok(home.includes(`npm install -g argonctl@${release}`));
+  assert.ok(
+    home.includes(`npm install -g argonctl@${release} --allow-scripts=argonctl`),
+  );
   const structured = await page
     .locator('script[type="application/ld+json"]')
     .allTextContents();
@@ -489,8 +491,14 @@ try {
   await page.waitForURL("**/quickstart");
   const quickstart = await page.locator("body").innerText();
   assert.ok(
-    quickstart.includes(`npm install -g argonctl@${release}`),
+    quickstart.includes(
+      `npm install -g argonctl@${release} --allow-scripts=argonctl`,
+    ),
     "Quickstart starts with the published CLI",
+  );
+  assert.ok(
+    quickstart.includes("npm 12 blocks package install scripts by default"),
+    "Quickstart explains the scoped binary-installer approval",
   );
   assert.ok(
     !quickstart.includes(`git clone --branch v${release}`),
