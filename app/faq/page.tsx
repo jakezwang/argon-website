@@ -65,7 +65,7 @@ const faq = [
   },
   {
     q: "How do I install Argon?",
-    a: `Engine ${product.version}: ${install.cli}. Python SDK ${product.sdkVersion}: ${install.langgraph}. The SDK command installs the matching Git release; use a Python virtual environment.`,
+    a: `Engine ${product.version}: ${install.cli}. Use npm 11.16+ with a supported Node.js version; the flag allows only argonctl's binary installer. Python SDK ${product.sdkVersion}: ${install.langgraph}. The SDK command installs the matching PyPI release; use a Python virtual environment.`,
     href: "/quickstart",
     label: "Run the full setup",
   },

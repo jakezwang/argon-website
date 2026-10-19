@@ -15,6 +15,7 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 ## Releases and installation
 
 - Engine: ${product.version}. CLI: \`${install.cli}\` (command: \`argon\`).
+- The npm command requires npm 11.16+ with a supported Node.js version. It allows only argonctl's binary installer; npm 12 otherwise blocks the download script. Homebrew and source builds are available at https://argonlabs.tech/quickstart#install.
 - Python SDK: ${product.sdkVersion}, installed from PyPI in a virtual environment: \`${install.langgraph}\`.
 - MCP: follow the MongoDB and project prerequisites at https://argonlabs.tech/agents#mcp, then \`${install.mcp}\`.
 - Start with the complete local setup: https://argonlabs.tech/quickstart

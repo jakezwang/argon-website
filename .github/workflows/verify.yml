@@ -1,11 +1,16 @@
 name: Website verification
 on: [push, pull_request]
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: npm
@@ -22,7 +27,7 @@ jobs:
           npm run test:browser
       - name: Check search-visible HTML and crawler directives
         run: python3 scripts/audit-search.py --output /tmp/argon-website-checks/search-audit.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         continue-on-error: true # Screenshots are optional evidence, not a test gate.
         with:
@@ -32,18 +37,21 @@ jobs:
   cli-examples:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
+      - run: npm install -g npm@11.19.1
       - run: python -m pip install "pymongo>=4.6,<5"
       - name: Install the documented CLI release
         run: |
           VERSION=$(node -p "require('./app/release.json').version")
-          npm install -g "argonctl@$VERSION"
+          npm install -g "argonctl@$VERSION" --allow-scripts=argonctl
       - name: Start disposable MongoDB replica set
         run: |
           docker run -d --name argon-docs-mongo -p 127.0.0.1:27017:27017 mongo:7 --replSet rs0
@@ -61,3 +69,25 @@ jobs:
           ARGON_TEST_MONGODB_URI: mongodb://localhost:27017/?replicaSet=rs0
       - if: always()
         run: docker rm -f argon-docs-mongo
+
+  npm12-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - run: npm install -g npm@12.2.0
+      - name: Verify fresh npm exec and global CLI installs
+        run: |
+          ARGON_VERSION=$(node -p "require('./app/release.json').version")
+          export npm_config_cache="$RUNNER_TEMP/argon-npm12-cache"
+          export npm_config_prefix="$RUNNER_TEMP/argon-npm12-global"
+          ARGON_REPORTED_VERSION=$(npm exec --yes --package="argonctl@$ARGON_VERSION" --allow-scripts=argonctl -- argon --version)
+          test "$ARGON_REPORTED_VERSION" = "argon version $ARGON_VERSION"
+          npm install -g "argonctl@$ARGON_VERSION" --allow-scripts=argonctl
+          ARGON_REPORTED_VERSION=$("$npm_config_prefix/bin/argon" --version)
+          test "$ARGON_REPORTED_VERSION" = "argon version $ARGON_VERSION"
