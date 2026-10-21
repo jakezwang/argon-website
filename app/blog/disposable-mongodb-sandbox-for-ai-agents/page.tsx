@@ -77,13 +77,15 @@ export default function Page() {
           no awareness that it is in a branch.
         </li>
         <li>
-          <strong>Review the diff.</strong> When the agent is done, diff the
-          branch against its parent to see exactly what it changed.
+          <strong>Review the diff.</strong> Compare the branch with its parent
+          to find changed document keys, then inspect the proposed values in the
+          stored merge plan before applying it.
         </li>
         <li>
           <strong>Merge or discard.</strong> Merge the good work back as a
-          reviewed data PR — or throw the whole branch away. Either way,
-          production only ever sees changes you approved.
+          reviewed data PR — or throw the whole branch away. A merge is an
+          explicit write to the parent; your application must decide who may
+          approve it.
         </li>
       </ol>
       <p>
@@ -138,29 +140,102 @@ ${cli.sweep}`}</code>
 
       <h2>Review MongoDB documents before merging</h2>
       <p>
-        A reviewed merge here means reviewing changes to database documents.
-        It is separate from a GitHub or GitLab code pull request. Give two agents
+        A reviewed merge here means reviewing changes to database documents. It
+        is separate from a GitHub or GitLab code pull request. Give two agents
         separate branches from the same retained pin, compare their proposed
         changes, and inspect the merge plan before applying it. A conflicting
         edit needs a resolution decision; creating a sandbox does not approve
-        its writes. Follow the <a href="/quickstart#review">two-agent review example</a>{" "}
-        to inspect a conflict and the resulting document values.
+        its writes. Follow the{" "}
+        <a href="/quickstart#review">two-agent review example</a> to inspect a
+        conflict and the resulting document values. The{" "}
+        <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
+          runnable MCP tutorial
+        </a>{" "}
+        retrieves a stored merge plan for content review and checks the parent
+        after either applying or discarding the proposal.
       </p>
 
       <h2>Sandbox TTL versus MongoDB document TTL</h2>
       <p>
-        MongoDB <a href="https://www.mongodb.com/docs/manual/core/index-ttl/">TTL indexes</a>{" "}
+        MongoDB{" "}
+        <a href="https://www.mongodb.com/docs/manual/core/index-ttl/">
+          TTL indexes
+        </a>{" "}
         delete expired documents from a collection in the background. They do
         not replace a job that discards an entire agent sandbox, and expiration
         does not guarantee immediate deletion.
       </p>
       <p>
-        Argon sandbox TTL marks a branch for cleanup. REST and MCP manage that
-        lifecycle while their service is running. With standalone CLI commands,
-        schedule <code>argon sandbox sweep</code> for the project, as shown above,
-        and inspect its result. A TTL value alone does not run the cleanup
-        process. Finish any review or export you need before discarding the
-        sandbox; keeping data for review and expiring it are different decisions.
+        Argon sandbox TTL makes a branch eligible for cleanup. In Argon 2.1.3,
+        the REST and MCP servers run a{" "}
+        <a href="https://github.com/argon-lab/argon/blob/v2.1.3/pkg/walcli/services.go#L298-L329">
+          sweep once per minute
+        </a>{" "}
+        while running. The first pass is after that interval, including after a
+        restart. An expired sandbox can therefore remain present until a
+        successful pass. These are cleanup timings, not an access deadline.
+      </p>
+      <p>
+        With standalone CLI commands, schedule <code>argon sandbox sweep</code>{" "}
+        for the project and inspect both <code>reaped</code> and{" "}
+        <code>skipped</code> in its JSON output. A TTL value alone does not run
+        the cleanup process. A branch with dependent children can be skipped;
+        deletion errors can also delay cleanup. Finish any review or export
+        before expiry, or remove the TTL with <code>argon sandbox keep</code>{" "}
+        before the cleanup pass if you need to retain the branch.
+      </p>
+
+      <h3 id="ttl-experiment">Try expiry, shutdown, and restart locally</h3>
+      <p>
+        The <a href="/examples/mcp_ttl.py">TTL example</a> uses synthetic data,
+        a three-second CLI TTL, and a six-second MCP TTL (
+        <code>ttl_minutes: 0.1</code>). It waits for real elapsed time without
+        changing the clock or expiry records. Download both Python files into
+        the same directory, install Argon 2.1.3 and Python 3.12+ with PyMongo,
+        and point the example at a disposable local MongoDB replica set. The{" "}
+        <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
+          MCP tutorial prerequisites
+        </a>{" "}
+        cover that setup.
+      </p>
+      <pre>
+        <code>{`curl -fSLO https://argonlabs.tech/examples/mcp_review.py
+curl -fSLO https://argonlabs.tech/examples/mcp_ttl.py
+export ARGON_TEST_MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
+export ARGON_BIN=argon
+python mcp_ttl.py --output-dir ttl-proof`}</code>
+      </pre>
+      <p>
+        Allow about two and a half minutes and use a fresh output directory. The
+        script starts and stops only its own MCP child process, keeps MongoDB
+        running, and removes its fixture databases at exit. It checks:
+      </p>
+      <ol>
+        <li>
+          <strong>CLI only:</strong> the expired branch and its test document
+          remain until an explicit sweep removes the branch and physical
+          database.
+        </li>
+        <li>
+          <strong>MCP running:</strong> the six-second TTL expires before the
+          first periodic pass; that pass then removes the sandbox.
+        </li>
+        <li>
+          <strong>MCP stopped and restarted:</strong> the test document remains
+          after expiry while the process is stopped, and shortly after restart.
+          The restarted process removes the old sandbox on its next periodic
+          pass.
+        </li>
+      </ol>
+      <p>
+        The output directory contains real protocol messages, server logs, CLI
+        results, and <code>verification.json</code> with measured timings. With
+        the published Argon 2.1.3 binary and MongoDB 7.0.45, both managed
+        removals were observed about 61 seconds after starting or restarting
+        MCP. That observation is not a deletion deadline. This checks short TTL
+        behavior; the one-hour example above is a configuration example, not a
+        one-hour test result. Stop clients from writing before cleanup: TTL does
+        not revoke their MongoDB credentials.
       </p>
 
       <h2>Reproducible evals with pins</h2>
@@ -177,7 +252,8 @@ ${cli.sweep}`}</code>
         where actions become permanent. Giving every agent its own branch turns
         an irreversible operation into a reviewable one — the same shift that
         pull requests brought to code. Production stops being the place agents
-        experiment, and starts being the place their reviewed work lands.
+        experiment, and starts being the place their reviewed work lands when
+        your application enforces that review decision.
       </p>
     </ArticleLayout>
   );

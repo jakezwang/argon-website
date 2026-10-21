@@ -1,0 +1,97 @@
+{
+  "sandbox": {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "argon_sandbox_create",
+        "arguments": {
+          "project": "mcp-review-0b97b827123e4512afa03f252b9be0e0",
+          "from": "main",
+          "name": "review",
+          "ttl_minutes": 60,
+          "actor": "scripted-review"
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "content": [
+          {
+            "text": "Sandbox \"review\" created (forked from main at LSN 3).\nConnection string: mongodb://127.0.0.1:27037/argon_br_6ad80fe2d733f71e7f2acf13?replicaSet=rs0&directConnection=true\nExpires: 2026-10-20T22:05:38-04:00\nWrites through this connection are captured as versioned history. Merge back with argon_merge_preview/apply, revert with argon_undo, or discard with argon_sandbox_discard.",
+            "type": "text"
+          }
+        ]
+      }
+    }
+  },
+  "preview": {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "argon_merge_preview",
+        "arguments": {
+          "project": "mcp-review-0b97b827123e4512afa03f252b9be0e0",
+          "branch": "review"
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "result": {
+        "content": [
+          {
+            "text": "Merge plan 6ad80fe2d733f71e7f2acf1b (review into main): 1 change(s), 0 conflict(s)\nApply with argon_merge_apply.",
+            "type": "text"
+          }
+        ]
+      }
+    }
+  },
+  "apply": {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "argon_merge_apply",
+        "arguments": {
+          "plan_id": "6ad80fe2d733f71e7f2acf1b"
+        }
+      }
+    },
+    "response": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "result": {
+        "content": [
+          {
+            "text": "Merged: 1 change(s) applied, 0 conflict(s) resolved.",
+            "type": "text"
+          }
+        ]
+      }
+    }
+  },
+  "changes": [
+    {
+      "collection": "products",
+      "document_id": "shoe",
+      "document": {
+        "_id": "shoe",
+        "price": 44
+      },
+      "document_key": "shoe",
+      "before": {
+        "_id": "shoe",
+        "price": 49
+      }
+    }
+  ]
+}

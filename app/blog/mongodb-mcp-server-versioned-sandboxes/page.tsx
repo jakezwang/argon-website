@@ -93,13 +93,16 @@ export default function Page() {
         through the sandbox connection; scope its credentials to that database.
         When the agent is done, inspect its MongoDB document changes and
         conflicts in a merge preview. Explicitly applying that plan changes the
-        target branch&apos;s database; discarding the sandbox rejects its work.
-        The MCP control tools and the MongoDB connection support this loop:
+        target branch&apos;s database; discarding an unmerged sandbox rejects
+        its proposal. Discard does not undo changes already merged. The MCP
+        control tools and the MongoDB connection support this loop:
       </p>
       <ul>
         <li>Open a TTL sandbox off production (or off a pinned dataset).</li>
         <li>Read and write through a MongoDB driver using the sandbox URI.</li>
-        <li>Diff a branch against its parent to see exactly what changed.</li>
+        <li>
+          Diff a branch against its parent for changed keys and conflict counts.
+        </li>
         <li>
           Preview and apply a merge — conflicts are reported, never silent.
         </li>
@@ -152,13 +155,24 @@ export default function Page() {
           It reads and writes to the branch’s connection string to do its task.
         </li>
         <li>
-          <strong>diff</strong> — it (or you) inspects exactly what changed.
+          <strong>diff</strong> — inspect changed keys, then review the full
+          saved plan and document values before deciding what to adopt.
         </li>
         <li>
           <strong>merge</strong> — explicitly apply the reviewed plan to its
           target branch, or discard the sandbox.
         </li>
       </ol>
+      <p>
+        MCP diff and preview return summaries. The
+        <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
+          {" "}
+          runnable MCP tutorial
+        </a>{" "}
+        shows real tool requests, driver writes and how to inspect the exact
+        saved plan with the CLI before explicitly applying it. Approval policy
+        belongs to your application; creating a preview does not enforce one.
+      </p>
       <p>
         With complete images and retained history, <strong>undo</strong> can
         revert a supported captured range on the agent’s branch. Pins give runs
