@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "mongodb-mcp-sandbox-reviewed-merge-tutorial",
+    title:
+      "A Reproducible MongoDB MCP Tutorial: From Sandbox to Reviewed Merge",
+    description:
+      "Run a local MongoDB MCP example: create a sandbox, write with PyMongo, inspect the saved merge plan, then explicitly merge or discard the changes.",
+    date: "2026-10-20",
+    tags: ["MCP", "AI Agents", "MongoDB"],
+    readingMinutes: 9,
+  },
+  {
     slug: "two-ai-agents-one-mongodb-document",
     title: "What Happens When Two AI Agents Change the Same MongoDB Document?",
     description:
@@ -27,7 +37,7 @@ export const posts: Post[] = [
     description:
       "Use Argon’s MongoDB MCP server for agent sandboxes, reviewed merges, undo, and pins. Learn which tools manage branches and how drivers access the data.",
     date: "2026-07-08",
-    updated: "2026-09-27",
+    updated: "2026-10-20",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 7,
   },
@@ -68,9 +78,9 @@ export const posts: Post[] = [
     description:
       "Give each AI agent a MongoDB sandbox with Argon. Learn branch-per-agent isolation, dataset pins, TTL cleanup, and the capture requirements for undo.",
     date: "2026-07-08",
-    updated: "2026-10-04",
+    updated: "2026-10-20",
     tags: ["AI Agents", "MCP", "MongoDB"],
-    readingMinutes: 7,
+    readingMinutes: 9,
   },
 ];
 

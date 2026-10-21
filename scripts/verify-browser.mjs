@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
 import releases from "../app/release.json" with { type: "json" };
@@ -366,6 +366,22 @@ try {
         "Argon Labs",
       );
     }
+    if (route === "/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial") {
+      for (const name of ["mcp_review.py", "mcp_ttl.py"]) {
+        const download = await context.request.get(
+          `${origin}/examples/${name}`,
+        );
+        assert.equal(download.status(), 200, `${name}: downloadable example`);
+        assert.equal(
+          await download.text(),
+          await readFile(
+            new URL(`../public/examples/${name}`, import.meta.url),
+            "utf8",
+          ),
+          `${name}: download is the exact example exercised by CI`,
+        );
+      }
+    }
     for (const schema of schemas.map((value) => JSON.parse(value))) {
       if (schema["@type"] === "FAQPage") {
         for (const question of schema.mainEntity) {
@@ -442,7 +458,9 @@ try {
   const home = await page.locator("body").innerText();
   assert.ok(home.includes(`Published release: v${release}`));
   assert.ok(
-    home.includes(`npm install -g argonctl@${release} --allow-scripts=argonctl`),
+    home.includes(
+      `npm install -g argonctl@${release} --allow-scripts=argonctl`,
+    ),
   );
   const structured = await page
     .locator('script[type="application/ld+json"]')

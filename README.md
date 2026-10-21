@@ -81,3 +81,20 @@ npm run test:docs
 MongoDB hosts, assigns its own random metadata database and removes its own
 branch databases afterward. CI provides an isolated MongoDB 7 container and
 installs the exact CLI version from the shared release manifest.
+
+The MCP tutorial downloads are served from `public/examples/`. With Python
+3.12+, PyMongo, the released CLI and a disposable local replica set, run
+`mcp_review.py` once with the default discard decision and once with `--apply`.
+The script sends real stdio MCP requests, writes through PyMongo, reads the
+same saved plan through the CLI, and checks the document values. `mcp_ttl.py`
+imports its adjacent client and measures CLI sweep, running MCP expiry and
+stopped/restarted MCP cleanup. Both accept `--output-dir`; use a fresh path.
+`ARGON_TEST_MONGODB_URI` selects a local URI without credentials and `ARGON_BIN`
+optionally selects the binary. Pass `--expected-version` from the release
+manifest when verifying a new release. Their output includes synthetic local
+URIs, JSONL messages and assertions, and their own fixture databases are removed
+at exit. They provide a scripted review demonstration, not an approval policy.
+
+CI runs both review decisions and the TTL experiment against a digest-pinned
+MongoDB 7.0.45 replica set, retaining optional evidence artifacts. The browser
+suite checks that the downloadable Python files equal these exercised sources.
