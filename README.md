@@ -47,7 +47,7 @@ Off by default; the footer checkbox saves the browser's choice. `/api/events` lo
 
 ## Security migration
 
-The hardening update moves Next.js 14 to 16.3.8 with React 19.2.8, following the [official migration guide](https://nextjs.org/docs/app/guides/upgrading/version-16). The app has no dynamic route params, async request APIs, middleware or custom webpack config requiring codemods. Dependency advisories, including build and test tooling, are checked with npm audit in CI.
+The site uses Next.js 16.4.3 with React 19.2.8, following the [official migration guide](https://nextjs.org/docs/app/guides/upgrading/version-16). The October 2026 maintenance update includes the upstream fixes for [image optimization](https://github.com/vercel/next.js/security/advisories/GHSA-2464-fhr4-w9xw), [Server Actions](https://github.com/vercel/next.js/security/advisories/GHSA-p3m5-59mp-jv5r), and [cached typed arrays](https://github.com/vercel/next.js/security/advisories/GHSA-673q-mjm6-r5xr). An affected dependency version alone does not establish that these exploit conditions exist on this site. The app has no dynamic route params, async request APIs, middleware or custom webpack config requiring codemods. Dependency advisories, including build and test tooling, are checked with npm audit in CI.
 
 ## Content and example verification
 
