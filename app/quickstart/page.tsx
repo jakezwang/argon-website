@@ -100,8 +100,8 @@ export default function Quickstart() {
             Build from source instead
           </summary>
           <p className="mb-4 mt-2">
-            For contributors. Requires Git and Go 1.26.9 or a later patched
-            release (Go 1.27 users need 1.27.2+). This puts the built CLI on
+            For contributors. Requires Git and Go 1.26.10 or a later patched
+            release (Go 1.27 users need 1.27.3+). This puts the built CLI on
             PATH for the commands below.
           </p>
           <CodeBlock

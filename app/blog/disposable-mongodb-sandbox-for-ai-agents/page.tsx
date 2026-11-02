@@ -1,4 +1,4 @@
-import { install, limits } from "../../product";
+import { install, limits, product } from "../../product";
 import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
@@ -191,7 +191,7 @@ ${cli.sweep}`}</code>
         a three-second CLI TTL, and a six-second MCP TTL (
         <code>ttl_minutes: 0.1</code>). It waits for real elapsed time without
         changing the clock or expiry records. Download both Python files into
-        the same directory, install Argon 2.1.3 and Python 3.12+ with PyMongo,
+        the same directory, install Argon {product.version} and Python 3.12+ with PyMongo,
         and point the example at a disposable local MongoDB replica set. The{" "}
         <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
           MCP tutorial prerequisites
