@@ -73,9 +73,10 @@ jobs:
           ARGON_TEST_MONGODB_URI: mongodb://localhost:27017/?replicaSet=rs0
         run: |
           VERSION=$(node -p "require('./app/release.json').version")
-          python public/examples/mcp_review.py --expected-version "$VERSION" --output-dir "$RUNNER_TEMP/argon-mcp-discard"
+          # Exercise the same default-version path used by downloaded examples.
+          python public/examples/mcp_review.py --output-dir "$RUNNER_TEMP/argon-mcp-discard"
           python public/examples/mcp_review.py --expected-version "$VERSION" --output-dir "$RUNNER_TEMP/argon-mcp-apply" --apply
-          python public/examples/mcp_ttl.py --expected-version "$VERSION" --output-dir "$RUNNER_TEMP/argon-mcp-ttl"
+          python public/examples/mcp_ttl.py --output-dir "$RUNNER_TEMP/argon-mcp-ttl"
       - name: Retain MCP example evidence
         if: always()
         continue-on-error: true
