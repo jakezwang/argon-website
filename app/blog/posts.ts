@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "validate-mongodb-agent-catalog-changes",
+    title:
+      "Zero Conflicts, Wrong Price: Validate MongoDB Agent Catalog Changes",
+    description:
+      "Run five synthetic MongoDB MCP cases to validate catalog proposals before merging: derived prices, unexpected fields, extra documents and deletes.",
+    date: "2026-11-03",
+    tags: ["MongoDB", "AI Agents", "Data Review"],
+    readingMinutes: 8,
+  },
+  {
     slug: "mongodb-mcp-sandbox-reviewed-merge-tutorial",
     title:
       "A Reproducible MongoDB MCP Tutorial: From Sandbox to Reviewed Merge",
