@@ -366,6 +366,30 @@ try {
         "Argon Labs",
       );
     }
+    if (route === "/blog/validate-mongodb-agent-catalog-changes") {
+      const download = await context.request.get(
+        `${origin}/examples/catalog_review.py`,
+      );
+      assert.equal(download.status(), 200);
+      assert.equal(
+        await download.text(),
+        await readFile(
+          new URL("../public/examples/catalog_review.py", import.meta.url),
+          "utf8",
+        ),
+      );
+      assert.equal(await page.locator("article tbody tr").count(), 5);
+      const commands = await page.locator("article pre").allTextContents();
+      assert.ok(
+        commands.some((command) =>
+          command.includes("--expected-version 2.1.4"),
+        ),
+      );
+      assert.ok(
+        commands.every((command) => !command.includes("\\n")),
+        "no literal newline escapes in runnable commands",
+      );
+    }
     if (route === "/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial") {
       for (const name of ["mcp_review.py", "mcp_ttl.py"]) {
         const download = await context.request.get(

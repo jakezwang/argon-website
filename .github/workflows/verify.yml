@@ -77,6 +77,13 @@ jobs:
           python public/examples/mcp_review.py --output-dir "$RUNNER_TEMP/argon-mcp-discard"
           python public/examples/mcp_review.py --expected-version "$VERSION" --output-dir "$RUNNER_TEMP/argon-mcp-apply" --apply
           python public/examples/mcp_ttl.py --output-dir "$RUNNER_TEMP/argon-mcp-ttl"
+      - name: Validate catalog proposal acceptance and rejection
+        env:
+          ARGON_TEST_MONGODB_URI: mongodb://localhost:27017/?replicaSet=rs0
+        run: |
+          for scenario in valid invalid-value unexpected-field extra-document delete-document; do
+            python -O public/examples/catalog_review.py --scenario "$scenario" --output-dir "$RUNNER_TEMP/argon-mcp-catalog-$scenario"
+          done
       - name: Retain MCP example evidence
         if: always()
         continue-on-error: true
