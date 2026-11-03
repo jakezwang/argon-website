@@ -10,7 +10,7 @@ export default function TermsPage() {
   return (
     <article className="article mx-auto max-w-3xl px-6 py-16">
       <h1 className="text-4xl font-semibold">Website and demo terms</h1>
-      <p>Updated September 24, 2026.</p>
+      <p>Updated November 3, 2026.</p>
       <h2>Scope</h2>
       <p>
         These terms describe use of argonlabs.tech and the public evaluation
@@ -20,11 +20,12 @@ export default function TermsPage() {
       </p>
       <h2>A temporary evaluation service</h2>
       <p>
-        The public demo is for trying Argon with sample data in a temporary
-        session. Sessions and their projects expire and may be reset. Keep
-        anything you need elsewhere; the demo is not a production database,
-        backup service, or a promise of ongoing availability or support.
-        Self-host Argon to work with your own databases.
+        The hosted console is currently paused. When available, the public demo
+        is for trying Argon with sample data in a temporary session. Sessions
+        and their projects expire and may be reset. Keep anything you need
+        elsewhere; the demo is not a production database, backup service, or a
+        promise of ongoing availability or support. Self-host Argon to work with
+        your own databases.
       </p>
       <h2>Acceptable use</h2>
       <p>
@@ -36,8 +37,8 @@ export default function TermsPage() {
       </p>
       <h2>Data and privacy</h2>
       <p>
-        The demo uses a session cookie. Optional website and console usage
-        counts have separate opt-in choices. The{" "}
+        When available, the hosted demo uses a session cookie. Optional website
+        and console usage counts have separate opt-in choices. The{" "}
         <a href="/privacy">Privacy page</a>
         describes these choices and ordinary hosting request metadata. Avoid
         posting private data in public support discussions.

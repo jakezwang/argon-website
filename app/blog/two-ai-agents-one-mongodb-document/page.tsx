@@ -335,9 +335,9 @@ argon.undo(
       </p>
       <p>
         Version 2.1.2 synchronizes captured parent writes before a REST branch
-        fork and requires <code>--source-quiesced</code> for imports. Stop source
-        writes and DDL for the entire import; the import creates its own new
-        target project.
+        fork and requires <code>--source-quiesced</code> for imports. Stop
+        source writes and DDL for the entire import; the import creates its own
+        new target project.
       </p>
       <p>
         We ran the full example with the published Argon 2.1.1 CLI, SDK 0.2.0,
@@ -380,10 +380,10 @@ python examples/two_agent_review.py`}
       />
       <p>
         The <a href={exampleUrl}>source</a> includes the assertions behind those
-        numbers. You can also inspect proposals in the{" "}
-        <a href="https://console.argonlabs.tech">live demo</a>, which uses
-        temporary sample data. Use the local setup for this Python example; the
-        anonymous demo does not issue native MongoDB credentials.
+        numbers. Use the <a href="/quickstart">local quickstart</a> to inspect
+        these proposals in your own console. The hosted console is currently
+        paused; the <a href="/demo">illustrated walkthrough</a> shows the
+        concepts without a database connection.
       </p>
     </ArticleLayout>
   );

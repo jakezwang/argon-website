@@ -11,7 +11,7 @@ export const metadata = pageMetadata(
 const faq = [
   {
     q: "What is Argon?",
-    a: "Argon is an MIT-licensed, self-hosted versioning layer for MongoDB. It adds branching, time travel, reviewed merge and per-actor undo. The hosted console is a temporary sample-data demo.",
+    a: "Argon is an MIT-licensed, self-hosted versioning layer for MongoDB. It adds branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
     href: "/features",
     label: "Explore the features",
   },

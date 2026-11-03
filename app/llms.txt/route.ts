@@ -29,7 +29,8 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - Reproducible benchmarks: https://github.com/argon-lab/benchmarks
 - Features and limits: https://argonlabs.tech/features#capabilities
 - Agent setup: https://argonlabs.tech/agents
-- Live sample-data demo: ${product.demo}
+- Illustrated walkthrough: https://argonlabs.tech${product.demo}
+- Hosted console: paused. Use https://argonlabs.tech/quickstart for the real engine.
 - Two-agent example: ${product.example}
 
 ## Guides
