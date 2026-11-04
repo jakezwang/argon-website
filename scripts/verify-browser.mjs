@@ -15,6 +15,11 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const errors = [];
 const events = [];
+const hostedRequests = [];
+context.on("request", (request) => {
+  if (new URL(request.url()).hostname === "console.argonlabs.tech")
+    hostedRequests.push(request.url());
+});
 function collectErrors(target) {
   target.on("pageerror", (error) => errors.push(error.message));
 }
@@ -300,6 +305,11 @@ try {
   for (const route of routes) {
     const response = await page.goto(origin + route);
     assert.equal(response.status(), 200, route);
+    assert.equal(
+      await page.locator('a[href*="console.argonlabs.tech"]').count(),
+      0,
+      `${route}: no active link to the paused hosted console`,
+    );
     assert.ok(
       await page.locator("h1").innerText(),
       `${route} meaningful heading`,
@@ -478,6 +488,10 @@ try {
   );
   assert.doesNotMatch(llms, /pip install "argon-agents\[langgraph\]"/);
 
+  assert.ok(llms.includes("Hosted console: paused"));
+  assert.ok(llms.includes("https://argonlabs.tech/demo"));
+  assert.ok(!llms.includes("https://console.argonlabs.tech"));
+
   await page.goto(origin);
   const home = await page.locator("body").innerText();
   assert.ok(home.includes(`Published release: v${release}`));
@@ -493,7 +507,7 @@ try {
     structured.some((text) => text.includes(`"softwareVersion":"${release}"`)),
   );
   await page
-    .getByRole("link", { name: "Try live demo", exact: true })
+    .getByRole("link", { name: "Explore walkthrough", exact: true })
     .first()
     .waitFor({ state: "visible" });
   await page
@@ -501,18 +515,36 @@ try {
     .first()
     .waitFor({ state: "visible" });
   for (const link of await page
-    .getByRole("link", { name: "Try live demo", exact: true })
+    .getByRole("link", { name: "Explore walkthrough", exact: true })
     .all()) {
-    assert.equal(
-      await link.getAttribute("href"),
-      "https://console.argonlabs.tech",
-    );
+    assert.equal(await link.getAttribute("href"), "/demo");
   }
   for (const link of await page
     .getByRole("link", { name: "How it works", exact: true })
     .all()) {
     assert.equal(await link.getAttribute("href"), "/demo");
   }
+  await page
+    .getByRole("link", { name: "Explore walkthrough", exact: true })
+    .first()
+    .click();
+  await page.waitForURL("**/demo");
+  assert.ok(
+    (await page.locator("body").innerText()).includes("Hosted console paused"),
+  );
+  assert.equal(
+    await page
+      .getByRole("link", { name: "Try live demo", exact: true })
+      .count(),
+    0,
+  );
+  const localDemoCTA = page
+    .locator("main")
+    .getByRole("link", { name: "Start locally", exact: true });
+  assert.equal(await localDemoCTA.getAttribute("href"), "/quickstart");
+  await localDemoCTA.click();
+  await page.waitForURL("**/quickstart");
+  await page.goto(origin);
   for (const anchor of ["mcp", "python", "rest"]) {
     const link = page.locator(`a[href="/agents#${anchor}"]`).first();
     await link.click();
@@ -712,6 +744,11 @@ try {
   assert.equal(dntEvents, 0);
   await dnt.close();
   assert.deepEqual(errors, []);
+  assert.deepEqual(
+    hostedRequests,
+    [],
+    "Website walkthrough never contacts the paused hosted console",
+  );
   console.log(
     "PASS: all sitemap pages, visible/JSON-LD claims, release references, executable CLI examples, per-page metadata, CTA destinations, integration anchors, CLI/source onboarding, isolated data/history/merge states, manual and reduced-motion workflow, clipboard fallback, responsive layouts, keyboard menu, no page errors, opt-in event schema, origin and DNT checks",
   );

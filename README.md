@@ -43,7 +43,9 @@ and enabling Web Analytics does not backfill historical visits.
 
 ## Optional button counts
 
-Off by default; the footer checkbox saves the browser's choice. `/api/events` logs only fixed event names (`demo_opened`, `quickstart_opened`) as structured `argon_funnel` records. There are no event identifiers, query strings or document contents. Infrastructure may still process ordinary request metadata. Website and console have separate choices and no joining identity, so count ratios are directional aggregates, not cross-domain unique-user conversion rates. Log retention and access controls belong to the deployment configuration.
+Off by default; the footer checkbox saves the browser's choice. `/api/events` logs only fixed event names (`demo_opened`, `quickstart_opened`) as structured `argon_funnel` records. `demo_opened` now counts the illustrated website walkthrough, not a hosted-console session, so do not compare it with historical hosted-console conversion counts. There are no event identifiers, query strings or document contents. Infrastructure may still process ordinary request metadata. Website and console have separate choices and no joining identity. Log retention and access controls belong to the deployment configuration.
+
+The hosted console is paused. Website demo links lead to the illustrated `/demo` page; `/quickstart` runs the real engine locally. Website deployments do not enable the hosted runtime.
 
 ## Security migration
 

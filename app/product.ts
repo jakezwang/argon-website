@@ -3,7 +3,9 @@ import release from "./release.json";
 // Shared product claims and links. Keep release checks pointed at this file.
 export const product = {
   ...release,
-  demo: "https://console.argonlabs.tech",
+  demo: "/demo",
+  demoLabel: "Explore walkthrough",
+  demoStatus: "Hosted console paused",
   quickstart: "/quickstart",
   guide: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/QUICK_START.md`,
   example: `https://github.com/argon-lab/argon-agents/blob/v${release.sdkVersion}/examples/two_agent_review.py`,
@@ -38,8 +40,8 @@ export const capabilities = [
     "REST and MCP manage capture and TTL cleanup while the service runs. Standalone CLI sandbox creation requires a running watch process and scheduled sandbox sweep.",
   ],
   [
-    "Anonymous demo",
-    "The hosted demo provides session-scoped sample data and review tools. Native MongoDB connections and physical sandboxes are available in your local deployment.",
+    "Hosted console",
+    "The hosted console is paused. Explore the illustrated workflow on this website, or run Argon locally for native MongoDB connections and physical sandboxes.",
   ],
 ] as const;
 export const reviewSteps = [

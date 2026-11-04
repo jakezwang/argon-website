@@ -47,7 +47,7 @@ export default function HomePage() {
                 event="demo_opened"
                 className="btn-solid"
               >
-                Try live demo
+                {product.demoLabel}
               </ActionLink>
               <ActionLink
                 href={product.quickstart}
@@ -58,7 +58,7 @@ export default function HomePage() {
               </ActionLink>
             </div>
             <p className="mt-3 text-sm leading-6">
-              No login. Sample data in your own temporary session.
+              Illustrated workflow. Run the real engine locally.
             </p>
           </div>
           <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
@@ -136,11 +136,11 @@ export default function HomePage() {
             <div className="grid gap-8 sm:grid-cols-2">
               <div>
                 <h3 className="font-mono text-sm text-brand-primary">
-                  In the live demo
+                  In the walkthrough
                 </h3>
                 <p className="mt-3 text-sm leading-7">
-                  Compare two agents’ proposals on sample orders. Inspect a
-                  conflict and undo a rejected change in a temporary session.
+                  Follow sample document states through branching, review, and a
+                  merge. The illustration runs in your browser.
                 </p>
               </div>
               <div>
@@ -231,7 +231,7 @@ export default function HomePage() {
             event="demo_opened"
             className="btn-solid shrink-0"
           >
-            Try live demo
+            {product.demoLabel}
           </ActionLink>
         </section>
       </div>

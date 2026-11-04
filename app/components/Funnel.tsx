@@ -61,8 +61,8 @@ export default function FunnelChoice() {
           } catch {}
         }}
       />
-      Share anonymous button counts to help improve the demo. No document data
-      or identifiers.{" "}
+      Share anonymous button counts to help improve the walkthrough. No document
+      data or identifiers.{" "}
       <a className="prose-link" href="/privacy">
         Privacy
       </a>

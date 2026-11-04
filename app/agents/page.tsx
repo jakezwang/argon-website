@@ -70,14 +70,13 @@ export default function AgentsPage() {
         >
           Start locally
         </ActionLink>{" "}
-        with MongoDB and the Argon CLI. To explore the review workflow with
-        sample data,{" "}
+        with MongoDB and the Argon CLI. To see an illustrated review workflow,{" "}
         <ActionLink
           href={product.demo}
           event="demo_opened"
           className="prose-link"
         >
-          Try live demo
+          {product.demoLabel}
         </ActionLink>
         .
       </p>

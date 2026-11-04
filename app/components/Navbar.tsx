@@ -76,7 +76,7 @@ export default function Navbar() {
               onClick={() => track("demo_opened")}
               className="btn-solid ml-2 min-h-11 text-sm"
             >
-              Try live demo
+              {product.demoLabel}
             </a>
           </div>
           <button
@@ -131,7 +131,7 @@ export default function Navbar() {
                 }}
                 className="btn-solid min-h-11 text-sm"
               >
-                Try live demo
+                {product.demoLabel}
               </a>
               <a
                 href="https://github.com/argon-lab/argon"
