@@ -392,7 +392,7 @@ try {
       const commands = await page.locator("article pre").allTextContents();
       assert.ok(
         commands.some((command) =>
-          command.includes("--expected-version 2.1.4"),
+          command.includes(`--expected-version ${releases.version}`),
         ),
       );
       assert.ok(

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Scripted Argon 2.1.4 MCP review, with real MongoDB writes and no model API key.
+"""Scripted Argon 2.1.5 MCP review, with real MongoDB writes and no model API key.
 
 Requires Python 3.12+, PyMongo (pip install 'pymongo>=4.6,<5'), an installed
-Argon 2.1.4 binary, and a disposable local MongoDB replica set. Example:
+Argon 2.1.5 binary, and a disposable local MongoDB replica set. Example:
   python mcp_review.py --mongo-uri 'mongodb://localhost:27017/?replicaSet=rs0' \
     --output-dir review-discard
 Add --apply to explicitly choose the merge after the fixed review assertions.
@@ -120,7 +120,7 @@ def main():
     parser.add_argument("--binary", default=os.environ.get("ARGON_BIN", "argon"))
     parser.add_argument("--mongo-uri", default=os.environ.get("ARGON_TEST_MONGODB_URI"),
                         help="Disposable local replica set, without credentials; or ARGON_TEST_MONGODB_URI")
-    parser.add_argument("--expected-version", default="2.1.4", help="Exact release to validate (default: 2.1.4)")
+    parser.add_argument("--expected-version", default="2.1.5", help="Exact release to validate (default: %(default)s)")
     parser.add_argument("--output-dir", type=Path, required=True, help="New directory for real protocol messages and results")
     parser.add_argument("--apply", action="store_true", help="Explicitly apply the reviewed fixture change; default is discard")
     args = parser.parse_args()

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CodeBlock from "../../components/CodeBlock";
+import { product } from "../../product";
 
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
@@ -140,8 +141,8 @@ export default function Page() {
 
       <h2>Run the five cases locally</h2>
       <p>
-        Use Python 3.12 or later, the Argon 2.1.4 CLI, and a disposable local
-        MongoDB replica set. Follow the{" "}
+        Use Python 3.12 or later, the Argon {product.version} CLI, and a
+        disposable local MongoDB replica set. Follow the{" "}
         <a href="/quickstart#install">installation guide</a> and the{" "}
         <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
           MCP tutorial&apos;s local replica-set setup
@@ -160,16 +161,17 @@ export default function Page() {
       <CodeBlock
         label="Prepare Python"
         language="bash"
-        code={
-          'python3 -m venv .venv\n. .venv/bin/activate\npython -m pip install "pymongo>=4.6,<5"\nargon --version # expected: argon version 2.1.4'
-        }
+        code={`python3 -m venv .venv\n. .venv/bin/activate\npython -m pip install "pymongo>=4.6,<5"\nargon --version # expected: argon version ${product.version}`}
       />
       <CodeBlock
         label="Run all synthetic cases"
         language="bash"
-        code={
-          'export ARGON_TEST_MONGODB_URI="mongodb://localhost:27017/?replicaSet=rs0"\nfor scenario in valid invalid-value unexpected-field extra-document delete-document; do\n  python -O catalog_review.py --scenario "$scenario" --expected-version 2.1.4 --output-dir "catalog-$scenario" || break\ndone'
-        }
+        code={`export ARGON_TEST_MONGODB_URI="mongodb://localhost:27017/?replicaSet=rs0"
+(
+  for scenario in valid invalid-value unexpected-field extra-document delete-document; do
+    python -O catalog_review.py --scenario "$scenario" --expected-version ${product.version} --output-dir "catalog-$scenario" || exit 1
+  done
+)`}
       />
       <p>
         The valid scenario automatically applies its plan to its own synthetic
