@@ -229,8 +229,17 @@ print("Review this plan:", plan["id"])
           <p>
             <span className="text-brand-text">Expected:</span> a branch name, an{" "}
             <code>orders</code> diff containing price 44, and a merge plan ID.
-            The proposal stays on its branch until you apply a reviewed merge.
-            The sandbox expires after 30 minutes while the server runs.
+            The proposal does not change the parent branch unless you apply a
+            reviewed merge. After 30 minutes the sandbox is eligible for cleanup
+            on a successful sweep. Manage the agent process and its MongoDB
+            credentials separately. See the{" "}
+            <a
+              className="prose-link"
+              href="/blog/disposable-mongodb-sandbox-for-ai-agents#ttl-experiment"
+            >
+              local TTL experiment
+            </a>{" "}
+            for what happens when the service stops or restarts.
           </p>
           <details className="border-y border-brand-edge py-3">
             <summary className="min-h-11 cursor-pointer py-2 text-lg font-medium text-brand-primary">

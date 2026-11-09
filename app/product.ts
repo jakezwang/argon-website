@@ -37,7 +37,7 @@ export const capabilities = [
   ],
   [
     "Sandbox lifecycle",
-    "REST and MCP manage capture and TTL cleanup while the service runs. Standalone CLI sandbox creation requires a running watch process and scheduled sandbox sweep.",
+    "An Argon sandbox is a MongoDB branch database. Reaching its TTL makes it eligible for cleanup on a successful sweep. A running writable, non-demo REST service or MCP server manages capture and sweeps; with the CLI alone, run watch and schedule sandbox sweep. TTL does not stop agent processes or revoke MongoDB credentials.",
   ],
   [
     "Hosted console",
