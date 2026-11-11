@@ -38,37 +38,42 @@ export default function QuickStartCommand({
   const current = methods[selected] ?? methods[0];
 
   return (
-    <div className="w-full min-w-0 max-w-xl">
-      <div
-        className="flex flex-wrap border border-b-0 border-brand-edge bg-brand-surface"
-        role="group"
-        aria-label="Installation method"
-      >
-        {methods.map((method, index) => (
-          <button
-            type="button"
-            key={method.label}
-            onClick={() => setSelected(index)}
-            aria-pressed={selected === index}
-            aria-controls={id}
-            className={`min-h-11 px-4 py-2 font-mono text-xs transition-colors ${
-              selected === index
-                ? "bg-brand-dark text-brand-primary shadow-[inset_0_-2px_0_0_currentColor]"
-                : "text-brand-muted hover:text-brand-text"
-            }`}
-          >
-            {method.label}
-          </button>
-        ))}
+    <div className="w-full min-w-0 max-w-2xl">
+      <div className="ink overflow-hidden rounded-(--radius-panel) border border-brand-edge bg-brand-surface">
+        <div
+          className="flex flex-wrap gap-1 border-b border-brand-edge px-1.5 pt-1.5"
+          role="group"
+          aria-label="Installation method"
+        >
+          {methods.map((method, index) => (
+            <button
+              type="button"
+              key={method.label}
+              onClick={() => setSelected(index)}
+              aria-pressed={selected === index}
+              aria-controls={id}
+              className={`relative min-h-11 rounded-t-(--radius-control) px-4 py-2 text-sm font-medium transition-colors focus-visible:-outline-offset-2 ${
+                selected === index
+                  ? "text-brand-text after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:rounded-full after:bg-brand-primary"
+                  : "text-brand-muted hover:text-brand-text"
+              }`}
+            >
+              {method.label}
+            </button>
+          ))}
+        </div>
+        <div id={id}>
+          <CodeBlock
+            key={current.label}
+            code={current.command}
+            label={current.codeLabel}
+            language="bash"
+            bare
+          />
+        </div>
       </div>
-      <div id={id}>
-        <CodeBlock
-          key={current.label}
-          code={current.command}
-          label={current.codeLabel}
-          language="bash"
-        />
-        <p className="mt-3 max-w-lg text-xs leading-5 text-brand-muted">
+      <div>
+        <p className="mt-3 max-w-xl text-xs leading-5 text-brand-muted">
           {current.description}{" "}
           {selected === 2 && (
             <a className="prose-link" href="/agents#python">

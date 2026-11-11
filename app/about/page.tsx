@@ -32,12 +32,9 @@ const team = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
-      <p className="kicker mb-4">About</p>
-      <h1 className="text-4xl font-semibold tracking-tight text-brand-text">
-        Why Argon exists
-      </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-8">
+    <div className="mx-auto max-w-4xl px-6 pt-14 sm:pt-20">
+      <h1 className="page-title">Why Argon exists</h1>
+      <p className="lede mt-6 max-w-2xl">
         Argon began in 2025 with a problem in the MongoDB workflow for AI
         agents. An agent needed to branch its data, test a change, return to an
         earlier state, and try another approach. Putting those steps together
@@ -69,12 +66,12 @@ export default function AboutPage() {
       </p>
 
       {/* Status */}
-      <section className="mt-16">
-        <p className="kicker mb-8">Current status</p>
-        <div className="grid gap-6 border border-brand-edge bg-brand-surface p-8 sm:grid-cols-2">
+      <section className="mt-24">
+        <h2 className="section-title">Current status</h2>
+        <div className="panel mt-8 grid gap-8 p-8 sm:grid-cols-2 sm:p-10">
           <div>
-            <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
-              <span className="status-dot bg-emerald-400" />
+            <h3 className="flex items-center gap-2.5 text-lg font-semibold text-brand-text">
+              <span className="status-dot bg-brand-added" />
               Working today
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
@@ -88,8 +85,8 @@ export default function AboutPage() {
             </ul>
           </div>
           <div>
-            <h3 className="flex items-center gap-2.5 font-medium text-brand-text">
-              <span className="status-dot bg-amber-400" />
+            <h3 className="flex items-center gap-2.5 text-lg font-semibold text-brand-text">
+              <span className="status-dot bg-brand-pending" />
               What&apos;s next
             </h3>
             <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
@@ -104,22 +101,19 @@ export default function AboutPage() {
             href="https://github.com/argon-lab/argon/blob/master/CHANGELOG.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="prose-link font-mono text-sm"
+            className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
           >
-            Read the changelog →
+            Read the changelog
           </Link>
         </div>
       </section>
 
       {/* Team */}
-      <section className="mt-16">
-        <p className="kicker mb-8">Team</p>
-        <div className="grid gap-6 sm:grid-cols-2">
+      <section className="mt-24">
+        <h2 className="section-title">Team</h2>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {team.map((member) => (
-            <article
-              key={member.name}
-              className="border border-brand-edge bg-brand-surface p-8"
-            >
+            <article key={member.name} className="panel p-8">
               <div className="relative h-24 w-24 overflow-hidden rounded-full border border-brand-edge">
                 <Image
                   src={member.image}
@@ -128,7 +122,7 @@ export default function AboutPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="mt-5 text-lg font-medium text-brand-text">
+              <h3 className="mt-5 text-xl font-semibold text-brand-text">
                 <Link
                   href={member.href}
                   target="_blank"
@@ -138,7 +132,7 @@ export default function AboutPage() {
                   {member.name}
                 </Link>
               </h3>
-              <p className="font-mono text-xs uppercase tracking-wider text-brand-primary sm:min-h-8 lg:min-h-4">
+              <p className="mt-0.5 text-sm text-brand-muted sm:min-h-10 lg:min-h-5">
                 {member.role}
               </p>
               <div className="mt-3 space-y-3 text-sm leading-6">
@@ -152,8 +146,8 @@ export default function AboutPage() {
       </section>
 
       {/* License + CTA */}
-      <section className="mt-16 border-t border-brand-edge pt-10">
-        <p className="leading-8">
+      <section className="mt-24 border-t border-brand-edge pt-10">
+        <p className="lede">
           Argon is licensed under the{" "}
           <Link
             href="https://github.com/argon-lab/argon/blob/master/LICENSE"

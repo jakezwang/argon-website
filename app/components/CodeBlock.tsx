@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { highlight } from "./highlight";
 
 type CodeBlockProps = {
   code: string;
   label: string;
   language?: string;
   className?: string;
+  /** Drop the frame when the block sits inside another ink panel. */
+  bare?: boolean;
 };
 
 export default function CodeBlock({
@@ -14,6 +17,7 @@ export default function CodeBlock({
   label,
   language,
   className = "",
+  bare = false,
 }: CodeBlockProps) {
   const id = useId();
   const codeRef = useRef<HTMLElement>(null);
@@ -60,12 +64,12 @@ export default function CodeBlock({
 
   return (
     <div
-      className={`min-w-0 border border-brand-edge bg-brand-surface ${className}`}
+      className={`ink min-w-0 bg-brand-surface ${bare ? "" : "overflow-hidden rounded-(--radius-panel) border border-brand-edge"} ${className}`}
     >
-      <div className="flex min-h-12 items-center justify-between gap-3 border-b border-brand-edge pl-4 pr-1">
+      <div className="flex min-h-12 items-center justify-between gap-3 border-b border-brand-edge pl-5 pr-1.5">
         <span
           id={`${id}-label`}
-          className="py-2 font-mono text-xs leading-5 text-brand-muted"
+          className="py-2 text-xs leading-5 text-brand-muted"
         >
           {label}
         </span>
@@ -73,7 +77,7 @@ export default function CodeBlock({
           type="button"
           onClick={copy}
           aria-label={`Copy ${label}`}
-          className="min-h-11 min-w-16 shrink-0 px-3 font-mono text-xs text-brand-primary transition-colors hover:bg-brand-dark hover:text-brand-text"
+          className={`min-h-11 min-w-16 shrink-0 rounded-(--radius-control) px-3 text-xs font-medium transition-colors hover:bg-brand-edge/60 ${status === "copied" ? "text-brand-added" : "text-brand-primary hover:text-brand-text"}`}
         >
           {status === "copied" ? "Copied" : "Copy"}
         </button>
@@ -82,16 +86,16 @@ export default function CodeBlock({
         ref={scrollRef}
         tabIndex={0}
         aria-labelledby={`${id}-label`}
-        className="m-0 max-w-full overflow-x-auto border-0 bg-transparent p-4 font-mono text-sm leading-6 text-brand-text focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary"
+        className="m-0 max-w-full overflow-x-auto border-0 bg-transparent px-5 py-4 font-mono text-[0.875rem] leading-[1.7] text-brand-text focus-visible:-outline-offset-2"
       >
         <code
           ref={codeRef}
-          className={`select-all bg-transparent p-0 text-sm${language ? ` language-${language}` : ""}`}
+          className={`select-all bg-transparent p-0${language ? ` language-${language}` : ""}`}
         >
-          {code}
+          {highlight(code, language)}
         </code>
       </pre>
-      <div className="px-4" role="status" aria-live="polite" aria-atomic="true">
+      <div className="px-5" role="status" aria-live="polite" aria-atomic="true">
         {status === "selected" ? (
           <p className="mb-3 text-xs leading-5 text-brand-primary">
             Clipboard unavailable. Code selected; press ⌘C or Ctrl+C to copy.
@@ -103,7 +107,7 @@ export default function CodeBlock({
         )}
       </div>
       {overflows && (
-        <p className="border-t border-brand-edge px-4 py-2 text-xs leading-5 text-brand-muted">
+        <p className="border-t border-brand-edge px-5 py-2 text-xs leading-5 text-brand-muted">
           Scroll sideways to read the full code. Copy includes every line.
         </p>
       )}

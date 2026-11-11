@@ -29,18 +29,17 @@ const integrations = [
 
 export default function AgentsPage() {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
-      <p className="kicker mb-4">For AI agents</p>
-      <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+    <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
+      <h1 className="page-title max-w-4xl">
         Connect your agent. Give each run a branch.
       </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-8">
+      <p className="lede mt-6 max-w-2xl">
         Use Argon to set up a sandbox and review its changes. Your agent reads
         and writes the data with an ordinary MongoDB driver.
       </p>
       <nav
         aria-label="Choose an agent integration"
-        className="mt-8 divide-y divide-brand-edge border-y border-brand-edge"
+        className="mt-10 divide-y divide-brand-edge border-y border-brand-edge-strong"
       >
         {integrations.map(({ href, title, detail }) => (
           <a
@@ -48,20 +47,26 @@ export default function AgentsPage() {
             href={href}
             className="group grid min-h-20 items-center gap-2 py-5 sm:grid-cols-[13rem_minmax(0,1fr)_auto] sm:gap-6"
           >
-            <span className="font-medium text-brand-primary group-hover:text-brand-text">
+            <span className="text-lg font-semibold text-brand-text transition-colors group-hover:text-brand-primary">
               {title}
             </span>
-            <span className="text-sm leading-6 text-brand-muted">{detail}</span>
-            <span
-              aria-hidden="true"
-              className="hidden font-mono text-brand-muted sm:block"
-            >
-              ↓
+            <span className="text-sm leading-6 text-brand-text-darker">
+              {detail}
             </span>
+            <svg
+              viewBox="0 0 16 16"
+              className="hidden h-4 w-4 text-brand-muted transition-colors group-hover:text-brand-primary sm:block"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden="true"
+            >
+              <path d="M8 3v10M3.5 8.5 8 13l4.5-4.5" />
+            </svg>
           </a>
         ))}
       </nav>
-      <p className="mt-5 max-w-3xl text-sm leading-7">
+      <p className="mb-14 mt-6 max-w-3xl text-sm leading-7">
         These examples connect to your own local deployment. First{" "}
         <ActionLink
           href={product.quickstart}
@@ -81,11 +86,14 @@ export default function AgentsPage() {
         .
       </p>
 
-      <section id="mcp" className="border-b border-brand-edge py-12">
+      <section
+        id="mcp"
+        className="scroll-mt-24 border-t border-brand-edge py-14"
+      >
         <div className="mb-7 sm:grid sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-10">
-          <p className="font-mono text-sm text-brand-primary">MCP</p>
+          <p className="text-sm font-medium text-brand-muted">MCP</p>
           <div>
-            <h2 className="mt-3 text-2xl font-medium sm:mt-0">
+            <h2 className="mt-2 text-3xl font-semibold leading-tight sm:mt-0">
               Claude and Cursor
             </h2>
             <p className="mt-3 max-w-2xl leading-7">
@@ -109,7 +117,9 @@ export default function AgentsPage() {
             code={`export MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0'
 argon projects create agent-lab`}
           />
-          <h3 className="pt-2 text-lg font-medium">Claude Code</h3>
+          <h3 className="pt-3 text-xl font-semibold text-brand-text">
+            Claude Code
+          </h3>
           <CodeBlock
             label="Register Argon in Claude Code"
             language="bash"
@@ -126,7 +136,7 @@ argon projects create agent-lab`}
               Claude Code setup reference
             </a>
           </p>
-          <h3 className="pt-2 text-lg font-medium">Cursor</h3>
+          <h3 className="pt-3 text-xl font-semibold text-brand-text">Cursor</h3>
           <p>
             Add this server to <code>.cursor/mcp.json</code> in your project.
             Merge the <code>argon</code> entry into any existing{" "}
@@ -156,7 +166,7 @@ argon projects create agent-lab`}
               Cursor setup reference
             </a>
           </p>
-          <div className="border-l-2 border-brand-primary pl-4">
+          <div className="rounded-(--radius-panel) border border-brand-edge bg-brand-surface p-5">
             <p className="font-medium text-brand-text">Check the connection</p>
             <p className="mt-2">
               Ask: &ldquo;List the branches in the agent-lab project, then
@@ -171,7 +181,7 @@ argon projects create agent-lab`}
             declares whether it is read-only or destructive, so clients that ask
             before destructive calls ask before a merge, an undo or a discard.
           </p>
-          <h3 className="pt-2 text-lg font-medium">
+          <h3 className="pt-3 text-xl font-semibold text-brand-text">
             Keep the merge decision with a person
           </h3>
           <p>
@@ -198,11 +208,14 @@ argon merge apply <plan-id>`}
         </div>
       </section>
 
-      <section id="python" className="border-b border-brand-edge py-12">
+      <section
+        id="python"
+        className="scroll-mt-24 border-t border-brand-edge py-14"
+      >
         <div className="mb-7 sm:grid sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-10">
-          <p className="font-mono text-sm text-brand-primary">Python</p>
+          <p className="text-sm font-medium text-brand-muted">Python</p>
           <div>
-            <h2 className="mt-3 text-2xl font-medium sm:mt-0">
+            <h2 className="mt-2 text-3xl font-semibold leading-tight sm:mt-0">
               A sandbox for your agent run
             </h2>
             <p className="mt-3 max-w-2xl leading-7">
@@ -267,7 +280,7 @@ print("Review this plan:", plan["id"])
             for what happens when the service stops or restarts.
           </p>
           <details className="border-y border-brand-edge py-3">
-            <summary className="min-h-11 cursor-pointer py-2 text-lg font-medium text-brand-primary">
+            <summary className="min-h-11 cursor-pointer py-2 text-lg font-semibold text-brand-text hover:text-brand-primary">
               Use it with LangGraph
             </summary>
             <div className="mt-3 space-y-5 pb-2">
@@ -316,11 +329,14 @@ graph = builder.compile(checkpointer=saver)
         </div>
       </section>
 
-      <section id="rest" className="border-b border-brand-edge py-12">
+      <section
+        id="rest"
+        className="scroll-mt-24 border-t border-brand-edge py-14"
+      >
         <div className="mb-7 sm:grid sm:grid-cols-[13rem_minmax(0,1fr)] sm:gap-10">
-          <p className="font-mono text-sm text-brand-primary">REST API</p>
+          <p className="text-sm font-medium text-brand-muted">REST API</p>
           <div>
-            <h2 className="mt-3 text-2xl font-medium sm:mt-0">
+            <h2 className="mt-2 text-3xl font-semibold leading-tight sm:mt-0">
               Use your own language
             </h2>
             <p className="mt-3 max-w-2xl leading-7">
@@ -363,7 +379,10 @@ graph = builder.compile(checkpointer=saver)
             requests. The public demo does not return native database
             connections.
           </p>
-          <div id="security" className="border-l-2 border-brand-primary pl-4">
+          <div
+            id="security"
+            className="rounded-(--radius-panel) border border-brand-edge bg-brand-surface p-5"
+          >
             <p className="font-medium text-brand-text">Local by default</p>
             <p className="mt-2">
               The console and API listen on <code>127.0.0.1</code> and, without

@@ -47,19 +47,19 @@ export const capabilities = [
 ] as const;
 export const reviewSteps = [
   [
-    "01 · Pin the input",
+    "Pin the input",
     "Freeze orders at baseline: order-1 costs $49. Both agents fork that same pin, so their starting data is identical.",
   ],
   [
-    "02 · Compare proposals",
+    "Compare proposals",
     "Planner changes the price to $44. Executor proposes $1 on its own branch. Both use ordinary MongoDB driver writes.",
   ],
   [
-    "03 · Review before adopting",
+    "Review before adopting",
     "Inspect the planner diff and apply its merge plan. Main now contains $44. The executor plan surfaces a real conflict against that accepted change.",
   ],
   [
-    "04 · Reject and recover",
+    "Reject and recover",
     "Undo the executor proposal on its branch, then discard it. You can also undo the accepted merge to restore $49; that recovery is recorded in history.",
   ],
 ] as const;

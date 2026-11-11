@@ -560,16 +560,16 @@ export default function InteractiveDemo() {
   return (
     <div className="mx-auto min-w-0 max-w-6xl">
       {/* Tabs */}
-      <div className="mb-8 flex justify-start overflow-x-auto sm:justify-center">
-        <div className="flex min-w-max flex-nowrap border border-brand-edge">
+      <div className="mb-4 flex justify-start overflow-x-auto">
+        <div className="flex min-w-max flex-nowrap gap-1 rounded-[0.75rem] border border-brand-edge bg-brand-surface p-1">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               aria-pressed={activeTab === tab.key}
-              className={`min-h-11 whitespace-nowrap px-4 py-2.5 font-mono text-sm transition-colors ${
+              className={`min-h-11 whitespace-nowrap rounded-(--radius-control) px-4 py-2.5 text-sm font-medium transition-colors ${
                 activeTab === tab.key
-                  ? "bg-brand-surface text-brand-primary"
+                  ? "bg-brand-solid text-brand-on-solid"
                   : "text-brand-text-darker hover:text-brand-text"
               }`}
             >
@@ -580,15 +580,15 @@ export default function InteractiveDemo() {
       </div>
 
       {/* Description */}
-      <div className="mb-8 text-center">
+      <div className="mb-6">
         <p className="text-sm text-brand-text-darker">
           {activeTab === "cli" &&
             "The full loop, from branch to data PR — the terminal drives, the panels follow."}
           {activeTab === "agent" &&
             "Sandbox an agent, audit it, undo it, pin the eval."}
           {activeTab === "surfaces" &&
-            "Four surfaces, one engine: CLI, MCP, REST, wire proxy."}
-          <span className="opacity-60"> · simulated</span>
+            "Four surfaces, one engine: CLI, MCP, REST, wire proxy."}{" "}
+          Simulated.
         </p>
       </div>
 

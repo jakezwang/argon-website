@@ -28,20 +28,19 @@ const integrations = [
 export default function HomePage() {
   return (
     <>
-      <section className="border-b border-brand-edge">
-        <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 sm:py-16 lg:grid-cols-[1fr_1.05fr] lg:gap-x-12 lg:py-20">
-          <div className="min-w-0 lg:col-start-1">
-            <p className="kicker mb-5">Open source · MIT · self-hosted</p>
-            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-              Git for MongoDB,
-              <br />
-              built for AI agents
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8">
-              Give each agent its own database branch. Test changes, revisit
-              earlier states, and review what to merge.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
+      <section className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20 lg:pt-24">
+        <h1 className="display text-[2.75rem] text-brand-text sm:text-6xl lg:text-[5.25rem]">
+          Git for MongoDB,
+          <br />
+          built for AI agents
+        </h1>
+        <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-12 lg:items-end">
+          <p className="lede max-w-xl lg:col-span-6">
+            Give each agent its own database branch. Test changes, revisit
+            earlier states, and review what to merge.
+          </p>
+          <div className="lg:col-span-6 lg:justify-self-end">
+            <div className="flex flex-wrap gap-3">
               <ActionLink
                 href={product.demo}
                 event="demo_opened"
@@ -57,29 +56,41 @@ export default function HomePage() {
                 Start locally
               </ActionLink>
             </div>
-            <p className="mt-3 text-sm leading-6">
-              Illustrated workflow. Run the real engine locally.
+            <p className="mt-3 text-sm leading-6 text-brand-muted">
+              Open source under MIT. Self-hosted, on your own MongoDB.
             </p>
           </div>
-          <div className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
-            <HeroDemo />
+        </div>
+
+        <div className="mt-12 lg:mt-16">
+          <HeroDemo />
+          <p className="mt-3 text-sm leading-6 text-brand-muted">
+            Illustrated workflow. Run the real engine locally.{" "}
             <Link
               href="/demo"
-              className="prose-link mt-3 inline-flex min-h-11 items-center text-sm"
+              className="prose-link inline-flex min-h-11 items-center"
             >
               How it works
             </Link>
-          </div>
-          <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-8 border-t border-brand-edge pt-10 lg:grid-cols-12 lg:gap-12">
+          <div className="min-w-0 lg:col-span-7">
             <QuickStartCommand />
           </div>
-        </div>
-        <div className="border-t border-brand-edge px-6 py-4">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm leading-6">
-            <p>Published release: v{product.version}</p>
+          <div className="lg:col-span-5 lg:pt-1">
+            <p className="text-sm leading-6 text-brand-text">
+              Published release: v{product.version}
+            </p>
+            <p className="mt-1 text-sm leading-6">
+              One CLI named{" "}
+              <code className="font-mono text-[0.9em]">argon</code>. It runs the
+              engine, the local console, the MCP server and the wire proxy.
+            </p>
             <a
               href={`https://github.com/argon-lab/argon/releases/tag/v${product.version}`}
-              className="prose-link"
+              className="prose-link mt-2 inline-flex min-h-11 items-center text-sm"
             >
               Read the release notes
             </a>
@@ -87,152 +98,151 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-6 pb-20">
-        <section className="py-16 sm:py-20" aria-labelledby="connect-heading">
-          <div className="max-w-2xl">
-            <h2
-              id="connect-heading"
-              className="text-3xl font-semibold tracking-tight"
-            >
+      <div className="mx-auto max-w-6xl px-6">
+        <section
+          className="grid gap-10 pt-24 sm:pt-32 lg:grid-cols-12 lg:gap-12"
+          aria-labelledby="connect-heading"
+        >
+          <div className="lg:col-span-5">
+            <h2 id="connect-heading" className="section-title">
               Use the tools you already have
             </h2>
-            <p className="mt-4 leading-7">
+            <p className="mt-5 max-w-md leading-7">
               An agent branch checks out as a real MongoDB database. Keep your
               usual driver; use Argon to manage its history and review its work.
             </p>
           </div>
-          <div className="mt-9 grid border-y border-brand-edge md:grid-cols-3">
+          <ul className="border-t border-brand-edge lg:col-span-7">
             {integrations.map((item) => (
-              <div
+              <li
                 key={item.href}
-                className="flex flex-col border-b border-brand-edge py-7 last:border-b-0 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+                className="grid gap-x-8 gap-y-1 border-b border-brand-edge py-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
               >
-                <h3 className="text-lg font-medium">{item.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-7">{item.detail}</p>
+                <div>
+                  <h3 className="text-xl font-semibold text-brand-text">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-6">{item.detail}</p>
+                </div>
                 <Link
                   href={item.href}
-                  className="prose-link mt-4 inline-flex min-h-11 items-center self-start text-sm"
+                  className="prose-link inline-flex min-h-11 items-center justify-self-start text-sm font-medium"
                 >
                   {item.label}
                 </Link>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
 
         <section
           aria-labelledby="deployment-heading"
-          className="grid gap-7 border-b border-brand-edge pb-16 sm:pb-20 lg:grid-cols-[1fr_2fr] lg:gap-12"
+          className="pt-24 sm:pt-32"
         >
-          <h2
-            id="deployment-heading"
-            className="text-2xl font-semibold tracking-tight"
-          >
+          <h2 id="deployment-heading" className="section-title">
             Try the idea.
             <br />
             Then use your data.
           </h2>
-          <div>
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div>
-                <h3 className="font-mono text-sm text-brand-primary">
-                  In the walkthrough
-                </h3>
-                <p className="mt-3 text-sm leading-7">
-                  Follow sample document states through branching, review, and a
-                  merge. The illustration runs in your browser.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-mono text-sm text-brand-primary">
-                  In your deployment
-                </h3>
-                <p className="mt-3 text-sm leading-7">
-                  Connect your own MongoDB replica set. Agents write to separate
-                  branch databases; applying a reviewed merge changes the
-                  target.
-                </p>
-              </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="panel p-7 sm:p-8">
+              <h3 className="text-xl font-semibold text-brand-text">
+                In the walkthrough
+              </h3>
+              <p className="mt-3 leading-7">
+                Follow sample document states through branching, review, and a
+                merge. The illustration runs in your browser.
+              </p>
             </div>
-            <p className="mt-7 text-sm leading-7">
-              Time travel depends on retained history and complete capture.
-              Physical checkout takes time and storage that depend on the
-              dataset.{" "}
-              <Link href="/features#capabilities" className="prose-link">
-                Read the operating boundaries
-              </Link>
-              .
-            </p>
+            <div className="panel p-7 sm:p-8">
+              <h3 className="text-xl font-semibold text-brand-text">
+                In your deployment
+              </h3>
+              <p className="mt-3 leading-7">
+                Connect your own MongoDB replica set. Agents write to separate
+                branch databases; applying a reviewed merge changes the target.
+              </p>
+            </div>
           </div>
+          <p className="mt-6 max-w-3xl text-sm leading-7">
+            Time travel depends on retained history and complete capture.
+            Physical checkout takes time and storage that depend on the dataset.{" "}
+            <Link href="/features#capabilities" className="prose-link">
+              Read the operating boundaries
+            </Link>
+            .
+          </p>
         </section>
 
         <section
-          className="grid gap-7 border-b border-brand-edge py-12 lg:grid-cols-[1fr_2fr] lg:gap-12"
+          className="grid gap-8 pt-24 sm:pt-32 lg:grid-cols-12 lg:gap-12"
           aria-labelledby="evidence-heading"
         >
-          <h2
-            id="evidence-heading"
-            className="text-2xl font-semibold tracking-tight"
-          >
+          <h2 id="evidence-heading" className="section-title lg:col-span-5">
             Check the work
           </h2>
-          <div>
-            <p className="leading-7">
+          <div className="lg:col-span-7">
+            <p className="lede">
               The two-agent example checks the starting data, a real conflict,
               the accepted change, and the restored result. Run it locally
               without an LLM key.
             </p>
-            <div className="mt-4 flex flex-wrap gap-x-7 gap-y-2">
+            <div className="mt-5 flex flex-wrap gap-x-8 gap-y-1">
               <a
                 href={product.example}
-                className="prose-link inline-flex min-h-11 items-center text-sm"
+                className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
               >
                 Read the complete example
               </a>
               <a
                 href="https://github.com/argon-lab/benchmarks/blob/main/RESULTS.md"
-                className="prose-link inline-flex min-h-11 items-center text-sm"
+                className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
               >
                 Benchmarks and reproduction
               </a>
             </div>
-            <details className="group mt-5 text-sm">
-              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-brand-text-darker hover:text-brand-text">
+            <details className="group mt-6 border-y border-brand-edge text-sm">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 font-medium text-brand-text hover:text-brand-primary [&::-webkit-details-marker]:hidden">
                 Historical metadata measurements
-                <span aria-hidden="true" className="group-open:hidden">
-                  +
-                </span>
-                <span aria-hidden="true" className="hidden group-open:block">
-                  −
-                </span>
+                <svg
+                  viewBox="0 0 16 16"
+                  className="h-4 w-4 shrink-0 transition-transform group-open:rotate-45"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M8 3v10M3 8h10" />
+                </svg>
               </summary>
-              <p className="mt-3 leading-7">
+              <p className="pb-5 leading-7">
                 0.86 ms branch p50 and 479 B per metadata branch, measured with
-                engine <code>8bf0f1e</code> on a 50k-entry project. These
-                historical numbers exclude physical checkout, sandbox readiness,
-                and MongoDB storage. The benchmark report includes end-to-end
-                measurements and their scope.
+                engine <code className="font-mono text-[0.9em]">8bf0f1e</code>{" "}
+                on a 50k-entry project. These historical numbers exclude
+                physical checkout, sandbox readiness, and MongoDB storage. The
+                benchmark report includes end-to-end measurements and their
+                scope.
               </p>
             </details>
           </div>
         </section>
 
-        <section className="flex flex-col items-start justify-between gap-7 pt-14 sm:flex-row sm:items-center">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-tight">
-              Review your first change
-            </h2>
-            <p className="mt-3 leading-7">
-              Start with a sample order. See what the agent changed.
-            </p>
+        <section className="pt-24 sm:pt-32">
+          <div className="panel flex flex-col items-start justify-between gap-8 p-8 sm:flex-row sm:items-center sm:p-12">
+            <div>
+              <h2 className="section-title">Review your first change</h2>
+              <p className="mt-3 leading-7">
+                Start with a sample order. See what the agent changed.
+              </p>
+            </div>
+            <ActionLink
+              href={product.demo}
+              event="demo_opened"
+              className="btn-solid shrink-0"
+            >
+              {product.demoLabel}
+            </ActionLink>
           </div>
-          <ActionLink
-            href={product.demo}
-            event="demo_opened"
-            className="btn-solid shrink-0"
-          >
-            {product.demoLabel}
-          </ActionLink>
         </section>
       </div>
     </>

@@ -27,7 +27,7 @@ export interface GraphEdge {
   // Where the bend sits: forks curve away right after the source ('source',
   // default); merges run along their lane and curve in just before the
   // target ('target') — the classic git-graph shapes.
-  curve?: 'source' | 'target';
+  curve?: "source" | "target";
 }
 export interface GraphStep {
   head?: string;
@@ -43,15 +43,26 @@ export interface FlowGraph {
   steps: GraphStep[];
 }
 
-const laneColors = ['#96A7FF', '#34d399', '#fbbf24'];
+const laneColors = [
+  "var(--color-brand-primary)",
+  "var(--color-brand-added)",
+  "var(--color-brand-pending)",
+];
 
-export default function GitGraph({ graph, step }: { graph: FlowGraph; step: number }) {
+export default function GitGraph({
+  graph,
+  step,
+}: {
+  graph: FlowGraph;
+  step: number;
+}) {
   const shown = (el: { appearAt: number; hideAt?: number }) =>
     el.appearAt <= step && (el.hideAt === undefined || step < el.hideAt);
   const visibleNodes = graph.nodes.filter(shown);
   const visibleEdges = graph.edges.filter(shown);
   const byId = Object.fromEntries(graph.nodes.map((n) => [n.id, n]));
-  const state = step >= 0 ? graph.steps[Math.min(step, graph.steps.length - 1)] : undefined;
+  const state =
+    step >= 0 ? graph.steps[Math.min(step, graph.steps.length - 1)] : undefined;
 
   // Bends start after a straight lead segment so curves never sweep through
   // the LSN labels that sit under their source (or target) node.
@@ -62,7 +73,7 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
     const dx = Math.abs(b.x - a.x);
     const lead = Math.min(60, Math.max(0, dx - 100));
     const w = Math.min(90, dx - lead);
-    if (e.curve === 'target') {
+    if (e.curve === "target") {
       const x0 = b.x - lead - w;
       const x1 = b.x - lead;
       return `M ${a.x} ${a.y} L ${x0} ${a.y} C ${x0 + w / 2} ${a.y}, ${x0 + w / 2} ${b.y}, ${x1} ${b.y} L ${b.x} ${b.y}`;
@@ -109,7 +120,7 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
             fill="none"
             stroke={color}
             strokeWidth={1.5}
-            strokeDasharray={e.ghost ? '4 4' : undefined}
+            strokeDasharray={e.ghost ? "4 4" : undefined}
             opacity={e.ghost ? 0.6 : 0.9}
           />
         );
@@ -123,17 +134,33 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
         return (
           <g key={n.id}>
             {isHi && (
-              <circle cx={n.x} cy={n.y} r={11} fill="none" stroke="#E8EBF2" strokeWidth={1} strokeDasharray="3 3" opacity={0.7} />
+              <circle
+                cx={n.x}
+                cy={n.y}
+                r={11}
+                fill="none"
+                stroke="var(--color-brand-text)"
+                strokeWidth={1}
+                strokeDasharray="3 3"
+                opacity={0.7}
+              />
             )}
             {isHead && (
               <>
-                <circle cx={n.x} cy={n.y} r={9} fill="none" stroke={color} strokeWidth={1.5} />
+                <circle
+                  cx={n.x}
+                  cy={n.y}
+                  r={9}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={1.5}
+                />
                 <text
                   x={n.x}
                   y={n.y - 16}
                   fontSize={10}
                   fontFamily="var(--font-mono), monospace"
-                  fill="#E8EBF2"
+                  fill="var(--color-brand-text)"
                   textAnchor="middle"
                 >
                   HEAD
@@ -154,10 +181,10 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
                 cx={n.x}
                 cy={n.y}
                 r={5}
-                fill={n.ghost ? 'none' : color}
+                fill={n.ghost ? "none" : color}
                 stroke={color}
                 strokeWidth={1.5}
-                strokeDasharray={n.ghost ? '3 3' : undefined}
+                strokeDasharray={n.ghost ? "3 3" : undefined}
               />
             )}
             {n.sub && (
@@ -166,8 +193,8 @@ export default function GitGraph({ graph, step }: { graph: FlowGraph; step: numb
                 y={n.pin ? n.y + 3 : n.y + 17}
                 fontSize={10}
                 fontFamily="var(--font-mono), monospace"
-                fill="#6E7891"
-                textAnchor={n.pin ? 'end' : 'middle'}
+                fill="var(--color-brand-muted)"
+                textAnchor={n.pin ? "end" : "middle"}
               >
                 {n.sub}
               </text>

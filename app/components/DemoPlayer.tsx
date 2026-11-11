@@ -40,9 +40,9 @@ const statusStyle: Record<
   NonNullable<PanelLine["status"]> | "default",
   string
 > = {
-  added: "text-emerald-400",
-  modified: "text-amber-400",
-  removed: "text-red-400",
+  added: "text-brand-added",
+  modified: "text-brand-pending",
+  removed: "text-brand-removed",
   muted: "text-brand-muted",
   default: "text-brand-text-darker",
 };
@@ -178,32 +178,30 @@ export default function DemoPlayer({
           prev();
         }
       }}
-      className="min-w-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-brand-primary focus-visible:outline-offset-4"
+      className="ink ink-panel min-w-0 p-4 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary sm:p-5"
     >
       {/* Current step, one line */}
-      <p className="mb-3 flex flex-wrap items-center gap-x-2 font-mono text-xs text-brand-text-darker">
-        <span className="text-brand-primary">
-          step {safeIdx + 1}/{steps.length}
+      <p className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-brand-text">
+        <span className="font-medium text-brand-primary">
+          Step {safeIdx + 1} of {steps.length}
         </span>
-        <span>· {step.description}</span>
+        <span>{step.description}</span>
         {playing && (
-          <span className="flex items-center gap-1.5 text-brand-muted">
+          <span className="flex items-center gap-1.5 text-xs text-brand-muted">
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-brand-primary" />
-            auto-playing
+            Playing
           </span>
         )}
       </p>
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Terminal */}
-        <div className="flex min-w-0 flex-col border border-brand-edge bg-brand-surface">
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
-            <p className="font-mono text-xs text-brand-muted">
+        <div className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-brand-edge bg-brand-bg">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2.5">
+            <p className="font-mono text-xs text-brand-text-darker">
               {terminalTitle}
             </p>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-brand-muted">
-              simulated
-            </p>
+            <p className="text-xs text-brand-muted">Simulated</p>
           </div>
           <div
             ref={scrollRef}
@@ -247,12 +245,12 @@ export default function DemoPlayer({
         </div>
 
         {/* Data panel — what the database looks like right now */}
-        <div className="flex min-w-0 flex-col border border-brand-edge bg-brand-surface">
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
+        <div className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-brand-edge bg-brand-bg">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2.5">
             <p className="min-w-0 break-all font-mono text-xs text-brand-primary">
               {panel.title}
             </p>
-            <p className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-brand-muted">
+            <p className="shrink-0 text-xs text-brand-muted first-letter:uppercase">
               {panelKind}
             </p>
           </div>
@@ -285,17 +283,15 @@ export default function DemoPlayer({
 
       {/* History graph — where you are in branch/commit space */}
       {graph && (
-        <div className="mt-4 border border-brand-edge bg-brand-surface">
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2">
-            <p className="font-mono text-xs text-brand-muted">
+        <div className="mt-4 overflow-hidden rounded-lg border border-brand-edge bg-brand-bg">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2.5">
+            <p className="font-mono text-xs text-brand-text-darker">
               {graphStep >= 0
                 ? graph.steps[Math.min(graphStep, graph.steps.length - 1)]
                     .caption
                 : "…"}
             </p>
-            <p className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-brand-muted">
-              history graph
-            </p>
+            <p className="shrink-0 text-xs text-brand-muted">History graph</p>
           </div>
           <div className="px-4 py-3">
             <GitGraph graph={graph} step={graphStep} />
@@ -304,13 +300,13 @@ export default function DemoPlayer({
       )}
 
       {/* Controls */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           <button
             onClick={togglePlay}
-            className="btn-solid px-5 py-1.5 font-mono text-sm"
+            className="btn-solid min-w-24 px-5 py-1.5 text-sm"
           >
-            {playing ? "❙❙ Pause" : atEnd ? "↺ Replay" : "▶ Play"}
+            {playing ? "Pause" : atEnd ? "Replay" : "Play"}
           </button>
           <button
             onClick={() => {
@@ -318,9 +314,9 @@ export default function DemoPlayer({
               prev();
             }}
             disabled={safeIdx === 0}
-            className="btn-quiet px-4 py-1.5 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-40"
+            className="btn-quiet px-4 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
           >
-            ← Prev
+            Previous
           </button>
           <button
             onClick={() => {
@@ -328,9 +324,9 @@ export default function DemoPlayer({
               next();
             }}
             disabled={safeIdx === steps.length - 1 && done}
-            className="btn-quiet px-4 py-1.5 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-40"
+            className="btn-quiet px-4 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Next →
+            Next
           </button>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
@@ -342,9 +338,11 @@ export default function DemoPlayer({
                 goTo(i, false);
               }}
               title={s.description}
-              className={`h-11 w-11 border font-mono text-xs transition-colors ${
+              aria-label={`Step ${i + 1}: ${s.description}`}
+              aria-current={i === safeIdx ? "step" : undefined}
+              className={`h-11 w-11 rounded-(--radius-control) border text-sm font-medium tabular-nums transition-colors ${
                 i === safeIdx
-                  ? "border-brand-primary text-brand-primary"
+                  ? "border-brand-primary bg-brand-primary/15 text-brand-primary"
                   : i < safeIdx
                     ? "border-brand-edge text-brand-muted hover:text-brand-text"
                     : "border-brand-edge text-brand-text-darker hover:text-brand-text"
@@ -360,7 +358,7 @@ export default function DemoPlayer({
             setIdx(0);
             setPlaying(true);
           }}
-          className="btn-quiet px-4 py-1.5 font-mono text-sm"
+          className="btn-quiet px-4 py-1.5 text-sm"
         >
           Restart
         </button>

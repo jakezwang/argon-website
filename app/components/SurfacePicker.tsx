@@ -159,22 +159,23 @@ export default function SurfacePicker() {
   const s = surfaces[active];
 
   return (
-    <div>
+    <div className="ink ink-panel overflow-hidden">
       {/* surface selector */}
-      <div className="grid grid-cols-2 gap-px border border-brand-edge bg-brand-edge sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-px border-b border-brand-edge bg-brand-edge sm:grid-cols-4">
         {surfaces.map((surf, i) => (
           <button
             key={surf.key}
             onClick={() => setActive(i)}
-            className={`px-4 py-3 text-left transition-colors ${
+            aria-pressed={i === active}
+            className={`relative px-4 py-3.5 text-left transition-colors focus-visible:z-10 focus-visible:-outline-offset-2 ${
               i === active
-                ? "bg-brand-surface"
-                : "bg-brand-dark hover:bg-brand-surface/50"
+                ? "bg-brand-surface after:absolute after:inset-x-4 after:bottom-0 after:h-0.5 after:rounded-full after:bg-brand-primary"
+                : "bg-brand-bg hover:bg-brand-surface/60"
             }`}
           >
             <p
-              className={`font-mono text-sm ${
-                i === active ? "text-brand-primary" : "text-brand-text"
+              className={`text-sm font-semibold ${
+                i === active ? "text-brand-text" : "text-brand-text-darker"
               }`}
             >
               {surf.tab}
@@ -187,17 +188,17 @@ export default function SurfacePicker() {
       </div>
 
       {/* detail */}
-      <div className="mt-4 border border-brand-edge bg-brand-surface">
-        <div className="border-b border-brand-edge px-5 py-4">
-          <h3 className="font-medium text-brand-text">{s.title}</h3>
+      <div className="bg-brand-surface">
+        <div className="border-b border-brand-edge px-5 py-5 sm:px-6">
+          <h3 className="text-lg font-semibold text-brand-text">{s.title}</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-brand-text-darker">
             {s.blurb}
           </p>
           <div className="mt-4">
-            <p className="mb-1.5 font-mono text-[11px] uppercase tracking-wider text-brand-muted">
+            <p className="mb-1.5 text-xs text-brand-muted first-letter:uppercase">
               {s.setupLabel}
             </p>
-            <pre className="overflow-x-auto border border-brand-edge bg-brand-dark px-3 py-2.5 font-mono text-[13px] text-brand-primary">
+            <pre className="overflow-x-auto rounded-lg border border-brand-edge bg-brand-bg px-3.5 py-3 font-mono text-[13px] text-brand-primary">
               <code>
                 <span className="select-none text-brand-muted">$ </span>
                 {s.setup}
@@ -208,8 +209,8 @@ export default function SurfacePicker() {
 
         {/* send → receive */}
         <div className="grid gap-px bg-brand-edge lg:grid-cols-2">
-          <div className="min-w-0 bg-brand-surface p-5">
-            <p className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-brand-muted">
+          <div className="min-w-0 bg-brand-surface p-5 sm:p-6">
+            <p className="mb-2 flex items-center gap-2 text-xs text-brand-muted">
               <span className="status-dot bg-brand-primary" />
               {s.exchange.sendLabel}
             </p>
@@ -217,9 +218,9 @@ export default function SurfacePicker() {
               <code>{s.exchange.send.join("\n")}</code>
             </pre>
           </div>
-          <div className="min-w-0 bg-brand-surface p-5">
-            <p className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-brand-muted">
-              <span className="status-dot bg-emerald-400" />
+          <div className="min-w-0 bg-brand-surface p-5 sm:p-6">
+            <p className="mb-2 flex items-center gap-2 text-xs text-brand-muted">
+              <span className="status-dot bg-brand-added" />
               {s.exchange.recvLabel}
             </p>
             <pre className="overflow-x-auto font-mono text-[12.5px] leading-6">
@@ -238,7 +239,7 @@ export default function SurfacePicker() {
         </div>
 
         {s.footnote && (
-          <p className="border-t border-brand-edge px-5 py-3 font-mono text-xs leading-5 text-brand-muted">
+          <p className="border-t border-brand-edge px-5 py-3 text-xs leading-5 text-brand-muted sm:px-6">
             {s.footnote}
           </p>
         )}
