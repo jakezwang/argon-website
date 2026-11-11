@@ -12,6 +12,7 @@ export const product = {
   roadmap: [
     "GCS chunk-store backend",
     "Read-your-writes barrier for the wire proxy",
+    "MCP 2026-07-28 per-request protocol",
   ],
 };
 export const capabilities = [

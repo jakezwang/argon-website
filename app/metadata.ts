@@ -8,7 +8,10 @@ export function pageMetadata(
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: {
+      canonical: path,
+      types: { "application/atom+xml": "/feed.xml" },
+    },
     openGraph: {
       type: "website",
       siteName: "Argon",

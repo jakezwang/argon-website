@@ -28,6 +28,7 @@ export const posts: Post[] = [
     description:
       "Run a local MongoDB MCP example: create a sandbox, write with PyMongo, inspect the saved merge plan, then explicitly merge or discard the changes.",
     date: "2026-10-20",
+    updated: "2026-11-11",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 9,
   },
@@ -47,7 +48,7 @@ export const posts: Post[] = [
     description:
       "Use Argon’s MongoDB MCP server for agent sandboxes, reviewed merges, undo, and pins. Learn which tools manage branches and how drivers access the data.",
     date: "2026-07-08",
-    updated: "2026-10-20",
+    updated: "2026-11-11",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 7,
   },

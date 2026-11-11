@@ -18,7 +18,11 @@ export default function BlogIndex() {
       </h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-brand-text-darker">
         Guides on MongoDB branching, time travel, and reviewing AI agent changes
-        in separate database sandboxes.
+        in separate database sandboxes.{" "}
+        <a className="prose-link" href="/feed.xml">
+          Subscribe to the Atom feed
+        </a>
+        .
       </p>
 
       <ul className="mt-12 divide-y divide-brand-edge border-y border-brand-edge">

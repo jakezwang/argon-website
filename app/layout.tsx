@@ -21,9 +21,6 @@ export const metadata = {
   },
   description:
     "Open-source branching and merge for MongoDB. Give every AI agent its own branch — a real MongoDB database — review what it wrote, and merge what works.",
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     url: "https://argonlabs.tech",
@@ -40,6 +37,10 @@ export const metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: "/",
+    types: { "application/atom+xml": "/feed.xml" },
+  },
   twitter: {
     card: "summary_large_image",
     title: "Argon — Git for MongoDB, Built for AI Agents",
@@ -48,8 +49,8 @@ export const metadata = {
     images: ["/og.png"],
   },
   icons: {
-    icon: "/argon-logo.png",
-    apple: "/argon-logo.png",
+    icon: "/icon-64.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -164,6 +165,11 @@ const Footer = () => (
             {
               label: "Discussions",
               href: "https://github.com/argon-lab/argon/discussions",
+              external: true,
+            },
+            {
+              label: "Security",
+              href: "https://github.com/argon-lab/argon/security/policy",
               external: true,
             },
             {

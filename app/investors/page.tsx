@@ -30,7 +30,7 @@ export default function InvestorsPage() {
             </li>
             <li>
               Agent surface live: MCP server, TTL sandboxes, dataset pins,
-              Python SDK {product.sdkVersion} available from its Git release
+              Python SDK {product.sdkVersion} on PyPI
             </li>
             <li>
               Public benchmark suite separates metadata costs from checkout,
