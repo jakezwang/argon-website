@@ -6,8 +6,8 @@ export const metadata = pageMetadata(
 );
 export default function Privacy() {
   return (
-    <div className="article mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-4xl font-semibold">Privacy</h1>
+    <div className="article mx-auto max-w-[44rem] px-6 pt-14 sm:pt-20">
+      <h1 className="page-title">Privacy</h1>
       <p>Updated November 3, 2026.</p>
       <h2>Website traffic</h2>
       <p>

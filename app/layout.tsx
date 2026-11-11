@@ -1,17 +1,38 @@
 import { product } from "./product";
 import FunnelChoice from "./components/Funnel";
 import "../styles/globals.css";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
 import PeriodicTile from "./components/PeriodicTile";
 import WebsiteAnalytics from "./components/WebsiteAnalytics";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-argon-sans" });
-const jetbrainsMono = JetBrains_Mono({
+// One sans family: its width axis separates headlines from text.
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-argon-mono",
+  axes: ["wdth"],
+  variable: "--font-argon-sans",
+  display: "swap",
 });
+// Mono is for commands, code and document data only.
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  variable: "--font-argon-mono",
+  display: "swap",
+});
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f5f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0f17" },
+  ],
+};
+
+// Applies a saved theme before first paint. Without a saved choice the
+// stylesheet follows the system setting.
+const themeScript = `(function(){try{var t=localStorage.getItem("argon.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}})()`;
 
 export const metadata = {
   metadataBase: new URL("https://argonlabs.tech"),
@@ -33,7 +54,7 @@ export const metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Argon — a database branch for every AI agent",
+        alt: "Argon — Git for MongoDB, built for AI agents",
       },
     ],
   },
@@ -100,7 +121,7 @@ const FooterColumn = ({
   links: { label: string; href: string; external?: boolean }[];
 }) => (
   <div>
-    <h3 className="kicker mb-4">{title}</h3>
+    <h3 className="mb-4 text-sm font-semibold text-brand-text">{title}</h3>
     <ul className="space-y-2.5">
       {links.map((link) => (
         <li key={link.label}>
@@ -119,13 +140,15 @@ const FooterColumn = ({
 );
 
 const Footer = () => (
-  <footer className="border-t border-brand-edge">
-    <div className="mx-auto max-w-6xl px-6 py-14">
+  <footer className="mt-24 border-t border-brand-edge">
+    <div className="mx-auto max-w-6xl px-6 py-16">
       <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
         <div className="col-span-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <PeriodicTile size="sm" />
-            <span className="font-mono text-lg text-brand-text">argon</span>
+            <span className="text-lg font-semibold tracking-tight text-brand-text [font-stretch:112%]">
+              argon
+            </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-6 text-brand-muted">
             Git-like branching and time travel for MongoDB. Named after the
@@ -191,10 +214,10 @@ const Footer = () => (
       </div>
       <FunnelChoice />
       <div className="mt-12 flex flex-col gap-2 border-t border-brand-edge pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-xs text-brand-muted">
-          MIT licensed · open source · self-hosted
+        <p className="text-xs text-brand-muted">
+          Open source under the MIT license. Self-hosted.
         </p>
-        <p className="font-mono text-xs text-brand-muted">
+        <p className="text-xs text-brand-muted">
           © {new Date().getFullYear()} Argon Labs
         </p>
       </div>
@@ -208,8 +231,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="flex min-h-screen flex-col bg-brand-dark font-sans text-brand-text antialiased">
+    <html
+      lang="en"
+      className={`${archivo.variable} ${plexMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="flex min-h-screen flex-col bg-brand-bg font-sans text-brand-text antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

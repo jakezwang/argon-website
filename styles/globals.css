@@ -1,15 +1,49 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+/*
+  Design system, in one place.
+
+  Principles (keep them when adding pages):
+  1. Inert until energized. The page is ink on paper. Argon violet appears only
+     on live things: the active branch, focus, link underlines, hover.
+  2. Width carries hierarchy. Headlines use the expanded width of the sans,
+     text the normal width. No all-caps labels, no eyebrow above every heading.
+  3. Mono means literal: commands, code and document data only.
+  4. Numbers and connecting lines mark real sequences only.
+
+  Colors are tokens. Light is the default, dark follows the system or the
+  header toggle (html[data-theme]), and `.ink` pins the dark palette for
+  terminals, code and the walkthrough in both themes.
+*/
 
 @theme {
-  --color-brand-dark: #0b0e14;
-  --color-brand-surface: #111521;
-  --color-brand-edge: #222838;
-  --color-brand-muted: #8f9bb3;
-  --color-brand-primary: #96a7ff;
-  --color-brand-secondary: #6d7fe0;
-  --color-brand-text: #e8ebf2;
-  --color-brand-text-darker: #9aa3b5;
+  --color-brand-bg: #f5f5f8;
+  --color-brand-surface: #ffffff;
+  --color-brand-sunken: #ecedf2;
+  --color-brand-edge: #dedfe9;
+  --color-brand-edge-strong: #c3c5d4;
+  --color-brand-control: #8d90a7;
+  --color-brand-text: #14142a;
+  --color-brand-text-darker: #4a4d66;
+  --color-brand-muted: #666a82;
+  --color-brand-primary: #5140d8;
+  --color-brand-secondary: #7a6cf0;
+  --color-brand-on-primary: #ffffff;
+  --color-brand-solid: #14142a;
+  --color-brand-on-solid: #ffffff;
+  --color-brand-added: #16794f;
+  --color-brand-removed: #b8324f;
+  --color-brand-pending: #8a5a00;
 
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+
+  --radius-control: 0.5rem;
+  --radius-panel: 0.875rem;
+
+  --shadow-panel:
+    0 1px 0 rgb(20 20 42 / 0.03), 0 18px 40px -24px rgb(20 20 42 / 0.28);
+  --shadow-ink: 0 28px 60px -32px rgb(20 20 42 / 0.55);
 }
 
 @theme inline {
@@ -17,147 +51,135 @@
   --font-mono: var(--font-argon-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-brand-edge);
   }
-}
 
-@utility skip-link {
-  @apply fixed left-4 top-4 z-100 -translate-y-24 bg-brand-primary px-5 py-3 text-brand-dark focus:translate-y-0;
-}
+  :root {
+    color-scheme: light;
+    --glow: none;
+  }
 
-@utility kicker {
-  /* Mono uppercase section label, e.g. "01 — Branching" */
-  @apply font-mono text-xs uppercase tracking-[0.18em] text-brand-muted;
-}
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --color-brand-bg: #0f0f17;
+      --color-brand-surface: #17161f;
+      --color-brand-sunken: #0b0b11;
+      --color-brand-edge: #2a2938;
+      --color-brand-edge-strong: #403f54;
+      --color-brand-control: #6f6e86;
+      --color-brand-text: #ecebf5;
+      --color-brand-text-darker: #abaabf;
+      --color-brand-muted: #8b8aa0;
+      --color-brand-primary: #b5a8ff;
+      --color-brand-secondary: #8e7df7;
+      --color-brand-on-primary: #14131f;
+      --color-brand-solid: #ecebf5;
+      --color-brand-on-solid: #14131f;
+      --color-brand-added: #5bd6a0;
+      --color-brand-removed: #ff8fa6;
+      --color-brand-pending: #f0c36b;
+      --shadow-panel: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+      --shadow-ink: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+    }
+  }
 
-@utility prose-link {
-  @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
-}
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-brand-bg: #0f0f17;
+    --color-brand-surface: #17161f;
+    --color-brand-sunken: #0b0b11;
+    --color-brand-edge: #2a2938;
+    --color-brand-edge-strong: #403f54;
+    --color-brand-control: #6f6e86;
+    --color-brand-text: #ecebf5;
+    --color-brand-text-darker: #abaabf;
+    --color-brand-muted: #8b8aa0;
+    --color-brand-primary: #b5a8ff;
+    --color-brand-secondary: #8e7df7;
+    --color-brand-on-primary: #14131f;
+    --color-brand-solid: #ecebf5;
+    --color-brand-on-solid: #14131f;
+    --color-brand-added: #5bd6a0;
+    --color-brand-removed: #ff8fa6;
+    --color-brand-pending: #f0c36b;
+    --shadow-panel: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+    --shadow-ink: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+  }
 
-@utility btn-solid {
-  @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-primary bg-brand-primary px-5 py-2.5 font-medium text-brand-dark transition-colors hover:bg-brand-text hover:border-brand-text;
-}
+  /* Terminals, code and the walkthrough keep the dark palette in both themes. */
+  .ink,
+  .article pre {
+    color-scheme: dark;
+    --color-brand-bg: #0d0c15;
+    --color-brand-surface: #15141f;
+    --color-brand-sunken: #0a0911;
+    --color-brand-edge: #2b2a3c;
+    --color-brand-edge-strong: #424158;
+    --color-brand-control: #6f6e86;
+    --color-brand-text: #ecebf5;
+    --color-brand-text-darker: #abaabf;
+    --color-brand-muted: #8b8aa0;
+    --color-brand-primary: #b5a8ff;
+    --color-brand-secondary: #8e7df7;
+    --color-brand-on-primary: #14131f;
+    --color-brand-solid: #ecebf5;
+    --color-brand-on-solid: #14131f;
+    --color-brand-added: #5bd6a0;
+    --color-brand-removed: #ff8fa6;
+    --color-brand-pending: #f0c36b;
+    --glow: drop-shadow(0 0 5px rgb(181 168 255 / 0.7));
+    color: var(--color-brand-text);
+  }
 
-@utility btn-quiet {
-  @apply inline-flex min-h-11 items-center justify-center gap-2 border border-brand-edge px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-muted;
-}
-
-@utility status-dot {
-  @apply inline-block h-[7px] w-[7px] rounded-full;
-}
-
-@utility article {
-  /* Long-form article typography (no @tailwindcss/typography dependency) */
-  @apply text-brand-text-darker;
-  & p {
-    @apply mt-5;
-  }
-  & ul {
-    @apply mt-5;
-  }
-  & ol {
-    @apply mt-5;
-  }
-  & pre {
-    @apply mt-5;
-  }
-  & blockquote {
-    @apply mt-5;
-  }
-  & p {
-    @apply leading-7;
-  }
-  & li {
-    @apply leading-7;
-  }
-  & h2 {
-    @apply mt-12 text-xl font-semibold tracking-tight text-brand-text;
-  }
-  & h2 + p {
-    @apply mt-4;
-  }
-  & h3 {
-    @apply mt-8 text-lg font-medium text-brand-text;
-  }
-  & h3 + p {
-    @apply mt-3;
-  }
-  & a {
-    @apply text-brand-primary underline decoration-brand-edge underline-offset-4 hover:decoration-brand-primary;
-  }
-  & ul {
-    @apply list-disc space-y-2 pl-5;
-  }
-  & ol {
-    @apply list-decimal space-y-2 pl-5;
-  }
-  & strong {
-    @apply font-medium text-brand-text;
-  }
-  & code {
-    @apply rounded-sm bg-brand-surface px-1.5 py-0.5 font-mono text-[0.85em] text-brand-text;
-  }
-  & pre {
-    @apply overflow-x-auto border border-brand-edge bg-brand-surface p-4 font-mono text-sm leading-6 text-brand-text;
-  }
-  & pre code {
-    @apply bg-transparent p-0 text-[0.9em];
-  }
-  & blockquote {
-    @apply border-l-2 border-brand-primary pl-4 text-brand-text;
-  }
-  & table {
-    @apply mt-6 w-full border-collapse text-sm;
-  }
-  & th {
-    @apply border border-brand-edge px-3 py-2 text-left align-top;
-  }
-  & td {
-    @apply border border-brand-edge px-3 py-2 text-left align-top;
-  }
-  & th {
-    @apply font-mono text-xs uppercase tracking-wide text-brand-text;
-  }
-  & td {
-    @apply text-brand-text-darker;
-  }
-}
-
-@layer base {
   html {
-    background-color: var(--color-brand-dark);
+    background-color: var(--color-brand-bg);
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
   }
 
   body {
-    background-color: var(--color-brand-dark);
+    background-color: var(--color-brand-bg);
     color: var(--color-brand-text);
-    font-feature-settings:
-      "ss01" on,
-      "cv05" on;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Expanded width is the display voice; utilities on an element still win. */
+  h1,
+  h2 {
+    font-stretch: 112%;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  h3 {
+    letter-spacing: -0.012em;
   }
 
   p {
     color: var(--color-brand-text-darker);
+    text-wrap: pretty;
+  }
+
+  code,
+  pre,
+  kbd {
+    font-variant-ligatures: none;
   }
 
   ::selection {
-    background-color: var(--color-brand-secondary);
+    background-color: color-mix(
+      in oklab,
+      var(--color-brand-secondary) 32%,
+      transparent
+    );
     color: var(--color-brand-text);
   }
 
@@ -167,7 +189,144 @@
   input:focus-visible,
   pre:focus-visible {
     outline: 2px solid var(--color-brand-primary);
-    outline-offset: 4px;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@utility skip-link {
+  @apply fixed left-4 top-4 z-100 -translate-y-24 rounded-(--radius-control) bg-brand-solid px-5 py-3 text-brand-on-solid focus:translate-y-0;
+}
+
+@utility kicker {
+  /* A quiet line above a heading. Use only when it adds information. */
+  @apply text-sm font-medium text-brand-muted;
+}
+
+@utility display {
+  /* The page headline. */
+  font-stretch: 114%;
+  font-weight: 560;
+  letter-spacing: -0.036em;
+  line-height: 1;
+}
+
+@utility section-title {
+  @apply text-3xl font-semibold leading-[1.1] text-brand-text sm:text-[2.125rem];
+}
+
+@utility lede {
+  @apply text-lg leading-8 text-brand-text-darker sm:text-[1.1875rem];
+}
+
+@utility prose-link {
+  @apply text-brand-text underline decoration-brand-primary/45 decoration-[1.5px] underline-offset-4 transition-colors hover:text-brand-primary hover:decoration-brand-primary;
+}
+
+@utility btn-solid {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-(--radius-control) border border-brand-solid bg-brand-solid px-5 py-2.5 font-medium text-brand-on-solid transition-colors hover:border-brand-primary hover:bg-brand-primary hover:text-brand-on-primary;
+}
+
+@utility btn-quiet {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-(--radius-control) border border-brand-control px-5 py-2.5 font-medium text-brand-text transition-colors hover:border-brand-text hover:bg-brand-surface;
+}
+
+@utility panel {
+  @apply rounded-(--radius-panel) border border-brand-edge bg-brand-surface shadow-(--shadow-panel);
+}
+
+@utility ink-panel {
+  /* Pair with the `ink` class. */
+  @apply rounded-(--radius-panel) border border-brand-edge bg-brand-surface shadow-(--shadow-ink);
+}
+
+@utility status-dot {
+  @apply inline-block h-[7px] w-[7px] rounded-full;
+}
+
+@utility glow {
+  filter: var(--glow);
+}
+
+@utility draw-line {
+  stroke-dasharray: 1;
+  animation: draw-line 700ms cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@utility article {
+  /* Long-form article typography (no @tailwindcss/typography dependency) */
+  @apply text-[1.0625rem] text-brand-text-darker;
+  & p {
+    @apply mt-5 leading-[1.75];
+  }
+  & ul {
+    @apply mt-5;
+  }
+  & ol {
+    @apply mt-5;
+  }
+  & pre {
+    @apply mt-6;
+  }
+  & blockquote {
+    @apply mt-6;
+  }
+  & li {
+    @apply leading-[1.75];
+  }
+  & h2 {
+    @apply mt-14 scroll-mt-28 text-[1.625rem] font-semibold leading-tight text-brand-text;
+  }
+  & h2 + p {
+    @apply mt-4;
+  }
+  & h3 {
+    @apply mt-9 text-xl font-semibold text-brand-text;
+  }
+  & h3 + p {
+    @apply mt-3;
+  }
+  & a {
+    @apply text-brand-text underline decoration-brand-primary/45 decoration-[1.5px] underline-offset-4 transition-colors hover:text-brand-primary hover:decoration-brand-primary;
+  }
+  & ul {
+    @apply list-disc space-y-2 pl-5 marker:text-brand-edge-strong;
+  }
+  & ol {
+    @apply list-decimal space-y-2 pl-5 marker:text-brand-muted;
+  }
+  & strong {
+    @apply font-semibold text-brand-text;
+  }
+  & code {
+    @apply rounded-[5px] bg-brand-sunken px-1.5 py-0.5 font-mono text-[0.84em] text-brand-text;
+  }
+  & pre {
+    @apply overflow-x-auto rounded-(--radius-panel) border border-brand-edge bg-brand-surface p-5 font-mono text-sm leading-[1.7] text-brand-text shadow-(--shadow-ink);
+  }
+  & pre code {
+    @apply bg-transparent p-0 text-[0.92em];
+  }
+  & blockquote {
+    @apply border-l-2 border-brand-primary pl-5 text-brand-text;
+  }
+  & table {
+    @apply mt-7 w-full border-collapse text-sm;
+  }
+  & th {
+    @apply border-b border-brand-edge-strong px-3 py-2.5 text-left align-bottom font-semibold text-brand-text;
+  }
+  & td {
+    @apply border-b border-brand-edge px-3 py-2.5 text-left align-top text-brand-text-darker;
   }
 }
 
@@ -179,4 +338,13 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+@utility page-title {
+  /* The h1 of an inner page. */
+  @apply text-4xl text-brand-text sm:text-5xl lg:text-[3.5rem];
+  font-stretch: 114%;
+  font-weight: 560;
+  letter-spacing: -0.034em;
+  line-height: 1.02;
 }

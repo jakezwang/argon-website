@@ -82,16 +82,13 @@ const faqLd = {
 
 export default function FaqPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
-      <p className="kicker mb-4">FAQ</p>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-        Frequently asked questions
-      </h1>
-      <p className="mt-3 leading-7">
+      <h1 className="page-title">Frequently asked questions</h1>
+      <p className="lede mt-6 max-w-2xl">
         Short answers about running agents against MongoDB. Ask the maintainers
         in{" "}
         <a
@@ -102,16 +99,16 @@ export default function FaqPage() {
         </a>
         .
       </p>
-      <dl className="mt-12 divide-y divide-brand-edge border-y border-brand-edge">
-        {faq.map(({ q, a, href, label }, index) => (
-          <div key={q} className="py-6">
-            <dt className="flex gap-4">
-              <span className="font-mono text-xs leading-6 text-brand-primary">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="font-medium">{q}</span>
+      <dl className="mt-14 divide-y divide-brand-edge border-y border-brand-edge-strong">
+        {faq.map(({ q, a, href, label }) => (
+          <div
+            key={q}
+            className="grid gap-x-12 gap-y-3 py-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+          >
+            <dt className="text-xl font-semibold leading-7 text-brand-text">
+              {q}
             </dt>
-            <dd className="mt-2 wrap-break-word pl-10 text-sm leading-6 text-brand-text-darker">
+            <dd className="wrap-break-word leading-7 text-brand-text-darker">
               {a}{" "}
               <Link className="prose-link" href={href}>
                 {label}

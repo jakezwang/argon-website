@@ -1,15 +1,28 @@
 import { capabilities } from "../product";
 export default function Capabilities() {
   return (
-    <section className="mt-14" id="capabilities">
-      <p className="kicker mb-5">What to expect</p>
-      <div className="divide-y divide-brand-edge border border-brand-edge">
-        {capabilities.map(([title, body]) => (
-          <div key={title} className="grid gap-2 p-5 sm:grid-cols-[180px_1fr]">
-            <h3 className="font-medium text-brand-text">{title}</h3>
-            <p className="text-sm leading-6">{body}</p>
-          </div>
-        ))}
+    <section className="mt-24 scroll-mt-24" id="capabilities">
+      <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-4">
+          <h2 className="section-title">What to expect</h2>
+          <p className="mt-4 max-w-sm leading-7">
+            The operating boundaries, stated plainly. Read these before you
+            point an agent at data you care about.
+          </p>
+        </div>
+        <dl className="border-t border-brand-edge-strong lg:col-span-8">
+          {capabilities.map(([title, body]) => (
+            <div
+              key={title}
+              className="grid gap-x-8 gap-y-2 border-b border-brand-edge py-6 sm:grid-cols-[11rem_minmax(0,1fr)]"
+            >
+              <dt className="font-semibold text-brand-text">{title}</dt>
+              <dd className="text-sm leading-6 text-brand-text-darker">
+                {body}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

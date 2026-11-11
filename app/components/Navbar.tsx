@@ -6,6 +6,7 @@ import { track } from "./Funnel";
 import { product } from "../product";
 import { usePathname } from "next/navigation";
 import PeriodicTile from "./PeriodicTile";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/agents", label: "Agents" },
@@ -32,7 +33,7 @@ export default function Navbar() {
   return (
     <nav
       aria-label="Main navigation"
-      className="sticky top-0 z-50 border-b border-brand-edge bg-brand-dark/95 backdrop-blur-sm"
+      className="sticky top-0 z-50 border-b border-brand-edge bg-brand-bg/85 backdrop-blur-md"
       onKeyDown={(event) => {
         if (event.key === "Escape" && isOpen) {
           setIsOpen(false);
@@ -49,15 +50,17 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
           >
             <PeriodicTile size="sm" />
-            <span className="font-mono text-lg text-brand-text">argon</span>
+            <span className="text-lg font-semibold tracking-tight text-brand-text [font-stretch:112%]">
+              argon
+            </span>
           </Link>
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={`inline-flex min-h-11 items-center px-2.5 font-mono text-[13px] transition-colors ${isActive(link.href) ? "text-brand-primary" : "text-brand-text-darker hover:text-brand-text"}`}
+                className={`relative inline-flex min-h-11 items-center px-3 text-sm font-medium transition-colors ${isActive(link.href) ? "text-brand-text after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:rounded-full after:bg-brand-primary" : "text-brand-text-darker hover:text-brand-text"}`}
               >
                 {link.label}
               </Link>
@@ -66,43 +69,49 @@ export default function Navbar() {
               href="https://github.com/argon-lab/argon"
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-2 inline-flex min-h-11 items-center gap-2 px-3 font-mono text-[13px] text-brand-text-darker hover:text-brand-text"
+              className="ml-3 inline-flex min-h-11 items-center gap-2 px-3 text-sm font-medium text-brand-text-darker transition-colors hover:text-brand-text"
             >
               <GitHubIcon />
               GitHub
             </a>
+            <ThemeToggle />
             <a
               href={product.demo}
               onClick={() => track("demo_opened")}
-              className="btn-solid ml-2 min-h-11 text-sm"
+              className="btn-solid ml-2 min-h-11 px-4 text-sm"
             >
               {product.demoLabel}
             </a>
           </div>
-          <button
-            ref={menuButton}
-            onClick={() => setIsOpen(!isOpen)}
-            type="button"
-            className="inline-flex h-11 w-11 items-center justify-center text-brand-muted hover:text-brand-text lg:hidden"
-            aria-controls="mobile-menu"
-            aria-expanded={isOpen}
-            aria-label={isOpen ? "Close main menu" : "Open main menu"}
-          >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
+          <div className="flex items-center gap-1 lg:hidden">
+            <ThemeToggle />
+            <button
+              ref={menuButton}
+              onClick={() => setIsOpen(!isOpen)}
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-(--radius-control) text-brand-text-darker hover:bg-brand-sunken hover:text-brand-text"
+              aria-controls="mobile-menu"
+              aria-expanded={isOpen}
+              aria-label={isOpen ? "Close main menu" : "Open main menu"}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-              />
-            </svg>
-          </button>
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d={
+                    isOpen ? "M6 18L18 6M6 6l12 12" : "M4 7h16M4 12h16M4 17h16"
+                  }
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
       {isOpen && (
@@ -110,19 +119,19 @@ export default function Navbar() {
           className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-brand-edge lg:hidden"
           id="mobile-menu"
         >
-          <div className="space-y-1 px-6 py-4">
+          <div className="space-y-0.5 px-6 py-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={`flex min-h-11 items-center font-mono text-sm ${isActive(link.href) ? "text-brand-primary" : "text-brand-text-darker"}`}
+                className={`flex min-h-12 items-center text-lg font-medium ${isActive(link.href) ? "text-brand-primary" : "text-brand-text"}`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="flex flex-wrap items-center gap-5 border-t border-brand-edge pt-4">
+            <div className="mt-3 flex flex-wrap items-center gap-5 border-t border-brand-edge pt-5">
               <a
                 href={product.demo}
                 onClick={() => {
@@ -137,7 +146,7 @@ export default function Navbar() {
                 href="https://github.com/argon-lab/argon"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 font-mono text-sm text-brand-text-darker hover:text-brand-text"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-brand-text-darker hover:text-brand-text"
                 onClick={() => setIsOpen(false)}
               >
                 <GitHubIcon />

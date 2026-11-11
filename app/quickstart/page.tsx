@@ -14,37 +14,52 @@ function Step({
   id,
   number,
   title,
+  last = false,
   children,
 }: {
   id: string;
   number: string;
   title: string;
+  last?: boolean;
   children: ReactNode;
 }) {
+  const badge =
+    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-primary bg-brand-bg text-sm font-semibold tabular-nums text-brand-primary";
+  // The rail is the sequence: one line, a numbered node per step.
   return (
     <section
       id={id}
-      className="border-t border-brand-edge py-10 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-10"
+      className="scroll-mt-24 pb-14 sm:grid sm:grid-cols-[2.25rem_minmax(0,1fr)] sm:gap-x-8"
     >
-      <h2 className="mb-6 text-xl font-medium leading-7 text-brand-text sm:mb-0">
-        <span className="mb-2 block font-mono text-xs text-brand-muted">
-          {number}
-        </span>
-        {title}
-      </h2>
-      <div className="min-w-0 space-y-5 text-sm leading-7">{children}</div>
+      <div
+        aria-hidden="true"
+        className="relative hidden justify-center sm:flex"
+      >
+        <span className={`relative z-10 ${badge}`}>{Number(number)}</span>
+        {!last && (
+          <span className="absolute -bottom-14 top-9 w-px bg-brand-edge-strong" />
+        )}
+      </div>
+      <div className="min-w-0">
+        <h2 className="flex items-center gap-3 text-2xl font-semibold leading-9 text-brand-text">
+          <span aria-hidden="true" className={`sm:hidden ${badge}`}>
+            {Number(number)}
+          </span>
+          {title}
+        </h2>
+        <div className="mt-5 min-w-0 space-y-5 text-sm leading-7">
+          {children}
+        </div>
+      </div>
     </section>
   );
 }
 
 export default function Quickstart() {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16">
-      <p className="kicker mb-4">Local quickstart</p>
-      <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-brand-text sm:text-5xl">
-        Run your first agent review
-      </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-8">
+    <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
+      <h1 className="page-title max-w-3xl">Run your first agent review</h1>
+      <p className="lede mt-6 max-w-2xl">
         Start with a $49 order. Let two agents try different prices in separate
         branches, review the changes, then verify a merge and undo. The example
         uses real MongoDB writes and needs no model API key.
@@ -55,7 +70,7 @@ export default function Quickstart() {
       </p>
       <nav
         aria-label="Quickstart steps"
-        className="my-8 flex flex-wrap gap-x-6"
+        className="mb-12 mt-8 flex flex-wrap gap-x-7 border-b border-brand-edge pb-6"
       >
         {[
           ["#install", "Install"],
@@ -65,7 +80,7 @@ export default function Quickstart() {
         ].map(([href, label]) => (
           <a
             key={href}
-            className="prose-link inline-flex min-h-11 items-center text-sm"
+            className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
             href={href}
           >
             {label}
@@ -97,8 +112,8 @@ export default function Quickstart() {
           {product.version}. The package is named <code>argonctl</code>; the
           command you run is <code>argon</code>.
         </p>
-        <details id="source" className="border-t border-brand-edge pt-4">
-          <summary className="min-h-11 cursor-pointer py-2 text-brand-primary">
+        <details id="source" className="border-t border-brand-edge pt-3">
+          <summary className="min-h-11 cursor-pointer py-2 font-medium text-brand-text hover:text-brand-primary">
             Build from source instead
           </summary>
           <p className="mb-4 mt-2">
@@ -142,7 +157,7 @@ export PATH="$PWD/bin:$PATH"`}
           the connection, wait a few seconds and retry.
         </p>
         <details className="border-t border-brand-edge pt-4">
-          <summary className="min-h-11 cursor-pointer py-2 text-brand-primary">
+          <summary className="min-h-11 cursor-pointer py-2 font-medium text-brand-text hover:text-brand-primary">
             Already have this local container?
           </summary>
           <p className="mt-2">
@@ -185,7 +200,7 @@ argon doctor`}
         </p>
       </Step>
 
-      <Step id="review" number="04" title="Run the example">
+      <Step id="review" number="04" title="Run the example" last>
         <p>
           Open terminal B. Download the matching example source, then install
           the Python SDK from PyPI in a virtual environment. Git is required to
@@ -241,8 +256,8 @@ ${install.python}`}
         </a>
       </Step>
 
-      <section className="border-t border-brand-edge pt-10">
-        <h2 className="text-2xl font-medium">Connect your own agent</h2>
+      <section className="panel mt-4 p-8 sm:p-10">
+        <h2 className="section-title">Connect your own agent</h2>
         <p className="mt-3 max-w-2xl leading-7">
           Your local server is ready. Choose the interface your agent already
           uses.

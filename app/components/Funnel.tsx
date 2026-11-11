@@ -46,9 +46,9 @@ export default function FunnelChoice() {
     } catch {}
   }, []);
   return (
-    <label className="mt-6 flex items-start gap-2 text-xs leading-6 text-brand-text-darker">
+    <label className="mt-10 flex max-w-2xl items-start gap-2.5 text-xs leading-6 text-brand-text-darker">
       <input
-        className="mt-1.5"
+        className="mt-1.5 accent-brand-primary"
         type="checkbox"
         checked={enabled}
         onChange={(e) => {
@@ -61,11 +61,13 @@ export default function FunnelChoice() {
           } catch {}
         }}
       />
-      Share anonymous button counts to help improve the walkthrough. No document
-      data or identifiers.{" "}
-      <a className="prose-link" href="/privacy">
-        Privacy
-      </a>
+      <span>
+        Share anonymous button counts to help improve the walkthrough. No
+        document data or identifiers.{" "}
+        <a className="prose-link" href="/privacy">
+          Privacy
+        </a>
+      </span>
     </label>
   );
 }

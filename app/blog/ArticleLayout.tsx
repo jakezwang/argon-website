@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ArticleToc from "./ArticleToc";
 import { posts, type Post } from "./posts";
 
 type Faq = { q: string; a: string };
@@ -27,12 +28,14 @@ export default function ArticleLayout({
     }))
     .sort((a, b) => b.score - a.score || b.post.date.localeCompare(a.post.date))
     .slice(0, 3);
-  const dateDisplay = new Date(post.date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+  const dateDisplay = formatDate(post.date);
 
   const articleLd = {
     "@context": "https://schema.org",
@@ -89,131 +92,146 @@ export default function ArticleLayout({
       : null;
 
   return (
-    <article className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
-      {faqLd && (
+    <div className="mx-auto max-w-6xl px-6 pt-10 sm:pt-14 xl:grid xl:grid-cols-[minmax(0,1fr)_15rem] xl:gap-16">
+      <article className="mx-auto min-w-0 max-w-[44rem] xl:mx-0">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
         />
-      )}
-
-      <nav
-        aria-label="Breadcrumb"
-        className="mb-8 font-mono text-xs text-brand-muted"
-      >
-        <Link href="/blog" className="hover:text-brand-text">
-          Blog
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-brand-text-darker">{post.title}</span>
-      </nav>
-
-      <p className="kicker mb-4">
-        <time dateTime={post.date}>{dateDisplay}</time> · {post.readingMinutes}{" "}
-        min read
-      </p>
-      <p className="mb-4 text-sm text-brand-muted">
-        By{" "}
-        <Link className="prose-link" href="/about">
-          Argon Labs
-        </Link>
-        {post.updated && (
-          <>
-            {" "}
-            · Updated <time dateTime={post.updated}>{post.updated}</time>
-          </>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        />
+        {faqLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+          />
         )}
-      </p>
-      <h1 className="text-3xl font-semibold tracking-tight text-brand-text sm:text-4xl">
-        {post.title}
-      </h1>
-      <p className="mt-5 text-lg leading-8 text-brand-text-darker">
-        {post.description}
-      </p>
 
-      <div className="mt-5 flex flex-wrap gap-2">
-        {post.tags.map((t) => (
-          <span
-            key={t}
-            className="border border-brand-edge px-2 py-0.5 font-mono text-[11px] text-brand-muted"
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-8 flex min-w-0 items-center gap-2 text-sm text-brand-muted"
+        >
+          <Link
+            href="/blog"
+            className="shrink-0 font-medium text-brand-text-darker hover:text-brand-primary"
           >
-            {t}
+            Blog
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span className="truncate">{post.title}</span>
+        </nav>
+
+        <h1 className="text-[2rem] font-semibold leading-[1.08] text-brand-text sm:text-[2.75rem]">
+          {post.title}
+        </h1>
+        <p className="lede mt-5">{post.description}</p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-brand-muted">
+          <span>
+            By{" "}
+            <Link className="prose-link" href="/about">
+              Argon Labs
+            </Link>
           </span>
-        ))}
-      </div>
-
-      <hr className="my-10 border-brand-edge" />
-
-      {capabilityNotes && (
-        <p className="mb-6 border border-brand-edge p-4 text-sm leading-6">
-          Current capability notes: checkout materializes a physical database;
-          native actor attribution is per branch/run; undo needs complete images
-          and retained history. CLI sandboxes require watch and scheduled sweep.{" "}
-          <Link className="prose-link" href="/features#capabilities">
-            Read the capability matrix
-          </Link>
-          .
-        </p>
-      )}
-      <div className="article">{children}</div>
-
-      {faq && faq.length > 0 && (
-        <section className="mt-14">
-          <h2 className="text-xl font-semibold tracking-tight text-brand-text">
-            Frequently asked questions
-          </h2>
-          <dl className="mt-6 space-y-6">
-            {faq.map((f) => (
-              <div key={f.q}>
-                <dt className="font-medium text-brand-text">{f.q}</dt>
-                <dd className="mt-2 leading-7 text-brand-text-darker">{f.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-
-      <div className="mt-16 border-t border-brand-edge pt-10">
-        <h2 className="text-xl font-semibold text-brand-text">
-          Continue reading
-        </h2>
-        <ul className="my-6 space-y-3">
-          {related.map(({ post: item }) => (
-            <li key={item.slug}>
-              <Link className="prose-link" href={`/blog/${item.slug}`}>
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p className="text-brand-text-darker">
-          Argon is open source and MIT-licensed.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/quickstart" className="btn-solid">
-            Start with MongoDB locally
-          </Link>
-          <a
-            href="https://github.com/argon-lab/argon"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-solid"
-          >
-            Star on GitHub
-          </a>
-          <Link href="/features" className="btn-quiet">
-            See all features
-          </Link>
+          <time dateTime={post.date}>{dateDisplay}</time>
+          <span>{post.readingMinutes} min read</span>
+          {post.updated && (
+            <span>
+              Updated{" "}
+              <time dateTime={post.updated}>{formatDate(post.updated)}</time>
+            </span>
+          )}
         </div>
-      </div>
-    </article>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          {post.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-brand-edge px-3 py-0.5 text-xs text-brand-text-darker"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <hr className="my-10 border-brand-edge" />
+
+        {capabilityNotes && (
+          <p className="mb-8 rounded-(--radius-panel) border border-brand-edge bg-brand-surface p-5 text-sm leading-6">
+            Current capability notes: checkout materializes a physical database;
+            native actor attribution is per branch/run; undo needs complete
+            images and retained history. CLI sandboxes require watch and
+            scheduled sweep.{" "}
+            <Link className="prose-link" href="/features#capabilities">
+              Read the capability matrix
+            </Link>
+            .
+          </p>
+        )}
+        <div className="article">{children}</div>
+
+        {faq && faq.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-[1.625rem] font-semibold leading-tight text-brand-text">
+              Frequently asked questions
+            </h2>
+            <dl className="mt-6 border-t border-brand-edge">
+              {faq.map((f) => (
+                <div key={f.q} className="border-b border-brand-edge py-6">
+                  <dt className="text-lg font-semibold text-brand-text">
+                    {f.q}
+                  </dt>
+                  <dd className="mt-2 leading-7 text-brand-text-darker">
+                    {f.a}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
+        <div className="mt-16 border-t border-brand-edge-strong pt-10">
+          <h2 className="text-[1.625rem] font-semibold leading-tight text-brand-text">
+            Continue reading
+          </h2>
+          <ul className="my-6 border-t border-brand-edge">
+            {related.map(({ post: item }) => (
+              <li key={item.slug} className="border-b border-brand-edge">
+                <Link
+                  className="flex min-h-14 items-center py-3 text-lg font-medium leading-snug text-brand-text transition-colors hover:text-brand-primary"
+                  href={`/blog/${item.slug}`}
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="text-brand-text-darker">
+            Argon is open source and MIT-licensed.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/quickstart" className="btn-solid">
+              Start with MongoDB locally
+            </Link>
+            <a
+              href="https://github.com/argon-lab/argon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-quiet"
+            >
+              Star on GitHub
+            </a>
+            <Link href="/features" className="btn-quiet">
+              See all features
+            </Link>
+          </div>
+        </div>
+      </article>
+      <aside className="hidden xl:block">
+        <ArticleToc />
+      </aside>
+    </div>
   );
 }

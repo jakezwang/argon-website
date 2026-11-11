@@ -1,24 +1,32 @@
 import { product, reviewSteps } from "../product";
 export default function ReviewWorkflow() {
   return (
-    <section id="review-workflow" className="mt-14">
-      <p className="kicker mb-4">One order. Two agents. One decision.</p>
-      <h2 className="max-w-2xl text-3xl font-semibold text-brand-text">
+    <section id="review-workflow" className="mt-24 scroll-mt-24">
+      <h2 className="section-title max-w-3xl">
         Review changes to your business data
       </h2>
-      <p className="mt-4 max-w-2xl leading-7">
-        Conversation checkpoints do not capture changes to external orders and
-        prices. This example makes the MongoDB data itself reviewable.
+      <p className="lede mt-5 max-w-2xl">
+        One order, two agents, one decision. Conversation checkpoints do not
+        capture changes to external orders and prices. This example makes the
+        MongoDB data itself reviewable.
       </p>
-      <div className="mt-8 grid gap-px border border-brand-edge bg-brand-edge md:grid-cols-2">
-        {reviewSteps.map(([title, body]) => (
-          <div key={title} className="bg-brand-surface p-6">
-            <h3 className="font-mono text-sm text-brand-primary">{title}</h3>
-            <p className="mt-3 text-sm leading-7">{body}</p>
-          </div>
+      <ol className="mt-12 grid gap-y-10 md:grid-cols-2 lg:grid-cols-4">
+        {reviewSteps.map(([title, body], index) => (
+          <li key={title}>
+            <div className="flex items-center" aria-hidden="true">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-primary text-sm font-semibold tabular-nums text-brand-primary">
+                {index + 1}
+              </span>
+              <span className="h-px flex-1 bg-brand-edge-strong" />
+            </div>
+            <h3 className="mt-5 pr-8 text-lg font-semibold text-brand-text">
+              {title}
+            </h3>
+            <p className="mt-2 pr-8 text-sm leading-6">{body}</p>
+          </li>
         ))}
-      </div>
-      <p className="mt-5 text-sm leading-7">
+      </ol>
+      <p className="mt-10 max-w-3xl text-sm leading-7">
         Run the{" "}
         <a href={product.example} className="prose-link">
           complete Python example

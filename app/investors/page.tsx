@@ -8,22 +8,23 @@ export const metadata = pageMetadata(
 
 export default function InvestorsPage() {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
-      <p className="kicker mb-4">Investors</p>
-      <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-brand-text">
+    <div className="mx-auto max-w-4xl px-6 pt-14 sm:pt-20">
+      <h1 className="page-title">
         The versioning layer for MongoDB, built for the agent era
       </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-8">
+      <p className="lede mt-6 max-w-2xl">
         Postgres has Neon. MySQL has PlanetScale. MongoDB — the default database
         of a generation of application developers — has no equivalent. Argon
         fills that gap, at the moment AI agents make disposable, auditable,
         undoable databases a necessity.
       </p>
 
-      <section className="mt-14 grid gap-px border border-brand-edge bg-brand-edge sm:grid-cols-2">
-        <div className="bg-brand-dark p-6">
-          <h3 className="font-medium text-brand-text">Where it stands</h3>
-          <ul className="mt-3 space-y-2 text-sm leading-6 text-brand-text-darker">
+      <section className="mt-16 grid gap-5 sm:grid-cols-2">
+        <div className="panel p-8">
+          <h2 className="text-xl font-semibold text-brand-text [font-stretch:100%]">
+            Where it stands
+          </h2>
+          <ul className="mt-4 list-disc space-y-2.5 pl-5 text-sm leading-6 text-brand-text-darker marker:text-brand-edge-strong">
             <li>
               Open-source engine (MIT), v{product.version} shipped: branching,
               time travel, data PRs, per-actor undo
@@ -41,9 +42,11 @@ export default function InvestorsPage() {
             </li>
           </ul>
         </div>
-        <div className="bg-brand-dark p-6">
-          <h3 className="font-medium text-brand-text">Where it goes</h3>
-          <ul className="mt-3 space-y-2 text-sm leading-6 text-brand-text-darker">
+        <div className="panel p-8">
+          <h2 className="text-xl font-semibold text-brand-text [font-stretch:100%]">
+            Where it goes
+          </h2>
+          <ul className="mt-4 list-disc space-y-2.5 pl-5 text-sm leading-6 text-brand-text-darker marker:text-brand-edge-strong">
             <li>
               Model: open-source core, managed cloud on top — the path Neon
               validated
@@ -60,8 +63,8 @@ export default function InvestorsPage() {
         </div>
       </section>
 
-      <section className="mt-14 border-t border-brand-edge pt-10">
-        <p className="leading-8 text-brand-text-darker">
+      <section className="mt-16 border-t border-brand-edge pt-10">
+        <p className="lede max-w-2xl">
           Seeking strategic investors to scale the engine into a managed
           service. For the deck and a conversation:
         </p>

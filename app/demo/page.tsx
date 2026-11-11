@@ -10,15 +10,14 @@ export const metadata = pageMetadata(
 );
 export default function DemoPage() {
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <p className="kicker mb-4">How it works</p>
-      <h1 className="text-4xl font-semibold">Explore a data review</h1>
-      <p className="mt-4 max-w-2xl text-lg leading-8">
+    <div className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20">
+      <h1 className="page-title">Explore a data review</h1>
+      <p className="lede mt-6 max-w-2xl">
         Follow branching, time travel, and merge review with the illustrated
         workflows below. They run in your browser without a database connection.
         To try actual MongoDB writes, start Argon locally.
       </p>
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-8 flex flex-wrap gap-3">
         <ActionLink
           href={product.quickstart}
           event="quickstart_opened"
@@ -32,9 +31,9 @@ export default function DemoPage() {
         local quickstart runs the real engine with your own MongoDB replica set.
       </p>
       <ReviewWorkflow />
-      <section className="mt-14">
-        <h2 className="mb-5 text-2xl font-semibold">Explore the concepts</h2>
-        <p className="mb-5 text-sm">
+      <section className="mt-24">
+        <h2 className="section-title">Explore the concepts</h2>
+        <p className="mb-8 mt-4 max-w-2xl leading-7">
           This illustrated walkthrough is a simulation. Run Argon locally to
           inspect actual document changes.
         </p>

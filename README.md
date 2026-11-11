@@ -20,6 +20,29 @@ npm run test:browser
 
 `app/release.json` records the published engine and SDK source release versions; `app/product.ts` derives links and install commands from it. Update these versions only after both releases are publicly available; the quickstart and example links use matching release tags. The SDK install commands use the version-pinned PyPI package; release checks verify its non-yanked wheel is publicly available. Matching example links still use the source release tag. Shared roadmap and capability copy feeds the homepage, Agents, Features and About. The reviewed CLI/Python setup is linked from `/quickstart`; validate these commands against the corresponding engine/agents refs during a coordinated release.
 
+## Design system
+
+Tokens, type and component utilities live in `styles/globals.css`; its header
+comment states the four rules new pages should keep:
+
+1. **Inert until energized.** The page is ink on paper. Argon violet appears
+   only on live things: the active branch, focus, link underlines, hover.
+2. **Width carries hierarchy.** Headlines use the expanded width of Archivo,
+   text the normal width. No all-caps labels and no eyebrow above every heading.
+3. **Mono means literal.** IBM Plex Mono is for commands, code and document
+   data only.
+4. **Numbers and connecting lines mark real sequences only** (the quickstart
+   rail, the review steps).
+
+Colors are `brand-*` tokens. Light is the default; dark follows the system or
+the header toggle (`html[data-theme]`, saved as `argon.theme`). The `ink` class
+pins the dark palette for code blocks and the walkthrough in both themes, so use
+tokens rather than fixed colors inside them. Text pairs are checked at 4.5:1 in
+all three palettes; re-check when a token changes.
+
+`node scripts/render-brand-images.mjs` regenerates `og.png` and the icons from
+the same tokens (needs network access for the two font families).
+
 ## Vercel Web Analytics
 
 The root layout mounts `WebsiteAnalytics` once, using `@vercel/analytics/next`

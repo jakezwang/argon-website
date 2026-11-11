@@ -52,7 +52,7 @@ const scenes = [
 
 const SCENE_MS = 5000;
 const controlClass =
-  "min-h-11 min-w-11 px-3 text-sm text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
+  "min-h-11 min-w-11 rounded-(--radius-control) px-4 text-sm font-medium text-brand-text-darker transition-colors hover:bg-brand-edge/50 hover:text-brand-text disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent";
 
 function BranchHistory({ scene }: { scene: number }) {
   const edited = scene > 0;
@@ -60,14 +60,18 @@ function BranchHistory({ scene }: { scene: number }) {
   const history = scene === 2;
 
   return (
-    <div className="grid grid-cols-[3.5rem_1fr] items-center border-b border-brand-edge bg-brand-dark/50 px-4 py-2">
-      <div className="flex h-20 flex-col justify-between py-3 font-mono text-xs text-brand-text-darker">
-        <span>main</span>
-        <span className="text-brand-primary">agent</span>
+    <div className="grid grid-cols-[3.25rem_minmax(0,1fr)] border-b border-brand-edge px-5 py-5 sm:px-6">
+      <div className="relative font-mono text-xs">
+        <span className="absolute left-0 top-[19.2%] -translate-y-1/2 text-brand-text-darker">
+          main
+        </span>
+        <span className="absolute left-0 top-[80.8%] -translate-y-1/2 text-brand-primary">
+          agent
+        </span>
       </div>
       <svg
         viewBox="0 0 400 104"
-        className="h-20 w-full overflow-visible"
+        className="block h-auto w-full overflow-visible"
         aria-hidden="true"
       >
         <path
@@ -75,37 +79,47 @@ function BranchHistory({ scene }: { scene: number }) {
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="text-brand-edge"
+          className="text-brand-edge-strong"
           vectorEffect="non-scaling-stroke"
         />
-        <path
-          d="M 20 20 C 80 20 65 84 125 84"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          className="text-brand-primary"
-          vectorEffect="non-scaling-stroke"
-        />
-        {edited && (
+        <g className="glow text-brand-primary">
           <path
-            d="M 125 84 H 270"
+            d="M 20 20 C 80 20 65 84 125 84"
+            pathLength={1}
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
-            className="text-brand-primary"
-            vectorEffect="non-scaling-stroke"
+            strokeWidth="1.6"
+            className="draw-line"
           />
-        )}
-        {merged && (
-          <path
-            d="M 20 20 H 380 M 270 84 C 325 84 310 20 380 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            className="text-brand-primary"
-            vectorEffect="non-scaling-stroke"
-          />
-        )}
+          {edited && (
+            <path
+              d="M 125 84 H 270"
+              pathLength={1}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              className="draw-line"
+            />
+          )}
+          {merged && (
+            <path
+              d="M 270 84 C 325 84 310 20 380 20"
+              pathLength={1}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              className="draw-line"
+            />
+          )}
+          {merged && (
+            <path
+              d="M 20 20 H 380"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            />
+          )}
+        </g>
         {[
           { x: 20, y: 20, visible: true },
           { x: 125, y: 84, visible: true },
@@ -116,29 +130,31 @@ function BranchHistory({ scene }: { scene: number }) {
             key={x}
             cx={x}
             cy={y}
-            r={5}
-            fill={visible ? "currentColor" : "#111521"}
+            r={4.5}
+            fill={visible ? "currentColor" : "var(--color-brand-surface)"}
             stroke="currentColor"
             strokeWidth="1.5"
-            className={visible ? "text-brand-primary" : "text-brand-edge"}
+            className={
+              visible ? "text-brand-primary" : "text-brand-edge-strong"
+            }
             vectorEffect="non-scaling-stroke"
           />
         ))}
         <circle
           cx={merged ? 380 : edited ? 270 : 125}
           cy={merged ? 20 : 84}
-          r={12}
+          r={10}
           fill="none"
           stroke="currentColor"
           strokeWidth="1"
-          className="text-brand-primary"
+          className="glow text-brand-primary"
           vectorEffect="non-scaling-stroke"
         />
         {history && (
           <circle
             cx={20}
             cy={20}
-            r={16}
+            r={13}
             fill="none"
             stroke="currentColor"
             strokeDasharray="3 4"
@@ -185,11 +201,13 @@ export default function HeroDemo() {
   return (
     <section
       aria-label="Illustrated agent workflow"
-      className="min-w-0 border border-brand-edge bg-brand-surface"
+      className="ink ink-panel min-w-0 overflow-hidden"
     >
-      <div className="flex items-center justify-between gap-3 border-b border-brand-edge px-4 py-3">
+      <div className="flex items-center justify-between gap-3 border-b border-brand-edge px-5 py-3 sm:px-6">
         <p className="font-mono text-xs text-brand-text">orders / order-1</p>
-        <span className="text-xs text-brand-muted">Illustration</span>
+        <span className="rounded-full border border-brand-edge px-2.5 py-0.5 text-xs text-brand-muted">
+          Illustration
+        </span>
       </div>
 
       <div
@@ -204,84 +222,96 @@ export default function HeroDemo() {
             aria-pressed={scene === index}
             aria-controls="hero-workflow-scene"
             onClick={() => selectScene(index)}
-            className={`relative flex min-h-14 min-w-0 flex-col items-start gap-1 px-2 py-2 text-left focus-visible:z-10 focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-brand-primary focus-visible:-outline-offset-2 sm:px-3 ${
+            className={`relative flex min-h-12 min-w-0 items-center justify-center px-1 py-2 text-center text-xs font-medium leading-4 transition-colors focus-visible:z-10 focus-visible:-outline-offset-2 sm:text-sm ${
               scene === index
-                ? "bg-brand-primary/10 text-brand-primary before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-brand-primary"
-                : "text-brand-text-darker hover:bg-brand-edge/40 hover:text-brand-text"
+                ? "text-brand-text before:absolute before:inset-x-3 before:bottom-0 before:h-0.5 before:rounded-full before:bg-brand-primary"
+                : "text-brand-muted hover:bg-brand-edge/40 hover:text-brand-text"
             }`}
           >
-            <span aria-hidden="true" className="font-mono text-[10px]">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="text-xs leading-4">{step.label}</span>
+            {step.label}
           </button>
         ))}
       </div>
 
-      <div id="hero-workflow-scene">
-        <BranchHistory scene={scene} />
+      <div
+        id="hero-workflow-scene"
+        className="lg:grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]"
+      >
+        <div className="min-w-0 lg:border-r lg:border-brand-edge">
+          <BranchHistory scene={scene} />
 
-        <div className="grid grid-cols-2 divide-x divide-brand-edge border-b border-brand-edge">
-          <div role="group" aria-label="main document" className="min-w-0 p-4">
-            <p className="font-mono text-sm text-brand-text">main</p>
-            <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
-              <dt className="text-xs text-brand-text-darker">price</dt>
-              <dd className="text-4xl leading-none tracking-tight text-brand-text">
-                {merged ? "44" : "49"}
-              </dd>
-            </dl>
-            <p className="mt-3 min-h-5 text-xs leading-4 text-brand-text-darker">
-              {merged ? "Merge applied" : "Unchanged"}
-            </p>
-          </div>
-          <div
-            role="group"
-            aria-label="planner document"
-            className="min-w-0 p-4"
-          >
-            <p className="font-mono text-sm text-brand-primary">planner</p>
-            <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
-              <dt className="text-xs text-brand-text-darker">price</dt>
-              <dd className="text-4xl leading-none tracking-tight text-brand-primary">
-                {scene === 0 ? "49" : "44"}
-              </dd>
-            </dl>
-            <p className="mt-3 min-h-5 text-xs leading-4 text-brand-text-darker">
-              {current.status}
-            </p>
-          </div>
-        </div>
-
-        <div
-          className={`flex min-h-11 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-brand-edge px-4 py-2 text-xs ${
-            scene === 2 ? "bg-brand-primary/10" : "bg-brand-dark/30"
-          }`}
-        >
-          <span className="text-brand-text-darker">{current.detail}</span>
-          <span className="font-mono text-brand-primary">{current.value}</span>
-        </div>
-
-        <div
-          aria-live={playing ? "off" : "polite"}
-          aria-atomic="true"
-          className="grid px-4 py-4"
-        >
-          {scenes.map((step, index) => (
+          <div className="grid grid-cols-2 divide-x divide-brand-edge border-b border-brand-edge lg:border-b-0">
             <div
-              key={step.label}
-              aria-hidden={index !== scene}
-              className={`[grid-area:1/1] ${index === scene ? "visible" : "invisible"}`}
+              role="group"
+              aria-label="main document"
+              className="min-w-0 p-5 sm:p-6"
             >
-              <h2 className="text-base font-medium leading-6 text-brand-text">
-                {step.title}
-              </h2>
-              <p className="mt-2 text-sm leading-6">{step.description}</p>
+              <p className="font-mono text-sm text-brand-text">main</p>
+              <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
+                <dt className="text-xs text-brand-text-darker">price</dt>
+                <dd className="text-5xl leading-none tracking-tight text-brand-text sm:text-6xl">
+                  {merged ? "44" : "49"}
+                </dd>
+              </dl>
+              <p className="mt-4 min-h-5 text-xs leading-4 text-brand-text-darker">
+                {merged ? "Merge applied" : "Unchanged"}
+              </p>
             </div>
-          ))}
+            <div
+              role="group"
+              aria-label="planner document"
+              className="min-w-0 p-5 sm:p-6"
+            >
+              <p className="font-mono text-sm text-brand-primary">planner</p>
+              <dl className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono">
+                <dt className="text-xs text-brand-text-darker">price</dt>
+                <dd className="glow text-5xl leading-none tracking-tight text-brand-primary sm:text-6xl">
+                  {scene === 0 ? "49" : "44"}
+                </dd>
+              </dl>
+              <p className="mt-4 min-h-5 text-xs leading-4 text-brand-text-darker">
+                {current.status}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex min-w-0 flex-col justify-between gap-6 p-5 sm:p-6">
+          <div
+            aria-live={playing ? "off" : "polite"}
+            aria-atomic="true"
+            className="grid"
+          >
+            {scenes.map((step, index) => (
+              <div
+                key={step.label}
+                aria-hidden={index !== scene}
+                className={`[grid-area:1/1] ${index === scene ? "visible" : "invisible"}`}
+              >
+                <h2 className="text-xl font-semibold leading-7 text-brand-text [font-stretch:100%]">
+                  {step.title}
+                </h2>
+                <p className="mt-2.5 text-sm leading-6">{step.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={`flex min-h-11 flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-(--radius-control) border px-4 py-2 text-sm ${
+              scene === 2
+                ? "border-brand-primary/50 bg-brand-primary/10"
+                : "border-brand-edge bg-brand-bg"
+            }`}
+          >
+            <span className="text-brand-text-darker">{current.detail}</span>
+            <span className="font-mono text-brand-primary">
+              {current.value}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-brand-edge px-1">
+      <div className="flex items-center justify-between border-t border-brand-edge p-1.5">
         <button
           type="button"
           className={controlClass}
