@@ -363,6 +363,25 @@ graph = builder.compile(checkpointer=saver)
             requests. The public demo does not return native database
             connections.
           </p>
+          <div id="security" className="border-l-2 border-brand-primary pl-4">
+            <p className="font-medium text-brand-text">Local by default</p>
+            <p className="mt-2">
+              The console and API listen on <code>127.0.0.1</code> and, without
+              a token, answer only requests addressed to <code>localhost</code>{" "}
+              or a loopback address; list other hostnames in{" "}
+              <code>ARGON_ALLOWED_HOSTS</code>. The wire proxy also listens on
+              loopback unless you pass <code>--allow-remote</code>, and it does
+              not authenticate clients. Set <code>ARGON_API_TOKEN</code> and use
+              MongoDB authentication before exposing either one.{" "}
+              <a
+                className="prose-link"
+                href="https://github.com/argon-lab/argon/security/policy"
+              >
+                Security policy and reporting
+              </a>
+              .
+            </p>
+          </div>
           <a
             className="prose-link inline-flex min-h-11 items-center"
             href={`https://github.com/argon-lab/argon/blob/v${product.version}/docs/AGENTS.md#rest-control-plane`}

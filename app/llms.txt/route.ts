@@ -20,6 +20,20 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - MCP: follow the MongoDB and project prerequisites at https://argonlabs.tech/agents#mcp, then \`${install.mcp}\`.
 - Start with the complete local setup: https://argonlabs.tech/quickstart
 
+## MCP server
+
+- \`argon mcp\` serves 13 tools over stdio: argon_sandbox_create, argon_sandbox_discard, argon_sandbox_keep, argon_branch_list, argon_connect, argon_diff, argon_merge_preview, argon_merge_apply, argon_undo, argon_snapshot_create, argon_pin_create, argon_pin_list, argon_pin_sandbox.
+- Every tool declares MCP annotations. argon_branch_list, argon_diff and argon_pin_list are read-only; argon_merge_apply, argon_undo and argon_sandbox_discard are destructive.
+- From 2.2.0, \`argon mcp --disable-tools argon_merge_apply\` withholds the apply tool so a person applies the reviewed plan with \`argon merge apply <plan-id>\`. \`--disable-tools\` takes a comma-separated list; \`argon mcp --read-only\` offers only the three read-only tools.
+- Supported MCP revisions: 2024-11-05, 2025-03-26 and 2025-06-18 (handshake based). The 2026-07-28 per-request protocol is not implemented yet.
+
+## Local access and security
+
+- The console and API bind 127.0.0.1 and, without a token, answer only to localhost and loopback hostnames; add others with ARGON_ALLOWED_HOSTS. ARGON_API_TOKEN enables Bearer auth.
+- The wire proxy listens on loopback unless started with \`--listen <addr> --allow-remote\`; it does not authenticate clients.
+- The npm installer verifies the downloaded binary against the SHA-256 published with the package.
+- Security policy and private reporting: https://github.com/argon-lab/argon/security/policy
+
 ## Key links
 
 - Website: https://argonlabs.tech
@@ -29,6 +43,7 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - Reproducible benchmarks: https://github.com/argon-lab/benchmarks
 - Features and limits: https://argonlabs.tech/features#capabilities
 - Agent setup: https://argonlabs.tech/agents
+- Guides feed (Atom): https://argonlabs.tech/feed.xml
 - Illustrated walkthrough: https://argonlabs.tech${product.demo}
 - Hosted console: paused. Use https://argonlabs.tech/quickstart for the real engine.
 - Two-agent example: ${product.example}

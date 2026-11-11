@@ -174,6 +174,15 @@ export default function Page() {
         belongs to your application; creating a preview does not enforce one.
       </p>
       <p>
+        From Argon 2.2.0 the server can enforce part of that policy itself. Each
+        tool is labelled read-only or destructive for clients that ask before
+        destructive calls, and{" "}
+        <code>argon mcp --disable-tools argon_merge_apply</code> withholds the
+        apply tool so a person applies the plan from the CLI.{" "}
+        <code>argon mcp --read-only</code> offers only branch list, diff and pin
+        list.
+      </p>
+      <p>
         With complete images and retained history, <strong>undo</strong> can
         revert a supported captured range on the agent’s branch. Pins give runs
         the same starting document state; agent outputs can still vary. See the{" "}

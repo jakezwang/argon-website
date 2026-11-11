@@ -228,6 +228,14 @@ curl --fail --location https://argonlabs.tech/examples/mcp_review.py -o mcp_revi
         discard does not revert changes already merged into the parent. Fixture
         cleanup runs after these checks.
       </p>
+      <p>
+        <strong>Update, November 2026:</strong> from Argon 2.2.0 you can start
+        the server with <code>argon mcp --disable-tools argon_merge_apply</code>
+        . The apply tool is then neither listed nor callable, and a person
+        applies the reviewed plan with <code>argon merge apply</code>. The
+        captured requests above were not re-recorded; see the{" "}
+        <a href="/agents#mcp">agent setup</a> for the registration command.
+      </p>
 
       <h2>What this example proves</h2>
       <p>
