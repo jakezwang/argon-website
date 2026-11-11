@@ -178,8 +178,9 @@ argon projects create agent-lab`}
           </div>
           <p>
             Give the agent the sandbox connection for data writes. Each tool
-            declares whether it is read-only or destructive, so clients that ask
-            before destructive calls ask before a merge, an undo or a discard.
+            declares whether it only reads and whether it can destroy data, so
+            clients that ask before destructive calls ask before a merge, an
+            undo or a discard.
           </p>
           <h3 className="pt-3 text-xl font-semibold text-brand-text">
             Keep the merge decision with a person

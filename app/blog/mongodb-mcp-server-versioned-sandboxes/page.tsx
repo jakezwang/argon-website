@@ -175,8 +175,8 @@ export default function Page() {
       </p>
       <p>
         From Argon 2.2.0 the server can enforce part of that policy itself. Each
-        tool is labelled read-only or destructive for clients that ask before
-        destructive calls, and{" "}
+        tool declares whether it only reads and whether it can destroy data, so
+        clients can ask before destructive calls, and{" "}
         <code>argon mcp --disable-tools argon_merge_apply</code> withholds the
         apply tool so a person applies the plan from the CLI.{" "}
         <code>argon mcp --read-only</code> offers only branch list, diff and pin

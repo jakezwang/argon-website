@@ -1,4 +1,4 @@
-import { capabilities, install, product } from "../product";
+import { capabilities, features, install, product } from "../product";
 import { posts } from "../blog/posts";
 
 export const dynamic = "force-static";
@@ -7,6 +7,17 @@ export function GET() {
   const text = `# Argon
 
 > Argon is an MIT-licensed, self-hosted engine for Git-style branching, time travel, reviewed merge, and undo for MongoDB.
+
+## What you can do
+
+${features
+  .map((feature) => {
+    const commands = feature.transcript
+      .map((entry) => `\`${entry[0].replace(/[0-9a-f]{24}/, "<plan-id>")}\``)
+      .join(", ");
+    return `- **${feature.name}**: ${feature.summary} Commands: ${commands}. Good to know: ${feature.limit}`;
+  })
+  .join("\n")}
 
 ## Operating boundaries
 

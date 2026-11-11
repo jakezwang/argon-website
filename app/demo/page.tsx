@@ -11,7 +11,7 @@ export const metadata = pageMetadata(
 export default function DemoPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title">Explore a data review</h1>
+      <h1 className="page-title">Walk through a data review</h1>
       <p className="lede mt-6 max-w-2xl">
         Follow branching, time travel, and merge review with the illustrated
         workflows below. They run in your browser without a database connection.
