@@ -82,8 +82,10 @@ export default function Quickstart() {
         <p>
           npm 12 blocks package install scripts by default. The npm command
           above allows only <code>argonctl</code> to download its release
-          binary. Use npm 11.16+ with a supported Node.js version, or choose
-          Homebrew or the source build below.
+          binary, and the installer refuses a download whose SHA-256 does not
+          match the one published with the package. Use npm 11.16+ with a
+          supported Node.js version, or choose Homebrew or the source build
+          below.
         </p>
         <CodeBlock
           label="Check the installed CLI"

@@ -21,7 +21,7 @@ export const capabilities = [
   ],
   [
     "Isolation and merge",
-    "Experiments write to a separate branch database. Applying a reviewed merge explicitly changes the target branch. Use MongoDB credentials and network controls for access isolation.",
+    "Experiments write to a separate branch database. Applying a reviewed merge explicitly changes the target branch; start the MCP server with --disable-tools argon_merge_apply to keep that step with a person. Use MongoDB credentials and network controls for access isolation.",
   ],
   [
     "Writer attribution",
@@ -33,7 +33,7 @@ export const capabilities = [
   ],
   [
     "Retention and pins",
-    "Time travel is available within retained history. Pins protect the data they reference while the pin exists; keep backups and choose retention for your workload.",
+    "Time travel is available within retained history. A position whose history garbage collection has already reclaimed returns an error instead of a partial answer. Pins protect the data they reference while the pin exists; keep backups and choose retention for your workload.",
   ],
   [
     "Sandbox lifecycle",

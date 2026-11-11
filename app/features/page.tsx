@@ -52,8 +52,8 @@ export default function FeaturesPage() {
           LangGraph checkpointer (argon-agents).
         </FeatureCard>
         <FeatureCard index="/05" title="Four surfaces, one engine">
-          CLI for humans · MCP for agents (13 tools) · REST for SDKs · wire
-          proxy for stable URIs.
+          CLI for humans · MCP for agents (13 tools, restrictable per server) ·
+          REST for SDKs · wire proxy for stable URIs.
         </FeatureCard>
         <FeatureCard index="/06" title="Honest engineering">
           Every number links to a benchmark you can run with docker compose up.
