@@ -91,6 +91,14 @@ source pages, and verifies desktop/mobile rendering, destination-specific social
 metadata, visible FAQ/JSON-LD agreement, placeholder removal and release references.
 `/llms.txt` is generated from the same release data and capability limits as the site.
 
+The feature showcase on the home and features pages renders `features` in
+`app/product.ts`: one entry per job, written benefit first, with the commands and
+the output they printed. Those transcripts were captured by hand from the
+published CLI on a local replica set and are not executed by CI. When a release
+changes a command or its output, rerun the commands and update the entry. Keep
+the order benefit, command, limit; the full operating limits stay in
+`capabilities`, whose text is reused by the FAQ, `llms.txt` and several articles.
+
 The older CLI blog snippets render commands from `app/cli-examples.json`.
 `npm run test:docs` executes those exact commands against a disposable local
 MongoDB replica set with native PyMongo writes: a real diff and merge preview,

@@ -74,14 +74,23 @@ export default function AboutPage() {
               <span className="status-dot bg-brand-added" />
               Working today
             </h3>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
-              <li>Deterministic WAL engine; public reproducible benchmarks</li>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-brand-text-darker marker:text-brand-edge-strong">
               <li>
-                Branches check out as real MongoDB databases — real-driver
-                validated in CI
+                A deterministic write-ahead-log engine, with public benchmarks
+                you can rerun
               </li>
-              <li>argon diff / merge — reviewable data PRs; per-actor undo</li>
-              <li>TTL sandboxes, dataset pins, MCP server, argon-agents</li>
+              <li>
+                Branches that check out as real MongoDB databases, validated
+                against real drivers in CI
+              </li>
+              <li>
+                Reviewable data pull requests (diff and merge) and per-actor
+                undo
+              </li>
+              <li>
+                TTL sandboxes, dataset pins, an MCP server and the argon-agents
+                Python SDK
+              </li>
             </ul>
           </div>
           <div>
@@ -89,7 +98,7 @@ export default function AboutPage() {
               <span className="status-dot bg-brand-pending" />
               What&apos;s next
             </h3>
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-brand-text-darker">
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-brand-text-darker marker:text-brand-edge-strong">
               {product.roadmap.map((item) => (
                 <li key={item}>{item}</li>
               ))}

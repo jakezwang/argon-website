@@ -176,7 +176,7 @@ const cliSteps: DemoStep[] = [
     id: "preview",
     command:
       "argon import preview --uri mongodb://localhost:27017 --database shop",
-    description: "Preview the source before creating a new target project",
+    description: "Preview the source database before importing it",
     output: ["1 collection · 3 documents", "No target data created"],
     panel: sourcePanel,
   },
@@ -184,7 +184,7 @@ const cliSteps: DemoStep[] = [
     id: "import",
     command:
       "argon import database --uri mongodb://localhost:27017 --database shop --project my-app --source-quiesced",
-    description: "Import an offline source — stop writes and DDL first",
+    description: "Import it. Stop writes and schema changes first.",
     output: ["3 documents imported from shop", "History starts at LSN 1 → 3"],
     panel: {
       title: "my-app · main @ LSN 3",
@@ -213,7 +213,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "branch",
     command: "argon branches create feature-x -p my-app",
-    description: "Branch — lightweight metadata; checkout has separate costs",
+    description: "Create a branch. No documents are copied.",
     output: [
       "Branch created: feature-x",
       "Forked from main @ LSN 3 — nothing copied",
@@ -236,7 +236,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "checkout",
     command: "argon checkout -p my-app -b feature-x",
-    description: "Materialize the branch into a real MongoDB database",
+    description: "Check the branch out as a real MongoDB database",
     output: [
       "Checked out at LSN 3: 1 collection, 3 documents",
       "Connection string:",
@@ -260,7 +260,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "watch",
     command: "argon watch -p my-app -b feature-x",
-    description: "Capture direct driver writes into versioned history",
+    description: "Write with any driver while capture records the changes",
     output: [
       "Watching for changes...",
       "captured: insert products/s4 (LSN 4)",
@@ -291,7 +291,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "diff",
     command: "argon diff -p my-app -b feature-x",
-    description: "Review the branch against its parent",
+    description: "Diff the branch against main",
     output: [
       "vs main @ fork LSN 3:",
       "  + 1 added · ~ 1 modified · 0 conflicts",
@@ -313,7 +313,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "merge",
     command: "argon merge preview -p my-app -b feature-x",
-    description: "A data pull request: persisted and reviewable",
+    description: "Save a merge plan to review",
     output: [
       "Merge plan persisted (pending): 000000000000000000007d31",
       "2 changes, 0 conflicts",
@@ -336,7 +336,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "merge-apply",
     command: "argon merge apply 000000000000000000007d31",
-    description: "The branch lands on main — attributed, reviewed",
+    description: "Apply the reviewed plan to main",
     output: [
       "Applied against the exact heads the plan was computed for",
       "2 changes on main · actor: merge:feature-x",
@@ -367,7 +367,7 @@ const cliSteps: DemoStep[] = [
   {
     id: "undo",
     command: "argon undo -p my-app -b main --from-lsn 6 --dry-run",
-    description: "Preview undo of a completely captured, retained merge",
+    description: "Preview undoing that merge",
     output: [
       "Would revert 2 documents on main · 0 conflicts",
       "Compensations are new history: auditable, undoable in turn",
@@ -410,7 +410,8 @@ const agentSteps: DemoStep[] = [
   {
     id: "sandbox",
     command: "argon sandbox create -p prod --ttl 1h",
-    description: "Fork, checkout, and TTL-stamp in one command",
+    description:
+      "Create a sandbox: fork, checkout and a time limit in one command",
     output: [
       "Sandbox: sandbox-f81a (expires in 1h)",
       "Connection string:",
@@ -436,7 +437,7 @@ const agentSteps: DemoStep[] = [
   {
     id: "agent-writes",
     command: 'agent --db mongodb://…/argon_br_f81a --task "10% off all shoes"',
-    description: "The agent works against a real database, unchanged",
+    description: "The agent writes to a real database with its usual driver",
     output: [
       "agent updated 3,214 documents",
       "branch capture configured with actor: agent:price-fixer",
@@ -459,7 +460,7 @@ const agentSteps: DemoStep[] = [
   {
     id: "review",
     command: "argon diff -p prod -b sandbox-f81a",
-    description: "Audit exactly what the agent changed",
+    description: "See exactly what the agent changed",
     output: [
       "~ 3,214 modified by agent:price-fixer",
       "12 documents flagged: price = 0",
@@ -481,7 +482,7 @@ const agentSteps: DemoStep[] = [
     id: "undo-actor",
     command:
       "argon undo -p prod -b sandbox-f81a --actor agent:price-fixer --from-lsn 8113",
-    description: "Undo a branch actor’s complete, retained write range",
+    description: "Undo that agent's writes on its branch",
     output: [
       "3,214 documents reverted · 0 conflicts",
       "a document you had edited since would be reported, not clobbered",
@@ -504,7 +505,7 @@ const agentSteps: DemoStep[] = [
   {
     id: "pin",
     command: "argon pin create -p prod -b main --name eval-2026-07",
-    description: "Freeze a named dataset state for reproducible evals",
+    description: "Pin a dataset state for evals",
     output: [
       "Pin created: eval-2026-07 @ LSN 8112",
       "Protects the referenced state while the pin exists",
@@ -524,7 +525,7 @@ const agentSteps: DemoStep[] = [
   {
     id: "eval-run",
     command: "argon pin sandbox -p prod --name eval-2026-07 --ttl 1h",
-    description: "Every eval run forks the pin — identical input, every time",
+    description: "Start each eval run from the pin, with identical input",
     output: [
       "Sandbox from pin eval-2026-07",
       "run #1, #17, or #1,000 — same input state, byte for byte",
@@ -583,11 +584,11 @@ export default function InteractiveDemo() {
       <div className="mb-6">
         <p className="text-sm text-brand-text-darker">
           {activeTab === "cli" &&
-            "The full loop, from branch to data PR — the terminal drives, the panels follow."}
+            "The full loop, from import to a reviewed merge. The terminal drives; the panels show the data."}
           {activeTab === "agent" &&
-            "Sandbox an agent, audit it, undo it, pin the eval."}
+            "Sandbox an agent, review what it changed, undo it, and pin a dataset for evals."}
           {activeTab === "surfaces" &&
-            "Four surfaces, one engine: CLI, MCP, REST, wire proxy."}{" "}
+            "One engine, four ways in: CLI, MCP, REST and the wire proxy."}{" "}
           Simulated.
         </p>
       </div>

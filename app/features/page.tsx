@@ -1,32 +1,8 @@
+import Link from "next/link";
 import { pageMetadata } from "../metadata";
 import Capabilities from "../components/Capabilities";
-
-const features = [
-  [
-    "Millisecond branching",
-    "Metadata branches share history. Physical checkout creates a MongoDB database and has dataset-dependent time and storage costs.",
-  ],
-  [
-    "Time-travel queries",
-    "Inspect retained historical states, addressed by log position (LSN) or timestamp. Pins protect their referenced history.",
-  ],
-  [
-    "Deterministic by design",
-    "Same history, same state — byte for byte, property-tested in CI.",
-  ],
-  [
-    "Agent and eval workflows",
-    "Managed TTL sandboxes, branch-scoped actor undo, dataset pins, and a LangGraph checkpointer (argon-agents).",
-  ],
-  [
-    "Four surfaces, one engine",
-    "A CLI for people, an MCP server for agents (13 tools, restrictable per server), REST for SDKs, and a wire proxy for stable URIs.",
-  ],
-  [
-    "Honest engineering",
-    "Every number links to a benchmark you can run with docker compose up. What we can't back, we don't publish.",
-  ],
-] as const;
+import Transcript from "../components/Transcript";
+import { engineering, features, product, terms } from "../product";
 
 const deepDives = [
   [
@@ -54,59 +30,152 @@ export default function FeaturesPage() {
         Version control for your MongoDB data
       </h1>
       <p className="lede mt-6 max-w-2xl">
-        Lightweight metadata branching, time travel, and restore, built on a
-        deterministic write-ahead log. Open source and self-hosted.
+        Branch a database the way you branch code: isolate a change, review the
+        difference, merge it, and return to any retained state. Open source and
+        self-hosted.
       </p>
-
-      <div className="mt-16 grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map(([title, body]) => (
-          <div key={title} className="border-t border-brand-edge-strong py-7">
-            <h2 className="text-xl font-semibold text-brand-text [font-stretch:100%]">
-              {title}
-            </h2>
-            <p className="mt-2.5 text-sm leading-6">{body}</p>
-          </div>
+      <nav
+        aria-label="Features on this page"
+        className="mt-8 flex flex-wrap gap-x-7"
+      >
+        {features.map((feature) => (
+          <a
+            key={feature.id}
+            href={`#${feature.id}`}
+            className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
+          >
+            {feature.short}
+          </a>
         ))}
+      </nav>
+
+      <div className="mt-10">
+        {features.map((feature) => (
+          <section
+            key={feature.id}
+            id={feature.id}
+            aria-labelledby={`${feature.id}-heading`}
+            className="grid scroll-mt-24 gap-8 border-t border-brand-edge-strong py-12 lg:grid-cols-12 lg:gap-12"
+          >
+            <div className="lg:col-span-5">
+              <h2
+                id={`${feature.id}-heading`}
+                className="text-[1.75rem] font-semibold leading-tight text-brand-text"
+              >
+                {feature.name}
+              </h2>
+              <p className="mt-4 leading-7">{feature.summary}</p>
+              <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-brand-text-darker marker:text-brand-edge-strong">
+                {feature.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="min-w-0 lg:col-span-7">
+              <Transcript
+                entries={feature.transcript}
+                label={`${feature.name}: commands and output`}
+              />
+              <p className="mt-4 text-sm leading-6">
+                <span className="font-semibold text-brand-text">
+                  Good to know:
+                </span>{" "}
+                {feature.limit}
+              </p>
+            </div>
+          </section>
+        ))}
+        <p className="border-t border-brand-edge pt-6 text-sm leading-6 text-brand-muted">
+          Commands and output are from Argon {product.version} on a local
+          replica set, with a project named <code>shop</code>. Output is
+          abbreviated, connection strings and IDs are shortened, and times are
+          in UTC.{" "}
+          <Link className="prose-link" href="/quickstart">
+            Run them yourself
+          </Link>
+          .
+        </p>
       </div>
+
+      <section className="mt-24" aria-labelledby="engine-heading">
+        <h2 id="engine-heading" className="section-title">
+          How it is built
+        </h2>
+        <div className="mt-10 grid gap-x-12 sm:grid-cols-2">
+          {engineering.map(([title, body]) => (
+            <div key={title} className="border-t border-brand-edge py-7">
+              <h3 className="text-xl font-semibold text-brand-text">{title}</h3>
+              <p className="mt-2.5 text-sm leading-6">{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <Capabilities />
 
-      <div className="mt-24 grid gap-8 lg:grid-cols-12 lg:gap-12">
-        <p className="lede lg:col-span-7">
-          Everything is a view over one append-only log: branches are pointers
-          into it, time-travel replays it (deterministically, property-tested),
-          and checkout materializes it into a real MongoDB database.
-        </p>
-        <div className="lg:col-span-5">
-          <h2 className="text-sm font-semibold text-brand-text [font-stretch:100%]">
-            The deep dives
-          </h2>
-          <ul className="mt-3 border-t border-brand-edge">
-            {deepDives.map(([label, href]) => (
-              <li key={href} className="border-b border-brand-edge">
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-12 items-center justify-between gap-4 text-sm font-medium text-brand-text transition-colors hover:text-brand-primary"
-                >
-                  {label}
-                  <svg
-                    viewBox="0 0 16 16"
-                    className="h-3.5 w-3.5 shrink-0 text-brand-muted"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    aria-hidden="true"
-                  >
-                    <path d="M5 3h8v8M13 3 3 13" />
-                  </svg>
-                </a>
-              </li>
+      <section
+        id="terms"
+        className="mt-24 scroll-mt-24"
+        aria-labelledby="terms-heading"
+      >
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-4">
+            <h2 id="terms-heading" className="section-title">
+              Terms
+            </h2>
+            <p className="mt-4 max-w-sm leading-7">
+              The words this site and the CLI use, defined once.
+            </p>
+          </div>
+          <dl className="border-t border-brand-edge-strong lg:col-span-8">
+            {terms.map(([term, definition]) => (
+              <div
+                key={term}
+                className="grid gap-x-8 gap-y-1 border-b border-brand-edge py-5 sm:grid-cols-[11rem_minmax(0,1fr)]"
+              >
+                <dt className="font-semibold text-brand-text">{term}</dt>
+                <dd className="text-sm leading-6 text-brand-text-darker">
+                  {definition}
+                </dd>
+              </div>
             ))}
-          </ul>
+          </dl>
         </div>
-      </div>
+      </section>
+
+      <section className="mt-24 grid gap-8 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-7">
+          <h2 className="section-title">Go deeper</h2>
+          <p className="mt-4 max-w-xl leading-7">
+            The reference documents live with the source, at the version you
+            install.
+          </p>
+        </div>
+        <ul className="border-t border-brand-edge lg:col-span-5">
+          {deepDives.map(([label, href]) => (
+            <li key={href} className="border-b border-brand-edge">
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-12 items-center justify-between gap-4 text-sm font-medium text-brand-text transition-colors hover:text-brand-primary"
+              >
+                {label}
+                <svg
+                  viewBox="0 0 16 16"
+                  className="h-3.5 w-3.5 shrink-0 text-brand-muted"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M5 3h8v8M13 3 3 13" />
+                </svg>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

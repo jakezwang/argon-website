@@ -11,13 +11,16 @@ export default function Capabilities() {
           </p>
         </div>
         <dl className="border-t border-brand-edge-strong lg:col-span-8">
-          {capabilities.map(([title, body]) => (
+          {capabilities.map(([title, body, lead]) => (
             <div
               key={title}
               className="grid gap-x-8 gap-y-2 border-b border-brand-edge py-6 sm:grid-cols-[11rem_minmax(0,1fr)]"
             >
               <dt className="font-semibold text-brand-text">{title}</dt>
               <dd className="text-sm leading-6 text-brand-text-darker">
+                <span className="mb-1.5 block text-base font-medium leading-6 text-brand-text">
+                  {lead}
+                </span>
                 {body}
               </dd>
             </div>

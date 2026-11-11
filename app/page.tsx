@@ -2,7 +2,8 @@ import Link from "next/link";
 import HeroDemo from "./components/HeroDemo";
 import QuickStartCommand from "./components/QuickStartCommand";
 import { ActionLink } from "./components/Funnel";
-import { product } from "./product";
+import Transcript from "./components/Transcript";
+import { features, product } from "./product";
 
 const integrations = [
   {
@@ -99,6 +100,47 @@ export default function HomePage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-6">
+        <section className="pt-24 sm:pt-32" aria-labelledby="features-heading">
+          <div className="max-w-2xl">
+            <h2 id="features-heading" className="section-title">
+              What you can do with a branch
+            </h2>
+            <p className="mt-5 leading-7">
+              Each of these is a command you can run today, against your own
+              MongoDB. The examples use a project named{" "}
+              <code className="font-mono text-[0.9em]">shop</code>.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-x-12 gap-y-12 md:grid-cols-2">
+            {features.map((feature) => (
+              <div key={feature.id} className="flex min-w-0 flex-col">
+                <h3 className="text-xl font-semibold text-brand-text">
+                  <Link
+                    href={`/features#${feature.id}`}
+                    className="transition-colors hover:text-brand-primary"
+                  >
+                    {feature.name}
+                  </Link>
+                </h3>
+                <p className="mb-4 mt-2 flex-1 leading-7">{feature.summary}</p>
+                <Transcript
+                  entries={feature.transcript}
+                  label={`${feature.name}: command`}
+                  commandsOnly
+                />
+              </div>
+            ))}
+          </div>
+          <p className="mt-10 max-w-3xl text-sm leading-7">
+            History features depend on capture and on how much history you
+            retain.{" "}
+            <Link href="/features" className="prose-link">
+              See each feature with its output and limits
+            </Link>
+            .
+          </p>
+        </section>
+
         <section
           className="grid gap-10 pt-24 sm:pt-32 lg:grid-cols-12 lg:gap-12"
           aria-labelledby="connect-heading"
@@ -150,9 +192,16 @@ export default function HomePage() {
                 In the walkthrough
               </h3>
               <p className="mt-3 leading-7">
-                Follow sample document states through branching, review, and a
-                merge. The illustration runs in your browser.
+                Step through a sample order as it is branched, changed, reviewed
+                and merged. It runs in your browser, with nothing to install.
               </p>
+              <ActionLink
+                href={product.demo}
+                event="demo_opened"
+                className="prose-link mt-3 inline-flex min-h-11 items-center text-sm font-medium"
+              >
+                {product.demoLabel}
+              </ActionLink>
             </div>
             <div className="panel p-7 sm:p-8">
               <h3 className="text-xl font-semibold text-brand-text">
@@ -162,6 +211,13 @@ export default function HomePage() {
                 Connect your own MongoDB replica set. Agents write to separate
                 branch databases; applying a reviewed merge changes the target.
               </p>
+              <ActionLink
+                href={product.quickstart}
+                event="quickstart_opened"
+                className="prose-link mt-3 inline-flex min-h-11 items-center text-sm font-medium"
+              >
+                Start locally
+              </ActionLink>
             </div>
           </div>
           <p className="mt-6 max-w-3xl text-sm leading-7">
@@ -169,8 +225,8 @@ export default function HomePage() {
             Physical checkout takes time and storage that depend on the dataset.{" "}
             <Link href="/features#capabilities" className="prose-link">
               Read the operating boundaries
-            </Link>
-            .
+            </Link>{" "}
+            before you connect a real workload.
           </p>
         </section>
 
@@ -179,7 +235,7 @@ export default function HomePage() {
           aria-labelledby="evidence-heading"
         >
           <h2 id="evidence-heading" className="section-title lg:col-span-5">
-            Check the work
+            Verify it yourself
           </h2>
           <div className="lg:col-span-7">
             <p className="lede">

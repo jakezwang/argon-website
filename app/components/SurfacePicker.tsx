@@ -31,14 +31,14 @@ const surfaces: Surface[] = [
   {
     key: "mcp",
     tab: "MCP server",
-    who: "Claude Code · Cursor · any MCP client",
-    title: "Agents drive the whole loop themselves",
-    setupLabel: "register once",
+    who: "Claude Code, Cursor, any MCP client",
+    title: "The agent runs the workflow itself",
+    setupLabel: "Register it once",
     setup: install.mcp,
     blurb:
-      "Exposes the workflow as 13 tools over stdio, each labelled read-only or destructive for clients that ask first. The agent opens its own branch, works, diffs, and merges (or pass --disable-tools argon_merge_apply so a person applies the plan) — and the server runs a change-stream capture ingester per sandbox, while the service runs; check capture health and image completeness.",
+      "Thirteen tools over stdio. Each one declares whether it only reads and whether it can destroy data. The agent opens its own sandbox, does its work and prepares a merge plan. Pass --disable-tools argon_merge_apply if a person should apply it. While the server runs it captures every sandbox it hands out; check capture health before you rely on history.",
     exchange: {
-      sendLabel: "the agent calls a tool",
+      sendLabel: "The agent calls a tool",
       send: [
         "{",
         '  "method": "tools/call",',
@@ -48,7 +48,7 @@ const surfaces: Surface[] = [
         "  }",
         "}",
       ],
-      recvLabel: "it gets a real database back",
+      recvLabel: "It gets a real database back",
       recv: [
         { text: "{" },
         { text: '  "branch":', kind: "key" },
@@ -67,12 +67,12 @@ const surfaces: Surface[] = [
   {
     key: "rest",
     tab: "REST API",
-    who: "language SDKs · services · any HTTP client",
+    who: "SDKs, services, any HTTP client",
     title: "The same workflow over HTTP",
-    setupLabel: "start the control plane",
+    setupLabel: "Start the local API",
     setup: "argon console --no-browser  # 127.0.0.1:1818",
     blurb:
-      "Use HTTP to manage projects, sandboxes, history and reviewed merges from any language. The Python client wraps this API; ordinary MongoDB drivers handle sandbox data writes.",
+      "Manage projects, sandboxes, history and reviewed merges from any language. HTTP is the control plane only: your MongoDB driver reads and writes the data. The Python client wraps this API.",
     exchange: {
       sendLabel: "POST a sandbox",
       send: [
@@ -93,23 +93,23 @@ const surfaces: Surface[] = [
       ],
     },
     footnote:
-      "see the REST reference for /api/v1/projects/:p/branches, merge-plans, undo and pins",
+      "The REST reference lists every endpoint: branches, merge plans, undo and pins.",
   },
   {
     key: "proxy",
     tab: "Wire proxy",
-    who: "existing apps · stable connection strings",
-    title: "Switch branches without changing config",
-    setupLabel: "run the proxy",
+    who: "Existing apps, stable connection strings",
+    title: "Switch branches without changing your config",
+    setupLabel: "Run the proxy",
     setup: "argon proxy      # mongodb://127.0.0.1:27018",
     blurb:
-      "Point your app at the proxy once. The database alias selects the project and branch — no checkout/release dance, no connection string churn in your config. The alias survives across checkout cycles. The proxy listens on loopback only unless you pass --allow-remote.",
+      "Point your app at the proxy once. The database name in the URI selects the project and branch, so the connection string stays the same when a branch is checked out again. The proxy listens on loopback only unless you pass --allow-remote.",
     exchange: {
-      sendLabel: "your app connects",
+      sendLabel: "Your app connects",
       send: [
         'mongosh "mongodb://localhost:27018/prod~feature-x?directConnection=true"',
       ],
-      recvLabel: "routed to the branch database",
+      recvLabel: "Routed to the branch database",
       recv: [
         { text: "→ argon_br_9f2c1a  (branch: feature-x)", kind: "val" },
         { text: "" },
@@ -117,25 +117,25 @@ const surfaces: Surface[] = [
         { text: "the app config never changes", kind: "comment" },
       ],
     },
-    footnote: "a read-your-writes barrier for the proxy is on the roadmap",
+    footnote: "A read-your-writes barrier for the proxy is on the roadmap.",
   },
   {
     key: "sdk",
     tab: "argon-agents",
-    who: "Python · LangGraph · Mem0",
-    title: "Review external business data",
-    setupLabel: "install",
+    who: "Python, LangGraph, Mem0",
+    title: "Review an agent run from Python",
+    setupLabel: "Install",
     setup: install.langgraph,
-    blurb: `The same-pin order example uses PyMongo to compare planner and executor proposals, inspect a conflict and verify undo. Install SDK ${product.sdkVersion} from PyPI and run the matching example below.`,
+    blurb: `The example starts two agents from one pin, writes with PyMongo, compares their proposals, meets a real conflict and verifies undo. Install SDK ${product.sdkVersion} from PyPI and run it below.`,
     exchange: {
-      sendLabel: "run the reviewed source example",
+      sendLabel: "Run the example",
       send: [
         `git clone --branch v${product.sdkVersion} https://github.com/argon-lab/argon-agents.git`,
         "cd argon-agents",
         install.python,
         "ARGON_API_URL=http://127.0.0.1:1818 python examples/two_agent_review.py",
       ],
-      recvLabel: "asserted outcomes",
+      recvLabel: "What it asserts",
       recv: [
         { text: "same pin → identical $49 input", kind: "val" },
         { text: "planner $44 adopted; executor $1 conflicts", kind: "val" },
@@ -143,7 +143,7 @@ const surfaces: Surface[] = [
       ],
     },
     footnote:
-      "also ships a Mem0 factory and create_pin / sandbox_from_pin for eval harnesses",
+      "The SDK also has a Mem0 factory, plus create_pin and sandbox_from_pin for eval harnesses.",
   },
 ];
 
