@@ -36,7 +36,7 @@ const surfaces: Surface[] = [
     setupLabel: "register once",
     setup: install.mcp,
     blurb:
-      "Exposes the workflow as 13 tools over stdio. The agent opens its own branch, works, diffs, and merges — and the server runs a change-stream capture ingester per sandbox, while the service runs; check capture health and image completeness.",
+      "Exposes the workflow as 13 tools over stdio, each labelled read-only or destructive for clients that ask first. The agent opens its own branch, works, diffs, and merges (or pass --disable-tools argon_merge_apply so a person applies the plan) — and the server runs a change-stream capture ingester per sandbox, while the service runs; check capture health and image completeness.",
     exchange: {
       sendLabel: "the agent calls a tool",
       send: [
@@ -101,9 +101,9 @@ const surfaces: Surface[] = [
     who: "existing apps · stable connection strings",
     title: "Switch branches without changing config",
     setupLabel: "run the proxy",
-    setup: "argon proxy      # mongodb://localhost:27018",
+    setup: "argon proxy      # mongodb://127.0.0.1:27018",
     blurb:
-      "Point your app at the proxy once. The database alias selects the project and branch — no checkout/release dance, no connection string churn in your config. The alias survives across checkout cycles.",
+      "Point your app at the proxy once. The database alias selects the project and branch — no checkout/release dance, no connection string churn in your config. The alias survives across checkout cycles. The proxy listens on loopback only unless you pass --allow-remote.",
     exchange: {
       sendLabel: "your app connects",
       send: [

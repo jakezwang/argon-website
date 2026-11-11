@@ -167,8 +167,33 @@ argon projects create agent-lab`}
             </p>
           </div>
           <p>
-            Give the agent the sandbox connection for data writes. Keep applying
-            a merge as an explicit review step in your workflow.
+            Give the agent the sandbox connection for data writes. Each tool
+            declares whether it is read-only or destructive, so clients that ask
+            before destructive calls ask before a merge, an undo or a discard.
+          </p>
+          <h3 className="pt-2 text-lg font-medium">
+            Keep the merge decision with a person
+          </h3>
+          <p>
+            By default the agent can apply a merge plan it prepared itself. From
+            Argon 2.2.0 you can withhold that tool, so it is neither listed nor
+            callable, and apply the plan you reviewed from a terminal.
+          </p>
+          <CodeBlock
+            label="Register Argon without the merge tool"
+            language="bash"
+            code={`claude mcp add --transport stdio \\
+  --env MONGODB_URI='mongodb://localhost:27017/?replicaSet=rs0' \\
+  argon -- argon mcp --disable-tools argon_merge_apply
+
+# after reading the plan the agent prepared
+argon merge apply <plan-id>`}
+          />
+          <p>
+            <code>--disable-tools</code> takes a comma-separated list.{" "}
+            <code>argon mcp --read-only</code> offers only the branch list, diff
+            and pin list tools. In Cursor, add the same flags to{" "}
+            <code>args</code>.
           </p>
         </div>
       </section>
