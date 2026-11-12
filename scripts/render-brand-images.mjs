@@ -28,10 +28,10 @@ const share = `${head}<body style="width:1200px;height:630px;background:#f5f5f8;
   </div>
   <div style="font-size:32px;font-weight:600;font-stretch:112%;letter-spacing:-0.02em">argon</div>
 </div>
-<h1 style="margin-top:36px;font-size:82px;line-height:1;font-weight:560;font-stretch:114%;letter-spacing:-0.036em">Git for MongoDB,<br>built for AI agents</h1>
-<p style="margin-top:22px;font-size:28px;line-height:1.4;color:#4a4d66;max-width:900px">Give each agent its own database branch. Review what to merge.</p>
+<h1 style="margin-top:36px;font-size:82px;line-height:1;font-weight:560;font-stretch:114%;letter-spacing:-0.036em">MongoDB sandboxes<br>for AI agents</h1>
+<p style="margin-top:22px;font-size:28px;line-height:1.4;color:#4a4d66;max-width:900px">Give every agent run its own database. Review what to merge.</p>
 <div style="margin-top:auto;height:138px;border-radius:18px;background:#15141f;border:1px solid #2b2a3c;display:flex;align-items:center;padding:0 40px;gap:28px;box-shadow:0 28px 60px -32px rgb(20 20 42 / .55)">
-  <div style="font:400 18px/1 'IBM Plex Mono',monospace;color:#abaabf;flex:0 0 auto;display:flex;flex-direction:column;gap:33px"><span>main</span><span style="color:#b5a8ff">agent</span></div>
+  <div style="font:400 18px/1 'IBM Plex Mono',monospace;color:#abaabf;flex:0 0 auto;display:flex;flex-direction:column;gap:33px"><span>main</span><span style="color:#b5a8ff">sandbox</span></div>
   <svg viewBox="0 0 900 104" preserveAspectRatio="none" style="flex:1 1 0;min-width:0;height:84px;overflow:visible">
     <path d="M 20 20 H 880 M 20 20 C 150 20 120 84 260 84 H 620 C 760 84 730 20 880 20" fill="none" stroke="#424158" stroke-width="2"/>
     <g style="filter:drop-shadow(0 0 6px rgb(181 168 255 / .75))" fill="none" stroke="#b5a8ff" stroke-width="3">

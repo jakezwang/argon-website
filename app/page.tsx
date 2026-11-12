@@ -31,14 +31,15 @@ export default function HomePage() {
     <>
       <section className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20 lg:pt-24">
         <h1 className="display text-[2.75rem] text-brand-text sm:text-6xl lg:text-[5.25rem]">
-          Git for MongoDB,
+          MongoDB sandboxes
           <br />
-          built for AI agents
+          for AI agents
         </h1>
         <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-12 lg:items-end">
           <p className="lede max-w-xl lg:col-span-6">
-            Give each agent its own database branch. Test changes, revisit
-            earlier states, and review what to merge.
+            Give every agent run its own real MongoDB database, forked from your
+            data. Review what it changed, merge what works, and discard the
+            rest.
           </p>
           <div className="lg:col-span-6 lg:justify-self-end">
             <div className="flex flex-wrap gap-3">
