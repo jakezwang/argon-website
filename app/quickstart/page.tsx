@@ -6,7 +6,7 @@ import { install, product } from "../product";
 
 export const metadata = pageMetadata(
   "Local quickstart",
-  "Install the Argon CLI, start local MongoDB, then run two agent proposals through a real branch, review, merge and undo workflow.",
+  "Install the Argon CLI, start local MongoDB, then give two agents their own MongoDB sandboxes and run a real review, merge and undo.",
   "/quickstart",
 );
 
@@ -58,11 +58,11 @@ function Step({
 export default function Quickstart() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title max-w-3xl">Run your first agent review</h1>
+      <h1 className="page-title max-w-3xl">Run your first agent sandbox</h1>
       <p className="lede mt-6 max-w-2xl">
-        Start with a $49 order. Let two agents try different prices in separate
-        branches, review the changes, then verify a merge and undo. The example
-        uses real MongoDB writes and needs no model API key.
+        Start with a $49 order. Give two agents their own MongoDB sandboxes, let
+        each try a different price, review the changes, then verify a merge and
+        undo. The example uses real MongoDB writes and needs no model API key.
       </p>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-brand-muted">
         You need Docker, npm or Homebrew, and Python 3.10+. The commands below

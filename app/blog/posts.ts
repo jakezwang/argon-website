@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "code-sandbox-vs-data-sandbox-for-ai-agents",
+    title:
+      "Code Sandboxes Isolate What Agents Run. What Isolates What They Write?",
+    description:
+      "A code sandbox contains agent-written code, not its database writes. See what a MongoDB data sandbox adds, with a runnable example and its limits.",
+    date: "2026-11-11",
+    tags: ["AI Agents", "MongoDB", "Sandbox"],
+    readingMinutes: 8,
+  },
+  {
     slug: "validate-mongodb-agent-catalog-changes",
     title:
       "Zero Conflicts, Wrong Price: Validate MongoDB Agent Catalog Changes",
