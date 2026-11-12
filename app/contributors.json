@@ -1,0 +1,19 @@
+[
+  {
+    "login": "dajiaohuang",
+    "name": "Wu Shuwen",
+    "url": "https://github.com/dajiaohuang",
+    "avatar": "/contributors/dajiaohuang.jpg",
+    "firstMergedAt": "2026-11-02",
+    "contributions": [
+      {
+        "repository": "argon-lab/argon",
+        "number": 60,
+        "title": "fix: reject non-positive sandbox TTL extensions",
+        "url": "https://github.com/argon-lab/argon/pull/60",
+        "mergedAt": "2026-11-02",
+        "release": "v2.1.4"
+      }
+    ]
+  }
+]

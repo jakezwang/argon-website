@@ -2,6 +2,16 @@ import { pageMetadata } from "../metadata";
 import { product } from "../product";
 import Link from "next/link";
 import Image from "next/image";
+import contributors from "../contributors.json";
+
+const goodFirstIssues =
+  "https://github.com/argon-lab/argon/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22";
+
+// "fix: reject X" reads better here as "Reject X".
+function changeTitle(title: string) {
+  const text = title.replace(/^[a-z]+(\([^)]*\))?!?:\s*/, "");
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 export const metadata = pageMetadata(
   "About Argon — Database Workflows for AI Agents",
@@ -152,6 +162,111 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
+      </section>
+
+      {/* Contributors */}
+      <section id="contributors" className="mt-24 scroll-mt-28">
+        <h2 className="section-title">Contributors</h2>
+        <p className="mt-4 max-w-2xl leading-8">
+          Argon is better because of people outside the team who found a problem
+          and fixed it. Thank you. Each change is listed with the release it
+          shipped in.
+        </p>
+        <ul className="panel mt-8 divide-y divide-brand-edge">
+          {contributors.map((contributor) => (
+            <li
+              key={contributor.login}
+              className="grid gap-5 p-6 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8 sm:p-8"
+            >
+              <div className="flex items-center gap-4">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-brand-edge">
+                  <Image
+                    src={contributor.avatar}
+                    alt=""
+                    fill
+                    sizes="56px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="truncate text-lg font-semibold text-brand-text">
+                    <Link
+                      href={contributor.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-brand-primary"
+                    >
+                      {contributor.name}
+                    </Link>
+                  </h3>
+                  <p className="truncate text-sm text-brand-muted">
+                    @{contributor.login}
+                  </p>
+                </div>
+              </div>
+              <ul className="space-y-3 self-center text-sm leading-6">
+                {contributor.contributions.map((change) => (
+                  <li key={change.url}>
+                    <Link
+                      href={change.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="prose-link"
+                    >
+                      {changeTitle(change.title)}
+                    </Link>
+                    <span className="block text-brand-muted">
+                      {change.release ? (
+                        <>
+                          Shipped in{" "}
+                          <span className="font-mono text-[0.92em]">
+                            {change.release}
+                          </span>
+                        </>
+                      ) : (
+                        "Merged, in the next release"
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+          <li className="grid gap-5 p-6 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8 sm:p-8">
+            <div className="flex items-center gap-4">
+              <div
+                aria-hidden="true"
+                className="h-14 w-14 shrink-0 rounded-full border border-dashed border-brand-control"
+              />
+              <h3 className="text-lg font-semibold text-brand-text">You?</h3>
+            </div>
+            <div className="self-center text-sm leading-6">
+              <p>
+                Issues marked as a good first issue are scoped to a few files
+                and say where to look. Merge one and you are listed here and
+                named in the release notes.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link
+                  href={goodFirstIssues}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-quiet"
+                >
+                  Pick a first issue
+                </Link>
+                <Link
+                  href="https://github.com/argon-lab/argon/blob/master/CONTRIBUTING.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="prose-link inline-flex min-h-11 items-center font-medium"
+                >
+                  Read the contributing guide
+                </Link>
+              </div>
+            </div>
+          </li>
+        </ul>
       </section>
 
       {/* License + CTA */}

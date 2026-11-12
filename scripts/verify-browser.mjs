@@ -376,6 +376,36 @@ try {
         "Argon Labs",
       );
     }
+    if (route === "/about") {
+      const { default: contributors } = await import(
+        "../app/contributors.json",
+        { with: { type: "json" } }
+      );
+      const section = page.locator("#contributors");
+      for (const contributor of contributors) {
+        const row = section
+          .locator("li")
+          .filter({ has: page.locator(`a[href="${contributor.url}"]`) });
+        assert.equal(await row.count(), 1, `${contributor.login}: listed once`);
+        for (const change of contributor.contributions) {
+          assert.equal(
+            await row.locator(`a[href="${change.url}"]`).count(),
+            1,
+            `${contributor.login}: ${change.url} is linked`,
+          );
+        }
+        await row.scrollIntoViewIfNeeded();
+        await page.waitForFunction(
+          (image) => image.complete && image.naturalWidth > 0,
+          await row.locator("img").elementHandle(),
+        );
+      }
+      assert.equal(
+        await section.locator('a[href*="good+first+issue"]').count(),
+        1,
+        "/about: contributors section invites a first issue",
+      );
+    }
     if (route === "/blog/validate-mongodb-agent-catalog-changes") {
       const download = await context.request.get(
         `${origin}/examples/catalog_review.py`,

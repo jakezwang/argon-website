@@ -190,6 +190,7 @@ const Footer = () => (
               href: "https://github.com/argon-lab/argon/discussions",
               external: true,
             },
+            { label: "Contributors", href: "/about#contributors" },
             {
               label: "Security",
               href: "https://github.com/argon-lab/argon/security/policy",
