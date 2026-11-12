@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Observe real Argon 2.2.0 sandbox expiry on a disposable local replica set.
+"""Observe real Argon 2.3.0 sandbox expiry on a disposable local replica set.
 
 Download mcp_review.py into the same directory. Requires Python 3.12+, pymongo,
 ARGON_BIN, and ARGON_TEST_MONGODB_URI. Runs for about 2.5 minutes: no clock or
@@ -30,7 +30,7 @@ def main():
         raise SystemExit("Run without -O: this example depends on assertions")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--expected-version", default="2.2.0")
+    parser.add_argument("--expected-version", default="2.3.0")
     args = parser.parse_args()
     uri = os.environ.get("ARGON_TEST_MONGODB_URI", "")
     if not uri:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise application-level catalog validation against public Argon 2.2.0.
+"""Exercise application-level catalog validation against public Argon 2.3.0.
 Requires Python 3.12+, pymongo>=4.6,<5 and a disposable local MongoDB replica set.
 Run --scenario valid|invalid-value|unexpected-field|extra-document|delete-document
 with --mongo-uri and a fresh --output-dir. The valid fixture is automatically
@@ -147,7 +147,7 @@ def main():
     parser.add_argument("--binary", default=os.environ.get("ARGON_BIN", "argon"))
     parser.add_argument("--mongo-uri", default=os.environ.get("ARGON_TEST_MONGODB_URI"),
                         help="Disposable local replica set, without credentials; or ARGON_TEST_MONGODB_URI")
-    parser.add_argument("--expected-version", default="2.2.0", help="Exact release to validate (default: %(default)s)")
+    parser.add_argument("--expected-version", default="2.3.0", help="Exact release to validate (default: %(default)s)")
     parser.add_argument("--output-dir", type=Path, required=True, help="New directory for real protocol messages and results")
     parser.add_argument("--scenario", choices=["valid", "invalid-value", "unexpected-field", "extra-document", "delete-document"], required=True)
     args = parser.parse_args()
