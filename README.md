@@ -50,9 +50,16 @@ Content-Security-Policy only allows images from this origin. Maintainers and
 automated accounts are excluded by the lists at the top of
 `scripts/sync-contributors.mjs`.
 
-The weekly Contributors workflow runs `npm run test:contributors` and opens an
-issue when a merged pull request is missing from the page. Run the sync, review
-the diff and open a pull request.
+The Contributors workflow keeps the list current on its own. Every hour, and
+at once when the engine repository reports a merged pull request, it runs
+`scripts/publish-contributors.sh`: rebuild the list and, if someone new has
+landed a change, commit it to master, which deploys the site. It refuses to
+publish a list that got shorter. `npm run test:contributors` checks the
+committed list by hand.
+
+The instant trigger is a `repository_dispatch` event of type `contributors`.
+The engine repository sends it when its `WEBSITE_DISPATCH_TOKEN` secret is
+set; without the secret the hourly run still picks the change up.
 
 `node scripts/render-brand-images.mjs` regenerates `og.png` and the icons from
 the same tokens (needs network access for the two font families).

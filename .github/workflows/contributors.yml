@@ -1,39 +1,39 @@
 name: Contributors
-# The About page thanks outside contributors from app/contributors.json.
-# This job notices when a newly merged pull request is missing from it and
-# opens an issue, so nobody has to remember to look.
+# Keeps the About page's list of outside contributors current without anyone
+# having to remember. It rebuilds app/contributors.json from the merged pull
+# requests of the public Argon repositories and, when someone new has landed
+# a change, commits the result to master, which deploys the site.
+#
+# It runs every hour, and at once when the engine repository reports a merged
+# pull request (repository_dispatch) or when started by hand.
 on:
   schedule:
-    - cron: "17 8 * * 1"
+    - cron: "23 * * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [contributors]
 permissions: {}
 
+concurrency:
+  group: contributors
+  cancel-in-progress: false
+
 jobs:
-  check:
+  sync:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      issues: write
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
+      contents: write
     steps:
+      # The token stays in the checkout because the last step pushes. Nothing
+      # here installs dependencies: the script only uses Node's standard
+      # library, so no third-party code runs with write access.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          persist-credentials: false
+          ref: master
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
-      - id: check
-        run: npm run test:contributors
-      - name: Open an issue when the list is stale
-        if: failure() && steps.check.outcome == 'failure'
+      - name: Rebuild the list
         env:
-          GH_TOKEN: ${{ github.token }}
-          TITLE: Contributors list is out of date
-        run: |
-          open=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number --jq length)
-          [ "$open" = 0 ] || exit 0
-          gh issue create --title "$TITLE" --body "A merged pull request in one of the Argon repositories is missing from the About page.
-
-          Run \`npm run sync:contributors\`, review the diff in \`app/contributors.json\` and \`public/contributors/\`, and open a pull request."
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bash scripts/publish-contributors.sh
