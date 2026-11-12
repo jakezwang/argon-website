@@ -265,12 +265,23 @@ db.products.deleteOne({ _id: "p3" });`}</code>
         <code>{`Error: exact post-image unavailable for update on audit_log; history is incomplete; enable changeStreamPreAndPostImages before writing`}</code>
       </pre>
       <p>
-        Collections that come from the parent are ready for exact capture. A
-        collection the agent creates is not, until you run{" "}
-        <code>argon collections prepare</code> for it or create it with pre- and
-        post-images enabled. Agents create collections freely, so decide up
-        front which ones a run may create and prepare them. Other limits:
+        That run used Argon 2.2.0. Before 2.3.1, collections that come from the
+        parent are ready for exact capture and a collection the agent creates is
+        not, until you run <code>argon collections prepare</code> for it or
+        create it with pre- and post-images enabled.
       </p>
+      <p>
+        <strong>Update, November 12, 2026:</strong> Argon 2.3.1 fixes the case
+        shown above. When a change arrives without its images, capture now asks
+        MongoDB for the document as it stood at that change, so a collection the
+        agent creates is captured exactly while capture is running, or when the
+        run is reviewed within MongoDB&apos;s snapshot history (five minutes by
+        default). One case still stops capture with the same kind of error: an
+        update that is followed by another change to the same document inside
+        one transaction, on a collection created moments earlier. The error
+        above is kept as it was recorded.
+      </p>
+      <p>Other limits:</p>
       <ul>
         <li>
           <strong>It is not a security boundary.</strong> {limits.isolation}

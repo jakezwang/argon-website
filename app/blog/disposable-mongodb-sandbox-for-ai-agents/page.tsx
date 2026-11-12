@@ -135,7 +135,9 @@ ${cli.sweep}`}</code>
       <p>
         Install in a Python virtual environment; this uses the matching PyPI
         release. The package supplies a LangGraph checkpointer and a Mem0
-        sandbox factory. Prepare exact images on new collections before updates.
+        sandbox factory. Before Argon 2.3.1, prepare exact images on new
+        collections before updates; from 2.3.1 capture reads them back while it
+        is running.
       </p>
 
       <h2>Review MongoDB documents before merging</h2>
@@ -191,8 +193,9 @@ ${cli.sweep}`}</code>
         a three-second CLI TTL, and a six-second MCP TTL (
         <code>ttl_minutes: 0.1</code>). It waits for real elapsed time without
         changing the clock or expiry records. Download both Python files into
-        the same directory, install Argon {product.version} and Python 3.12+ with PyMongo,
-        and point the example at a disposable local MongoDB replica set. The{" "}
+        the same directory, install Argon {product.version} and Python 3.12+
+        with PyMongo, and point the example at a disposable local MongoDB
+        replica set. The{" "}
         <a href="/blog/mongodb-mcp-sandbox-reviewed-merge-tutorial">
           MCP tutorial prerequisites
         </a>{" "}

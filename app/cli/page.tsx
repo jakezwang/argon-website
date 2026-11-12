@@ -29,7 +29,7 @@ argon sandbox list    -p <project>
 argon sandbox keep    -p <project> -b <sandbox>
 argon sandbox discard -p <project> -b <sandbox>
 argon sandbox sweep   -p <project>`,
-    note: "--watch (2.3.0 and newer) captures the sandbox's writes in the foreground until you stop it. keep removes the TTL; sweep discards every expired sandbox. A collection the agent creates needs argon collections prepare before its first update or delete.",
+    note: "--watch (2.3.0 and newer) captures the sandbox's writes in the foreground until you stop it. keep removes the TTL; sweep discards every expired sandbox. From 2.3.1 a collection the agent creates is captured exactly while capture is running; on older versions run argon collections prepare for it before its first update or delete.",
   },
   {
     id: "review",

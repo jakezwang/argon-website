@@ -179,14 +179,16 @@ ${cli.mergePreview}
 ${cli.sweep}`}</code>
       </pre>
       <p>
-        Prepare exact images on new collections before updates with{" "}
+        Before Argon 2.3.1, prepare exact images on new collections before
+        updates with{" "}
         <code>
           argon collections prepare orders -p docs-review -b agent-review
         </code>
-        . The preview prints a plan ID; inspect that plan before explicitly
-        applying it. Stop sandbox writers and capture before discarding or
-        letting expiry cleanup run. For the full command set, see the{" "}
-        <a href="/features">features</a> overview or the{" "}
+        ; from 2.3.1 capture reads them back while it is running. The preview
+        prints a plan ID; inspect that plan before explicitly applying it. Stop
+        sandbox writers and capture before discarding or letting expiry cleanup
+        run. For the full command set, see the <a href="/features">features</a>{" "}
+        overview or the{" "}
         <a href="https://github.com/argon-lab/argon/tree/master/docs">
           documentation
         </a>
