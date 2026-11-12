@@ -4,8 +4,8 @@ import { ActionLink } from "../components/Funnel";
 import { install, product } from "../product";
 
 export const metadata = pageMetadata(
-  "Connect Your AI Agent to Argon",
-  "Connect Claude or Cursor through MCP, use the Python and LangGraph adapter, or create MongoDB sandboxes through the REST API.",
+  "MongoDB Sandboxes for Claude, Cursor and LangGraph Agents",
+  "Give each agent run a MongoDB sandbox: connect Claude or Cursor through MCP, use the Python and LangGraph adapter, or call the REST API.",
   "/agents",
 );
 
@@ -31,7 +31,7 @@ export default function AgentsPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
       <h1 className="page-title max-w-4xl">
-        Connect your agent. Give each run a branch.
+        Connect your agent. Give each run a sandbox.
       </h1>
       <p className="lede mt-6 max-w-2xl">
         Use Argon to set up a sandbox and review its changes. Your agent reads

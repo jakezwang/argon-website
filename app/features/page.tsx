@@ -18,8 +18,8 @@ const deepDives = [
 ] as const;
 
 export const metadata = pageMetadata(
-  "Branching, Time Travel & Data PRs for MongoDB",
-  "Git-style branching, point-in-time time travel, reviewable data PRs (diff + merge), and per-actor undo for MongoDB. Open-source, MIT-licensed, and self-hosted.",
+  "Features: MongoDB Sandboxes, Branching, Time Travel and Data PRs",
+  "What an Argon sandbox gives an agent team: disposable MongoDB databases, reviewable data PRs (diff and merge), time travel and per-actor undo. Open source and self-hosted.",
   "/features",
 );
 

@@ -1,0 +1,39 @@
+name: IndexNow
+# After a production deployment succeeds, tell IndexNow which pages changed.
+# No secret is involved: the key is a public file served by the site.
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Submit every sitemap URL
+        type: boolean
+        default: false
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Submit changed pages
+        env:
+          SUBMIT_ALL: ${{ inputs.all }}
+        run: |
+          if [ "$SUBMIT_ALL" = true ]; then
+            node scripts/indexnow.mjs --all
+          else
+            node scripts/indexnow.mjs
+          fi

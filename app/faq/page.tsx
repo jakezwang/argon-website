@@ -3,17 +3,53 @@ import { install, limits, product } from "../product";
 import { pageMetadata } from "../metadata";
 
 export const metadata = pageMetadata(
-  "FAQ",
-  "Answers about MongoDB branching, capture, retained history, merge, agent sandboxes, and installing Argon.",
+  "Argon FAQ: MongoDB Sandboxes, Branching and AI Agents",
+  "Answers about MongoDB sandboxes for AI agents, branching, capture, retained history, merge, sandbox cleanup, and installing Argon.",
   "/faq",
 );
 
 const faq = [
   {
     q: "What is Argon?",
-    a: "Argon is an MIT-licensed, self-hosted versioning layer for MongoDB. It adds branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
+    a: "Argon gives AI agents disposable MongoDB sandboxes. Each agent run gets a real MongoDB database forked from your data; you review what it changed, then merge or discard it. Underneath it is an MIT-licensed, self-hosted versioning layer for MongoDB with branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
     href: "/features",
     label: "Explore the features",
+  },
+  {
+    q: "How do I give an AI agent a MongoDB sandbox?",
+    a: "Create a sandbox and hand its connection string to the agent. From the CLI, argon sandbox create -p <project> --ttl 1h forks a branch, checks it out into its own MongoDB database and sets an expiry. Agents connected through the MCP server or the REST API create sandboxes themselves, and that server manages capture and expiry. The agent uses an ordinary MongoDB driver.",
+    href: "/agents",
+    label: "Connect an agent",
+  },
+  {
+    q: "What is the difference between a code sandbox and a data sandbox?",
+    a: "A code sandbox such as E2B, Modal or Daytona isolates the machine that agent-written code runs on. It does not contain writes that the code sends to a database over a connection string. A data sandbox is an isolated, disposable copy of the database for one run, with a record of what changed and a way to merge or discard it. Argon is a data sandbox for MongoDB; the two are used together.",
+    href: "/blog/code-sandbox-vs-data-sandbox-for-ai-agents",
+    label: "Code sandbox vs data sandbox",
+  },
+  {
+    q: "Is there a Neon-style branching workflow for MongoDB?",
+    a: "Yes, with differences. Argon adds branches, retained-history reads, reviewed merge and undo to MongoDB. It is a self-hosted engine, not a managed service, and a branch must be checked out into a physical MongoDB database before drivers can query it, which takes time and storage in proportion to the data.",
+    href: "/blog/database-branching-tools-compared",
+    label: "Branching tools compared",
+  },
+  {
+    q: "How do I review conflicting MongoDB changes from two AI agents?",
+    a: "Give each agent its own sandbox from the same pinned state, then preview the merge of each. The first plan applies cleanly. The second reports a conflict for every document both agents changed, with both versions, and nothing is merged until you choose a strategy or discard the run. Conflicts are never resolved silently.",
+    href: "/blog/two-ai-agents-one-mongodb-document",
+    label: "Two agents, one document",
+  },
+  {
+    q: "How do I clean up MongoDB agent sandboxes with a TTL?",
+    a: `Every sandbox has a time to live, one hour by default, set with --ttl. Reaching it makes the sandbox eligible for cleanup. ${limits.lifecycle} argon sandbox discard removes one sandbox immediately, and argon sandbox keep removes the TTL from one you want to keep.`,
+    href: "/cli#sandboxes",
+    label: "Sandbox commands",
+  },
+  {
+    q: "Is this Argon related to Argon2 or Argo CD?",
+    a: "No. Argon here is the open-source MongoDB tool from Argon Labs. Its CLI is installed as the argonctl package and run as argon. It is unrelated to the Argon2 password-hashing algorithm and its command-line utility, and to the Argo projects for Kubernetes.",
+    href: "/cli",
+    label: "The Argon CLI",
   },
   {
     q: "How is a branch different from a database dump?",
