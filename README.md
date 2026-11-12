@@ -40,6 +40,20 @@ pins the dark palette for code blocks and the walkthrough in both themes, so use
 tokens rather than fixed colors inside them. Text pairs are checked at 4.5:1 in
 all three palettes; re-check when a token changes.
 
+## Contributors
+
+The Contributors section of `/about` thanks people outside the team. It renders
+`app/contributors.json`, which `npm run sync:contributors` builds from the
+merged pull requests of the public Argon repositories, with the release each
+change shipped in. Avatars are copied into `public/contributors/` because the
+Content-Security-Policy only allows images from this origin. Maintainers and
+automated accounts are excluded by the lists at the top of
+`scripts/sync-contributors.mjs`.
+
+The weekly Contributors workflow runs `npm run test:contributors` and opens an
+issue when a merged pull request is missing from the page. Run the sync, review
+the diff and open a pull request.
+
 `node scripts/render-brand-images.mjs` regenerates `og.png` and the icons from
 the same tokens (needs network access for the two font families).
 
