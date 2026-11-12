@@ -37,24 +37,24 @@ const themeScript = `(function(){try{var t=localStorage.getItem("argon.theme");i
 export const metadata = {
   metadataBase: new URL("https://argonlabs.tech"),
   title: {
-    default: "Argon — Git for MongoDB, Built for AI Agents",
+    default: "Argon — MongoDB Sandboxes for AI Agents",
     template: "%s — Argon",
   },
   description:
-    "Open-source branching and merge for MongoDB. Give every AI agent its own branch — a real MongoDB database — review what it wrote, and merge what works.",
+    "Open-source MongoDB sandboxes for AI agents. Give every agent run its own real MongoDB database, forked from your data. Review what it wrote and merge what works.",
   openGraph: {
     type: "website",
     url: "https://argonlabs.tech",
     siteName: "Argon",
-    title: "Argon — Git for MongoDB, Built for AI Agents",
+    title: "Argon — MongoDB Sandboxes for AI Agents",
     description:
-      "Git-like branching and merge for MongoDB. A real database branch per AI agent — review the diff, merge what works, discard the rest.",
+      "Disposable MongoDB sandboxes for AI agents. Each run gets a real database forked from your data — review the diff, merge what works, discard the rest.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Argon — Git for MongoDB, built for AI agents",
+        alt: "Argon — MongoDB sandboxes for AI agents",
       },
     ],
   },
@@ -64,9 +64,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Argon — Git for MongoDB, Built for AI Agents",
+    title: "Argon — MongoDB Sandboxes for AI Agents",
     description:
-      "Git-like branching and merge for MongoDB. A real database branch per AI agent — review the diff, merge what works, discard the rest.",
+      "Disposable MongoDB sandboxes for AI agents. Each run gets a real database forked from your data — review the diff, merge what works, discard the rest.",
     images: ["/og.png"],
   },
   icons: {
@@ -102,7 +102,7 @@ const jsonLd = {
       applicationCategory: "DeveloperApplication",
       operatingSystem: "macOS, Linux, Windows",
       description:
-        "Open-source engine that brings Git-style branching, time travel, and merge to MongoDB — a real, isolated database branch for every developer and AI agent.",
+        "Open-source MongoDB sandboxes for AI agents: a real, isolated database for every agent run, with Git-style branching, time travel, and reviewed merge underneath.",
       url: "https://argonlabs.tech",
       downloadUrl: "https://github.com/argon-lab/argon",
       softwareVersion: product.version,
@@ -151,9 +151,9 @@ const Footer = () => (
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-6 text-brand-muted">
-            Git-like branching and time travel for MongoDB. Named after the
-            noble gas: experiments stay on branches until you explicitly merge
-            them.
+            MongoDB sandboxes for AI agents, with Git-style branching and time
+            travel underneath. Named after the noble gas: experiments stay on
+            branches until you explicitly merge them.
           </p>
         </div>
         <FooterColumn

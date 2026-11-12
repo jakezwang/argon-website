@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 export function GET() {
   const text = `# Argon
 
-> Argon is an MIT-licensed, self-hosted engine for Git-style branching, time travel, reviewed merge, and undo for MongoDB.
+> Argon gives AI agents disposable MongoDB sandboxes. It is an MIT-licensed, self-hosted engine with Git-style branching, time travel, reviewed merge, and undo for MongoDB.
 
 ## What you can do
 
