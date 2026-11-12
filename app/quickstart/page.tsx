@@ -5,7 +5,7 @@ import QuickStartCommand from "../components/QuickStartCommand";
 import { install, product } from "../product";
 
 export const metadata = pageMetadata(
-  "Local quickstart",
+  "Quickstart: Run MongoDB Sandboxes for AI Agents Locally",
   "Install the Argon CLI, start local MongoDB, then give two agents their own MongoDB sandboxes and run a real review, merge and undo.",
   "/quickstart",
 );

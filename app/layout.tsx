@@ -86,7 +86,12 @@ const jsonLd = {
       name: "Argon Labs",
       url: "https://argonlabs.tech",
       logo: "https://argonlabs.tech/argon-logo.png",
-      sameAs: ["https://github.com/argon-lab/argon"],
+      sameAs: [
+        "https://github.com/argon-lab",
+        "https://github.com/argon-lab/argon",
+        "https://www.npmjs.com/package/argonctl",
+        "https://pypi.org/project/argon-agents/",
+      ],
     },
     {
       "@type": "WebSite",
@@ -163,6 +168,7 @@ const Footer = () => (
             { label: "Features", href: "/features" },
             { label: "How it works", href: "/demo" },
             { label: "Start locally", href: "/quickstart" },
+            { label: "CLI reference", href: "/cli" },
             { label: "Blog", href: "/blog" },
             { label: "FAQ", href: "/faq" },
             {

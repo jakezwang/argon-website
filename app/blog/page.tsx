@@ -3,8 +3,8 @@ import Link from "next/link";
 import { sortedPosts } from "./posts";
 
 export const metadata = pageMetadata(
-  "Blog",
-  "Guides on MongoDB branching, time travel, data versioning, and giving AI agents safe, disposable databases.",
+  "Blog: MongoDB Sandboxes, Branching and AI Agents",
+  "Guides on giving AI agents disposable MongoDB sandboxes, reviewing what they wrote, MongoDB branching, time travel and MCP.",
   "/blog",
 );
 
@@ -12,7 +12,7 @@ export default function BlogIndex() {
   const posts = sortedPosts();
   return (
     <div className="mx-auto max-w-4xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title">Notes on branching your data</h1>
+      <h1 className="page-title">Guides to MongoDB sandboxes and branching</h1>
       <p className="lede mt-6 max-w-2xl">
         Guides on MongoDB branching, time travel, and reviewing AI agent changes
         in separate database sandboxes.{" "}

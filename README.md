@@ -61,6 +61,14 @@ The instant trigger is a `repository_dispatch` event of type `contributors`.
 The engine repository sends it when its `WEBSITE_DISPATCH_TOKEN` secret is
 set; without the secret the hourly run still picks the change up.
 
+## Search engines
+
+`/cli` is the on-site home for "Argon CLI" searches; the complete flag reference
+stays in the engine repository. The IndexNow workflow runs after each successful
+production deployment and submits the pages changed by the deployed commit
+(`scripts/indexnow.mjs`; `--all` submits the whole sitemap, `--dry-run` only
+prints). Its key is the public `.txt` file in `public/`; do not delete it.
+
 `node scripts/render-brand-images.mjs` regenerates `og.png` and the icons from
 the same tokens (needs network access for the two font families).
 

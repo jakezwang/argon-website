@@ -54,6 +54,7 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - Reproducible benchmarks: https://github.com/argon-lab/benchmarks
 - Features and limits: https://argonlabs.tech/features#capabilities
 - Agent setup: https://argonlabs.tech/agents
+- CLI install and commands by task: https://argonlabs.tech/cli
 - Guides feed (Atom): https://argonlabs.tech/feed.xml
 - Illustrated walkthrough: https://argonlabs.tech${product.demo}
 - Hosted console: paused. Use https://argonlabs.tech/quickstart for the real engine.
