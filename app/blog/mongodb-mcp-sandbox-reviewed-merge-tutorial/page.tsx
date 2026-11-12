@@ -248,10 +248,10 @@ curl --fail --location https://argonlabs.tech/examples/mcp_review.py -o mcp_revi
       <p>
         It does not establish a production SLA, model quality or a concurrency
         benchmark. Database credentials and network controls still provide
-        access isolation. Prepare new collections before their first writes,
-        keep capture healthy, and stop writers before review and cleanup. If
-        capture or plan validation fails, resolve that condition rather than
-        treating an earlier preview as current.
+        access isolation. On versions before 2.3.1, prepare new collections
+        before their first writes. Keep capture healthy, and stop writers before
+        review and cleanup. If capture or plan validation fails, resolve that
+        condition rather than treating an earlier preview as current.
       </p>
       <p>
         For expiry and stopped-service behavior, see the
