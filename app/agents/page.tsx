@@ -30,12 +30,11 @@ const integrations = [
 export default function AgentsPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title max-w-4xl">
-        Connect your agent. Give each run a sandbox.
-      </h1>
+      <h1 className="page-title max-w-4xl">MongoDB sandboxes for AI agents</h1>
       <p className="lede mt-6 max-w-2xl">
-        Use Argon to set up a sandbox and review its changes. Your agent reads
-        and writes the data with an ordinary MongoDB driver.
+        Give each run a separate database. Your agent reads and writes with an
+        ordinary MongoDB driver, and you review the changes before merging them
+        into the parent branch.
       </p>
       <nav
         aria-label="Choose an agent integration"

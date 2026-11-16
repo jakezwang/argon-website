@@ -50,13 +50,10 @@ export default function Page() {
   return (
     <ArticleLayout post={post} faq={faq}>
       <p>
-        The fastest way to lose a database is to hand an AI agent a write
-        connection to production. The agent is capable and confident, and it
-        will occasionally do exactly the wrong thing at full speed. The fix is
-        not to keep agents read-only forever — it is to give each one a{" "}
-        <strong>separate database for experiments</strong>. The agent can modify
-        that branch while you review which changes to apply to its parent.
-        Physical copies use storage; scope credentials to the intended database.
+        A MongoDB sandbox gives each agent a separate database for experiments.
+        The agent can modify its branch while you review which changes to apply
+        to its parent. Checkout takes time and storage as it materializes the
+        data. Scope the agent’s credentials to its sandbox database.
       </p>
       <p>
         That is the branch-per-agent pattern, and{" "}
@@ -164,8 +161,8 @@ ${cli.sweep}`}</code>
           TTL indexes
         </a>{" "}
         delete expired documents from a collection in the background. They do
-        not replace a job that discards an entire agent sandbox, and expiration
-        does not guarantee immediate deletion.
+        not replace a job that discards an entire MongoDB sandbox, and
+        expiration does not guarantee immediate deletion.
       </p>
       <p>
         Argon sandbox TTL makes a branch eligible for cleanup. In Argon 2.1.3,

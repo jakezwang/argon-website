@@ -54,6 +54,8 @@ export const capabilities = [
     "The hosted console is paused.",
   ],
 ] as const;
+export const featureTranscriptVersion = "2.2.0";
+
 // What a visitor can do with Argon, benefit first. The home page shows the
 // name, summary and first command; the features page shows everything.
 // Commands and their output were run with the published 2.2.0 CLI against a

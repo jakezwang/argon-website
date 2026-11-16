@@ -2,7 +2,12 @@ import Link from "next/link";
 import { pageMetadata } from "../metadata";
 import Capabilities from "../components/Capabilities";
 import Transcript from "../components/Transcript";
-import { engineering, features, product, terms } from "../product";
+import {
+  engineering,
+  features,
+  featureTranscriptVersion,
+  terms,
+} from "../product";
 
 const deepDives = [
   [
@@ -26,13 +31,12 @@ export const metadata = pageMetadata(
 export default function FeaturesPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title max-w-4xl">
-        Version control for your MongoDB data
-      </h1>
+      <h1 className="page-title max-w-4xl">MongoDB sandboxes for AI agents</h1>
       <p className="lede mt-6 max-w-2xl">
-        Branch a database the way you branch code: isolate a change, review the
-        difference, merge it, and return to any retained state. Open source and
-        self-hosted.
+        Give each run a separate MongoDB database from a branch or a retained
+        pin. Inspect its changes, then merge or discard them. The same tools
+        support tests and development databases, with time travel and undo for
+        retained history.
       </p>
       <nav
         aria-label="Features on this page"
@@ -86,10 +90,10 @@ export default function FeaturesPage() {
           </section>
         ))}
         <p className="border-t border-brand-edge pt-6 text-sm leading-6 text-brand-muted">
-          Commands and output are from Argon {product.version} on a local
-          replica set, with a project named <code>shop</code>. Output is
-          abbreviated, connection strings and IDs are shortened, and times are
-          in UTC.{" "}
+          These transcripts were recorded with Argon {featureTranscriptVersion}{" "}
+          on a local replica set, with a project named <code>shop</code>. Output
+          is abbreviated, connection strings and IDs are shortened, and times
+          are in UTC.{" "}
           <Link className="prose-link" href="/quickstart">
             Run them yourself
           </Link>
