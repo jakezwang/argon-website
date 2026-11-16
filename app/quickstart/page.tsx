@@ -58,7 +58,7 @@ function Step({
 export default function Quickstart() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title max-w-3xl">Run your first agent sandbox</h1>
+      <h1 className="page-title max-w-3xl">Run your first MongoDB sandbox</h1>
       <p className="lede mt-6 max-w-2xl">
         Start with a $49 order. Give two agents their own MongoDB sandboxes, let
         each try a different price, review the changes, then verify a merge and

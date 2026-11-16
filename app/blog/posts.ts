@@ -57,7 +57,7 @@ export const posts: Post[] = [
     slug: "mongodb-mcp-server-versioned-sandboxes",
     title: "MCP + MongoDB: Versioned Sandboxes for Agent Tool-Calls",
     description:
-      "Use Argon’s MongoDB MCP server for agent sandboxes, reviewed merges, undo, and pins. Learn which tools manage branches and how drivers access the data.",
+      "Use Argon’s MCP server to create MongoDB sandboxes, review merges, undo changes, and pin a starting state. Learn which tools manage branches and how drivers access the data.",
     date: "2026-07-08",
     updated: "2026-11-11",
     tags: ["MCP", "AI Agents", "MongoDB"],

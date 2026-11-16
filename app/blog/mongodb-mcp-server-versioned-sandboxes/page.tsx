@@ -53,12 +53,12 @@ export default function Page() {
   return (
     <ArticleLayout post={post} faq={faq}>
       <p>
-        The Model Context Protocol (MCP) lets an AI agent call tools — and
-        increasingly, one of those tools is your database. The deployment,
-        credentials, and enabled tools determine what the agent can change.{" "}
-        <a href="https://github.com/argon-lab/argon">Argon</a> adds a separate
-        branch database for experiments, with 13 MCP tools to manage sandboxes,
+        MongoDB sandboxes give an agent a separate database for its writes.{" "}
+        <a href="https://github.com/argon-lab/argon">Argon</a> exposes 13 tools
+        through the Model Context Protocol (MCP) to manage sandboxes,
         connections, document diffs, merge plans, undo, snapshots, and pins.
+        Deployment, credentials, and enabled tools determine what the agent can
+        change.
       </p>
 
       <h2>A 30-second MCP refresher</h2>

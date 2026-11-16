@@ -40,7 +40,7 @@ const faq = [
     label: "Two agents, one document",
   },
   {
-    q: "How do I clean up MongoDB agent sandboxes with a TTL?",
+    q: "How do I clean up MongoDB sandboxes with a TTL?",
     a: `Every sandbox has a time to live, one hour by default, set with --ttl. Reaching it makes the sandbox eligible for cleanup. ${limits.lifecycle} argon sandbox discard removes one sandbox immediately, and argon sandbox keep removes the TTL from one you want to keep.`,
     href: "/cli#sandboxes",
     label: "Sandbox commands",
@@ -59,7 +59,7 @@ const faq = [
   },
   {
     q: "Can I use my existing driver?",
-    a: "Yes. argon checkout materializes a branch and prints a MongoDB connection string. Drivers, mongosh and Compass connect to that database. Keep capture healthy while writing. From 2.3.1, a collection your application creates is captured exactly while capture is running; on older versions, prepare new collections for exact images before updates.",
+    a: "Yes. argon checkout materializes a branch and prints a MongoDB connection string. Drivers, mongosh and Compass connect to that database. From 2.3.1, capture can recover missing images for newly created collections from MongoDB snapshot history. Keep capture healthy while writing. Repeated writes to one document in a transaction can still leave gaps when images are missing. On older versions, prepare new collections for exact images before updates.",
     href: "/quickstart",
     label: "Start locally",
   },
