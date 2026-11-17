@@ -456,7 +456,8 @@ TypeError: 'NoneType' object is not iterable`}</code>
       <p>
         Argon&apos;s REST API answers <code>&quot;changes&quot;: null</code> for
         an empty diff, and <code>host.py</code> expects a list. That is a bug in
-        the example, not a property of the design. It is open as{" "}
+        the example that our review missed, not a property of the design. It is
+        open as{" "}
         <a href="https://github.com/argon-lab/argon/issues/105">issue 105</a>,
         which is a small first contribution if you want one.
       </p>
