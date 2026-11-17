@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "connect-code-sandbox-to-mongodb-sandbox-boxd",
+    title:
+      "Connect a Code Sandbox to a MongoDB Sandbox: A Runnable Example with boxd",
+    description:
+      "Run agent-written code on an isolated boxd machine against an Argon MongoDB sandbox, using a database user made for one run. Output, failure paths and limits.",
+    date: "2026-11-17",
+    tags: ["AI Agents", "MongoDB", "Sandbox"],
+    readingMinutes: 11,
+  },
+  {
     slug: "code-sandbox-vs-data-sandbox-for-ai-agents",
     title:
       "Code Sandboxes Isolate What Agents Run. What Isolates What They Write?",

@@ -326,6 +326,14 @@ db.products.deleteOne({ _id: "p3" });`}</code>
         </li>
       </ul>
       <p>
+        A{" "}
+        <a href="/blog/connect-code-sandbox-to-mongodb-sandbox-boxd">
+          later article
+        </a>{" "}
+        walks through a runnable example of both points, with a boxd machine as
+        the code sandbox and a MongoDB user made for each run.
+      </p>
+      <p>
         If your agent only calls a fixed set of tools and never runs code it
         wrote, you may not need a code sandbox at all. If it touches a database
         you care about, you need somewhere safe for those writes to land either
