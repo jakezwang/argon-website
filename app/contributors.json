@@ -17,6 +17,23 @@
     ]
   },
   {
+    "login": "MichielMAnalytics",
+    "name": "Michiel Voortman",
+    "url": "https://github.com/MichielMAnalytics",
+    "avatar": "/contributors/MichielMAnalytics.jpg",
+    "firstMergedAt": "2026-11-17",
+    "contributions": [
+      {
+        "repository": "argon-lab/argon",
+        "number": 101,
+        "title": "docs: add an example with a boxd code sandbox and an Argon sandbox",
+        "url": "https://github.com/argon-lab/argon/pull/101",
+        "mergedAt": "2026-11-17",
+        "release": null
+      }
+    ]
+  },
+  {
     "login": "prascli",
     "name": "Indra Prasetya",
     "url": "https://github.com/prascli",
