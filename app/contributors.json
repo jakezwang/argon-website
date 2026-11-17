@@ -29,7 +29,7 @@
         "title": "docs: add an example with a boxd code sandbox and an Argon sandbox",
         "url": "https://github.com/argon-lab/argon/pull/101",
         "mergedAt": "2026-11-17",
-        "release": null
+        "release": "v2.4.0"
       }
     ]
   },
@@ -46,7 +46,7 @@
         "title": "feat(cli): add JSON output to gc and restore (#75)",
         "url": "https://github.com/argon-lab/argon/pull/99",
         "mergedAt": "2026-11-17",
-        "release": null
+        "release": "v2.4.0"
       }
     ]
   }
