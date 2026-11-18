@@ -156,9 +156,12 @@ const Footer = () => (
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-6 text-brand-muted">
-            MongoDB sandboxes for AI agents, with Git for MongoDB underneath.
-            Named after the noble gas: experiments stay on branches until you
-            explicitly merge them.
+            MongoDB sandboxes for AI agents, with{" "}
+            <Link href="/features" className="prose-link">
+              Git for MongoDB
+            </Link>{" "}
+            underneath. Named after the noble gas: experiments stay on branches
+            until you explicitly merge them.
           </p>
         </div>
         <FooterColumn
