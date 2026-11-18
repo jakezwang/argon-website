@@ -301,10 +301,166 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         <strong>
           We did not run DumboDB, and its numbers are DoltHub&apos;s.
         </strong>{" "}
-        Following our rule that Argon&apos;s performance numbers live in one
-        place, the figures are in <a href={report}>the benchmark report</a> and
-        not in this article. What they show:
+        Every figure below comes from <a href={report}>the benchmark report</a>,
+        which has the raw samples, the spread of each step and the conditions of
+        the run. These are medians.
       </p>
+      <div className="overflow-x-auto">
+        <table>
+          <caption className="sr-only">
+            Argon 2.4.0, median of whole CLI commands by number of documents
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">10,000 documents</th>
+              <th scope="col">100,000 documents</th>
+              <th scope="col">1,000,000 documents</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">New branch to first read</th>
+              <td>96 ms</td>
+              <td>584 ms</td>
+              <td>8,472 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">New sandbox to first read</th>
+              <td>114 ms</td>
+              <td>852 ms</td>
+              <td>7,776 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon diff</code>, 100 documents changed
+              </th>
+              <td>101 ms</td>
+              <td>348 ms</td>
+              <td>7,088 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon diff</code>, 10,000 documents changed
+              </th>
+              <td>179 ms</td>
+              <td>617 ms</td>
+              <td>8,491 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon merge preview</code>, 100 changed
+              </th>
+              <td>99 ms</td>
+              <td>351 ms</td>
+              <td>6,045 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon merge apply</code>, 100 changes
+              </th>
+              <td>42 ms</td>
+              <td>39 ms</td>
+              <td>112 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon merge apply</code>, 10,000 changes
+              </th>
+              <td>1,952 ms</td>
+              <td>2,164 ms</td>
+              <td>6,421 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">Bulk update of 100 documents</th>
+              <td>3.0 ms</td>
+              <td>3.3 ms</td>
+              <td>7.2 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">Bulk update of 10,000 documents</th>
+              <td>151 ms</td>
+              <td>168 ms</td>
+              <td>820 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                Point read by <code>_id</code>
+              </th>
+              <td>78 µs</td>
+              <td>81 µs</td>
+              <td>129 µs</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <code>argon import database</code>
+              </th>
+              <td>0.2 s</td>
+              <td>1.9 s</td>
+              <td>28.4 s</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                Peak memory of one <code>argon diff</code>
+              </th>
+              <td>112 MiB</td>
+              <td>541 MiB</td>
+              <td>5,016 MiB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Read the last column with care. The million-document tier ran once,
+        while unrelated containers were running on the same machine, and its
+        samples are spread widely: the diff of 100 changed documents ranged from
+        4.8 to 14.9 seconds. The two smaller tiers were run twice, with similar
+        results.
+      </p>
+      <p>
+        Here are the three operations their article leads with, at ten thousand,
+        a hundred thousand and a million documents, beside the figures they
+        published. Ours is a diff with 100 documents changed, and a merge
+        preview plus its apply. Theirs come with no description of the method,
+        so the columns are not a controlled comparison.
+      </p>
+      <div className="overflow-x-auto">
+        <table>
+          <caption className="sr-only">
+            New branch, diff and merge: our Argon figures beside DoltHub&apos;s
+            published figures
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Step</th>
+              <th scope="col">Argon, our run</th>
+              <th scope="col">Argon, DoltHub&apos;s figures</th>
+              <th scope="col">DumboDB, DoltHub&apos;s figures</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">New branch to first read</th>
+              <td>96 / 584 / 8,472 ms</td>
+              <td>500 / 4,000 / 47,200 ms</td>
+              <td>3 / 3 / 4 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">Diff</th>
+              <td>101 / 348 / 7,088 ms</td>
+              <td>500 / 2,200 / 23,700 ms</td>
+              <td>4 / 4 / 5 ms</td>
+            </tr>
+            <tr>
+              <th scope="row">Merge</th>
+              <td>142 / 393 / 6,134 ms</td>
+              <td>500 / 2,300 / 24,100 ms</td>
+              <td>3 / 4 / 4 ms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>What the numbers show:</p>
       <ul>
         <li>
           <strong>
