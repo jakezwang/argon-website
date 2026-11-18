@@ -243,8 +243,20 @@ export default function Page() {
         size of the checkout before it. We have not measured whether keeping{" "}
         <code>argon watch</code> running on the parent, or letting{" "}
         <code>argon console</code> or <code>argon mcp</code> manage capture,
-        removes that cost. It is open as{" "}
-        <a href="https://github.com/argon-lab/argon/issues/120">issue 120</a>.
+        removes that cost.
+      </p>
+      <p>
+        This was{" "}
+        <a href="https://github.com/argon-lab/argon/issues/120">issue 120</a>,
+        and a fix is merged for the release after 2.5.0:{" "}
+        <a href="https://github.com/argon-lab/argon/pull/122">
+          pull request 122
+        </a>{" "}
+        has a checkout keep its parent&apos;s capture position current while it
+        copies. On builds from source, alternated on a heavily loaded machine,
+        the first diff at a million documents took 3.6 to 13.5 seconds before
+        the fix and 0.08 to 1.7 seconds after it. Those builds are not a
+        release, and the figures in the table above are for 2.5.0 as published.
       </p>
       <h3>A branch that changed everything</h3>
       <p>
@@ -252,7 +264,8 @@ export default function Page() {
         branch rewrote the whole collection. There 2.5.0 is slower: 179 ms
         became 393 ms. Reading each document&apos;s history costs more per
         document than reading the collection once. By a hundred thousand
-        documents with 10,000 changed, 2.5.0 is ahead again.
+        documents with 10,000 changed, 2.5.0 is ahead again. This is open as{" "}
+        <a href="https://github.com/argon-lab/argon/issues/123">issue 123</a>.
       </p>
 
       <h2>What did not change</h2>
