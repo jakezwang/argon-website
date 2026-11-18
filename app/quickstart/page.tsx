@@ -77,6 +77,7 @@ export default function Quickstart() {
           ["#mongodb", "MongoDB"],
           ["#console", "Console"],
           ["#review", "Run the example"],
+          ["#order-review", "Try the standalone return test"],
         ].map(([href, label]) => (
           <a
             key={href}
@@ -285,6 +286,45 @@ ${install.python}`}
           </a>{" "}
           before connecting a real workload.
         </p>
+      </section>
+
+      <section
+        id="order-review"
+        className="mt-16 scroll-mt-24 border-t border-brand-edge pt-10"
+      >
+        <h2 className="section-title">Did the return change another order?</h2>
+        <div className="mt-4 max-w-2xl space-y-4 leading-7">
+          <p>
+            A customer requests a return for <code>order-17</code>. Two scripts
+            run against separate sandboxes with the same synthetic orders.
+            The first changes only <code>order-17</code>. The second also
+            changes <code>order-23</code>. Argon shows both IDs in the second
+            diff, and the example flags the extra order for rejection.
+          </p>
+          <p>
+            This standalone test needs Python 3.7 or later, Docker running
+            Linux containers and internet access to download MongoDB, Node and
+            the pinned Argon CLI. You can skip the setup steps above.
+          </p>
+          <a
+            href="/examples/order-review.py"
+            download
+            className="btn-quiet min-h-11"
+          >
+            Download order-review.py
+          </a>
+          <CodeBlock
+            label="Run from the download directory"
+            language="bash"
+            code="python3 order-review.py"
+          />
+          <p className="text-sm text-brand-muted">
+            The test checks the recorded changes, discards both sandboxes and
+            verifies the parent and source orders still have their original
+            values. It uses temporary Docker containers and needs no customer
+            data or model API key.
+          </p>
+        </div>
       </section>
     </div>
   );

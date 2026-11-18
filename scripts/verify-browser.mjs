@@ -568,6 +568,27 @@ try {
       .count(),
     0,
   );
+  await page.locator('main a[href="/quickstart#order-review"]').click();
+  await page.waitForURL("**/quickstart#order-review");
+  const orderReview = page.locator("#order-review");
+  await orderReview.waitFor({ state: "visible" });
+  const exampleLink = orderReview.locator(
+    'a[href="/examples/order-review.py"]',
+  );
+  await exampleLink.waitFor({ state: "visible" });
+  const exampleDownload = await context.request.get(
+    await exampleLink.evaluate((link) => link.href),
+  );
+  assert.equal(exampleDownload.status(), 200, "order review is downloadable");
+  assert.deepEqual(
+    await exampleDownload.body(),
+    await readFile(
+      new URL("../public/examples/order-review.py", import.meta.url),
+    ),
+    "downloaded order review matches the checked-in example",
+  );
+  await page.goBack();
+  await page.waitForURL("**/demo");
   const localDemoCTA = page
     .locator("main")
     .getByRole("link", { name: "Start locally", exact: true });
