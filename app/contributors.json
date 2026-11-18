@@ -57,5 +57,22 @@
         "release": "v2.4.1"
       }
     ]
+  },
+  {
+    "login": "dev-celeste",
+    "name": "Maria",
+    "url": "https://github.com/dev-celeste",
+    "avatar": "/contributors/dev-celeste.png",
+    "firstMergedAt": "2026-11-18",
+    "contributions": [
+      {
+        "repository": "argon-lab/argon",
+        "number": 109,
+        "title": "docs: add an OpenAI Agents SDK sandbox example (#88)",
+        "url": "https://github.com/argon-lab/argon/pull/109",
+        "mergedAt": "2026-11-18",
+        "release": null
+      }
+    ]
   }
 ]
