@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "argon-2-5-diff-merge-before-after",
+    title: "Argon 2.5: Diff and Merge Preview Now Follow the Change",
+    description:
+      "Argon 2.5.0 builds diffs and merge plans from the documents a branch changed. Before and after at up to a million documents, and what still reads a whole collection.",
+    date: "2026-11-17",
+    tags: ["MongoDB", "Branching", "Database"],
+    readingMinutes: 8,
+  },
+  {
     slug: "argon-vs-dumbodb-response-to-dolthub",
     title: "Argon vs DumboDB: What DoltHub’s Comparison Got Right",
     description:
