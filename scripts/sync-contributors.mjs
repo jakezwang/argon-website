@@ -4,6 +4,10 @@
 //   node scripts/sync-contributors.mjs          rewrite the data and avatars
 //   node scripts/sync-contributors.mjs --check  exit 1 if the data is stale
 //
+// It also draws public/contributors.svg, the same people as one image, for
+// the Contributors section of the Argon README. A third-party image service
+// cached its picture for three days; this one is published with the list.
+//
 // The site's Content-Security-Policy only allows images from its own origin,
 // so avatars are copied into public/ rather than linked from GitHub.
 //
@@ -26,6 +30,7 @@ const AUTOMATED = ["openaitx-system"];
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dataPath = path.join(root, "app", "contributors.json");
 const avatarDir = path.join(root, "public", "contributors");
+const imagePath = path.join(root, "public", "contributors.svg");
 const check = process.argv.includes("--check");
 
 const headers = {
@@ -149,6 +154,34 @@ if (check) {
   process.exit(0);
 }
 
+// One row of round avatars, wrapping after twelve. The pictures are embedded:
+// an SVG shown as an image cannot load anything from another address.
+function contributorsImage(pictures) {
+  const size = 64;
+  const gap = 8;
+  const perRow = 12;
+  const columns = Math.max(1, Math.min(pictures.length, perRow));
+  const rows = Math.max(1, Math.ceil(pictures.length / perRow));
+  const width = columns * (size + gap) - gap;
+  const height = rows * (size + gap) - gap;
+  const escape = (text) =>
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const faces = pictures.map((picture, index) => {
+    const x = (index % perRow) * (size + gap);
+    const y = Math.floor(index / perRow) * (size + gap);
+    return [
+      `  <clipPath id="c${index}"><circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}"/></clipPath>`,
+      `  <image x="${x}" y="${y}" width="${size}" height="${size}" clip-path="url(#c${index})" preserveAspectRatio="xMidYMid slice" href="${picture.href}"><title>${escape(picture.label)}</title></image>`,
+    ].join("\n");
+  });
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Argon contributors">`,
+    ...faces,
+    "</svg>",
+    "",
+  ].join("\n");
+}
+
 const extensions = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -156,6 +189,7 @@ const extensions = {
 };
 await mkdir(avatarDir, { recursive: true });
 const written = new Set();
+const pictures = [];
 for (const contributor of contributors) {
   const avatarUrl = avatarSources.get(contributor.login);
   const separator = avatarUrl.includes("?") ? "&" : "?";
@@ -169,10 +203,12 @@ for (const contributor of contributors) {
   const extension = extensions[type];
   if (!extension) throw new Error(`avatar ${contributor.login}: ${type}`);
   const file = `${contributor.login}.${extension}`;
-  await writeFile(
-    path.join(avatarDir, file),
-    Buffer.from(await response.arrayBuffer()),
-  );
+  const bytes = Buffer.from(await response.arrayBuffer());
+  await writeFile(path.join(avatarDir, file), bytes);
+  pictures.push({
+    label: contributor.name,
+    href: `data:${type};base64,${bytes.toString("base64")}`,
+  });
   contributor.avatar = `/contributors/${file}`;
   written.add(file);
 }
@@ -180,6 +216,7 @@ for (const file of await readdir(avatarDir)) {
   if (!written.has(file)) await rm(path.join(avatarDir, file));
 }
 await writeFile(dataPath, serialize());
+await writeFile(imagePath, contributorsImage(pictures));
 console.log(
   `Wrote ${contributors.length} contributor(s) to app/contributors.json`,
 );

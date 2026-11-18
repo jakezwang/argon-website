@@ -17,12 +17,12 @@ if [ "$after" -lt "$before" ]; then
   exit 1
 fi
 
-git add app/contributors.json public/contributors
+git add app/contributors.json public/contributors public/contributors.svg
 # A re-encoded avatar alone is not worth a deployment; it rides along with
-# the next real change.
-if ! git diff --cached --name-status | grep -qv '^M.public/contributors/'; then
+# the next real change. The image embeds the avatars, so it changes with them.
+if ! git diff --cached --name-status | grep -qvE '^M.public/contributors(/|\.svg$)'; then
   git reset -q
-  git checkout -q -- public/contributors
+  git checkout -q -- public/contributors public/contributors.svg
   echo "The contributors list is current ($after listed)."
   exit 0
 fi
