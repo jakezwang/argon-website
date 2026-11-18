@@ -54,7 +54,7 @@
         "title": "fix(boxd): handle null changes in host review()",
         "url": "https://github.com/argon-lab/argon/pull/111",
         "mergedAt": "2026-11-18",
-        "release": null
+        "release": "v2.4.1"
       }
     ]
   }
