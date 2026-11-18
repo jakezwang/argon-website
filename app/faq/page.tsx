@@ -100,6 +100,12 @@ const faq = [
     label: "Connect an agent",
   },
   {
+    q: "Can Argon import a database that is in use and keep up with it?",
+    a: "Yes, from 2.7.0. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data. Argon only reads the source: merged changes stay in Argon and are not written back to it. Indexes and validators are not followed. This has not been tested on Atlas or with access control enabled, and on an idle source the last change can take some seconds to arrive.",
+    href: "/cli#source",
+    label: "See the commands",
+  },
+  {
     q: "How fast is branching?",
     a: "Creating branch metadata does not copy documents. Physical checkout, sandbox readiness, historical queries and MongoDB storage have separate costs that depend on the dataset and workload. Benchmark numbers apply to the documented engine version and measurement scope.",
     href: "https://github.com/argon-lab/benchmarks",

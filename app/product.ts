@@ -49,6 +49,11 @@ export const capabilities = [
     "A TTL schedules cleanup. It does not stop the agent.",
   ],
   [
+    "Importing and following",
+    "From 2.7.0, argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it. Argon only reads the source and does not write merged changes back to it. Indexes and validators are not followed. This has not been tested on Atlas or with access control enabled, and on an idle source the last change can take some seconds to reach main.",
+    "Main can follow a database in use. Nothing is written back.",
+  ],
+  [
     "Hosted console",
     "The hosted console is paused. Explore the illustrated workflow on this website, or run Argon locally for native MongoDB connections and physical sandboxes.",
     "The hosted console is paused.",

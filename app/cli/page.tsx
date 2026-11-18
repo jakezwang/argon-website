@@ -6,7 +6,7 @@ import { product } from "../product";
 
 export const metadata = pageMetadata(
   "Argon CLI (argonctl): Install and Command Reference",
-  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, time travel, undo and the MCP server.",
+  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, following a live database, time travel, undo and the MCP server.",
   "/cli",
 );
 
@@ -64,6 +64,17 @@ argon collections prepare <collection> -p <project> -b <branch>
 argon watch    -p <project> -b <branch> --actor <label>
 argon release  -p <project> -b <branch>`,
     note: "Creating a branch writes metadata only. checkout materializes the data and prints a connection string; watch records writes made through it.",
+  },
+  {
+    id: "source",
+    title: "Import a database in use and follow it",
+    lead: "From 2.7.0. Import a replica-set database while your application keeps writing to it, then keep main current with it.",
+    code: `argon import database --online --uri <source-uri> --database <db> --project <project>
+argon source follow -p <project>
+argon source status -p <project>
+argon source resync -p <project>
+argon source detach -p <project> --yes`,
+    note: "Argon only reads the source; merged changes are not written back to it. The source must be a replica set. Indexes and validators are not followed. This has not been tested on Atlas or with access control enabled. On an idle source the last change can take some seconds to reach main. If following ends as degraded, status names the reason and resync repairs main in place.",
   },
   {
     id: "history",
