@@ -47,6 +47,14 @@
         "url": "https://github.com/argon-lab/argon/pull/99",
         "mergedAt": "2026-11-17",
         "release": "v2.4.0"
+      },
+      {
+        "repository": "argon-lab/argon",
+        "number": 111,
+        "title": "fix(boxd): handle null changes in host review()",
+        "url": "https://github.com/argon-lab/argon/pull/111",
+        "mergedAt": "2026-11-18",
+        "release": null
       }
     ]
   }
