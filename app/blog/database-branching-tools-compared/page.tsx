@@ -31,6 +31,10 @@ const faq = [
     a: "Argon provides branching, retained-history reads, reviewed merge, and undo for MongoDB. It is a self-hosted engine, not a managed Postgres service. A lightweight branch must be checked out into a physical MongoDB database before native drivers can query it.",
   },
   {
+    q: "What is the difference between Argon and DumboDB?",
+    a: "Both version MongoDB-style documents. Argon keeps history beside a stock MongoDB replica set and copies a branch into a real database when you check it out. DumboDB is DoltHub's own document database: it speaks the MongoDB wire protocol, stores branches in shared storage, and its README describes it as pre-1.0. With Argon, MongoDB itself runs every query and each checked-out branch is a full copy. With DumboDB, branches share storage, so branch, diff, and merge work is tied to the size of the change, and queries run on DumboDB's engine.",
+  },
+  {
     q: "Does PlanetScale only support MySQL?",
     a: "No. PlanetScale offers both Vitess (MySQL-compatible) and Postgres. Their branch workflows differ: Vitess supports schema deploy requests; Postgres provides isolated deployments, including branches restored from backups. Neither of those offerings is MongoDB.",
   },
@@ -52,15 +56,17 @@ export default function Page() {
         Choose a branching tool by the data it operates on and the change you
         need to review. Neon branches Postgres; PlanetScale has separate Vitess
         and Postgres workflows; Dolt versions a SQL database; lakeFS versions
-        objects in a data lake. Argon adds branch history and reviewed document
-        changes to MongoDB. These products solve related, but different,
-        problems.
+        objects in a data lake. For MongoDB-style documents there are two
+        designs: Argon adds branch history and reviewed document changes to a
+        MongoDB deployment you already run, and DumboDB is a separate document
+        database with version control built into its storage. These products
+        solve related, but different, problems.
       </p>
       <p>
         This comparison is written by the Argon maintainers. The linked primary
-        documentation was checked on September 26, 2026. It is a workflow
-        comparison, not a performance benchmark or an exhaustive product
-        ranking.
+        documentation was checked on November 17, 2026, when DumboDB was added.
+        It is a workflow comparison, not a performance benchmark or an
+        exhaustive product ranking.
       </p>
 
       <h2>What each tool branches</h2>
@@ -106,6 +112,15 @@ export default function Page() {
               <td>MySQL-compatible SQL</td>
               <td>Versioned tables and schema</td>
               <td>Git-style diff, commit, branch, and merge</td>
+            </tr>
+            <tr>
+              <th scope="row">DumboDB</th>
+              <td>MongoDB-compatible documents, in its own engine</td>
+              <td>Commits and branches that share storage</td>
+              <td>
+                Document diff, commit, and merge with per-document conflict
+                resolution
+              </td>
             </tr>
             <tr>
               <th scope="row">lakeFS</th>
@@ -167,14 +182,42 @@ export default function Page() {
         .
       </p>
 
+      <h2>DumboDB: a versioned document database</h2>
+      <p>
+        DumboDB is DoltHub&apos;s document database. It implements the MongoDB
+        8.0 wire protocol in its own engine, on the storage engine Dolt uses, so
+        branches and commits share storage instead of copying it. A connection
+        selects a branch by database name, such as <code>mydb@feature</code>,
+        and custom commands commit, diff, and merge, with conflicts resolved one
+        document at a time.
+      </p>
+      <p>
+        Choosing it means your queries run on DumboDB&apos;s engine rather than{" "}
+        <code>mongod</code>: as the database itself, or as a non-voting member
+        that replicates from a MongoDB replica set. Its README describes it as
+        pre-1.0 and not yet ready for production, and lists what it does not
+        support, including TTL indexes, capped collections, and Atlas Search.
+        See{" "}
+        <a href="https://github.com/dolthub/dumbodb#readme">
+          the DumboDB README
+        </a>
+        . DoltHub published{" "}
+        <a href="https://www.dolthub.com/blog/2026-11-10-argon-spotlight/">
+          a comparison of DumboDB and Argon
+        </a>{" "}
+        with its own measurements, and we wrote{" "}
+        <a href="/blog/argon-vs-dumbodb-response-to-dolthub">a response</a> with
+        ours.
+      </p>
+
       <h2>lakeFS: version control over objects</h2>
       <p>
         lakeFS organizes object storage into repositories, branches, and
         commits. This is useful for data-lake and pipeline workflows. Its unit
         of versioning is an object rather than an individual MongoDB document.
         See{" "}
-        <a href="https://docs.lakefs.io/latest/understand/model/">
-          the lakeFS object model
+        <a href="https://docs.lakefs.io/concepts/internals/">
+          the lakeFS internals
         </a>
         .
       </p>
@@ -204,7 +247,8 @@ export default function Page() {
       <ol>
         <li>
           Start with your database: Postgres, MySQL-compatible SQL, objects, or
-          MongoDB.
+          MongoDB. For MongoDB, decide whether you can replace the database
+          engine or need to keep the one you run.
         </li>
         <li>
           Identify what must be reviewed: schema, document changes, table
