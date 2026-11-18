@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "argon-vs-dumbodb-response-to-dolthub",
+    title: "Argon vs DumboDB: What DoltHub’s Comparison Got Right",
+    description:
+      "DoltHub compared Argon with DumboDB and measured both. Their account of Argon is accurate. Our own measurements, the trade-off, and what we are changing.",
+    date: "2026-11-17",
+    tags: ["Comparison", "MongoDB", "Branching"],
+    readingMinutes: 10,
+  },
+  {
     slug: "connect-code-sandbox-to-mongodb-sandbox-boxd",
     title:
       "Connect a Code Sandbox to a MongoDB Sandbox: A Runnable Example with boxd",
@@ -98,9 +107,9 @@ export const posts: Post[] = [
     title:
       "Database Branching Tools Compared: Neon, PlanetScale, Dolt, lakeFS, and Argon",
     description:
-      "Compare Neon, PlanetScale Vitess and Postgres, Dolt, lakeFS, and Argon by data model, branch workflow, and review boundaries. Sources checked September 2026.",
+      "Compare Neon, PlanetScale, Dolt, DumboDB, lakeFS, and Argon by data model, branch workflow, and review boundaries. Sources checked November 2026.",
     date: "2026-07-08",
-    updated: "2026-09-26",
+    updated: "2026-11-17",
     tags: ["Comparison", "Branching", "Database"],
     readingMinutes: 9,
   },
