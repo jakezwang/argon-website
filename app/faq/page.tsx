@@ -1,19 +1,25 @@
 import Link from "next/link";
-import { install, limits, product } from "../product";
+import { gitDifferences, install, limits, product } from "../product";
 import { pageMetadata } from "../metadata";
 
 export const metadata = pageMetadata(
   "Argon FAQ: MongoDB Sandboxes, Branching and AI Agents",
-  "Answers about MongoDB sandboxes for AI agents, branching, capture, retained history, merge, sandbox cleanup, and installing Argon.",
+  "Answers about MongoDB sandboxes for AI agents, Git for MongoDB, branching, capture, retained history, merge, sandbox cleanup, and installing Argon.",
   "/faq",
 );
 
 const faq = [
   {
     q: "What is Argon?",
-    a: "Argon gives AI agents disposable MongoDB sandboxes. Each agent run gets a real MongoDB database forked from your data; you review what it changed, then merge or discard it. Underneath it is an MIT-licensed, self-hosted versioning layer for MongoDB with branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
+    a: "Argon gives AI agents disposable MongoDB sandboxes. Each agent run gets a real MongoDB database forked from your data; you review what it changed, then merge or discard it. Underneath it is Git for MongoDB: an MIT-licensed, self-hosted versioning layer with branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
     href: "/features",
     label: "Explore the features",
+  },
+  {
+    q: "Is Argon Git for MongoDB?",
+    a: `Yes. Argon keeps a history of your MongoDB documents that you can branch, diff, merge, read at an earlier position and undo, with commands that mirror Git: argon branches create, argon diff, argon merge preview, argon undo. A sandbox for an agent run is a branch checked out as a real MongoDB database, much as a Git worktree is a branch checked out in its own directory. The comparison stops in a few places. ${gitDifferences.join(" ")}`,
+    href: "/features",
+    label: "Git and Argon side by side",
   },
   {
     q: "How do I give an AI agent a MongoDB sandbox?",

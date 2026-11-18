@@ -128,6 +128,14 @@ changes a command or its output, rerun the commands and update the entry. Keep
 the order benefit, command, limit; the full operating limits stay in
 `capabilities`, whose text is reused by the FAQ, `llms.txt` and several articles.
 
+The site says two things about Argon, in this order: "MongoDB sandboxes for AI
+agents" is the headline, and "Git for MongoDB" names what is underneath. The
+home page carries both, `/agents` leads with the first and `/features` with the
+second. The table at the top of `/features` renders `gitMap` in
+`app/product.ts`: a Git command, the Argon command that does the same job for
+documents, and what it does. `gitDifferences` says where the comparison stops;
+the FAQ and `llms.txt` reuse both. Keep every row true for both tools.
+
 The older CLI blog snippets render commands from `app/cli-examples.json`.
 `npm run test:docs` executes those exact commands against a disposable local
 MongoDB replica set with native PyMongo writes: a real diff and merge preview,

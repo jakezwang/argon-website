@@ -37,24 +37,24 @@ const themeScript = `(function(){try{var t=localStorage.getItem("argon.theme");i
 export const metadata = {
   metadataBase: new URL("https://argonlabs.tech"),
   title: {
-    default: "Argon — MongoDB Sandboxes for AI Agents",
+    default: "Argon — MongoDB Sandboxes for AI Agents · Git for MongoDB",
     template: "%s — Argon",
   },
   description:
-    "Open-source MongoDB sandboxes for AI agents. Give every agent run its own real MongoDB database, forked from your data. Review what it wrote and merge what works.",
+    "Open-source MongoDB sandboxes for AI agents, with Git for MongoDB underneath. Give each agent run its own real database, review what it wrote, merge what works.",
   openGraph: {
     type: "website",
     url: "https://argonlabs.tech",
     siteName: "Argon",
-    title: "Argon — MongoDB Sandboxes for AI Agents",
+    title: "Argon — MongoDB Sandboxes for AI Agents · Git for MongoDB",
     description:
-      "Disposable MongoDB sandboxes for AI agents. Each run gets a real database forked from your data — review the diff, merge what works, discard the rest.",
+      "Disposable MongoDB sandboxes for AI agents, with Git for MongoDB underneath. Each run gets a real database forked from your data: review the diff, merge what works, discard the rest.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Argon — MongoDB sandboxes for AI agents",
+        alt: "Argon — MongoDB sandboxes for AI agents. Git for MongoDB underneath.",
       },
     ],
   },
@@ -64,9 +64,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Argon — MongoDB Sandboxes for AI Agents",
+    title: "Argon — MongoDB Sandboxes for AI Agents · Git for MongoDB",
     description:
-      "Disposable MongoDB sandboxes for AI agents. Each run gets a real database forked from your data — review the diff, merge what works, discard the rest.",
+      "Disposable MongoDB sandboxes for AI agents, with Git for MongoDB underneath. Each run gets a real database forked from your data: review the diff, merge what works, discard the rest.",
     images: ["/og.png"],
   },
   icons: {
@@ -107,7 +107,7 @@ const jsonLd = {
       applicationCategory: "DeveloperApplication",
       operatingSystem: "macOS, Linux, Windows",
       description:
-        "Open-source MongoDB sandboxes for AI agents: a real, isolated database for every agent run, with Git-style branching, time travel, and reviewed merge underneath.",
+        "Open-source MongoDB sandboxes for AI agents: a real, isolated database for every agent run. Underneath it is Git for MongoDB, with branching, diff, reviewed merge, time travel and undo.",
       url: "https://argonlabs.tech",
       downloadUrl: "https://github.com/argon-lab/argon",
       softwareVersion: product.version,
@@ -156,9 +156,9 @@ const Footer = () => (
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-6 text-brand-muted">
-            MongoDB sandboxes for AI agents, with Git-style branching and time
-            travel underneath. Named after the noble gas: experiments stay on
-            branches until you explicitly merge them.
+            MongoDB sandboxes for AI agents, with Git for MongoDB underneath.
+            Named after the noble gas: experiments stay on branches until you
+            explicitly merge them.
           </p>
         </div>
         <FooterColumn

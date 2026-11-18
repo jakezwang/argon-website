@@ -211,6 +211,14 @@
   line-height: 1;
 }
 
+@utility tagline {
+  /* The line under the home headline: the same voice, one step down. */
+  font-stretch: 114%;
+  font-weight: 520;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
 @utility section-title {
   @apply text-3xl font-semibold leading-[1.1] text-brand-text sm:text-[2.125rem];
 }

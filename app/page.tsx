@@ -30,11 +30,16 @@ export default function HomePage() {
   return (
     <>
       <section className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20 lg:pt-24">
-        <h1 className="display text-[2.75rem] text-brand-text sm:text-6xl lg:text-[5.25rem]">
-          MongoDB sandboxes
-          <br />
-          for AI agents
-        </h1>
+        <hgroup>
+          <h1 className="display text-[2.75rem] text-brand-text sm:text-6xl lg:text-[5.25rem]">
+            MongoDB sandboxes
+            <br />
+            for AI agents
+          </h1>
+          <p className="tagline mt-4 text-[1.375rem] text-brand-muted sm:mt-5 sm:text-3xl lg:mt-6 lg:text-[2.25rem]">
+            <span className="text-brand-text">Git for MongoDB</span> underneath.
+          </p>
+        </hgroup>
         <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-12 lg:items-end">
           <p className="lede max-w-xl lg:col-span-6">
             Give every agent run its own real MongoDB database, forked from your
@@ -104,11 +109,13 @@ export default function HomePage() {
         <section className="pt-24 sm:pt-32" aria-labelledby="features-heading">
           <div className="max-w-2xl">
             <h2 id="features-heading" className="section-title">
-              What you can do with a branch
+              Git for MongoDB, command by command
             </h2>
             <p className="mt-5 leading-7">
-              Each of these is a command you can run today, against your own
-              MongoDB. The examples use a project named{" "}
+              Every sandbox is a branch, so the workflow is the one you know
+              from Git: diff what changed, merge what you reviewed, go back,
+              undo. Each of these is a command you can run today, against your
+              own MongoDB. The examples use a project named{" "}
               <code className="font-mono text-[0.9em]">shop</code>.
             </p>
           </div>
@@ -136,7 +143,8 @@ export default function HomePage() {
             History features depend on capture and on how much history you
             retain.{" "}
             <Link href="/features" className="prose-link">
-              See each feature with its output and limits
+              See each command beside its Git counterpart, with its output and
+              limits
             </Link>
             .
           </p>
