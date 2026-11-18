@@ -31,6 +31,9 @@ const report =
   "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.4.0-cli-scale";
 const issue = "https://github.com/argon-lab/argon/issues/112";
 const discussions = "https://github.com/argon-lab/argon/discussions";
+const followUp = "/blog/argon-2-5-diff-merge-before-after";
+const reportAfter =
+  "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.5.0-cli-scale";
 
 const faq = [
   {
@@ -39,7 +42,7 @@ const faq = [
   },
   {
     q: "Is DumboDB faster than Argon?",
-    a: "For getting a new branch ready, diffing and merging on large collections, yes, by a wide margin: DoltHub measured it, and our own run of Argon shows the same growth with document count. For ordinary reads and writes on a checked-out branch, DoltHub's numbers have Argon ahead, because those are MongoDB's own reads and writes.",
+    a: "For getting a new branch ready on a large collection, yes, by a wide margin: Argon copies the data and DumboDB does not. For diff and merge, DoltHub measured a wide margin on the Argon of that time; Argon 2.5.0 changed both to follow the size of the change, and nobody has yet measured the two on one machine. For ordinary reads and writes on a checked-out branch, DoltHub's numbers have Argon ahead, because those are MongoDB's own.",
   },
   {
     q: "Does Argon copy the data for every sandbox?",
@@ -47,7 +50,7 @@ const faq = [
   },
   {
     q: "Does the time of an Argon diff depend on how many documents changed?",
-    a: "Not in Argon 2.4.0. A diff or merge preview rebuilds the fork point, the branch and its parent in full and compares every document, so it takes about as long for 100 changed documents as for 10,000. Applying a saved merge plan does depend on the number of changes. Comparing only changed documents is tracked in a public issue.",
+    a: "From Argon 2.5.0, yes: a diff or merge preview is built from the documents the branch changed, and in our measurement took about as long at a million documents as at ten thousand. Up to 2.4.1 it did not: both rebuilt the fork point, the branch and its parent in full and compared every document. The figures in this article are for 2.4.0.",
   },
   {
     q: "Is DumboDB compatible with MongoDB?",
@@ -97,9 +100,12 @@ export default function Page() {
           its own engine. Each side gives up what the other is good at.
         </li>
         <li>
-          <strong>Part of the gap does not have to exist.</strong> Diff and
-          merge preview can compare only the documents that changed. That work
-          is tracked in <a href={issue}>a public issue</a>.
+          <strong>
+            Part of the gap did not have to exist, and is now closed.
+          </strong>{" "}
+          Diff and merge preview compare only the documents that changed from
+          Argon 2.5.0. <a href={followUp}>The before and after</a> is a separate
+          post.
         </li>
       </ul>
 
@@ -353,7 +359,9 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         </strong>{" "}
         Every figure below comes from <a href={report}>the benchmark report</a>,
         which has the raw samples, the spread of each step and the conditions of
-        the run. These are medians.
+        the run. These are medians, and they are for Argon 2.4.0. The diff and
+        merge preview rows changed in 2.5.0; see{" "}
+        <a href={followUp}>the before and after</a>.
       </p>
       <div className="overflow-x-auto">
         <table>
@@ -665,11 +673,15 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
 
       <h2>What we are changing</h2>
       <p>
-        One part of the gap is not required by the design. Argon&apos;s log
+        One part of the gap was not required by the design. Argon&apos;s log
         already records which documents a branch wrote after its fork point, so
         a diff or a merge preview does not need to rebuild and compare every
-        document to find them. Making both compare only changed documents is
-        tracked in <a href={issue}>issue 112</a>. We are not giving a date.
+        document to find them. That was <a href={issue}>issue 112</a>, and it
+        shipped in Argon 2.5.0: both now do work in proportion to what the
+        branch changed. <a href={followUp}>The follow-up post</a> has the
+        measurements before and after and the cases that still read a whole
+        collection, and <a href={reportAfter}>the 2.5.0 report</a> has the
+        samples.
       </p>
       <p>These gaps are known, and not scheduled:</p>
       <ul>
@@ -769,18 +781,17 @@ scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
           it works. We would like to find out with them.
         </li>
         <li>
-          <strong>Measure Argon again after the change in issue 112.</strong>{" "}
-          When a release compares only changed documents, we will run this
-          measurement again and replace the tables above. We would welcome
-          DoltHub measuring it too, and we will link what they find from here.
+          <strong>Measure Argon 2.5.0.</strong> The change in issue 112 is
+          released, and <a href={followUp}>our own before and after</a> is
+          published. We would welcome DoltHub running their benchmark on it too,
+          and we will link what they find from here, whatever it shows.
         </li>
       </ol>
       <p>
         The way to reach us is in the open:{" "}
         <a href={discussions}>GitHub Discussions</a> on the Argon repository, or{" "}
-        <a href={issue}>issue 112</a> for the diff and merge work. The same
-        invitation stands for anyone else building version control for
-        documents.
+        the issue tracker there. The same invitation stands for anyone else
+        building version control for documents.
       </p>
 
       <p>
