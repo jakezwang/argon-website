@@ -243,7 +243,8 @@ export default function Page() {
         size of the checkout before it. We have not measured whether keeping{" "}
         <code>argon watch</code> running on the parent, or letting{" "}
         <code>argon console</code> or <code>argon mcp</code> manage capture,
-        removes that cost.
+        removes that cost. It is open as{" "}
+        <a href="https://github.com/argon-lab/argon/issues/120">issue 120</a>.
       </p>
       <h3>A branch that changed everything</h3>
       <p>
