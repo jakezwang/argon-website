@@ -314,13 +314,15 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         production among its strengths. That means the data you branch is the
         data your application is writing now. Argon 2.4.0 cannot do this:{" "}
         <code>argon import database</code> is a one-time copy that needs the
-        source&apos;s writers paused. Following a database that is in use is
-        open as{" "}
+        source&apos;s writers paused. Argon 2.6.0 carries an experimental
+        version of following a database that is in use, from{" "}
         <a href="https://github.com/argon-lab/argon/pull/113">
           pull request 113
-        </a>{" "}
-        and is not released. We have not run DumboDB as a replica-set member, so
-        this is praise for the approach, not a test result.
+        </a>
+        . It is switched off by default and has known issues, so we do not count
+        it as something Argon does today. We have not run DumboDB as a
+        replica-set member, so this is praise for the approach, not a test
+        result.
       </p>
 
       <h2>What we measured</h2>
@@ -681,7 +683,8 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         branch changed. <a href={followUp}>The follow-up post</a> has the
         measurements before and after and the cases that still read a whole
         collection, and <a href={reportAfter}>the 2.5.0 report</a> has the
-        samples.
+        samples. Argon 2.6.0 then removed the extra seconds the first diff on a
+        branch still took.
       </p>
       <p>These gaps are known, and not scheduled:</p>
       <ul>
