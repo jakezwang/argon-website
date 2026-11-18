@@ -1,5 +1,6 @@
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import release from "../../release.json";
 
 const post = getPost("argon-2-5-diff-merge-before-after")!;
 
@@ -354,11 +355,11 @@ scripts/gc_case_docker.sh 2.5.0 100000,1000000 results/gc-case.txt`}</code>
 
       <h2>Upgrading</h2>
       <p>
-        There are no data format changes between 2.4.1 and 2.5.0. Install the
-        new version over the old one:
+        There are no data format changes between 2.4.1 and 2.5.0. Install
+        2.5.0 or a later release over the old one; this is the current release:
       </p>
       <pre>
-        <code>{`npm install -g argonctl@2.5.0 --allow-scripts=argonctl`}</code>
+        <code>{`npm install -g argonctl@${release.version} --allow-scripts=argonctl`}</code>
       </pre>
       <p>
         Thanks to Neil Macneale and DoltHub for measuring Argon in public. Their
