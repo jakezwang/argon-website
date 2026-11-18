@@ -207,6 +207,64 @@ export const features = [
   },
 ] as const;
 
+// Git for MongoDB, command by command: the Git command a developer already
+// knows, the Argon command that does the same job for documents, what it does,
+// and the feature above that shows it. Rendered on /features and in llms.txt.
+// Keep each row true for both tools; where the comparison stops is below.
+export const gitMap = [
+  [
+    "git branch",
+    ["argon branches create"],
+    "Adds a pointer into shared history. No documents are copied.",
+    "sandbox",
+  ],
+  [
+    "git worktree add",
+    ["argon sandbox create"],
+    "Gives a new branch its own working copy: a real MongoDB database, with a time limit.",
+    "sandbox",
+  ],
+  [
+    "git diff",
+    ["argon diff"],
+    "Lists the documents a branch would add, change or remove.",
+    "diff",
+  ],
+  [
+    "git merge",
+    ["argon merge preview", "argon merge apply"],
+    "Saves the change as a plan to review, then applies exactly that plan.",
+    "merge",
+  ],
+  [
+    "git checkout <commit>",
+    ["argon time-travel query"],
+    "Reads the data as it was at an earlier position in retained history.",
+    "time-travel",
+  ],
+  [
+    "git revert",
+    ["argon undo"],
+    "Reverses earlier writes with a new change. History is not rewritten.",
+    "undo",
+  ],
+  [
+    "git tag",
+    ["argon pin create"],
+    "Names one fixed state and protects its history while the pin exists.",
+    "pins",
+  ],
+] as const;
+
+// Where the comparison with Git stops. The full limits stay in `capabilities`.
+export const gitDifferences = [
+  "There is no commit step. A running capture process records each document change.",
+  "A merge goes from a branch into its parent and compares whole documents.",
+  "Checking out a branch copies its data, so it takes time and storage that depend on the dataset.",
+  "Documents are versioned. Indexes and collection options are not.",
+  "History older than the retention window can be reclaimed, unless a pin protects it.",
+] as const;
+
 // How the engine is built, for readers who want the mechanism.
 export const engineering = [
   [

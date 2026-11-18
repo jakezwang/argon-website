@@ -1,4 +1,11 @@
-import { capabilities, features, install, product } from "../product";
+import {
+  capabilities,
+  features,
+  gitDifferences,
+  gitMap,
+  install,
+  product,
+} from "../product";
 import { posts } from "../blog/posts";
 
 export const dynamic = "force-static";
@@ -6,7 +13,7 @@ export const dynamic = "force-static";
 export function GET() {
   const text = `# Argon
 
-> Argon gives AI agents disposable MongoDB sandboxes. It is an MIT-licensed, self-hosted engine with Git-style branching, time travel, reviewed merge, and undo for MongoDB.
+> Argon gives AI agents disposable MongoDB sandboxes. Underneath it is Git for MongoDB: an MIT-licensed, self-hosted engine with branching, diff, reviewed merge, time travel, and undo.
 
 ## What you can do
 
@@ -18,6 +25,14 @@ ${features
     return `- **${feature.name}**: ${feature.summary} Commands: ${commands}. Good to know: ${feature.limit}`;
   })
   .join("\n")}
+
+## Git for MongoDB
+
+Each Argon command does for MongoDB documents what the Git command beside it does for files. Side by side: https://argonlabs.tech/features
+
+${gitMap.map(([git, argon, effect]) => `- \`${git}\` corresponds to ${argon.map((command) => `\`${command}\``).join(" then ")}: ${effect}`).join("\n")}
+
+Where it differs from Git: ${gitDifferences.join(" ")}
 
 ## Operating boundaries
 

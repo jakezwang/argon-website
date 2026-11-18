@@ -6,6 +6,8 @@ import {
   engineering,
   features,
   featureTranscriptVersion,
+  gitDifferences,
+  gitMap,
   terms,
 } from "../product";
 
@@ -23,35 +25,82 @@ const deepDives = [
 ] as const;
 
 export const metadata = pageMetadata(
-  "Features: MongoDB Sandboxes, Branching, Time Travel and Data PRs",
-  "What an Argon sandbox gives an agent team: disposable MongoDB databases, reviewable data PRs (diff and merge), time travel and per-actor undo. Open source and self-hosted.",
+  "Git for MongoDB: Sandboxes, Diff, Merge, Time Travel and Undo",
+  "Git for MongoDB, command by command: branch your data, give each agent run a sandbox, diff, merge, time travel and undo. Open source and self-hosted.",
   "/features",
 );
 
 export default function FeaturesPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20">
-      <h1 className="page-title max-w-4xl">MongoDB sandboxes for AI agents</h1>
+      <h1 className="page-title max-w-4xl">Git for MongoDB</h1>
       <p className="lede mt-6 max-w-2xl">
-        Give each run a separate MongoDB database from a branch or a retained
-        pin. Inspect its changes, then merge or discard them. The same tools
-        support tests and development databases, with time travel and undo for
-        retained history.
+        Argon versions the documents in MongoDB the way Git versions code.
+        Branch your data, give every agent run its own sandbox, see what it
+        changed, merge what you reviewed, and go back when you need to. The same
+        commands serve tests and development databases.
       </p>
-      <nav
-        aria-label="Features on this page"
-        className="mt-8 flex flex-wrap gap-x-7"
-      >
-        {features.map((feature) => (
-          <a
-            key={feature.id}
-            href={`#${feature.id}`}
-            className="prose-link inline-flex min-h-11 items-center text-sm font-medium"
-          >
-            {feature.short}
-          </a>
-        ))}
-      </nav>
+
+      <table className="mt-12 block w-full border-t border-brand-edge-strong text-left md:table md:border-collapse">
+        <caption className="sr-only">
+          Git commands and the Argon commands that do the same job for MongoDB
+          documents
+        </caption>
+        <thead className="sr-only md:not-sr-only md:table-header-group">
+          <tr className="border-b border-brand-edge">
+            {["In Git", "In Argon", "What it does to your data"].map(
+              (heading) => (
+                <th
+                  key={heading}
+                  scope="col"
+                  className="py-3 pr-10 text-sm font-semibold text-brand-text last:pr-0"
+                >
+                  {heading}
+                </th>
+              ),
+            )}
+          </tr>
+        </thead>
+        <tbody className="block md:table-row-group">
+          {gitMap.map(([git, argon, effect, id]) => (
+            <tr
+              key={git}
+              className="block border-b border-brand-edge py-4 md:table-row md:py-0"
+            >
+              <th
+                scope="row"
+                className="block font-mono text-[0.8125rem] font-normal leading-7 text-brand-text-darker md:table-cell md:whitespace-nowrap md:py-4 md:pr-10 md:align-top"
+              >
+                {git}
+              </th>
+              <td className="block font-mono text-[0.8125rem] leading-7 md:table-cell md:whitespace-nowrap md:py-4 md:pr-10 md:align-top">
+                {argon.map((command) => (
+                  <a
+                    key={command}
+                    href={`#${id}`}
+                    className="prose-link block w-fit"
+                  >
+                    {command}
+                  </a>
+                ))}
+              </td>
+              <td className="mt-1.5 block text-sm leading-7 text-brand-text-darker md:mt-0 md:table-cell md:py-4 md:align-top">
+                {effect}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-5 max-w-4xl text-sm leading-6">
+        <span className="font-semibold text-brand-text">
+          Where it differs from Git:
+        </span>{" "}
+        {gitDifferences.join(" ")}{" "}
+        <a className="prose-link" href="#capabilities">
+          Read the operating limits
+        </a>
+        .
+      </p>
 
       <div className="mt-10">
         {features.map((feature) => (
