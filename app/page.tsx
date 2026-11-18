@@ -37,7 +37,13 @@ export default function HomePage() {
             for AI agents
           </h1>
           <p className="tagline mt-4 text-[1.375rem] text-brand-muted sm:mt-5 sm:text-3xl lg:mt-6 lg:text-[2.25rem]">
-            <span className="text-brand-text">Git for MongoDB</span> underneath.
+            <Link
+              href="/features"
+              className="text-brand-text transition-colors hover:text-brand-primary"
+            >
+              Git for MongoDB
+            </Link>{" "}
+            underneath.
           </p>
         </hgroup>
         <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-12 lg:items-end">
