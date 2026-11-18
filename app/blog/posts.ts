@@ -17,8 +17,9 @@ export const posts: Post[] = [
     description:
       "DoltHub compared Argon with DumboDB and measured both. Their account of Argon is accurate. Our own measurements, the trade-off, and what we are changing.",
     date: "2026-11-17",
+    updated: "2026-11-17",
     tags: ["Comparison", "MongoDB", "Branching"],
-    readingMinutes: 11,
+    readingMinutes: 13,
   },
   {
     slug: "connect-code-sandbox-to-mongodb-sandbox-boxd",
