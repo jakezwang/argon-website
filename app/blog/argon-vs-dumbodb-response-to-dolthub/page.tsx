@@ -30,6 +30,7 @@ const dumbodb = "https://github.com/dolthub/dumbodb";
 const report =
   "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.4.0-cli-scale";
 const issue = "https://github.com/argon-lab/argon/issues/112";
+const discussions = "https://github.com/argon-lab/argon/discussions";
 
 const faq = [
   {
@@ -51,6 +52,10 @@ const faq = [
   {
     q: "Is DumboDB compatible with MongoDB?",
     a: "It implements the MongoDB 8.0 wire protocol in its own engine and works with standard drivers and mongosh. Its README, read on November 17, 2026, describes it as pre-1.0 and not yet ready for production, and lists features it does not support, including TTL indexes, capped collections and Atlas Search.",
+  },
+  {
+    q: "Do Argon and DumboDB work together?",
+    a: "Not today. They are separate projects with no integration. We have invited DoltHub to agree on a shared benchmark method, to explore an example that uses both, and to measure Argon again after its diff and merge preview change. Those are invitations, not announcements.",
   },
   {
     q: "Did Argon benchmark DumboDB?",
@@ -265,6 +270,51 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         because <code>theirs</code> takes the whole document. Argon never
         resolves a conflict silently, but resolving this one well means reading
         both versions yourself.
+      </p>
+
+      <h2>Where we agree</h2>
+      <p>
+        A response to a comparison tends to read as a list of differences. The
+        two projects agree on more than they differ on, and we reached the same
+        conclusions from opposite directions: DoltHub started from a
+        version-controlled storage engine and built toward MongoDB, and we
+        started from MongoDB and built toward version control.
+      </p>
+      <ul>
+        <li>
+          <strong>A branch you cannot merge is a copy.</strong> Their article
+          says a database should not claim branches unless it can merge them,
+          and cites Wikipedia&apos;s definition of branching to make the point.
+          We hold the same view. It is why Argon has a merge at all, and why
+          their remark that ours goes only so far is fair.
+        </li>
+        <li>
+          <strong>A change to data should be readable before it lands.</strong>{" "}
+          Both tools put a diff in front of a merge. DumboDB has commands to
+          diff two states and to resolve conflicts one document at a time. Argon
+          saves a merge plan that someone reads and then applies. For writes
+          made by an AI agent, we think that review step is the point.
+        </li>
+        <li>
+          <strong>Version-controlled databases are here.</strong> That is their
+          first takeaway, and we share it. A second team working on the same
+          problem for MongoDB makes the case stronger for both.
+        </li>
+      </ul>
+      <p>
+        There is also one thing DumboDB does that we think is plainly the right
+        design. By its README it can join an existing MongoDB replica set as a
+        non-voting member, and their article lists branching directly off
+        production among its strengths. That means the data you branch is the
+        data your application is writing now. Argon 2.4.0 cannot do this:{" "}
+        <code>argon import database</code> is a one-time copy that needs the
+        source&apos;s writers paused. Following a database that is in use is
+        open as{" "}
+        <a href="https://github.com/argon-lab/argon/pull/113">
+          pull request 113
+        </a>{" "}
+        and is not released. We have not run DumboDB as a replica-set member, so
+        this is praise for the approach, not a test result.
       </p>
 
       <h2>What we measured</h2>
@@ -696,6 +746,43 @@ scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
         </li>
         <li>We did not run DumboDB.</li>
       </ul>
+
+      <h2>What we would like to do together</h2>
+      <p>Three invitations to DoltHub, each one specific:</p>
+      <ol>
+        <li>
+          <strong>Agree on a benchmark method and publish it.</strong> Their
+          numbers and ours cannot be compared as published, because neither side
+          ran the other&apos;s method. A shared one for version-controlled
+          document databases would fix that: the document shape, how many
+          documents change, and where each timing starts and stops. Ours is in{" "}
+          <a href="https://github.com/argon-lab/benchmarks">
+            argon-lab/benchmarks
+          </a>
+          , and they are welcome to change it or to propose their own.
+        </li>
+        <li>
+          <strong>Explore an example that uses both.</strong> The two tools are
+          strong in different places. One idea is Argon in front, giving each
+          agent run a sandbox and a reviewed merge, with DumboDB behind it
+          keeping the history. Nobody has built this, and we do not know whether
+          it works. We would like to find out with them.
+        </li>
+        <li>
+          <strong>Measure Argon again after the change in issue 112.</strong>{" "}
+          When a release compares only changed documents, we will run this
+          measurement again and replace the tables above. We would welcome
+          DoltHub measuring it too, and we will link what they find from here.
+        </li>
+      </ol>
+      <p>
+        The way to reach us is in the open:{" "}
+        <a href={discussions}>GitHub Discussions</a> on the Argon repository, or{" "}
+        <a href={issue}>issue 112</a> for the diff and merge work. The same
+        invitation stands for anyone else building version control for
+        documents.
+      </p>
+
       <p>
         Thanks again to Neil and DoltHub for the review. To try Argon, start
         with the <a href="/quickstart">local quickstart</a>. To see how the
