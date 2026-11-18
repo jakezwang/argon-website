@@ -85,6 +85,8 @@ jobs:
           for scenario in valid invalid-value unexpected-field extra-document delete-document; do
             python -O public/examples/catalog_review.py --scenario "$scenario" --output-dir "$RUNNER_TEMP/argon-mcp-catalog-$scenario"
           done
+      - name: Verify the standalone order review
+        run: python3 public/examples/order-review.py
       - name: Retain MCP example evidence
         if: always()
         continue-on-error: true

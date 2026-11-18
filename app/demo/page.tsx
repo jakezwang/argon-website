@@ -25,6 +25,9 @@ export default function DemoPage() {
         >
           Start locally
         </ActionLink>
+        <a href="/quickstart#order-review" className="btn-quiet">
+          Test a return that changes the wrong order
+        </a>
       </div>
       <p className="mt-4 text-sm leading-7">
         <strong className="text-brand-text">{product.demoStatus}.</strong> The
