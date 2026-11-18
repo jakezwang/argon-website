@@ -17,8 +17,9 @@ export const posts: Post[] = [
     description:
       "Argon 2.5.0 builds diffs and merge plans from the documents a branch changed. Before and after at up to a million documents, and what still reads a whole collection.",
     date: "2026-11-18",
+    updated: "2026-11-18",
     tags: ["MongoDB", "Branching", "Database"],
-    readingMinutes: 8,
+    readingMinutes: 9,
   },
   {
     slug: "argon-vs-dumbodb-response-to-dolthub",

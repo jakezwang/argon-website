@@ -31,6 +31,8 @@ const before =
   "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.4.0-cli-scale";
 const after =
   "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.5.0-cli-scale";
+const afterFirstDiff =
+  "https://github.com/argon-lab/benchmarks/tree/main/reports/2026-11-18-v2.6.0-cli-scale";
 const pullRequest = "https://github.com/argon-lab/argon/pull/117";
 const architecture =
   "https://github.com/argon-lab/argon/blob/master/docs/ARCHITECTURE.md#diff-and-merge";
@@ -42,7 +44,7 @@ const faq = [
   },
   {
     q: "How much faster is argon diff in 2.5.0?",
-    a: "In our measurement with a million documents and 100 changed, the median diff went from 7,088 ms in 2.4.0 to 30 ms in 2.5.0, and peak memory from about 5 GiB to about 120 MiB. The first diff on a branch was slower, a median of 1,874 ms, because it also caught up capture on a checked-out parent.",
+    a: "In our measurement with a million documents and 100 changed, the median diff went from 7,088 ms in 2.4.0 to 30 ms in 2.5.0, and peak memory from about 5 GiB to about 120 MiB. The first diff on a branch was slower, a median of 1,874 ms, because it also caught up capture on a checked-out parent. Argon 2.6.0 removed that cost.",
   },
   {
     q: "Does the time of an Argon diff depend on how many documents changed?",
@@ -239,24 +241,85 @@ export default function Page() {
         29 ms.
       </p>
       <p>
-        So with a checked-out, unwatched parent, a first diff still pays for the
-        size of the checkout before it. We have not measured whether keeping{" "}
-        <code>argon watch</code> running on the parent, or letting{" "}
-        <code>argon console</code> or <code>argon mcp</code> manage capture,
-        removes that cost.
+        So in 2.5.0, with a checked-out, unwatched parent, a first diff still
+        pays for the size of the checkout before it. We have not measured
+        whether keeping <code>argon watch</code> running on the parent, or
+        letting <code>argon console</code> or <code>argon mcp</code> manage
+        capture, removes that cost.
       </p>
       <p>
         This was{" "}
         <a href="https://github.com/argon-lab/argon/issues/120">issue 120</a>,
-        and a fix is merged for the release after 2.5.0:{" "}
+        and <strong>Argon 2.6.0 fixes it</strong>:{" "}
         <a href="https://github.com/argon-lab/argon/pull/122">
           pull request 122
         </a>{" "}
         has a checkout keep its parent&apos;s capture position current while it
-        copies. On builds from source, alternated on a heavily loaded machine,
-        the first diff at a million documents took 3.6 to 13.5 seconds before
-        the fix and 0.08 to 1.7 seconds after it. Those builds are not a
-        release, and the figures in the table above are for 2.5.0 as published.
+        copies. We measured the two releases again, added on November 18. The
+        machine was busy with other work that day, so we alternated 2.5.0 and
+        2.6.0 on one project, round by round, to give both the same load. Every
+        figure in this table is higher than it would be on a quiet machine, and
+        it should be read across, not against the tables above.
+      </p>
+      <div className="overflow-x-auto">
+        <table>
+          <caption className="sr-only">
+            First and second Argon diff on a branch with 100 documents changed,
+            2.5.0 and 2.6.0 alternated on a busy machine, median and range of
+            six rounds
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">
+                <code>argon diff</code>, 100 changed
+              </th>
+              <th scope="col">100,000 documents</th>
+              <th scope="col">1,000,000 documents</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">2.5.0, first diff</th>
+              <td>332 ms (242 to 898)</td>
+              <td>5,476 ms (2,429 to 8,589)</td>
+            </tr>
+            <tr>
+              <th scope="row">2.6.0, first diff</th>
+              <td>84 ms (43 to 1,313)</td>
+              <td>173 ms (89 to 448)</td>
+            </tr>
+            <tr>
+              <th scope="row">2.5.0, second diff</th>
+              <td>68 ms (33 to 1,095)</td>
+              <td>93 ms (32 to 102)</td>
+            </tr>
+            <tr>
+              <th scope="row">2.6.0, second diff</th>
+              <td>48 ms (30 to 115)</td>
+              <td>110 ms (49 to 597)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        In 2.6.0 the first diff on a branch costs about what a later one does.
+        The work did not disappear: the checkout now reads the oplog that the
+        first diff used to read. Over sixteen alternated rounds at a million
+        documents, 2.6.0&apos;s checkouts took 12% longer in total, which is
+        inside the spread of either release on that machine, so we can neither
+        show a cost to checkout nor rule one out. From creating a branch to the
+        end of its first diff, the same rounds took 547 seconds in 2.5.0 and 519
+        in 2.6.0.
+      </p>
+      <p>
+        One side effect is worth knowing. With 10,000 documents changed at a
+        million documents, the second diff and the merge preview ran about twice
+        as slow in 2.6.0 as in 2.5.0. Both releases send MongoDB the same
+        operations for them. The difference is timing: without the slow first
+        diff, the next commands start while MongoDB is still settling after the
+        million-document copy. With a ten-second pause in both releases the
+        difference went away. <a href={afterFirstDiff}>The 2.6.0 report</a> has
+        every round.
       </p>
       <h3>A branch that changed everything</h3>
       <p>
