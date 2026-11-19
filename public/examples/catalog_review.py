@@ -17,6 +17,7 @@ import subprocess
 import threading
 import uuid
 
+from bson import json_util
 from pymongo import MongoClient
 from pymongo.uri_parser import parse_uri
 from pymongo.write_concern import WriteConcern
@@ -116,6 +117,11 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def plain(image):
+    """Decode a plan image. From 2.8.0 the CLI prints canonical Extended JSON."""
+    return json_util.loads(json.dumps(image))
+
+
 def review_catalog_plan(plan, baseline):
     """Fail closed for this one-document, fixed-currency enrichment contract."""
     if plan.get("status") != "pending" or plan.get("conflicts"):
@@ -125,9 +131,9 @@ def review_catalog_plan(plan, baseline):
         return ["unexpected_change_count"]
     change = changes[0]
     if (change.get("collection") != "products" or change.get("document_id") != "shoe"
-            or change.get("delete") or change.get("before") != baseline):
+            or change.get("delete") or plain(change.get("before")) != baseline):
         return ["unexpected_target_or_operation"]
-    doc = change.get("document")
+    doc = plain(change.get("document"))
     allowed = {"_id", "price_cents", "currency", "discount_bps", "sale_price_cents"}
     if not isinstance(doc, dict) or set(doc) != allowed:
         return ["unexpected_fields"]

@@ -19,6 +19,7 @@ import subprocess
 import threading
 import uuid
 
+from bson import json_util
 from pymongo import MongoClient
 from pymongo.uri_parser import parse_uri
 from pymongo.write_concern import WriteConcern
@@ -111,6 +112,11 @@ class MCP:
         self.trace.close()
         if self.proc.returncode:
             raise RuntimeError(f"MCP process exited {self.proc.returncode}; see server.stderr.log")
+
+
+def plain(image):
+    """Decode a plan image. From 2.8.0 the CLI prints canonical Extended JSON."""
+    return json_util.loads(json.dumps(image))
 
 
 def main():
@@ -211,10 +217,11 @@ def main():
         assert plan["status"] == "pending" and not plan["conflicts"] and len(plan["changes"]) == 1
         change = plan["changes"][0]
         assert change["collection"] == "products" and change["document_id"] == "shoe" and not change.get("delete")
-        assert change["before"] == {"_id": "shoe", "price": 49}
-        assert change["document"] == {"_id": "shoe", "price": 44}
+        before, proposed = plain(change["before"]), plain(change["document"])
+        assert before == {"_id": "shoe", "price": 49}
+        assert proposed == {"_id": "shoe", "price": 44}
         assert main_db.products.find_one({"_id": "shoe"})["price"] == 49
-        report["review"] = {"plan_id": plan_id, "before": change["before"], "proposal": change["document"]}
+        report["review"] = {"plan_id": plan_id, "before": before, "proposal": proposed}
         print("Persisted plan review: one products/shoe change, price 49 -> 44, no conflicts.", flush=True)
         if args.apply:
             applied = mcp.tool("argon_merge_apply", plan_id=plan_id)
