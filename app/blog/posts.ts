@@ -47,6 +47,7 @@ export const posts: Post[] = [
     description:
       "Run agent-written code on an isolated boxd machine against an Argon MongoDB sandbox, using a database user made for one run. Output, failure paths and limits.",
     date: "2026-11-17",
+    updated: "2026-11-19",
     tags: ["AI Agents", "MongoDB", "Sandbox"],
     readingMinutes: 11,
   },
