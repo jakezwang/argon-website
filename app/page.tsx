@@ -24,6 +24,13 @@ const integrations = [
     label: "Call the REST API",
     href: "/agents#rest",
   },
+  {
+    title: "Pair with a code sandbox",
+    detail:
+      "Run agent-written code on an isolated boxd machine against an Argon sandbox.",
+    label: "See the boxd integration",
+    href: "/blog/connect-code-sandbox-to-mongodb-sandbox-boxd",
+  },
 ];
 
 export default function HomePage() {
