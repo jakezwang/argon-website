@@ -8,6 +8,7 @@ export const product = {
   demoStatus: "Hosted console paused",
   quickstart: "/quickstart",
   guide: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/QUICK_START.md`,
+  architecture: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/ARCHITECTURE.md`,
   example: `https://github.com/argon-lab/argon-agents/blob/v${release.sdkVersion}/examples/two_agent_review.py`,
   roadmap: [
     "GCS chunk-store backend",

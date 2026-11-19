@@ -1,6 +1,7 @@
 import { pageMetadata } from "../metadata";
 import InteractiveDemo from "../components/InteractiveDemo";
 import ReviewWorkflow from "../components/ReviewWorkflow";
+import UnderTheHood from "../components/UnderTheHood";
 import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
 export const metadata = pageMetadata(
@@ -42,6 +43,7 @@ export default function DemoPage() {
         </p>
         <InteractiveDemo />
       </section>
+      <UnderTheHood />
     </div>
   );
 }
