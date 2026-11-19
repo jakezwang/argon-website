@@ -107,7 +107,7 @@ const faq = [
   },
   {
     q: "Can Argon write a reviewed change back to the database it follows?",
-    a: "Yes, from 2.8.0, from the CLI only. Run argon merge list -p <project> --output json, inspect the saved plan, and pass its approval_digest to argon merge apply <plan-id> --write-back --approve <digest>. Without a matching digest the source is left untouched. The REST API, the MCP server and the console do not offer write-back. A written document keeps the sandbox's field order with _id first, so field order on the source can change. Plans saved by 2.7.0 need a fresh preview. Write-back has not been tested on Atlas, with access control enabled, across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
+    a: "Yes, from 2.8.0, from the CLI only. Run argon merge list -p <project> --output json, inspect the saved plan, and pass its approval_digest to argon merge apply <plan-id> --write-back --approve <digest>. Without a matching digest the source is left untouched. The REST API, the MCP server and the console do not offer write-back. Expect the fields of a replaced document to come back in a different order, including fields the change did not touch: the sandbox copy does not keep the source's field order, and write-back stores the sandbox's order with _id first. An inserted document keeps the order it was written with. Plans saved by 2.7.0 need a fresh preview. Write-back has not been tested on Atlas, with access control enabled, across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
     href: "/cli#source",
     label: "See the commands",
   },
