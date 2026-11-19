@@ -14,9 +14,9 @@ export default function DemoPage() {
     <div className="mx-auto max-w-6xl px-6 pt-14 sm:pt-20">
       <h1 className="page-title">Walk through a data review</h1>
       <p className="lede mt-6 max-w-2xl">
-        Follow branching, time travel, and merge review with the illustrated
-        workflows below. They run in your browser without a database connection.
-        To try actual MongoDB writes, start Argon locally.
+        Step through branching, time travel and merge review in your browser.
+        These walkthroughs are simulated; to see real MongoDB writes, start
+        Argon locally.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <ActionLink
@@ -31,16 +31,11 @@ export default function DemoPage() {
         </a>
       </div>
       <p className="mt-4 text-sm leading-7">
-        <strong className="text-brand-text">{product.demoStatus}.</strong> The
-        local quickstart runs the real engine with your own MongoDB replica set.
+        <strong className="text-brand-text">{product.demoStatus}.</strong>
       </p>
       <ReviewWorkflow />
       <section className="mt-24">
-        <h2 className="section-title">Explore the concepts</h2>
-        <p className="mb-8 mt-4 max-w-2xl leading-7">
-          This illustrated walkthrough is a simulation. Run Argon locally to
-          inspect actual document changes.
-        </p>
+        <h2 className="section-title mb-8">Explore the concepts</h2>
         <InteractiveDemo />
       </section>
       <UnderTheHood />

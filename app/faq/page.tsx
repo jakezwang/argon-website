@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { gitDifferences, install, limits, product } from "../product";
+import { install, limits } from "../product";
 import { pageMetadata } from "../metadata";
 
 export const metadata = pageMetadata(
@@ -11,13 +11,13 @@ export const metadata = pageMetadata(
 const faq = [
   {
     q: "What is Argon?",
-    a: "Argon gives AI agents disposable MongoDB sandboxes. Each agent run gets a real MongoDB database forked from your data; you review what it changed, then merge or discard it. Underneath it is Git for MongoDB: an MIT-licensed, self-hosted versioning layer with branching, time travel, reviewed merge and per-actor undo. The hosted console is currently paused; the illustrated walkthrough and local quickstart remain available.",
+    a: "Argon gives AI agents disposable MongoDB sandboxes. Each agent run gets a real MongoDB database forked from your data; you review what it changed, then merge or discard it. Underneath it is Git for MongoDB: an MIT-licensed, self-hosted versioning layer with branching, time travel, reviewed merge and per-actor undo.",
     href: "/features",
     label: "Explore the features",
   },
   {
     q: "Is Argon Git for MongoDB?",
-    a: `Yes. Argon keeps a history of your MongoDB documents that you can branch, diff, merge, read at an earlier position and undo, with commands that mirror Git: argon branches create, argon diff, argon merge preview, argon undo. A sandbox for an agent run is a branch checked out as a real MongoDB database, much as a Git worktree is a branch checked out in its own directory. The comparison stops in a few places. ${gitDifferences.join(" ")}`,
+    a: `Yes. Argon keeps a history of your MongoDB documents that you can branch, diff, merge, read at an earlier position and undo, with commands that mirror Git: argon branches create, argon diff, argon merge preview, argon undo. A sandbox for an agent run is a branch checked out as a real MongoDB database, much as a Git worktree is a branch checked out in its own directory. Unlike Git there is no commit step: a running capture process records each change.`,
     href: "/features",
     label: "Git and Argon side by side",
   },
@@ -46,8 +46,8 @@ const faq = [
     label: "Two agents, one document",
   },
   {
-    q: "How do I clean up MongoDB sandboxes with a TTL?",
-    a: `Every sandbox has a time to live, one hour by default, set with --ttl. Reaching it makes the sandbox eligible for cleanup. ${limits.lifecycle} argon sandbox discard removes one sandbox immediately, and argon sandbox keep removes the TTL from one you want to keep.`,
+    q: "How do I clean up MongoDB sandboxes with a TTL, and who runs capture?",
+    a: `Every sandbox has a time to live, one hour by default, set with --ttl. ${limits.lifecycle} argon sandbox discard removes one sandbox immediately, and argon sandbox keep removes the TTL from one you want to keep.`,
     href: "/cli#sandboxes",
     label: "Sandbox commands",
   },
@@ -59,13 +59,13 @@ const faq = [
   },
   {
     q: "How is a branch different from a database dump?",
-    a: `A dump is a standalone copy without Argon's branch history or merge workflow. ${limits.branching}`,
+    a: "A dump is a standalone copy without history. A branch is metadata in Argon's log; checkout turns it into a real database when you need one.",
     href: "/blog/mongodb-database-branching-explained",
     label: "How database branching works",
   },
   {
     q: "Can I use my existing driver?",
-    a: "Yes. argon checkout materializes a branch and prints a MongoDB connection string. Drivers, mongosh and Compass connect to that database. From 2.3.1, capture can recover missing images for newly created collections from MongoDB snapshot history. Keep capture healthy while writing. Repeated writes to one document in a transaction can still leave gaps when images are missing. On older versions, prepare new collections for exact images before updates.",
+    a: "Yes. argon checkout materializes a branch and prints a MongoDB connection string. Drivers, mongosh and Compass connect to that database. Keep capture running while you write so the changes are recorded.",
     href: "/quickstart",
     label: "Start locally",
   },
@@ -77,49 +77,43 @@ const faq = [
   },
   {
     q: "Are branches an access-control boundary?",
-    a: limits.isolation,
+    a: "No. Each experiment writes to its own database and nothing reaches the target until a reviewed merge is applied, but access isolation comes from MongoDB credentials and network controls.",
     href: "/features#capabilities",
     label: "Operating limits",
   },
   {
     q: "Can every change be undone?",
-    a: `${limits.undo} ${limits.attribution}`,
+    a: "Changes captured with complete images, within retained history. Undo filters by the actor label of a branch, so give each agent its own branch.",
     href: "/features#capabilities",
     label: "Capture and attribution",
   },
   {
     q: "How far back can I time-travel?",
-    a: limits.retention,
+    a: "As far as history is retained. A pin keeps the state it names from being reclaimed; a reclaimed position returns an error, not a partial answer.",
     href: "/blog/mongodb-time-travel-vs-point-in-time-recovery",
     label: "Time travel and backups",
   },
   {
-    q: "Who manages capture and sandbox expiry?",
-    a: limits.lifecycle,
-    href: "/agents",
-    label: "Connect an agent",
-  },
-  {
     q: "Can Argon import a database that is in use and keep up with it?",
-    a: "Yes, from 2.7.0. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data. Indexes and validators are not followed. Following has not been tested on Atlas or with access control enabled, and on an idle source the last change takes ten to twenty seconds to arrive by default.",
-    href: "/cli#source",
-    label: "See the commands",
+    a: "Yes. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data.",
+    href: "/features#capabilities",
+    label: "Limits of following",
   },
   {
     q: "Can Argon write a reviewed change back to the database it follows?",
-    a: "Yes, from 2.8.0, from the CLI only. Run argon merge list -p <project> --output json, inspect the saved plan, and pass its approval_digest to argon merge apply <plan-id> --write-back --approve <digest>. Without a matching digest the source is left untouched. The REST API, the MCP server and the console do not offer write-back. Expect the fields of a replaced document to come back in a different order, including fields the change did not touch: the sandbox copy does not keep the source's field order, and write-back stores the sandbox's order with _id first. An inserted document keeps the order it was written with. Plans saved by 2.7.0 need a fresh preview. Write-back has not been tested on Atlas, with access control enabled, across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
-    href: "/cli#source",
-    label: "See the commands",
+    a: "Yes, from the CLI only. You pass the approval digest of the plan you reviewed to argon merge apply --write-back; without a matching digest the source is left untouched.",
+    href: "/features#capabilities",
+    label: "Limits of write-back",
   },
   {
     q: "How fast is branching?",
-    a: "Creating branch metadata does not copy documents. Physical checkout, sandbox readiness, historical queries and MongoDB storage have separate costs that depend on the dataset and workload. Benchmark numbers apply to the documented engine version and measurement scope.",
+    a: "Creating a branch writes metadata and copies no documents. Checkout, historical queries and storage cost more and depend on the dataset.",
     href: "https://github.com/argon-lab/benchmarks",
     label: "Reproduce the benchmarks",
   },
   {
     q: "How do I install Argon?",
-    a: `Engine ${product.version}: ${install.cli}. Use npm 11.16+ with a supported Node.js version; the flag allows only argonctl's binary installer, which checks the download against the SHA-256 published with the package before installing it. Python SDK ${product.sdkVersion}: ${install.langgraph}. The SDK command installs the matching PyPI release; use a Python virtual environment.`,
+    a: `CLI: ${install.cli}, or brew install argon-lab/tap/argonctl. Python SDK: ${install.langgraph}, in a virtual environment.`,
     href: "/quickstart",
     label: "Run the full setup",
   },

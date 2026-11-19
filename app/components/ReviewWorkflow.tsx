@@ -6,9 +6,8 @@ export default function ReviewWorkflow() {
         Review changes to your business data
       </h2>
       <p className="lede mt-5 max-w-2xl">
-        One order, two agents, one decision. Conversation checkpoints do not
-        capture changes to external orders and prices. This example makes the
-        MongoDB data itself reviewable.
+        One order, two agents, one decision, reviewed on the MongoDB data
+        itself.
       </p>
       <ol className="mt-12 grid gap-y-10 md:grid-cols-2 lg:grid-cols-4">
         {reviewSteps.map(([title, body], index) => (
@@ -36,7 +35,7 @@ export default function ReviewWorkflow() {
           local quickstart
         </a>
         . It asserts identical input, a real conflict, accepted data and the
-        restored result. No LLM key is required.
+        restored result.
       </p>
     </section>
   );

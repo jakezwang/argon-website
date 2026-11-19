@@ -96,12 +96,10 @@ export default function Quickstart() {
         </p>
         <QuickStartCommand showSdk={false} />
         <p>
-          npm 12 blocks package install scripts by default. The npm command
-          above allows only <code>argonctl</code> to download its release
-          binary, and the installer refuses a download whose SHA-256 does not
-          match the one published with the package. Use npm 11.16+ with a
-          supported Node.js version, or choose Homebrew or the source build
-          below.
+          npm 12 blocks package install scripts by default, so the flag allows
+          only <code>argonctl</code> to download its release binary. The
+          installer refuses a download whose SHA-256 does not match the one
+          published with the package.
         </p>
         <CodeBlock
           label="Check the installed CLI"
@@ -275,8 +273,7 @@ ${install.python}`}
           </a>
         </div>
         <p className="mt-6 max-w-2xl text-sm leading-7 text-brand-muted">
-          History needs healthy capture and retained data. CLI-only workflows
-          also need a running watch process and scheduled cleanup. Read the{" "}
+          Read the{" "}
           <a className="prose-link" href="/features#capabilities">
             operating limits
           </a>{" "}

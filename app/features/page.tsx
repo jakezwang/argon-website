@@ -3,11 +3,11 @@ import { pageMetadata } from "../metadata";
 import Capabilities from "../components/Capabilities";
 import Transcript from "../components/Transcript";
 import {
-  engineering,
   features,
   featureTranscriptVersion,
   gitDifferences,
   gitMap,
+  product,
   terms,
 } from "../product";
 
@@ -16,10 +16,7 @@ const deepDives = [
     "Full CLI reference",
     "https://github.com/argon-lab/argon/blob/master/docs/CLI.md",
   ],
-  [
-    "Architecture deep dive",
-    "https://github.com/argon-lab/argon/blob/master/docs/ARCHITECTURE.md",
-  ],
+  ["Architecture deep dive", product.architecture],
   ["Run the benchmarks", "https://github.com/argon-lab/benchmarks"],
   ["Changelog", "https://github.com/argon-lab/argon/blob/master/CHANGELOG.md"],
 ] as const;
@@ -129,20 +126,20 @@ export default function FeaturesPage() {
                 entries={feature.transcript}
                 label={`${feature.name}: commands and output`}
               />
-              <p className="mt-4 text-sm leading-6">
-                <span className="font-semibold text-brand-text">
-                  Good to know:
-                </span>{" "}
-                {feature.limit}
-              </p>
+              {"limit" in feature && (
+                <p className="mt-4 text-sm leading-6">
+                  <span className="font-semibold text-brand-text">
+                    Good to know:
+                  </span>{" "}
+                  {feature.limit}
+                </p>
+              )}
             </div>
           </section>
         ))}
         <p className="border-t border-brand-edge pt-6 text-sm leading-6 text-brand-muted">
-          These transcripts were recorded with Argon {featureTranscriptVersion}{" "}
-          on a local replica set, with a project named <code>shop</code>. Output
-          is abbreviated, connection strings and IDs are shortened, and times
-          are in UTC.{" "}
+          Recorded with Argon {featureTranscriptVersion} on a local replica set;
+          output and IDs are shortened.{" "}
           <Link className="prose-link" href="/quickstart">
             Run them yourself
           </Link>
@@ -150,19 +147,13 @@ export default function FeaturesPage() {
         </p>
       </div>
 
-      <section className="mt-24" aria-labelledby="engine-heading">
-        <h2 id="engine-heading" className="section-title">
-          How it is built
-        </h2>
-        <div className="mt-10 grid gap-x-12 sm:grid-cols-2">
-          {engineering.map(([title, body]) => (
-            <div key={title} className="border-t border-brand-edge py-7">
-              <h3 className="text-xl font-semibold text-brand-text">{title}</h3>
-              <p className="mt-2.5 text-sm leading-6">{body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <p className="mt-16 max-w-3xl leading-7">
+        How the engine works, component by component:{" "}
+        <Link className="prose-link" href="/demo#under-the-hood">
+          see the interactive architecture diagram
+        </Link>
+        .
+      </p>
 
       <Capabilities />
 

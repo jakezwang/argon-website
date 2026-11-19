@@ -2,7 +2,6 @@ import Link from "next/link";
 import HeroDemo from "./components/HeroDemo";
 import QuickStartCommand from "./components/QuickStartCommand";
 import { ActionLink } from "./components/Funnel";
-import Transcript from "./components/Transcript";
 import { features, product } from "./product";
 
 const integrations = [
@@ -126,40 +125,34 @@ export default function HomePage() {
             </h2>
             <p className="mt-5 leading-7">
               Every sandbox is a branch, so the workflow is the one you know
-              from Git: diff what changed, merge what you reviewed, go back,
-              undo. Each of these is a command you can run today, against your
-              own MongoDB. The examples use a project named{" "}
-              <code className="font-mono text-[0.9em]">shop</code>.
+              from Git.
             </p>
           </div>
-          <div className="mt-12 grid gap-x-12 gap-y-12 md:grid-cols-2">
+          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => (
-              <div key={feature.id} className="flex min-w-0 flex-col">
-                <h3 className="text-xl font-semibold text-brand-text">
-                  <Link
-                    href={`/features#${feature.id}`}
-                    className="transition-colors hover:text-brand-primary"
-                  >
+              <li key={feature.id} className="min-w-0">
+                <Link
+                  href={`/features#${feature.id}`}
+                  className="panel group flex h-full flex-col gap-3 p-5 transition-colors hover:border-brand-primary"
+                >
+                  <span className="font-semibold text-brand-text transition-colors group-hover:text-brand-primary">
                     {feature.name}
-                  </Link>
-                </h3>
-                <p className="mb-4 mt-2 flex-1 leading-7">{feature.summary}</p>
-                <Transcript
-                  entries={feature.transcript}
-                  label={`${feature.name}: command`}
-                  commandsOnly
-                />
-              </div>
+                  </span>
+                  <code className="font-mono text-sm text-brand-muted">
+                    {
+                      feature.transcript[0][0].match(
+                        /^argon(?: [a-z][a-z-]*)*/,
+                      )?.[0]
+                    }
+                  </code>
+                </Link>
+              </li>
             ))}
-          </div>
-          <p className="mt-10 max-w-3xl text-sm leading-7">
-            History features depend on capture and on how much history you
-            retain.{" "}
+          </ul>
+          <p className="mt-8 text-sm leading-7">
             <Link href="/features" className="prose-link">
-              See each command beside its Git counterpart, with its output and
-              limits
+              See each command with its output and limits
             </Link>
-            .
           </p>
         </section>
 
@@ -200,59 +193,6 @@ export default function HomePage() {
         </section>
 
         <section
-          aria-labelledby="deployment-heading"
-          className="pt-24 sm:pt-32"
-        >
-          <h2 id="deployment-heading" className="section-title">
-            Try the idea.
-            <br />
-            Then use your data.
-          </h2>
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-            <div className="panel p-7 sm:p-8">
-              <h3 className="text-xl font-semibold text-brand-text">
-                In the walkthrough
-              </h3>
-              <p className="mt-3 leading-7">
-                Step through a sample order as it is branched, changed, reviewed
-                and merged. It runs in your browser, with nothing to install.
-              </p>
-              <ActionLink
-                href={product.demo}
-                event="demo_opened"
-                className="prose-link mt-3 inline-flex min-h-11 items-center text-sm font-medium"
-              >
-                {product.demoLabel}
-              </ActionLink>
-            </div>
-            <div className="panel p-7 sm:p-8">
-              <h3 className="text-xl font-semibold text-brand-text">
-                In your deployment
-              </h3>
-              <p className="mt-3 leading-7">
-                Connect your own MongoDB replica set. Agents write to separate
-                branch databases; applying a reviewed merge changes the target.
-              </p>
-              <ActionLink
-                href={product.quickstart}
-                event="quickstart_opened"
-                className="prose-link mt-3 inline-flex min-h-11 items-center text-sm font-medium"
-              >
-                Start locally
-              </ActionLink>
-            </div>
-          </div>
-          <p className="mt-6 max-w-3xl text-sm leading-7">
-            Time travel depends on retained history and complete capture.
-            Physical checkout takes time and storage that depend on the dataset.{" "}
-            <Link href="/features#capabilities" className="prose-link">
-              Read the operating boundaries
-            </Link>{" "}
-            before you connect a real workload.
-          </p>
-        </section>
-
-        <section
           className="grid gap-8 pt-24 sm:pt-32 lg:grid-cols-12 lg:gap-12"
           aria-labelledby="evidence-heading"
         >
@@ -262,8 +202,7 @@ export default function HomePage() {
           <div className="lg:col-span-7">
             <p className="lede">
               The two-agent example checks the starting data, a real conflict,
-              the accepted change, and the restored result. Run it locally
-              without an LLM key.
+              the accepted change, and the restored result.
             </p>
             <div className="mt-5 flex flex-wrap gap-x-8 gap-y-1">
               <a
@@ -279,29 +218,6 @@ export default function HomePage() {
                 Benchmarks and reproduction
               </a>
             </div>
-            <details className="group mt-6 border-y border-brand-edge text-sm">
-              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 font-medium text-brand-text hover:text-brand-primary [&::-webkit-details-marker]:hidden">
-                Historical metadata measurements
-                <svg
-                  viewBox="0 0 16 16"
-                  className="h-4 w-4 shrink-0 transition-transform group-open:rotate-45"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  aria-hidden="true"
-                >
-                  <path d="M8 3v10M3 8h10" />
-                </svg>
-              </summary>
-              <p className="pb-5 leading-7">
-                0.86 ms branch p50 and 479 B per metadata branch, measured with
-                engine <code className="font-mono text-[0.9em]">8bf0f1e</code>{" "}
-                on a 50k-entry project. These historical numbers exclude
-                physical checkout, sandbox readiness, and MongoDB storage. The
-                benchmark report includes end-to-end measurements and their
-                scope.
-              </p>
-            </details>
           </div>
         </section>
 
