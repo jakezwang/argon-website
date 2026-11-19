@@ -34,6 +34,7 @@ const operations =
 const writeBackDocs =
   "https://github.com/argon-lab/argon/blob/v2.8.0/docs/OPERATIONS.md#writing-a-plan-back-to-the-source";
 const changelog = "https://github.com/argon-lab/argon/blob/v2.8.0/CHANGELOG.md";
+const fieldOrderIssue = "https://github.com/argon-lab/argon/issues/150";
 const embedded =
   "https://www.mongodb.com/docs/manual/tutorial/query-embedded-documents/";
 
@@ -280,7 +281,9 @@ main shows them once following has read them from the source (argon source statu
         order. Some do: MongoDB&apos;s{" "}
         <a href={embedded}>equality match on a whole embedded document</a>{" "}
         depends on it. Only documents a plan replaces are affected. We count
-        this as a defect, and a fix is in progress.
+        this as a defect and track it in{" "}
+        <a href={fieldOrderIssue}>issue 150</a>. A fix is merged in the engine
+        and is not in a release yet, so 2.8.0 behaves as shown here.
       </p>
 
       <h2>What is refused</h2>
@@ -390,7 +393,9 @@ Merging agent-2 → main
         </li>
         <li>
           <strong>Field order.</strong> A document replaced by a write-back gets
-          the field order it had in the sandbox, as shown above.
+          the field order it had in the sandbox, as shown above (
+          <a href={fieldOrderIssue}>issue 150</a>; fixed in the engine, not yet
+          released).
         </li>
         <li>
           <strong>Two options are still experimental.</strong>{" "}
