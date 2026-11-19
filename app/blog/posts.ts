@@ -12,6 +12,15 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "branch-live-mongodb-write-back",
+    title: "Branch a Live MongoDB Database and Write Reviewed Changes Back",
+    description:
+      "Import a MongoDB database while it is being written, follow it, let an agent work in a sandbox, review the diff, and write the approved change back in one transaction. A full run on Argon 2.8.0, with its limits.",
+    date: "2026-11-19",
+    tags: ["MongoDB", "Branching", "AI Agents"],
+    readingMinutes: 10,
+  },
+  {
     slug: "argon-2-5-diff-merge-before-after",
     title: "Argon 2.5: Diff and Merge Preview Now Follow the Change",
     description:
