@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Scripted Argon 2.7.0 MCP review, with real MongoDB writes and no model API key.
+"""Scripted Argon 2.8.0 MCP review, with real MongoDB writes and no model API key.
 
 Requires Python 3.12+, PyMongo (pip install 'pymongo>=4.6,<5'), an installed
-Argon 2.7.0 binary, and a disposable local MongoDB replica set. Example:
+Argon 2.8.0 binary, and a disposable local MongoDB replica set. Example:
   python mcp_review.py --mongo-uri 'mongodb://localhost:27017/?replicaSet=rs0' \
     --output-dir review-discard
 Add --apply to explicitly choose the merge after the fixed review assertions.
@@ -19,6 +19,7 @@ import subprocess
 import threading
 import uuid
 
+from bson import json_util
 from pymongo import MongoClient
 from pymongo.uri_parser import parse_uri
 from pymongo.write_concern import WriteConcern
@@ -113,6 +114,11 @@ class MCP:
             raise RuntimeError(f"MCP process exited {self.proc.returncode}; see server.stderr.log")
 
 
+def plain(image):
+    """Decode a plan image. From 2.8.0 the CLI prints canonical Extended JSON."""
+    return json_util.loads(json.dumps(image))
+
+
 def main():
     if not __debug__:
         raise SystemExit("Run without -O: this example depends on review assertions")
@@ -120,7 +126,7 @@ def main():
     parser.add_argument("--binary", default=os.environ.get("ARGON_BIN", "argon"))
     parser.add_argument("--mongo-uri", default=os.environ.get("ARGON_TEST_MONGODB_URI"),
                         help="Disposable local replica set, without credentials; or ARGON_TEST_MONGODB_URI")
-    parser.add_argument("--expected-version", default="2.7.0", help="Exact release to validate (default: %(default)s)")
+    parser.add_argument("--expected-version", default="2.8.0", help="Exact release to validate (default: %(default)s)")
     parser.add_argument("--output-dir", type=Path, required=True, help="New directory for real protocol messages and results")
     parser.add_argument("--apply", action="store_true", help="Explicitly apply the reviewed fixture change; default is discard")
     args = parser.parse_args()
@@ -211,10 +217,11 @@ def main():
         assert plan["status"] == "pending" and not plan["conflicts"] and len(plan["changes"]) == 1
         change = plan["changes"][0]
         assert change["collection"] == "products" and change["document_id"] == "shoe" and not change.get("delete")
-        assert change["before"] == {"_id": "shoe", "price": 49}
-        assert change["document"] == {"_id": "shoe", "price": 44}
+        before, proposed = plain(change["before"]), plain(change["document"])
+        assert before == {"_id": "shoe", "price": 49}
+        assert proposed == {"_id": "shoe", "price": 44}
         assert main_db.products.find_one({"_id": "shoe"})["price"] == 49
-        report["review"] = {"plan_id": plan_id, "before": change["before"], "proposal": change["document"]}
+        report["review"] = {"plan_id": plan_id, "before": before, "proposal": proposed}
         print("Persisted plan review: one products/shoe change, price 49 -> 44, no conflicts.", flush=True)
         if args.apply:
             applied = mcp.tool("argon_merge_apply", plan_id=plan_id)

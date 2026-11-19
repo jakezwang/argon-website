@@ -68,13 +68,15 @@ argon release  -p <project> -b <branch>`,
   {
     id: "source",
     title: "Import a database in use and follow it",
-    lead: "From 2.7.0. Import a replica-set database while your application keeps writing to it, then keep main current with it.",
+    lead: "From 2.7.0, import a replica-set database while your application keeps writing to it and keep main current with it. From 2.8.0, write a reviewed plan back to that database.",
     code: `argon import database --online --uri <source-uri> --database <db> --project <project>
 argon source follow -p <project>
 argon source status -p <project>
 argon source resync -p <project>
-argon source detach -p <project> --yes`,
-    note: "Argon only reads the source; merged changes are not written back to it. The source must be a replica set. Indexes and validators are not followed. This has not been tested on Atlas or with access control enabled. On an idle source the last change can take some seconds to reach main. If following ends as degraded, status names the reason and resync repairs main in place.",
+argon source detach -p <project> --yes
+argon merge list  -p <project> --output json
+argon merge apply <plan-id> --write-back --approve <approval_digest>`,
+    note: "The source must be a replica set. Indexes and validators are not followed. On an idle source the last change takes ten to twenty seconds to reach main by default. If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: inspect the plan in the JSON output of merge list and pass its approval_digest to --approve; without a matching digest the source is left untouched. It is a CLI command only; the REST API, the MCP server and the console do not offer it. A written document keeps the sandbox's field order with _id first, so field order on the source can change. Plans saved by 2.7.0 need a fresh preview. Following has not been tested on Atlas or with access control enabled, and write-back has also not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
   },
   {
     id: "history",
