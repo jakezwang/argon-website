@@ -6,6 +6,7 @@ import {
   engineering,
   features,
   featureTranscriptVersion,
+  sourceTranscriptVersion,
   gitDifferences,
   gitMap,
   terms,
@@ -142,7 +143,9 @@ export default function FeaturesPage() {
           These transcripts were recorded with Argon {featureTranscriptVersion}{" "}
           on a local replica set, with a project named <code>shop</code>. Output
           is abbreviated, connection strings and IDs are shortened, and times
-          are in UTC.{" "}
+          are in UTC. The last two sections, on a database in use, were recorded
+          with Argon {sourceTranscriptVersion} on two one-member MongoDB 7.0
+          replica sets without access control: one as the source, one for Argon.{" "}
           <Link className="prose-link" href="/quickstart">
             Run them yourself
           </Link>

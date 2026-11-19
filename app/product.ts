@@ -210,13 +210,96 @@ export const features = [
     limit:
       "Identical input does not make an agent's output deterministic, and a pin is not a backup.",
   },
+  {
+    id: "source",
+    short: "Follow",
+    name: "Start from a database you already run",
+    summary:
+      "Import a replica-set database while your application keeps writing to it, then keep main current with it. Each sandbox forks from recent data.",
+    transcript: [
+      [
+        "argon import database --database shop --project shop --online --yes",
+        [
+          "✅ Import Complete",
+          "   Documents Imported: 2",
+          "   Consistent: LSN 4 is the source at cluster time Timestamp(1795103279, 3)",
+          "   main follows database 'shop'; keep it current with: argon source follow -p <project>",
+        ],
+      ],
+      [
+        "argon source follow -p shop",
+        ["Following the source (Ctrl-C to stop)..."],
+      ],
+      [
+        "argon source status -p shop",
+        [
+          'Project shop: main follows database "shop"',
+          "  Health:      healthy (exact)",
+          "  Head:        LSN 4",
+        ],
+      ],
+    ],
+    points: [
+      "The source connection string is read from ARGON_SOURCE_URI or --uri for each command. It is never stored.",
+      "The import publishes the source as it was at one cluster time, and prints which.",
+      "Following is a running process and goes one way, from the source into main. While it follows, main refuses ordinary merges, undo and other writes.",
+    ],
+    limit:
+      "The source must be a replica set, not a sharded cluster. Indexes and validators are not followed. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+  },
+  {
+    id: "write-back",
+    short: "Write-back",
+    name: "Write a reviewed change back",
+    summary:
+      "When main follows a database, a reviewed merge plan is written to that database: in one transaction, and only with the approval digest of the plan you inspected.",
+    transcript: [
+      [
+        "argon merge preview -p shop -b agent-run -o json",
+        [
+          '    "id": "6aff1a4eb64dc06f6cdabb6e",',
+          '    "status": "pending",',
+          '    "followed_database": "shop",',
+          '    "approval_digest": "25cab186…95bff0ce"',
+        ],
+      ],
+      [
+        "argon merge apply 6aff1a4eb64dc06f6cdabb6e --write-back --approve 25cab186…95bff0ce",
+        [
+          "Written to the source database: 1 change(s) in one transaction.",
+          "main shows them once following has read them from the source (argon source status).",
+        ],
+      ],
+    ],
+    points: [
+      "The JSON preview shows every before and after image and the plan's approval_digest. argon merge list -p shop --output json shows the same for a saved plan.",
+      "Without a matching digest nothing is written. If a planned document changed on the source after the preview, the transaction aborts, nothing is written and the plan stays pending.",
+      "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
+    ],
+    limit:
+      "Expect the fields of a replaced document to come back in a different order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+  },
 ] as const;
+// The two sections about a database in use were recorded later than the rest.
+export const sourceTranscriptVersion = "2.8.0";
 
 // Git for MongoDB, command by command: the Git command a developer already
 // knows, the Argon command that does the same job for documents, what it does,
 // and the feature above that shows it. Rendered on /features and in llms.txt.
 // Keep each row true for both tools; where the comparison stops is below.
 export const gitMap = [
+  [
+    "git clone",
+    ["argon import database --online"],
+    "Copies a replica-set database while it is being written. Unlike a clone, it brings the documents as they are at one moment, without earlier history or indexes.",
+    "source",
+  ],
+  [
+    "git pull",
+    ["argon source follow"],
+    "Keeps main current with the source database. Unlike a pull, it is a running process and goes one way; main accepts no other writes while it follows.",
+    "source",
+  ],
   [
     "git branch",
     ["argon branches create"],
@@ -240,6 +323,12 @@ export const gitMap = [
     ["argon merge preview", "argon merge apply"],
     "Saves the change as a plan to review, then applies exactly that plan.",
     "merge",
+  ],
+  [
+    "git push",
+    ["argon merge apply --write-back"],
+    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest, is a CLI step only, and aborts without writing if a planned document changed on the source after the review.",
+    "write-back",
   ],
   [
     "git checkout <commit>",

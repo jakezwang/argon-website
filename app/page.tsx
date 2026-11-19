@@ -5,6 +5,9 @@ import { ActionLink } from "./components/Funnel";
 import Transcript from "./components/Transcript";
 import { features, product } from "./product";
 
+// The two entries about a database in use carry their limit on this page too.
+const limitOnHome = new Set<string>(["source", "write-back"]);
+
 const integrations = [
   {
     title: "Connect an agent",
@@ -142,6 +145,17 @@ export default function HomePage() {
                   label={`${feature.name}: command`}
                   commandsOnly
                 />
+                {limitOnHome.has(feature.id) && (
+                  <p className="mt-3 text-sm leading-6">
+                    {feature.limit}{" "}
+                    <Link
+                      href={`/features#${feature.id}`}
+                      className="prose-link"
+                    >
+                      Output and details
+                    </Link>
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -225,6 +239,8 @@ export default function HomePage() {
               <p className="mt-3 leading-7">
                 Connect your own MongoDB replica set. Agents write to separate
                 branch databases; applying a reviewed merge changes the target.
+                A replica-set database can be imported while it is being
+                written.
               </p>
               <ActionLink
                 href={product.quickstart}
@@ -237,7 +253,9 @@ export default function HomePage() {
           </div>
           <p className="mt-6 max-w-3xl text-sm leading-7">
             Time travel depends on retained history and complete capture.
-            Physical checkout takes time and storage that depend on the dataset.{" "}
+            Physical checkout takes time and storage that depend on the dataset.
+            Importing a database in use has been tested on MongoDB 7.0 replica
+            sets only, not on Atlas or with access control.{" "}
             <Link href="/features#capabilities" className="prose-link">
               Read the operating boundaries
             </Link>{" "}

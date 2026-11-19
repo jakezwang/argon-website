@@ -20,7 +20,10 @@ export function GET() {
 ${features
   .map((feature) => {
     const commands = feature.transcript
-      .map((entry) => `\`${entry[0].replace(/[0-9a-f]{24}/, "<plan-id>")}\``)
+      .map(
+        (entry) =>
+          `\`${entry[0].replace(/[0-9a-f]{24}/, "<plan-id>").replace(/--approve \S+/, "--approve <approval_digest>")}\``,
+      )
       .join(", ");
     return `- **${feature.name}**: ${feature.summary} Commands: ${commands}. Good to know: ${feature.limit}`;
   })
