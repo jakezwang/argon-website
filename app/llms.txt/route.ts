@@ -22,7 +22,7 @@ ${features
     const commands = feature.transcript
       .map((entry) => `\`${entry[0].replace(/[0-9a-f]{24}/, "<plan-id>")}\``)
       .join(", ");
-    return `- **${feature.name}**: ${feature.summary} Commands: ${commands}. Good to know: ${feature.limit}`;
+    return `- **${feature.name}**: ${feature.summary} Commands: ${commands}.${"limit" in feature ? ` Good to know: ${feature.limit}` : ""}`;
   })
   .join("\n")}
 
@@ -50,8 +50,8 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 
 - \`argon mcp\` serves 13 tools over stdio: argon_sandbox_create, argon_sandbox_discard, argon_sandbox_keep, argon_branch_list, argon_connect, argon_diff, argon_merge_preview, argon_merge_apply, argon_undo, argon_snapshot_create, argon_pin_create, argon_pin_list, argon_pin_sandbox.
 - Every tool declares MCP annotations. argon_branch_list, argon_diff and argon_pin_list are read-only; argon_merge_apply, argon_undo and argon_sandbox_discard are destructive.
-- From 2.2.0, \`argon mcp --disable-tools argon_merge_apply\` withholds the apply tool so a person applies the reviewed plan with \`argon merge apply <plan-id>\`. \`--disable-tools\` takes a comma-separated list; \`argon mcp --read-only\` offers only the three read-only tools.
-- From 2.3.2 the server starts without a reachable MongoDB: the handshake and tools/list need no database. From 2.3.3 it connects in the background as soon as MongoDB answers. From 2.4.0 a restarted server also resumes capture for sandboxes an earlier server handed out, without a tool call. A tool called while MongoDB is unreachable returns a tool error and the server stays up.
+- \`argon mcp --disable-tools argon_merge_apply\` withholds the apply tool so a person applies the reviewed plan with \`argon merge apply <plan-id>\`. \`--disable-tools\` takes a comma-separated list; \`argon mcp --read-only\` offers only the three read-only tools.
+- The server starts without a reachable MongoDB: the handshake and tools/list need no database, and it connects in the background as soon as MongoDB answers. A restarted server also resumes capture for sandboxes an earlier server handed out, without a tool call. A tool called while MongoDB is unreachable returns a tool error and the server stays up.
 - Supported MCP revisions: 2024-11-05, 2025-03-26 and 2025-06-18 (handshake based). The 2026-07-28 per-request protocol is not implemented yet.
 
 ## Local access and security
