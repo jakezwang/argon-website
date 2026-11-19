@@ -74,5 +74,22 @@
         "release": "v2.7.0"
       }
     ]
+  },
+  {
+    "login": "DeviousCardi",
+    "name": "DeviousCardi",
+    "url": "https://github.com/DeviousCardi",
+    "avatar": "/contributors/DeviousCardi.png",
+    "firstMergedAt": "2026-11-19",
+    "contributions": [
+      {
+        "repository": "argon-lab/argon",
+        "number": 149,
+        "title": "Make doctor check the operationTime that checkout depends on",
+        "url": "https://github.com/argon-lab/argon/pull/149",
+        "mergedAt": "2026-11-19",
+        "release": null
+      }
+    ]
   }
 ]
