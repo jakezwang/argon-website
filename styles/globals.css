@@ -383,3 +383,8 @@
     animation: none;
   }
 }
+
+.uth-node:focus-visible .uth-node-rect {
+  stroke: var(--color-brand-primary);
+  stroke-width: 3;
+}
