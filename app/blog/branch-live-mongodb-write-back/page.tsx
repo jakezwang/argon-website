@@ -1,3 +1,4 @@
+import { install } from "../../product";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
 
@@ -457,7 +458,7 @@ Merging agent-2 → main
 
       <h2>Try it</h2>
       <pre>
-        <code>{`npm install -g argonctl@2.8.1
+        <code>{`${install.cli}
 export MONGODB_URI="mongodb://…"           # Argon's own replica set
 export ARGON_SOURCE_URI="mongodb://…"      # used per command, never stored
 argon import preview  --database myapp --online
@@ -465,6 +466,7 @@ argon import database --database myapp --project myapp --online --yes
 argon source follow -p myapp               # keep main current from here on
 argon sandbox create -p myapp --watch
 argon merge preview -p myapp -b <sandbox> --output json
+argon merge check <plan-id>                # optional, before approval
 argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
       </pre>
       <p>
@@ -476,8 +478,16 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
         <em>
           Update, 19 November 2026: Argon 2.8.1 is out and fixes the field
           reordering shown in step 5, with the limits listed above. The run and
-          its numbers on this page are from 2.8.0 and are unchanged. The
-          commands under &quot;Try it&quot; now install 2.8.1.
+          its numbers on this page are from 2.8.0 and are unchanged.
+        </em>
+      </p>
+      <p>
+        <em>
+          Update, November 20, 2026. Argon 2.9.0 adds an optional read-only
+          check for unique-key collisions before write-back. It lists the
+          indexes and key paths it skips. Apply can still fail and roll back.
+          A sandbox edit can now be written back when the document’s JavaScript
+          code scope contains nested documents.
         </em>
       </p>
     </ArticleLayout>

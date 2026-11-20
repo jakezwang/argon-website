@@ -2,7 +2,7 @@ import Link from "next/link";
 import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { product } from "../product";
+import { product, mergeCheck, mergeCheckLimits } from "../product";
 
 export const metadata = pageMetadata(
   "Argon CLI (argonctl): Install and Command Reference",
@@ -75,8 +75,9 @@ argon source status -p <project>
 argon source resync -p <project>
 argon source detach -p <project> --yes
 argon merge list  -p <project> --output json
+argon merge check <plan-id>                # optional, before approval
 argon merge apply <plan-id> --write-back --approve <approval_digest>`,
-    note: "If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: pass the approval_digest from merge list's JSON output to --approve; without a matching digest the source is left untouched. What following and write-back do not cover is listed under the operating limits.",
+    note: `If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: pass the approval_digest from merge list's JSON output to --approve; without a matching digest the source is left untouched. ${mergeCheck} ${mergeCheckLimits} What following and write-back do not cover is listed under the operating limits.`,
   },
   {
     id: "history",
