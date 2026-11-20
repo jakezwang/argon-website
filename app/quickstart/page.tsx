@@ -96,12 +96,10 @@ export default function Quickstart() {
         </p>
         <QuickStartCommand showSdk={false} />
         <p>
-          npm 12 blocks package install scripts by default. The npm command
-          above allows only <code>argonctl</code> to download its release
-          binary, and the installer refuses a download whose SHA-256 does not
-          match the one published with the package. Use npm 11.16+ with a
-          supported Node.js version, or choose Homebrew or the source build
-          below.
+          npm 12 blocks package install scripts by default, so the flag allows
+          only <code>argonctl</code> to download its release binary. The
+          installer refuses a download whose SHA-256 does not match the one
+          published with the package.
         </p>
         <CodeBlock
           label="Check the installed CLI"
@@ -275,8 +273,7 @@ ${install.python}`}
           </a>
         </div>
         <p className="mt-6 max-w-2xl text-sm leading-7 text-brand-muted">
-          History needs healthy capture and retained data. CLI-only workflows
-          also need a running watch process and scheduled cleanup. Read the{" "}
+          Read the{" "}
           <a className="prose-link" href="/features#capabilities">
             operating limits
           </a>{" "}
@@ -342,8 +339,11 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
               exercised in our tests.
             </li>
             <li>
-              Expect the fields of a replaced document to come back in a
-              different order.
+              From 2.8.1 a sandbox holds each document with the field order it
+              has in the source, so writing back a one-field change does not
+              reorder the other fields. Programmatic writes and undo can still
+              store fields in name order. A plan previewed by 2.8.0 needs a
+              fresh preview after upgrading.
             </li>
           </ul>
           <p>

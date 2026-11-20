@@ -185,9 +185,9 @@ argon projects create agent-lab`}
             Keep the merge decision with a person
           </h3>
           <p>
-            By default the agent can apply a merge plan it prepared itself. From
-            Argon 2.2.0 you can withhold that tool, so it is neither listed nor
-            callable, and apply the plan you reviewed from a terminal.
+            By default the agent can apply a merge plan it prepared itself. You
+            can withhold that tool, so it is neither listed nor callable, and
+            apply the plan you reviewed from a terminal.
           </p>
           <CodeBlock
             label="Register Argon without the merge tool"
@@ -392,8 +392,7 @@ graph = builder.compile(checkpointer=saver)
           <p>
             For a protected deployment, add{" "}
             <code>-H "Authorization: Bearer $ARGON_API_TOKEN"</code> to your
-            requests. The hosted console is paused, so run the server locally to
-            get native database connections.
+            requests.
           </p>
           <div
             id="security"
@@ -427,9 +426,7 @@ graph = builder.compile(checkpointer=saver)
       </section>
 
       <p className="mt-8 max-w-3xl text-sm leading-7 text-brand-muted">
-        Use a separate branch per agent run. New collections need exact change
-        images enabled before updates, as in the Python example. Historical
-        queries depend on retained data; pins keep named starting states. See{" "}
+        Use a separate branch per agent run. See{" "}
         <a className="prose-link" href="/features#capabilities">
           the operating limits
         </a>{" "}

@@ -17,6 +17,7 @@ export const posts: Post[] = [
     description:
       "Import a MongoDB database while it is being written, follow it, let an agent work in a sandbox, review the diff, and write the approved change back in one transaction. A full run on Argon 2.8.0, with its limits.",
     date: "2026-11-19",
+    updated: "2026-11-19",
     tags: ["MongoDB", "Branching", "AI Agents"],
     readingMinutes: 10,
   },
@@ -47,6 +48,7 @@ export const posts: Post[] = [
     description:
       "Run agent-written code on an isolated boxd machine against an Argon MongoDB sandbox, using a database user made for one run. Output, failure paths and limits.",
     date: "2026-11-17",
+    updated: "2026-11-19",
     tags: ["AI Agents", "MongoDB", "Sandbox"],
     readingMinutes: 11,
   },

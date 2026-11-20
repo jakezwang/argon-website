@@ -8,6 +8,7 @@ export const product = {
   demoStatus: "Hosted console paused",
   quickstart: "/quickstart",
   guide: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/QUICK_START.md`,
+  architecture: `https://github.com/argon-lab/argon/blob/v${release.version}/docs/ARCHITECTURE.md`,
   example: `https://github.com/argon-lab/argon-agents/blob/v${release.sdkVersion}/examples/two_agent_review.py`,
   roadmap: [
     "GCS chunk-store backend",
@@ -45,17 +46,17 @@ export const capabilities = [
   ],
   [
     "Sandbox lifecycle",
-    "An Argon sandbox is a MongoDB branch database. Reaching its TTL makes it eligible for cleanup on a successful sweep. A running writable, non-demo REST service or MCP server manages capture and sweeps; with the CLI alone, run watch and schedule sandbox sweep. TTL does not stop agent processes or revoke MongoDB credentials.",
+    "Reaching its TTL makes a sandbox eligible for cleanup on the next successful sweep. A running REST service or MCP server manages capture and sweeps; with the CLI alone, run argon watch and schedule argon sandbox sweep. A TTL does not stop agent processes or revoke MongoDB credentials.",
     "A TTL schedules cleanup. It does not stop the agent.",
   ],
   [
     "Importing and following",
-    "From 2.7.0, argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it. From 2.8.0, a reviewed merge plan can be written back to the source from the CLI: inspect it with argon merge list -p <project> --output json, then pass its approval_digest to argon merge apply <plan-id> --write-back --approve <digest>. The REST API, the MCP server and the console do not offer write-back. Expect the fields of a replaced document to come back in a different order, including fields the change did not touch: the sandbox copy does not keep the source's field order, and write-back stores the sandbox's order with _id first. An inserted document keeps the order it was written with. Plans saved by 2.7.0 need a fresh preview. Indexes and validators are not followed. Following has not been tested on Atlas or with access control enabled, and write-back has also not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0. On an idle source the last change takes ten to twenty seconds to reach main by default.",
+    "argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Indexes and validators are not followed. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. From 2.8.1 a sandbox holds each document with the field order it has in the source, so writing back a one-field change does not reorder the other fields; this applies to a database imported online and followed by 2.8.1. Programmatic writes and undo can still store fields in name order, a snapshot rebuilt after garbage collection reclaimed a collection's history stores name order, and a document with non-canonical BSON is encoded from its decoded value. A plan previewed by 2.8.0 needs a fresh preview after upgrading. Neither following nor write-back has been tested on Atlas or with access control enabled, and write-back has not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
     "Main can follow a database in use. Write-back is a reviewed CLI step.",
   ],
   [
     "Hosted console",
-    "The hosted console is paused. Explore the illustrated workflow on this website, or run Argon locally for native MongoDB connections and physical sandboxes.",
+    "Explore the illustrated workflow on this website, or run Argon locally for native MongoDB connections and physical sandboxes.",
     "The hosted console is paused.",
   ],
 ] as const;
@@ -89,8 +90,6 @@ export const features = [
       "Checkout builds the physical database and prints its connection string.",
       "Past its TTL, a sandbox is removed by the next sweep.",
     ],
-    limit:
-      "Checkout copies data, so its time and storage depend on the dataset.",
   },
   {
     id: "diff",
@@ -160,7 +159,6 @@ export const features = [
       "Address a state by log position (LSN) or by timestamp.",
       "A position that is no longer retained returns an error, not a partial answer.",
     ],
-    limit: "You can go back as far as history is retained.",
   },
   {
     id: "undo",
@@ -182,7 +180,6 @@ export const features = [
       "The undo is recorded in history like any other change.",
       "An actor label belongs to a branch, so give each agent its own.",
     ],
-    limit: "Undo requires complete images and retained history.",
   },
   {
     id: "pins",
@@ -222,7 +219,7 @@ export const features = [
         [
           "✅ Import Complete",
           "   Documents Imported: 2",
-          "   Consistent: LSN 4 is the source at cluster time Timestamp(1795103279, 3)",
+          "   Consistent: LSN 4 is the source at cluster time Timestamp(1795133529, 3)",
           "   main follows database 'shop'; keep it current with: argon source follow -p <project>",
         ],
       ],
@@ -257,14 +254,14 @@ export const features = [
       [
         "argon merge preview -p shop -b agent-run -o json",
         [
-          '    "id": "6aff1a4eb64dc06f6cdabb6e",',
+          '    "id": "6aff9071ba561ef8dd48ee43",',
           '    "status": "pending",',
           '    "followed_database": "shop",',
-          '    "approval_digest": "25cab186…95bff0ce"',
+          '    "approval_digest": "ca7810c9…1e9dff86"',
         ],
       ],
       [
-        "argon merge apply 6aff1a4eb64dc06f6cdabb6e --write-back --approve 25cab186…95bff0ce",
+        "argon merge apply 6aff9071ba561ef8dd48ee43 --write-back --approve ca7810c9…1e9dff86",
         [
           "Written to the source database: 1 change(s) in one transaction.",
           "main shows them once following has read them from the source (argon source status).",
@@ -277,11 +274,11 @@ export const features = [
       "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
     ],
     limit:
-      "Expect the fields of a replaced document to come back in a different order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+      "From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
   },
 ] as const;
 // The two sections about a database in use were recorded later than the rest.
-export const sourceTranscriptVersion = "2.8.0";
+export const sourceTranscriptVersion = "2.8.1";
 
 // Git for MongoDB, command by command: the Git command a developer already
 // knows, the Argon command that does the same job for documents, what it does,
@@ -357,26 +354,6 @@ export const gitDifferences = [
   "Checking out a branch copies its data, so it takes time and storage that depend on the dataset.",
   "Documents are versioned. Indexes and collection options are not.",
   "History older than the retention window can be reclaimed, unless a pin protects it.",
-] as const;
-
-// How the engine is built, for readers who want the mechanism.
-export const engineering = [
-  [
-    "One append-only log",
-    "Everything is a view over one log: branches are pointers into it, time travel replays it, and checkout materializes it into a real MongoDB database.",
-  ],
-  [
-    "Deterministic replay",
-    "Same history, same state — byte for byte, property-tested in CI.",
-  ],
-  [
-    "Four ways in",
-    "A CLI for people, an MCP server for agents (13 tools, restrictable per server), REST for SDKs, and a wire proxy for stable URIs.",
-  ],
-  [
-    "Numbers you can rerun",
-    "Every number links to a benchmark you can run with docker compose up. What we can't back, we don't publish.",
-  ],
 ] as const;
 
 // The words the site and the CLI use, defined once.

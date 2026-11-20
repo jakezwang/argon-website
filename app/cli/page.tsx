@@ -29,7 +29,7 @@ argon sandbox list    -p <project>
 argon sandbox keep    -p <project> -b <sandbox>
 argon sandbox discard -p <project> -b <sandbox>
 argon sandbox sweep   -p <project>`,
-    note: "--watch (2.3.0 and newer) captures the sandbox's writes in the foreground until you stop it. keep removes the TTL; sweep discards every expired sandbox. From 2.3.1 a collection the agent creates is captured exactly while capture is running; on older versions run argon collections prepare for it before its first update or delete.",
+    note: "--watch captures the sandbox's writes in the foreground until you stop it. keep removes the TTL; sweep discards every expired sandbox.",
   },
   {
     id: "review",
@@ -68,7 +68,7 @@ argon release  -p <project> -b <branch>`,
   {
     id: "source",
     title: "Import a database in use and follow it",
-    lead: "From 2.7.0, import a replica-set database while your application keeps writing to it and keep main current with it. From 2.8.0, write a reviewed plan back to that database.",
+    lead: "Import a replica-set database while your application keeps writing to it, keep main current with it, and write a reviewed plan back to it.",
     code: `argon import database --online --uri <source-uri> --database <db> --project <project>
 argon source follow -p <project>
 argon source status -p <project>
@@ -76,7 +76,7 @@ argon source resync -p <project>
 argon source detach -p <project> --yes
 argon merge list  -p <project> --output json
 argon merge apply <plan-id> --write-back --approve <approval_digest>`,
-    note: "The source must be a replica set. Indexes and validators are not followed. On an idle source the last change takes ten to twenty seconds to reach main by default. If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: inspect the plan in the JSON output of merge list and pass its approval_digest to --approve; without a matching digest the source is left untouched. It is a CLI command only; the REST API, the MCP server and the console do not offer it. Expect the fields of a replaced document to come back in a different order, including fields the change did not touch: the sandbox copy does not keep the source's field order, and write-back stores the sandbox's order with _id first. An inserted document keeps the order it was written with. Plans saved by 2.7.0 need a fresh preview. Following has not been tested on Atlas or with access control enabled, and write-back has also not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
+    note: "If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: pass the approval_digest from merge list's JSON output to --approve; without a matching digest the source is left untouched. What following and write-back do not cover is listed under the operating limits.",
   },
   {
     id: "history",
@@ -130,9 +130,7 @@ export default function CliPage() {
         and Homebrew.
       </p>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-brand-muted">
-        This is Argon from Argon Labs, the open-source MongoDB tool. It is not
-        the Argon2 password-hashing utility or Argo CD. Current version:{" "}
-        {product.version}.
+        Current version: {product.version}.
       </p>
 
       <section id="install" className="mt-12 scroll-mt-24">

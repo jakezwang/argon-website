@@ -28,6 +28,7 @@ export const metadata = {
 const example =
   "https://github.com/argon-lab/argon/tree/master/examples/boxd-sandbox";
 const pullRequest = "https://github.com/argon-lab/argon/pull/101";
+const boxdDocs = "https://docs.boxd.sh/use-cases/oss-integrations/argon";
 
 const faq = [
   {
@@ -80,6 +81,27 @@ export default function Page() {
         merges it when you ask. Michiel Voortman, a co-founder of boxd, wrote
         the example, and we reviewed and merged it in{" "}
         <a href={pullRequest}>pull request 101</a>.
+      </p>
+      <figure className="my-8">
+        <a href={boxdDocs}>
+          <img
+            src="/blog/boxd-argon.png"
+            alt="The Argon logo on boxd's integration card, captioned boxd.sh × Argon"
+            width={840}
+            height={574}
+            className="h-auto w-full rounded-lg border border-brand-edge"
+          />
+        </a>
+        <figcaption className="mt-3 text-sm text-brand-muted">
+          boxd&apos;s card for the integration, from its documentation.
+        </figcaption>
+      </figure>
+      <p>
+        boxd now documents the integration as well. Its documentation lists
+        Argon among its open source integrations, with{" "}
+        <a href={boxdDocs}>a page of its own</a> that covers how the two
+        sandboxes fit together and the commands to run the example on boxd
+        machines.
       </p>
       <p>
         This article goes through the three decisions in it that are worth
