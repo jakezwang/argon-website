@@ -16,6 +16,11 @@ export const product = {
     "MCP 2026-07-28 per-request protocol",
   ],
 };
+export const mergeCheck =
+  "Before approval, you can run argon merge check <plan-id> to see whether an insert or replacement would use a unique key another source document keeps or two documents in the plan would share a key.";
+export const mergeCheckLimits =
+  "The check reads indexed fields from every document in each affected source collection. It lists partial indexes, indexes with a collation, hashed, text, wildcard and geospatial indexes, and array-valued key paths as unchecked. Apply can still fail and roll back.";
+
 // [title, full text, lead sentence]. The full text is reused by the FAQ,
 // llms.txt and several articles, so edit it with those in mind.
 export const capabilities = [
@@ -274,7 +279,7 @@ export const features = [
       "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
     ],
     limit:
-      "From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+      `${mergeCheck} A collision gives a nonzero exit status. The check only reads the source and leaves the plan pending with the same approval digest. ${mergeCheckLimits} From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.`,
   },
 ] as const;
 // The two sections about a database in use were recorded later than the rest.
@@ -324,7 +329,7 @@ export const gitMap = [
   [
     "git push",
     ["argon merge apply --write-back"],
-    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest, is a CLI step only, and aborts without writing if a planned document changed on the source after the review.",
+    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest, is a CLI step only, and aborts without writing if a planned document changed on the source after the review. The optional argon merge check <plan-id> reports unique-key collisions at check time and lists any indexes or key paths it skipped.",
     "write-back",
   ],
   [

@@ -2,7 +2,7 @@ import { pageMetadata } from "../metadata";
 import type { ReactNode } from "react";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { install, product } from "../product";
+import { install, product, mergeCheck, mergeCheckLimits } from "../product";
 
 export const metadata = pageMetadata(
   "Quickstart: Run MongoDB Sandboxes for AI Agents Locally",
@@ -309,6 +309,7 @@ argon import database --database myapp --project myapp --online --yes
 argon source follow -p myapp               # keep main current from here on
 argon sandbox create -p myapp --watch
 argon merge preview -p myapp -b <sandbox> --output json
+argon merge check <plan-id>                # optional, before approval
 argon merge apply <plan-id> --write-back --approve <approval_digest>`}
           />
         </div>
@@ -320,6 +321,7 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
             <code>approval_digest</code>; without a matching digest nothing is
             written.
           </p>
+          <p>{mergeCheck} {mergeCheckLimits}</p>
           <ul className="list-disc space-y-2 pl-5 marker:text-brand-edge-strong">
             <li>
               The source has to be a replica set, not a sharded cluster. Indexes
