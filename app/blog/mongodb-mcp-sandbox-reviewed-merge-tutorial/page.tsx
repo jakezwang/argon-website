@@ -186,6 +186,15 @@ curl --fail --location https://argonlabs.tech/examples/mcp_review.py -o mcp_revi
         delete and no conflicts. Running another CLI preview would create a
         different plan, so it is not a way to retrieve this one.
       </p>
+      <p>
+        <em>
+          Update, 19 November 2026: from Argon 2.8.0 this command prints
+          canonical Extended JSON, so a number in a plan reads as{" "}
+          <code>{'{"$numberInt":"49"}'}</code> where the excerpt below shows{" "}
+          <code>49</code>. The downloadable script decodes it before it compares
+          values.
+        </em>
+      </p>
       <Excerpt
         label="Captured change from the saved plan"
         language="json"

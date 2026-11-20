@@ -340,6 +340,16 @@ argon.undo(
         new target project.
       </p>
       <p>
+        <em>
+          Update, 19 November 2026: from Argon 2.7.0 an import no longer has to
+          stop the source. <code>argon import database --online</code> copies a
+          replica-set database while it is being written;{" "}
+          <code>--source-quiesced</code> remains for a source whose writers are
+          stopped. The online import has been tested on MongoDB 7.0 replica sets
+          only, not on Atlas or with access control.
+        </em>
+      </p>
+      <p>
         We ran the full example with the published Argon 2.1.1 CLI, SDK 0.2.0,
         and a fresh MongoDB 7.0.25 replica set. It accepted 44, reported one
         conflict, and restored 49.

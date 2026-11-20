@@ -324,6 +324,12 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         replica-set member, so this is praise for the approach, not a test
         result.
       </p>
+      <p>
+        <em>
+          Update, 19 November 2026: this has changed since. See the update under
+          &quot;What we are changing&quot; below.
+        </em>
+      </p>
 
       <h2>What we measured</h2>
       <p>
@@ -685,6 +691,18 @@ Merged: 1 change(s) applied, 1 conflict(s) resolved via --strategy theirs.`}</co
         collection, and <a href={reportAfter}>the 2.5.0 report</a> has the
         samples. Argon 2.6.0 then removed the extra seconds the first diff on a
         branch still took.
+      </p>
+      <p>
+        <em>
+          Update, 19 November 2026: importing a replica-set database while it is
+          being written and following it shipped in Argon 2.7.0, and writing a
+          reviewed plan back to that database shipped in 2.8.0, with a
+          field-order fix in 2.8.1. They have been tested on MongoDB 7.0 replica
+          sets only: not on Atlas, with access control, across multi-member
+          elections or on sharded sources.{" "}
+          <a href="/blog/branch-live-mongodb-write-back">The walkthrough</a> has
+          a full run and the limits.
+        </em>
       </p>
       <p>These gaps are known, and not scheduled:</p>
       <ul>

@@ -101,6 +101,19 @@ export default function AboutPage() {
                 TTL sandboxes, dataset pins, an MCP server and the argon-agents
                 Python SDK
               </li>
+              <li>
+                Importing a replica-set database while it is being written, and
+                following it, so sandboxes fork from recent data (from 2.7.0)
+              </li>
+              <li>
+                Writing a reviewed merge plan back to the followed database in
+                one transaction, from the CLI only (from 2.8.0)
+              </li>
+              <li>
+                Importing, following and write-back are tested on MongoDB 7.0
+                replica sets only: not on Atlas, with access control, across
+                multi-member elections or on sharded sources
+              </li>
             </ul>
           </div>
           <div>

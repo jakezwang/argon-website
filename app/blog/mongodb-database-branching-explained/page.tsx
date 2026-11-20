@@ -195,6 +195,34 @@ ${cli.sweep}`}</code>
         . Every published performance number links to a run of the open{" "}
         <a href="https://github.com/argon-lab/benchmarks">benchmark suite</a>.
       </p>
+
+      <h2>Branching a database you already run</h2>
+      <p>
+        If the data already lives in a replica set you run, its writers do not
+        have to stop for Argon to bring it in. From Argon 2.7.0,{" "}
+        <code>argon import database --online</code> copies the database while it
+        is being written, and <code>argon source follow</code> keeps{" "}
+        <code>main</code> current with it, so each sandbox forks from recent
+        data. While <code>main</code> follows a source, it accepts no ordinary
+        merges or other writes.
+      </p>
+      <p>
+        From Argon 2.8.0, a merge plan you reviewed can be written back to that
+        database with{" "}
+        <code>
+          argon merge apply &lt;plan-id&gt; --write-back --approve
+          &lt;digest&gt;
+        </code>
+        : one transaction, from the CLI only, and nothing is written if a
+        planned document changed on the source after the review. Importing,
+        following and write-back have been tested on MongoDB 7.0 replica sets
+        only: not on Atlas, with access control, across multi-member elections
+        or on sharded sources. Indexes and validators are not followed.{" "}
+        <a href="/blog/branch-live-mongodb-write-back">
+          A full run, with what is refused
+        </a>
+        , is a separate post.
+      </p>
     </ArticleLayout>
   );
 }

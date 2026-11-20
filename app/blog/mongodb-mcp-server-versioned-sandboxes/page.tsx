@@ -117,6 +117,18 @@ export default function Page() {
         </li>
       </ul>
       <p>
+        <em>
+          Update, 19 November 2026: on a project whose <code>main</code> follows
+          a database you run (Argon 2.7.0 and later), the merge tool cannot
+          apply a plan into <code>main</code>. Writing a reviewed plan to that
+          database is a CLI step for a person,{" "}
+          <code>argon merge apply --write-back</code>, from Argon 2.8.0; the MCP
+          server does not offer it.{" "}
+          <a href="/blog/branch-live-mongodb-write-back">The walkthrough</a> has
+          the limits.
+        </em>
+      </p>
+      <p>
         The{" "}
         <a
           href={`https://github.com/argon-lab/argon/blob/v${product.version}/pkg/mcpserver/tools.go`}

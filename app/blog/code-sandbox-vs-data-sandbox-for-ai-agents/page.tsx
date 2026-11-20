@@ -190,6 +190,18 @@ Connection string:
 Capture its writes with: argon watch -p shop -b agent-run-1`}</code>
       </pre>
       <p>
+        <em>
+          Update, 19 November 2026: this run paused the source&apos;s writers
+          for the import. From Argon 2.7.0, <code>--online</code> in place of{" "}
+          <code>--source-quiesced</code> imports a replica-set database while it
+          is being written, and <code>argon source follow</code> keeps{" "}
+          <code>main</code> current with it. This has been tested on MongoDB 7.0
+          replica sets only, not on Atlas or with access control.{" "}
+          <a href="/blog/branch-live-mongodb-write-back">A later post</a> runs
+          it.
+        </em>
+      </p>
+      <p>
         Start capture under a label for this run, and leave it running in its
         own terminal:
       </p>
