@@ -67,6 +67,11 @@ export default function Page() {
           <strong>Fork a branch.</strong> Create a sandbox off production (or
           off a pinned dataset), optionally with a time-to-live. REST/MCP manage
           expiry while running; standalone CLI use requires a scheduled sweep.
+          To start from a replica-set database that is in use, import it with{" "}
+          <code>argon import database --online</code> and keep <code>main</code>{" "}
+          current with <code>argon source follow</code> (from Argon 2.7.0;
+          tested on MongoDB 7.0 replica sets only, not on Atlas or with access
+          control).
         </li>
         <li>
           <strong>Let the agent work.</strong> Hand it the branch’s connection
@@ -82,7 +87,13 @@ export default function Page() {
           <strong>Merge or discard.</strong> Merge the good work back as a
           reviewed data PR — or throw the whole branch away. A merge is an
           explicit write to the parent; your application must decide who may
-          approve it.
+          approve it. The parent is a branch inside Argon. When{" "}
+          <code>main</code> follows a database you run, an ordinary merge into
+          it is refused, and the reviewed plan is written to that database with{" "}
+          <code>argon merge apply --write-back --approve &lt;digest&gt;</code>{" "}
+          instead (from Argon 2.8.0; from the CLI only, not over MCP or REST;
+          tested on MongoDB 7.0 replica sets only, not on Atlas or with access
+          control).
         </li>
       </ol>
       <p>

@@ -511,6 +511,13 @@ TypeError: 'NoneType' object is not iterable`}</code>
         error, so the console cannot list them. That is{" "}
         <a href="https://github.com/argon-lab/argon/issues/106">issue 106</a>.
       </p>
+      <p>
+        <em>
+          Update, 19 November 2026: fixed in Argon 2.8.1. The call now lists
+          that sandbox with a <code>capture_error</code> and no connection
+          string, and the console marks it so it can be discarded there.
+        </em>
+      </p>
 
       <h3>What a failed run leaves behind</h3>
       <p>

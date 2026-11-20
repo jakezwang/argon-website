@@ -95,13 +95,13 @@ const faq = [
   },
   {
     q: "Can Argon import a database that is in use and keep up with it?",
-    a: "Yes. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data.",
+    a: "Yes. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data. This is available from 2.7.0 and has been tested on MongoDB 7.0 replica sets only, not on Atlas or with access control.",
     href: "/features#capabilities",
     label: "Limits of following",
   },
   {
     q: "Can Argon write a reviewed change back to the database it follows?",
-    a: "Yes, from the CLI only. You pass the approval digest of the plan you reviewed to argon merge apply --write-back; without a matching digest the source is left untouched.",
+    a: "Yes, from the CLI only. You pass the approval digest of the plan you reviewed to argon merge apply --write-back; without a matching digest the source is left untouched. This is available from 2.8.0; from 2.8.1 a one-field change does not reorder the other fields of the document. It has been tested on MongoDB 7.0 replica sets only, not on Atlas or with access control.",
     href: "/features#capabilities",
     label: "Limits of write-back",
   },

@@ -88,7 +88,7 @@
         "title": "Make doctor check the operationTime that checkout depends on",
         "url": "https://github.com/argon-lab/argon/pull/149",
         "mergedAt": "2026-11-19",
-        "release": null
+        "release": "v2.8.1"
       }
     ]
   }

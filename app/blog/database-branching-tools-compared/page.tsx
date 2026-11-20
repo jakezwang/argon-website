@@ -233,9 +233,13 @@ export default function Page() {
       <p>
         Checkout readiness and storage depend on the dataset. Undo and
         historical reads require complete images and retained history. Branches
-        do not replace MongoDB access controls or backups. The anonymous hosted
-        demo uses temporary sample data; native database connections belong in
-        your local deployment. See the{" "}
+        do not replace MongoDB access controls or backups. From Argon 2.7.0 a
+        replica-set database can be imported while it is being written and
+        followed, and from 2.8.0 a reviewed plan can be written back to it from
+        the CLI. Both have been tested on MongoDB 7.0 replica sets only: not on
+        Atlas, with access control, across multi-member elections or on sharded
+        sources. The hosted demo is paused; native database connections belong
+        in your local deployment. See the{" "}
         <a href="/features#capabilities">capability matrix</a> and{" "}
         <a href="/blog/two-ai-agents-one-mongodb-document">
           two-agent review walkthrough

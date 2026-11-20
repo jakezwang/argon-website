@@ -37,7 +37,7 @@ export const posts: Post[] = [
     description:
       "DoltHub compared Argon with DumboDB and measured both. Their account of Argon is accurate. Our own measurements, the trade-off, and what we are changing.",
     date: "2026-11-17",
-    updated: "2026-11-18",
+    updated: "2026-11-19",
     tags: ["Comparison", "MongoDB", "Branching"],
     readingMinutes: 13,
   },
@@ -59,7 +59,7 @@ export const posts: Post[] = [
     description:
       "A code sandbox contains agent-written code, not its database writes. See what a MongoDB data sandbox adds, with a runnable example and its limits.",
     date: "2026-11-11",
-    updated: "2026-11-12",
+    updated: "2026-11-19",
     tags: ["AI Agents", "MongoDB", "Sandbox"],
     readingMinutes: 8,
   },
@@ -80,7 +80,7 @@ export const posts: Post[] = [
     description:
       "Run a local MongoDB MCP example: create a sandbox, write with PyMongo, inspect the saved merge plan, then explicitly merge or discard the changes.",
     date: "2026-10-20",
-    updated: "2026-11-12",
+    updated: "2026-11-19",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 9,
   },
@@ -90,7 +90,7 @@ export const posts: Post[] = [
     description:
       "A Python walkthrough of database branches, merge conflicts, and undo, using one order and two competing price changes.",
     date: "2026-09-08",
-    updated: "2026-09-24",
+    updated: "2026-11-19",
     tags: ["AI Agents", "MongoDB", "Data Review"],
     readingMinutes: 7,
   },
@@ -100,7 +100,7 @@ export const posts: Post[] = [
     description:
       "Use Argon’s MCP server to create MongoDB sandboxes, review merges, undo changes, and pin a starting state. Learn which tools manage branches and how drivers access the data.",
     date: "2026-07-08",
-    updated: "2026-11-11",
+    updated: "2026-11-19",
     tags: ["MCP", "AI Agents", "MongoDB"],
     readingMinutes: 7,
   },
@@ -120,7 +120,7 @@ export const posts: Post[] = [
     description:
       "Learn how MongoDB branching works with Argon: lightweight branch metadata, physical checkout, document diffs, and an explicit merge review workflow.",
     date: "2026-07-08",
-    updated: "2026-11-12",
+    updated: "2026-11-19",
     tags: ["MongoDB", "Branching", "Database"],
     readingMinutes: 8,
   },
@@ -131,7 +131,7 @@ export const posts: Post[] = [
     description:
       "Compare Neon, PlanetScale, Dolt, DumboDB, lakeFS, and Argon by data model, branch workflow, and review boundaries. Sources checked November 2026.",
     date: "2026-07-08",
-    updated: "2026-11-17",
+    updated: "2026-11-19",
     tags: ["Comparison", "Branching", "Database"],
     readingMinutes: 9,
   },
@@ -141,7 +141,7 @@ export const posts: Post[] = [
     description:
       "Give each AI agent a MongoDB sandbox with Argon. Learn branch-per-agent isolation, dataset pins, TTL cleanup, and the capture requirements for undo.",
     date: "2026-07-08",
-    updated: "2026-11-12",
+    updated: "2026-11-19",
     tags: ["AI Agents", "MCP", "MongoDB"],
     readingMinutes: 9,
   },
