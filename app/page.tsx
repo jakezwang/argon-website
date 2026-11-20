@@ -4,6 +4,14 @@ import QuickStartCommand from "./components/QuickStartCommand";
 import { ActionLink } from "./components/Funnel";
 import { features, product } from "./product";
 
+// The two entries about a database in use carry their limit on this page too.
+const limitOnHome: Record<string, string> = {
+  source:
+    "Tested on MongoDB 7.0 replica sets only: not on Atlas or with access control.",
+  "write-back":
+    "From the CLI only. Tested on MongoDB 7.0 replica sets only: not on Atlas or with access control.",
+};
+
 const integrations = [
   {
     title: "Connect an agent",
@@ -145,6 +153,11 @@ export default function HomePage() {
                       )?.[0]
                     }
                   </code>
+                  {limitOnHome[feature.id] && (
+                    <span className="text-sm leading-6 text-brand-muted">
+                      {limitOnHome[feature.id]}
+                    </span>
+                  )}
                 </Link>
               </li>
             ))}

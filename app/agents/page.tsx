@@ -205,6 +205,22 @@ argon merge apply <plan-id>`}
             and pin list tools. In Cursor, add the same flags to{" "}
             <code>args</code>.
           </p>
+          <p id="followed-source">
+            On a project whose <code>main</code>{" "}
+            <a className="prose-link" href="/features#source">
+              follows a database you already run
+            </a>
+            , an ordinary merge into <code>main</code> is refused, whoever asks
+            for it. The agent can still open sandboxes, diff and prepare a plan.
+            Writing that plan to the database is a person&apos;s CLI step,{" "}
+            <code>
+              argon merge apply &lt;plan-id&gt; --write-back --approve
+              &lt;digest&gt;
+            </code>
+            , and is not offered over MCP, REST or the console. It has been
+            tested on MongoDB 7.0 replica sets only: not on Atlas, with access
+            control, across multi-member elections or on sharded sources.
+          </p>
         </div>
       </section>
 

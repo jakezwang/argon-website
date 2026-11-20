@@ -51,7 +51,7 @@ export const capabilities = [
   ],
   [
     "Importing and following",
-    "argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Indexes and validators are not followed. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. A replaced document comes back with the sandbox's field order, _id first, even for fields the change did not touch; an inserted document keeps its order. Neither following nor write-back has been tested on Atlas or with access control enabled, and write-back has not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
+    "argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Indexes and validators are not followed. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. From 2.8.1 a sandbox holds each document with the field order it has in the source, so writing back a one-field change does not reorder the other fields; this applies to a database imported online and followed by 2.8.1. Programmatic writes and undo can still store fields in name order, a snapshot rebuilt after garbage collection reclaimed a collection's history stores name order, and a document with non-canonical BSON is encoded from its decoded value. A plan previewed by 2.8.0 needs a fresh preview after upgrading. Neither following nor write-back has been tested on Atlas or with access control enabled, and write-back has not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
     "Main can follow a database in use. Write-back is a reviewed CLI step.",
   ],
   [
@@ -207,13 +207,96 @@ export const features = [
     limit:
       "Identical input does not make an agent's output deterministic, and a pin is not a backup.",
   },
+  {
+    id: "source",
+    short: "Follow",
+    name: "Start from a database you already run",
+    summary:
+      "Import a replica-set database while your application keeps writing to it, then keep main current with it. Each sandbox forks from recent data.",
+    transcript: [
+      [
+        "argon import database --database shop --project shop --online --yes",
+        [
+          "✅ Import Complete",
+          "   Documents Imported: 2",
+          "   Consistent: LSN 4 is the source at cluster time Timestamp(1795133529, 3)",
+          "   main follows database 'shop'; keep it current with: argon source follow -p <project>",
+        ],
+      ],
+      [
+        "argon source follow -p shop",
+        ["Following the source (Ctrl-C to stop)..."],
+      ],
+      [
+        "argon source status -p shop",
+        [
+          'Project shop: main follows database "shop"',
+          "  Health:      healthy (exact)",
+          "  Head:        LSN 4",
+        ],
+      ],
+    ],
+    points: [
+      "The source connection string is read from ARGON_SOURCE_URI or --uri for each command. It is never stored.",
+      "The import publishes the source as it was at one cluster time, and prints which.",
+      "Following is a running process and goes one way, from the source into main. While it follows, main refuses ordinary merges, undo and other writes.",
+    ],
+    limit:
+      "The source must be a replica set, not a sharded cluster. Indexes and validators are not followed. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+  },
+  {
+    id: "write-back",
+    short: "Write-back",
+    name: "Write a reviewed change back",
+    summary:
+      "When main follows a database, a reviewed merge plan is written to that database: in one transaction, and only with the approval digest of the plan you inspected.",
+    transcript: [
+      [
+        "argon merge preview -p shop -b agent-run -o json",
+        [
+          '    "id": "6aff9071ba561ef8dd48ee43",',
+          '    "status": "pending",',
+          '    "followed_database": "shop",',
+          '    "approval_digest": "ca7810c9…1e9dff86"',
+        ],
+      ],
+      [
+        "argon merge apply 6aff9071ba561ef8dd48ee43 --write-back --approve ca7810c9…1e9dff86",
+        [
+          "Written to the source database: 1 change(s) in one transaction.",
+          "main shows them once following has read them from the source (argon source status).",
+        ],
+      ],
+    ],
+    points: [
+      "The JSON preview shows every before and after image and the plan's approval_digest. argon merge list -p shop --output json shows the same for a saved plan.",
+      "Without a matching digest nothing is written. If a planned document changed on the source after the preview, the transaction aborts, nothing is written and the plan stays pending.",
+      "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
+    ],
+    limit:
+      "From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.",
+  },
 ] as const;
+// The two sections about a database in use were recorded later than the rest.
+export const sourceTranscriptVersion = "2.8.1";
 
 // Git for MongoDB, command by command: the Git command a developer already
 // knows, the Argon command that does the same job for documents, what it does,
 // and the feature above that shows it. Rendered on /features and in llms.txt.
 // Keep each row true for both tools; where the comparison stops is below.
 export const gitMap = [
+  [
+    "git clone",
+    ["argon import database --online"],
+    "Copies a replica-set database while it is being written. Unlike a clone, it brings the documents as they are at one moment, without earlier history or indexes.",
+    "source",
+  ],
+  [
+    "git pull",
+    ["argon source follow"],
+    "Keeps main current with the source database. Unlike a pull, it is a running process and goes one way; main accepts no other writes while it follows.",
+    "source",
+  ],
   [
     "git branch",
     ["argon branches create"],
@@ -237,6 +320,12 @@ export const gitMap = [
     ["argon merge preview", "argon merge apply"],
     "Saves the change as a plan to review, then applies exactly that plan.",
     "merge",
+  ],
+  [
+    "git push",
+    ["argon merge apply --write-back"],
+    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest, is a CLI step only, and aborts without writing if a planned document changed on the source after the review.",
+    "write-back",
   ],
   [
     "git checkout <commit>",

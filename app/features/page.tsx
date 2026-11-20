@@ -5,6 +5,7 @@ import Transcript from "../components/Transcript";
 import {
   features,
   featureTranscriptVersion,
+  sourceTranscriptVersion,
   gitDifferences,
   gitMap,
   product,
@@ -139,7 +140,9 @@ export default function FeaturesPage() {
         ))}
         <p className="border-t border-brand-edge pt-6 text-sm leading-6 text-brand-muted">
           Recorded with Argon {featureTranscriptVersion} on a local replica set;
-          output and IDs are shortened.{" "}
+          output and IDs are shortened. The last two sections, on a database in
+          use, were recorded with Argon {sourceTranscriptVersion} on two
+          one-member MongoDB 7.0 replica sets without access control.{" "}
           <Link className="prose-link" href="/quickstart">
             Run them yourself
           </Link>

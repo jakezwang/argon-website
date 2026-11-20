@@ -286,6 +286,83 @@ ${install.python}`}
       </section>
 
       <section
+        id="existing-database"
+        className="mt-16 scroll-mt-24 border-t border-brand-edge pt-10"
+      >
+        <h2 className="section-title">Start from a database you already run</h2>
+        <div className="mt-4 max-w-2xl space-y-4 leading-7">
+          <p>
+            The steps above use a disposable database. Argon can also import a
+            replica-set database while your application keeps writing to it,
+            keep <code>main</code> current with it, and write a change you
+            reviewed back to it. Start with staging or a copy of production.
+          </p>
+        </div>
+        <div className="mt-6 max-w-3xl">
+          <CodeBlock
+            label="Import, follow, sandbox, review, write back"
+            language="bash"
+            code={`export MONGODB_URI="mongodb://…"           # Argon's own replica set
+export ARGON_SOURCE_URI="mongodb://…"      # used per command, never stored
+argon import preview  --database myapp --online
+argon import database --database myapp --project myapp --online --yes
+argon source follow -p myapp               # keep main current from here on
+argon sandbox create -p myapp --watch
+argon merge preview -p myapp -b <sandbox> --output json
+argon merge apply <plan-id> --write-back --approve <approval_digest>`}
+          />
+        </div>
+        <div className="mt-6 max-w-2xl space-y-4 text-sm leading-7">
+          <p>
+            <code>source follow</code> and <code>sandbox create --watch</code>{" "}
+            keep running, so give each its own terminal. The JSON preview shows
+            every before and after image and the plan&apos;s{" "}
+            <code>approval_digest</code>; without a matching digest nothing is
+            written.
+          </p>
+          <ul className="list-disc space-y-2 pl-5 marker:text-brand-edge-strong">
+            <li>
+              The source has to be a replica set, not a sharded cluster. Indexes
+              and validators are not followed.
+            </li>
+            <li>
+              Reading and following need <code>find</code> and{" "}
+              <code>changeStream</code> on the database. Write-back also needs{" "}
+              <code>readWrite</code>, and the import has to be made by a user
+              allowed to run <code>replSetGetConfig</code>, for example one with
+              the <code>clusterMonitor</code> role.
+            </li>
+            <li>
+              Tested on MongoDB 7.0 replica sets only: not on Atlas, with access
+              control, across multi-member elections or on sharded sources. The
+              roles above come from the operations guide and have not been
+              exercised in our tests.
+            </li>
+            <li>
+              From 2.8.1 a sandbox holds each document with the field order it
+              has in the source, so writing back a one-field change does not
+              reorder the other fields. Programmatic writes and undo can still
+              store fields in name order. A plan previewed by 2.8.0 needs a
+              fresh preview after upgrading.
+            </li>
+          </ul>
+          <p>
+            <a className="prose-link" href="/features#source">
+              See the output of each command
+            </a>
+            , or read{" "}
+            <a
+              className="prose-link"
+              href="/blog/branch-live-mongodb-write-back"
+            >
+              the full walkthrough
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+
+      <section
         id="order-review"
         className="mt-16 scroll-mt-24 border-t border-brand-edge pt-10"
       >

@@ -35,6 +35,8 @@ const writeBackDocs =
   "https://github.com/argon-lab/argon/blob/v2.8.0/docs/OPERATIONS.md#writing-a-plan-back-to-the-source";
 const changelog = "https://github.com/argon-lab/argon/blob/v2.8.0/CHANGELOG.md";
 const fieldOrderIssue = "https://github.com/argon-lab/argon/issues/150";
+const changelog281 =
+  "https://github.com/argon-lab/argon/blob/v2.8.1/CHANGELOG.md";
 const embedded =
   "https://www.mongodb.com/docs/manual/tutorial/query-embedded-documents/";
 
@@ -61,7 +63,7 @@ const faq = [
   },
   {
     q: "What are the limits of write-back in Argon 2.8.0?",
-    a: "It has been tested on MongoDB 7.0 replica sets only, not on Atlas, deployments with access control, multi-member elections or sharded sources. A document replaced by a write-back gets the field order it had in the sandbox, which can differ from the order it had on the source. Plans saved by 2.7.0 need a fresh preview. The REST API, the console and the MCP server do not offer write-back.",
+    a: "It has been tested on MongoDB 7.0 replica sets only, not on Atlas, deployments with access control, multi-member elections or sharded sources. In 2.8.0 a document replaced by a write-back got the field order it had in the sandbox, which could differ from the order it had on the source; 2.8.1 fixes this for a database imported online and followed by 2.8.1. Plans saved by 2.7.0 need a fresh preview. The REST API, the console and the MCP server do not offer write-back.",
   },
 ];
 
@@ -92,8 +94,8 @@ export default function Page() {
       <h2>What we ran</h2>
       <ul>
         <li>
-          <strong>Argon 2.8.0</strong>, the binary that{" "}
-          <code>npm install -g argonctl@2.8.0</code> installs.
+          <strong>Argon 2.8.0</strong>, the binary published on npm as{" "}
+          <code>argonctl</code> 2.8.0.
         </li>
         <li>
           Two <strong>MongoDB 7.0.45</strong> deployments, each a one-member
@@ -281,9 +283,21 @@ main shows them once following has read them from the source (argon source statu
         order. Some do: MongoDB&apos;s{" "}
         <a href={embedded}>equality match on a whole embedded document</a>{" "}
         depends on it. Only documents a plan replaces are affected. We count
-        this as a defect and track it in{" "}
-        <a href={fieldOrderIssue}>issue 150</a>. A fix is merged in the engine
-        and is not in a release yet, so 2.8.0 behaves as shown here.
+        this as a defect and tracked it in{" "}
+        <a href={fieldOrderIssue}>issue 150</a>. It is present in 2.8.0, which
+        behaves as shown here, and fixed in 2.8.1.
+      </p>
+      <p>
+        From <a href={changelog281}>Argon 2.8.1</a> a sandbox holds each
+        document with the field order it has in the source, so writing back a
+        one-field change no longer reorders the other fields: at the top level,
+        in embedded documents and inside arrays. This applies to a database
+        imported online and followed by 2.8.1. Programmatic writes and undo can
+        still store or restore fields in name order, as in 2.8.0. After garbage
+        collection has reclaimed a collection&apos;s history, a rebuilt snapshot
+        stores name order. A document with non-canonical BSON (repeated field
+        names, non-sequential array labels, the old short binary subtype 2) is
+        encoded from its decoded value.
       </p>
 
       <h2>What is refused</h2>
@@ -392,10 +406,15 @@ Merging agent-2 → main
           access control.
         </li>
         <li>
-          <strong>Field order.</strong> A document replaced by a write-back gets
-          the field order it had in the sandbox, as shown above (
-          <a href={fieldOrderIssue}>issue 150</a>; fixed in the engine, not yet
-          released).
+          <strong>Field order.</strong> In 2.8.0 a document replaced by a
+          write-back gets the field order it had in the sandbox, as shown above
+          (<a href={fieldOrderIssue}>issue 150</a>). This is fixed in 2.8.1 for
+          a database imported online and followed by 2.8.1. Programmatic writes
+          and undo can still store fields in name order, a snapshot rebuilt
+          after garbage collection reclaimed a collection&apos;s history stores
+          name order, and a document with non-canonical BSON is encoded from its
+          decoded value. A plan previewed by 2.8.0 still carries the 2.8.0
+          image, so preview again after upgrading.
         </li>
         <li>
           <strong>Two options are still experimental.</strong>{" "}
@@ -438,7 +457,7 @@ Merging agent-2 → main
 
       <h2>Try it</h2>
       <pre>
-        <code>{`npm install -g argonctl@2.8.0
+        <code>{`npm install -g argonctl@2.8.1
 export MONGODB_URI="mongodb://…"           # Argon's own replica set
 export ARGON_SOURCE_URI="mongodb://…"      # used per command, never stored
 argon import preview  --database myapp --online
@@ -452,6 +471,14 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
         Start with a copy of production, or a staging database, and read the
         limits first. To repeat our run on your machine, the script is in{" "}
         <a href={report}>the report</a>.
+      </p>
+      <p>
+        <em>
+          Update, 19 November 2026: Argon 2.8.1 is out and fixes the field
+          reordering shown in step 5, with the limits listed above. The run and
+          its numbers on this page are from 2.8.0 and are unchanged. The
+          commands under &quot;Try it&quot; now install 2.8.1.
+        </em>
       </p>
     </ArticleLayout>
   );
