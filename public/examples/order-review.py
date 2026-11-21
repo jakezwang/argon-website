@@ -131,12 +131,12 @@ def main():
         cleanup.enter_context(container(DB, MONGO_IMAGE, "--replSet", "rs0", "--bind_ip", "127.0.0.1"))
         cleanup.enter_context(container(CLI, "--network", "container:" + DB, "-e", "MONGODB_URI=" + URI,
                                         NODE_IMAGE, "sleep", "infinity"))
-        docker("exec", CLI, "npm", "install", "-g", "argonctl@2.9.0", "--allow-scripts=argonctl", timeout=300)
+        docker("exec", CLI, "npm", "install", "-g", "argonctl@2.10.0", "--allow-scripts=argonctl", timeout=300)
         until(lambda: mongo("db.runCommand({ping:1}).ok") == "1", "MongoDB")
         mongo('rs.initiate({_id:"rs0",members:[{_id:0,host:"localhost:27017"}]})')
         until(lambda: mongo("db.hello().isWritablePrimary") == "true", "replica set primary")
         version = argon("--version")
-        verify(version == "argon version 2.9.0", "Unexpected Argon version: " + version)
+        verify(version == "argon version 2.10.0", "Unexpected Argon version: " + version)
         print(version, "| MongoDB", mongo("db.version()"))
 
         mongo(f'db.getSiblingDB("fixture").orders.insertMany({json.dumps(FIXTURE)})')
