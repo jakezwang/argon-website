@@ -110,9 +110,10 @@ export default function AboutPage() {
                 one transaction, from the CLI only (from 2.8.0)
               </li>
               <li>
-                Importing, following and write-back are tested on MongoDB 7.0
-                replica sets only: not on Atlas, with access control, across
-                multi-member elections or on sharded sources
+                Importing, following and write-back are tested on
+                self-managed replica sets with access control, TLS and
+                primary elections, on MongoDB 6.0, 7.0 and 8.0 (from 2.10.0);
+                not on Atlas itself or on sharded sources
               </li>
             </ul>
           </div>

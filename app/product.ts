@@ -16,6 +16,10 @@ export const product = {
     "MCP 2026-07-28 per-request protocol",
   ],
 };
+export const sourceTesting =
+  "From 2.10.0, importing, following and write-back are tested on self-managed replica sets with access control and TLS, across primary elections on three members, and with MongoDB 6.0, 7.0 and 8.0. Atlas itself and sharded sources are not tested.";
+export const sandboxCredential =
+  "From 2.10.0, argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database. Discarding the sandbox, or the sweep after its TTL, revokes that user; until a sweep runs, an expired sandbox's credential still works. Without --credential the connection string carries the engine's own MongoDB credentials.";
 export const mergeCheck =
   "Before approval, you can run argon merge check <plan-id> to see whether an insert or replacement would use a unique key another source document keeps or two documents in the plan would share a key.";
 export const mergeCheckLimits =
@@ -51,12 +55,12 @@ export const capabilities = [
   ],
   [
     "Sandbox lifecycle",
-    "Reaching its TTL makes a sandbox eligible for cleanup on the next successful sweep. A running REST service or MCP server manages capture and sweeps; with the CLI alone, run argon watch and schedule argon sandbox sweep. A TTL does not stop agent processes or revoke MongoDB credentials.",
+    `Reaching its TTL makes a sandbox eligible for cleanup on the next successful sweep. A running REST service or MCP server manages capture and sweeps; with the CLI alone, run argon watch and schedule argon sandbox sweep. A TTL does not stop agent processes. ${sandboxCredential}`,
     "A TTL schedules cleanup. It does not stop the agent.",
   ],
   [
     "Importing and following",
-    "argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Indexes and validators are not followed. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. From 2.8.1 a sandbox holds each document with the field order it has in the source, so writing back a one-field change does not reorder the other fields; this applies to a database imported online and followed by 2.8.1. Programmatic writes and undo can still store fields in name order, a snapshot rebuilt after garbage collection reclaimed a collection's history stores name order, and a document with non-canonical BSON is encoded from its decoded value. A plan previewed by 2.8.0 needs a fresh preview after upgrading. Neither following nor write-back has been tested on Atlas or with access control enabled, and write-back has not been tested across multi-member elections, on sharded sources or on MongoDB versions other than 7.0.",
+    `argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Indexes and validators are not followed. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. From 2.8.1 a sandbox holds each document with the field order it has in the source, so writing back a one-field change does not reorder the other fields; this applies to a database imported online and followed by 2.8.1. Programmatic writes and undo can still store fields in name order, a snapshot rebuilt after garbage collection reclaimed a collection's history stores name order, and a document with non-canonical BSON is encoded from its decoded value. A plan previewed by 2.8.0 needs a fresh preview after upgrading. ${sourceTesting}`,
     "Main can follow a database in use. Write-back is a reviewed CLI step.",
   ],
   [
@@ -279,7 +283,7 @@ export const features = [
       "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
     ],
     limit:
-      `${mergeCheck} A collision gives a nonzero exit status. The check only reads the source and leaves the plan pending with the same approval digest. ${mergeCheckLimits} From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. Tested on MongoDB 7.0 replica sets only: not on Atlas, with access control, across multi-member elections or on sharded sources.`,
+      `${mergeCheck} A collision gives a nonzero exit status. The check only reads the source and leaves the plan pending with the same approval digest. ${mergeCheckLimits} From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. ${sourceTesting}`,
   },
 ] as const;
 // The two sections about a database in use were recorded later than the rest.

@@ -490,6 +490,16 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
           code scope contains nested documents.
         </em>
       </p>
+      <p>
+        <em>
+          Update, November 20, 2026. From Argon 2.10.0, import, following and
+          write-back are also tested against sources with access control and
+          TLS, through primary elections on a three-member replica set, and
+          with MongoDB 6.0 and 8.0. The operations guide lists the MongoDB
+          roles each command needs. Atlas itself and sharded sources are still
+          untested. The run on this page is from 2.8.0 and is unchanged.
+        </em>
+      </p>
     </ArticleLayout>
   );
 }

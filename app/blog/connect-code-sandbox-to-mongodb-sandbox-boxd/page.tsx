@@ -607,6 +607,17 @@ TypeError: 'NoneType' object is not iterable`}</code>
         <a href="/quickstart">local quickstart</a> needs only MongoDB and the
         Argon CLI.
       </p>
+      <p>
+        <em>
+          Update, November 20, 2026. Argon 2.10.0 can create the run&apos;s
+          user for you: <code>argon sandbox create --credential</code> returns
+          a connection string for a MongoDB user with read and write access to
+          the sandbox&apos;s database only, and discarding the sandbox or the
+          sweep after its TTL drops that user. The engine needs permission to
+          create users, and the deployment must enforce authentication. The
+          example on this page creates the user itself and is unchanged.
+        </em>
+      </p>
     </ArticleLayout>
   );
 }

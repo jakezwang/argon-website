@@ -6,10 +6,8 @@ import { features, product } from "./product";
 
 // The two entries about a database in use carry their limit on this page too.
 const limitOnHome: Record<string, string> = {
-  source:
-    "Tested on MongoDB 7.0 replica sets only: not on Atlas or with access control.",
-  "write-back":
-    "From the CLI only. Tested on MongoDB 7.0 replica sets only: not on Atlas or with access control.",
+  source: "Not tested on Atlas or on sharded sources.",
+  "write-back": "From the CLI only. Not tested on Atlas or on sharded sources.",
 };
 
 const integrations = [

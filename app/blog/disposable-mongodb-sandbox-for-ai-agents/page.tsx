@@ -248,6 +248,14 @@ python mcp_ttl.py --output-dir ttl-proof`}</code>
         one-hour test result. Stop clients from writing before cleanup: TTL does
         not revoke their MongoDB credentials.
       </p>
+      <p>
+        Update, November 20, 2026. From Argon 2.10.0,{" "}
+        <code>argon sandbox create --credential</code> issues a MongoDB user
+        that can read and write only the sandbox&apos;s database. Discarding the
+        sandbox, or the sweep after its TTL, revokes that user, and a connection
+        already open is refused on its next write. Until a sweep runs, an
+        expired sandbox&apos;s credential still works.
+      </p>
 
       <h2>Reproducible evals with pins</h2>
       <p>
