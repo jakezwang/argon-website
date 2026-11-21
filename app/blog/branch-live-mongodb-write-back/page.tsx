@@ -500,6 +500,14 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
           untested. The run on this page is from 2.8.0 and is unchanged.
         </em>
       </p>
+      <p>
+        <em>
+          Update, November 21, 2026. From Argon 2.11.0 sandboxes are built with
+          the source&apos;s secondary indexes, and index changes on the source
+          reach later sandboxes while main follows it. Validators and collection
+          options are still not copied.
+        </em>
+      </p>
     </ArticleLayout>
   );
 }
