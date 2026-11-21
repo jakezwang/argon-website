@@ -2,7 +2,7 @@ import { pageMetadata } from "../metadata";
 import type { ReactNode } from "react";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { install, product, mergeCheck, mergeCheckLimits } from "../product";
+import { install, product, mergeCheck, mergeCheckLimits, sourceTesting } from "../product";
 
 export const metadata = pageMetadata(
   "Quickstart: Run MongoDB Sandboxes for AI Agents Locally",
@@ -324,8 +324,9 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
           <p>{mergeCheck} {mergeCheckLimits}</p>
           <ul className="list-disc space-y-2 pl-5 marker:text-brand-edge-strong">
             <li>
-              The source has to be a replica set, not a sharded cluster. Indexes
-              and validators are not followed.
+              The source has to be a replica set, not a sharded cluster.
+              Validators are not followed. From 2.11.0 index definitions are,
+              and each sandbox builds them.
             </li>
             <li>
               Reading and following need <code>find</code> and{" "}
@@ -335,10 +336,10 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
               the <code>clusterMonitor</code> role.
             </li>
             <li>
-              Tested on MongoDB 7.0 replica sets only: not on Atlas, with access
-              control, across multi-member elections or on sharded sources. The
-              roles above come from the operations guide and have not been
-              exercised in our tests.
+              {sourceTesting} Those tests use the least-privilege roles that
+              the operations guide lists for each command, including{" "}
+              <code>listIndexes</code> so that sandboxes get the source&apos;s
+              indexes.
             </li>
             <li>
               From 2.8.1 a sandbox holds each document with the field order it

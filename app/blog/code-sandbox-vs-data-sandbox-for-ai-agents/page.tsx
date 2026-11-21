@@ -1,6 +1,7 @@
 import { limits } from "../../product";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("code-sandbox-vs-data-sandbox-for-ai-agents")!;
 
@@ -356,6 +357,7 @@ db.products.deleteOne({ _id: "p3" });`}</code>
         </a>{" "}
         works in more detail.
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }

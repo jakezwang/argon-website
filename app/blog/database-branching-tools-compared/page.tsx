@@ -1,5 +1,6 @@
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("database-branching-tools-compared")!;
 
@@ -281,6 +282,7 @@ export default function Page() {
         and their workload limits. Metadata branch creation is not a measure of
         physical sandbox readiness.
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }

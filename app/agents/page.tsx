@@ -1,7 +1,7 @@
 import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import { ActionLink } from "../components/Funnel";
-import { install, product } from "../product";
+import { install, product, sourceTesting } from "../product";
 
 export const metadata = pageMetadata(
   "MongoDB Sandboxes for Claude, Cursor and LangGraph Agents",
@@ -217,9 +217,7 @@ argon merge apply <plan-id>`}
               argon merge apply &lt;plan-id&gt; --write-back --approve
               &lt;digest&gt;
             </code>
-            , and is not offered over MCP, REST or the console. It has been
-            tested on MongoDB 7.0 replica sets only: not on Atlas, with access
-            control, across multi-member elections or on sharded sources.
+            , and is not offered over MCP, REST or the console. {sourceTesting}
           </p>
         </div>
       </section>

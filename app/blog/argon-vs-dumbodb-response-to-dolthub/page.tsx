@@ -1,5 +1,6 @@
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("argon-vs-dumbodb-response-to-dolthub")!;
 
@@ -834,6 +835,7 @@ scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
           copied. The rows above describe the release this post compared.
         </em>
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }
