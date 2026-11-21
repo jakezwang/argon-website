@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "mongodb-sandbox-indexes-scoped-credentials",
+    title: "MongoDB Sandboxes That Refuse What Production Refuses",
+    description:
+      "Argon 2.11 builds a database's secondary indexes in every sandbox, and 2.10 can give each sandbox its own MongoDB user, revoked on discard. A transcript on the published release, what it costs, and the limits.",
+    date: "2026-11-21",
+    updated: "2026-11-21",
+    tags: ["MongoDB", "AI Agents", "Security"],
+    readingMinutes: 8,
+  },
+  {
     slug: "branch-live-mongodb-write-back",
     title: "Branch a Live MongoDB Database and Write Reviewed Changes Back",
     description:
