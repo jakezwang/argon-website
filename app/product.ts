@@ -17,7 +17,7 @@ export const product = {
   ],
 };
 export const sourceTesting =
-  "From 2.10.0, importing, following and write-back are tested on self-managed replica sets with access control and TLS, across primary elections on three members, and with MongoDB 6.0, 7.0 and 8.0. Atlas itself and sharded sources are not tested.";
+  "From 2.10.0, importing, following and write-back are tested on self-managed replica sets with access control and TLS, across primary elections on three members, and with MongoDB 6.0, 7.0 and 8.0. From 2.12.0 MongoDB Atlas is a tested source too, including the free M0 tier, with least-privilege custom roles. Sharded sources are not tested.";
 export const sandboxIndexes =
   "From 2.11.0 a checkout builds each collection's secondary indexes, recorded from the source at import, from index changes while following, and from index builds made in a branch's checkout. A TTL index is built without its expiry, and an index the data violates is skipped and reported.";
 export const sandboxCredential =

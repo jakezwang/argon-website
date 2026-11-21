@@ -112,8 +112,9 @@ export default function AboutPage() {
               <li>
                 Importing, following and write-back are tested on
                 self-managed replica sets with access control, TLS and
-                primary elections, on MongoDB 6.0, 7.0 and 8.0 (from 2.10.0);
-                not on Atlas itself or on sharded sources
+                primary elections, on MongoDB 6.0, 7.0 and 8.0 (from 2.10.0),
+                and on MongoDB Atlas including the free tier (from 2.12.0);
+                not on sharded sources
               </li>
             </ul>
           </div>
