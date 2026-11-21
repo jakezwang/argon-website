@@ -824,6 +824,16 @@ scripts/cli_scale_docker.sh 2.4.0 results/cli-scale --sizes 10000,100000,1000000
         </a>
         .
       </p>
+      <p>
+        <em>
+          Update, November 21, 2026. Argon 2.11.0 builds each collection&apos;s
+          secondary indexes in checkouts and sandboxes, from definitions
+          recorded at import, while following and through capture. A sandbox
+          now enforces the source&apos;s unique constraints. Indexes are still
+          not versioned, and validators and collection options are still not
+          copied. The rows above describe the release this post compared.
+        </em>
+      </p>
     </ArticleLayout>
   );
 }
