@@ -56,7 +56,7 @@ const faq = [
   },
   {
     q: "Is this tested on Atlas?",
-    a: "No. Since 2.10.0 the import, follow and write-back tests cover access control with least-privilege roles, TLS, primary elections on a three-member replica set, and MongoDB 6.0 and 8.0. Atlas itself and sharded sources are not tested.",
+    a: "Not when this post was published. From Argon 2.12.0, released the same day, MongoDB Atlas is a tested source: import, follow, merge check and write-back against a free M0 and a dedicated M10 cluster, with least-privilege custom roles. The engine and its sandboxes run on a deployment you administer; running the engine on Atlas and sharded sources are not tested.",
   },
 ];
 
@@ -370,7 +370,7 @@ Note: index createdAt_1 on orders was built without its TTL expiry`}</code>
           copied.
         </li>
         <li>
-          Atlas itself and sharded sources are not tested. Atlas Search
+          From 2.12.0 MongoDB Atlas is a tested source (see the update below); sharded sources are not tested. Atlas Search
           indexes are not secondary indexes and are not built.
         </li>
         <li>
@@ -398,6 +398,18 @@ argon sandbox create -p shop --ttl 1h --credential --watch`}</code>
         The sandbox&apos;s JSON output, or its notes on stdout, lists the
         indexes it built. Discard it with{" "}
         <code>argon sandbox discard -p shop -b &lt;name&gt;</code>.
+      </p>
+      <p>
+        <em>
+          Update, November 21, 2026. Argon 2.12.0 adds MongoDB Atlas as a
+          tested source, including the free M0 tier: import, follow, merge
+          check and write-back, with the engine and its sandboxes on a
+          deployment you run. The{" "}
+          <a href="https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md#mongodb-atlas-as-a-source">
+            operations guide
+          </a>{" "}
+          lists the Atlas custom-role actions for each command.
+        </em>
       </p>
     </ArticleLayout>
   );

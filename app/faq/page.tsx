@@ -70,6 +70,12 @@ const faq = [
     label: "Start locally",
   },
   {
+    q: "Does Argon work with MongoDB Atlas?",
+    a: "Yes, as the database Argon imports, follows and writes back to, from 2.12.0. Run the engine and its sandboxes on a MongoDB replica set you run and point argon import database --online at the Atlas connection string. It is tested on a free M0 and a dedicated M10 cluster with least-privilege custom roles; the free tier hides the replica-set ID, so Argon identifies the cluster by its TLS-verified mongodb.net hosts instead. Running the engine itself on Atlas is not tested, and --credential needs a deployment that allows createUser, which Atlas does not.",
+    href: "https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md#mongodb-atlas-as-a-source",
+    label: "Atlas roles and limits",
+  },
+  {
     q: "What are the requirements?",
     a: "Use a MongoDB replica set, including a single-node local set, or a compatible Atlas deployment. Change streams do not work on a standalone mongod. Exact pre/post images and the necessary MongoDB permissions are required for supported restoration. Run argon doctor before a workload.",
     href: "/quickstart#mongodb",
