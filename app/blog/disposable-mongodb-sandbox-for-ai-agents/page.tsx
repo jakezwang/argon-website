@@ -2,6 +2,7 @@ import { install, limits, product } from "../../product";
 import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("disposable-mongodb-sandbox-for-ai-agents")!;
 
@@ -274,6 +275,7 @@ python mcp_ttl.py --output-dir ttl-proof`}</code>
         experiment, and starts being the place their reviewed work lands when
         your application enforces that review decision.
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }

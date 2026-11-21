@@ -2,6 +2,7 @@ import { limits } from "../../product";
 import cli from "../../cli-examples.json";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("mongodb-database-branching-explained")!;
 
@@ -223,6 +224,7 @@ ${cli.sweep}`}</code>
         </a>
         , is a separate post.
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }

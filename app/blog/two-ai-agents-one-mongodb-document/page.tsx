@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import CodeBlock from "../../components/CodeBlock";
 import ArticleLayout from "../ArticleLayout";
 import { getPost } from "../posts";
+import LaterReleasesNote from "../../components/LaterReleasesNote";
 
 const post = getPost("two-ai-agents-one-mongodb-document")!;
 const exampleUrl = product.example;
@@ -395,6 +396,7 @@ python examples/two_agent_review.py`}
         paused; the <a href="/demo">illustrated walkthrough</a> shows the
         concepts without a database connection.
       </p>
+      <LaterReleasesNote />
     </ArticleLayout>
   );
 }
