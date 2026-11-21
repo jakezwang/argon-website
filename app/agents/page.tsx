@@ -287,9 +287,10 @@ print("Review this plan:", plan["id"])
             reviewed merge. After 30 minutes the sandbox is eligible for cleanup
             on a successful sweep. Manage the agent process separately. For
             code you do not trust, create the sandbox with{" "}
-            <code>--credential</code> (from 2.10.0): its connection string then
-            carries a MongoDB user that can reach only that sandbox&apos;s
-            database, and discard or the sweep revokes it. See the{" "}
+            <code>--credential</code> (from 2.10.0), or pass{" "}
+            <code>credential=True</code> to the Python SDK (from 0.3.0): its
+            connection string then carries a MongoDB user that can reach only
+            that sandbox&apos;s database, and discard or the sweep revokes it. See the{" "}
             <a
               className="prose-link"
               href="/blog/disposable-mongodb-sandbox-for-ai-agents#ttl-experiment"
