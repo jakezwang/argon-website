@@ -375,7 +375,7 @@ const flows: Flow[] = [
           ["mat", "wal_ingest_state"],
         ],
         label: "Build the database",
-        text: "It writes the result into a physical database, argon_br_<id>, and saves the first change-stream boundary so capture starts exactly there.",
+        text: "It writes the result into a physical database, argon_br_<id>, builds the branch's recorded secondary indexes, and saves the first change-stream boundary so capture starts exactly there.",
       },
       {
         edges: [
@@ -426,7 +426,8 @@ const flows: Flow[] = [
   },
   {
     name: "Fork & time travel",
-    summary: "Why a branch costs nothing and any point in time is readable.",
+    summary:
+      "Why a branch is a metadata write and any point in time is readable.",
     steps: [
       {
         edges: [
@@ -434,7 +435,7 @@ const flows: Flow[] = [
           ["branch", "wal_branches"],
         ],
         label: "Fork a branch",
-        text: "A new branch or agent sandbox is one document in wal_branches: its parent and base_lsn. No documents are copied, however large the database.",
+        text: "A new branch is one document in wal_branches: its parent and base_lsn. No documents are copied, however large the database. A sandbox adds a checkout, which does copy them.",
       },
       {
         edges: [

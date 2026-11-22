@@ -106,7 +106,7 @@ The site uses Next.js 16.4.3 with React 19.2.8, following the [official migratio
 ## Content and example verification
 
 `npm run test:releases` checks that the documented npm CLI, tagged engine guide,
-SDK Git release, non-yanked PyPI wheel and matching Python example are publicly
+SDK Git tag, non-yanked PyPI wheel and matching Python example are publicly
 available. The install commands pin the verified PyPI SDK release.
 
 CLI commands use npm 11.16+ and approve only `argonctl`'s binary download script
