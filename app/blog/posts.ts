@@ -15,11 +15,11 @@ export const posts: Post[] = [
     slug: "mongodb-atlas-sandbox-review-write-back",
     title: "Argon Now Supports MongoDB Atlas, From the Free M0 to Dedicated M10",
     description:
-      "Argon 2.12 works with MongoDB Atlas, from the free M0 tier to dedicated M10: import and follow an Atlas database, give agents sandboxes, and write reviewed changes back. How it works, a full run on the published release, and the limits.",
+      "Argon 2.12 works with MongoDB Atlas, from the free M0 tier to dedicated M10: give AI agents sandboxes of an Atlas database and write reviewed changes back. How it works, use cases, how it compares with Atlas backups and mongodump, and a full run.",
     date: "2026-11-23",
     updated: "2026-11-23",
     tags: ["MongoDB", "Atlas", "AI Agents"],
-    readingMinutes: 9,
+    readingMinutes: 12,
   },
   {
     slug: "mongodb-sandbox-indexes-scoped-credentials",

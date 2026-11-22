@@ -34,6 +34,14 @@ const ops = "https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md"
 const atlasPR = "https://github.com/argon-lab/argon/pull/202";
 const atlasCI =
   "https://github.com/argon-lab/argon/blob/master/.github/workflows/atlas.yml";
+const atlasRestore =
+  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-overview/";
+const atlasBackup =
+  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/overview/";
+const atlasFreeBackup =
+  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/free-cluster-backup/";
+const mongodump = "https://www.mongodb.com/docs/database-tools/mongodump/";
+const atlasUsers = "https://www.mongodb.com/docs/atlas/security-add-mongodb-users/";
 const atlasTests =
   "https://github.com/argon-lab/argon/blob/v2.12.0/tests/wal/source_atlas_test.go";
 
@@ -58,11 +66,24 @@ const faq = [
     q: "What is not supported on Atlas?",
     a: "Running the engine itself on Atlas is not tested, and argon sandbox create --credential needs an engine deployment that allows createUser, which Atlas does not. Sharded clusters are not supported as sources. Write-back to a shared-tier cluster is refused behind a TLS-inspecting proxy, though reading and following still work.",
   },
+  {
+    q: "Can I clone a MongoDB Atlas database for testing with Argon?",
+    a: "Yes. Argon imports the Atlas database once, keeps a copy that follows Atlas, and forks as many sandboxes from it as you need. Each sandbox is a real MongoDB database on the engine's replica set, which you run, and can be discarded without touching Atlas. Atlas's own options are restoring a backup to another cluster, from M10 up, or mongodump and mongorestore; neither keeps following Atlas or writes reviewed changes back.",
+  },
+  {
+    q: "Is there Neon-style database branching for MongoDB Atlas?",
+    a: "Argon adds branching to MongoDB, Atlas included: a branch is a metadata write, and checking one out copies it into a real MongoDB database. Unlike Neon's copy-on-write branches, each checked-out sandbox is a full copy, so it takes longer to be ready as the database grows.",
+  },
 ];
 
 export default function Page() {
   return (
     <ArticleLayout post={post} faq={faq}>
+      <p>
+        Argon gives AI agents their own sandbox copies of a MongoDB Atlas
+        database, shows you what each agent changed, and writes the changes
+        you approve back to Atlas.
+      </p>
       <p>
         <strong>
           Argon now supports MongoDB Atlas as a source, from the free M0 tier
@@ -166,6 +187,40 @@ export default function Page() {
           </tr>
         </tbody>
       </table>
+
+      <h2>What it is for</h2>
+      <p>
+        Each of these runs the six steps above. The agent works on a fork of
+        the Atlas data, and nothing reaches Atlas until someone has read the
+        plan.
+      </p>
+      <ul>
+        <li>
+          <strong>Data cleanup and backfills by an agent.</strong> An agent
+          fixes or fills in documents in a sandbox of your Atlas data. You
+          review the plan, document by document, before it is written back,
+          and a document that changed on Atlas in the meantime stops the
+          write-back.
+        </li>
+        <li>
+          <strong>Rehearsing a migration.</strong> Run a migration script in a
+          sandbox forked from current Atlas data and read the diff: which
+          documents it changed, inserted or deleted. Discard the sandbox and
+          run it again after a fix; Atlas is not touched.
+        </li>
+        <li>
+          <strong>Evaluating agents on real data.</strong> Give every
+          evaluation run a fresh sandbox forked from the same point of{" "}
+          <code>main</code>, compare what the runs changed, and throw the
+          sandboxes away.
+        </li>
+        <li>
+          <strong>Several agents at once.</strong> Each gets its own sandbox.
+          When two change the same document, the second preview shows a
+          conflict and a person decides which version wins, as in the run
+          below.
+        </li>
+      </ul>
 
       <h2>What we ran</h2>
       <ul>
@@ -479,6 +534,94 @@ Merging agent-2 → main
         <a href={atlasCI}>a workflow</a> runs them against a free M0 every
         day and on every change to the source code on master, so a change
         that breaks Atlas shows up as a failed run.
+      </p>
+
+      <h2>Other ways to give an agent Atlas data</h2>
+      <p>
+        Argon is not the only way to put an agent near Atlas data. The common
+        alternatives, from MongoDB&apos;s own documentation, checked on
+        November 21, 2026:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Approach</th>
+            <th>What the agent gets</th>
+            <th>Getting reviewed changes back to Atlas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href={atlasRestore}>Restore an Atlas backup</a> to another
+              cluster
+            </td>
+            <td>
+              A full cluster as of a snapshot. Cloud Backup is for M10 and up;
+              on a free M0, daily snapshots are a{" "}
+              <a href={atlasFreeBackup}>paid private preview</a>. The restore
+              target must not receive client requests while it restores.
+            </td>
+            <td>
+              No built-in path. You find and copy the changes yourself, and
+              the copy does not follow later writes to Atlas.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href={mongodump}>
+                <code>mongodump</code> and <code>mongorestore</code>
+              </a>
+            </td>
+            <td>
+              A copy of the documents, collection options and index
+              definitions, consistent with writes during the dump when run
+              with <code>--oplog</code>.
+            </td>
+            <td>
+              No built-in path, and the dump does not follow Atlas after it
+              ends.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              A <a href={atlasUsers}>restricted database user</a> on the
+              production cluster
+            </td>
+            <td>
+              The live data, limited by the user&apos;s roles and by which
+              clusters it may reach.
+            </td>
+            <td>
+              Nothing to bring back: every write the roles allow lands on
+              Atlas at once, with no review before it.
+            </td>
+          </tr>
+          <tr>
+            <td>Argon</td>
+            <td>
+              A sandbox forked from a copy that follows Atlas, one per agent
+              run. The engine runs on a replica set you run, and each sandbox
+              is a full copy of the database.
+            </td>
+            <td>
+              A plan with every document before and after, written back in
+              one transaction after approval, refused if Atlas changed since
+              the review.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        A restored cluster or a dump is the simpler choice when nobody needs
+        the agent&apos;s changes afterwards, or when the copy does not have
+        to keep up with Atlas. Argon is for the case where an agent&apos;s
+        work is meant to reach Atlas, and someone has to see it first. For
+        branching tools beyond MongoDB, see{" "}
+        <a href="/blog/database-branching-tools-compared">
+          database branching tools compared
+        </a>
+        .
       </p>
 
       <h2>Limits</h2>
