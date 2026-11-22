@@ -55,7 +55,7 @@ ${capabilities.map(([title, detail]) => `- **${title}**: ${detail}`).join("\n")}
 - Every tool declares MCP annotations. argon_branch_list, argon_diff and argon_pin_list are read-only; argon_merge_apply, argon_undo and argon_sandbox_discard are destructive.
 - \`argon mcp --disable-tools argon_merge_apply\` withholds the apply tool so a person applies the reviewed plan with \`argon merge apply <plan-id>\`. \`--disable-tools\` takes a comma-separated list; \`argon mcp --read-only\` offers only the three read-only tools.
 - The server starts without a reachable MongoDB: the handshake and tools/list need no database, and it connects in the background as soon as MongoDB answers. A restarted server also resumes capture for sandboxes an earlier server handed out, without a tool call. A tool called while MongoDB is unreachable returns a tool error and the server stays up.
-- Supported MCP revisions: 2024-11-05, 2025-03-26 and 2025-06-18 (handshake based). The 2026-07-28 per-request protocol is not implemented yet.
+- Supported MCP revisions: 2024-11-05, 2025-03-26 and 2025-06-18 (handshake based). The 2026-07-28 per-request protocol is not supported; clients that support both fall back to the handshake.
 
 ## Local access and security
 

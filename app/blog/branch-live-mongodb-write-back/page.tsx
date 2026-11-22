@@ -64,7 +64,7 @@ const faq = [
   },
   {
     q: "What are the limits of write-back in Argon 2.8.0?",
-    a: "It has been tested on MongoDB 7.0 replica sets only, not on Atlas, deployments with access control, multi-member elections or sharded sources. In 2.8.0 a document replaced by a write-back got the field order it had in the sandbox, which could differ from the order it had on the source; 2.8.1 fixes this for a database imported online and followed by 2.8.1. Plans saved by 2.7.0 need a fresh preview. The REST API, the console and the MCP server do not offer write-back.",
+    a: "It has been tested on MongoDB 7.0 replica sets only, not on Atlas, deployments with access control, multi-member elections or sharded sources. In 2.8.0 a document replaced by a write-back got the field order it had in the sandbox, which could differ from the order it had on the source; 2.8.1 fixes this for a database imported online and followed by 2.8.1. Plans saved by 2.7.0 need a fresh preview. The REST API, the console and the MCP server do not offer write-back. Later releases test access control, TLS, primary elections and MongoDB 6.0 and 8.0 (2.10.0), and MongoDB Atlas (2.12.0).",
   },
 ];
 
@@ -485,8 +485,8 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
         <em>
           Update, November 20, 2026. Argon 2.9.0 adds an optional read-only
           check for unique-key collisions before write-back. It lists the
-          indexes and key paths it skips. Apply can still fail and roll back.
-          A sandbox edit can now be written back when the document’s JavaScript
+          indexes and key paths it skips. Apply can still fail and roll back. A
+          sandbox edit can now be written back when the document’s JavaScript
           code scope contains nested documents.
         </em>
       </p>
@@ -494,10 +494,10 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
         <em>
           Update, November 20, 2026. From Argon 2.10.0, import, following and
           write-back are also tested against sources with access control and
-          TLS, through primary elections on a three-member replica set, and
-          with MongoDB 6.0 and 8.0. The operations guide lists the MongoDB
-          roles each command needs. Atlas itself and sharded sources are still
-          untested. The run on this page is from 2.8.0 and is unchanged.
+          TLS, through primary elections on a three-member replica set, and with
+          MongoDB 6.0 and 8.0. The operations guide lists the MongoDB roles each
+          command needs. Atlas itself and sharded sources are still untested.
+          The run on this page is from 2.8.0 and is unchanged.
         </em>
       </p>
       <p>
@@ -510,13 +510,14 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
       </p>
       <p>
         <em>
-          Update, November 21, 2026. From Argon 2.12.0 MongoDB Atlas is a
-          tested source as well, including the free M0 tier, so a database on
-          Atlas can be followed and written back to as shown above; see{" "}
-          <a href="/blog/mongodb-atlas-sandbox-review-write-back">
-            the run on a free Atlas M0
-          </a>
-          .
+          Update, November 21, 2026. From Argon 2.12.0 MongoDB Atlas is a tested
+          source as well, including the free M0 tier, so a database on Atlas can
+          be followed and written back to as shown above. On M0 and Flex, which
+          refuse <code>replSetGetConfig</code>, a fully verified TLS connection
+          to the cluster&apos;s <code>mongodb.net</code> hosts identifies the
+          source instead of the replica-set ID. Running the engine itself on
+          Atlas, Atlas failover and the Flex tier are not tested. See{" "}
+          <a href="/blog/mongodb-atlas-sandbox-review-write-back">the run on a free Atlas M0</a>.
         </em>
       </p>
     </ArticleLayout>

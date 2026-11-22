@@ -2,11 +2,11 @@ import Link from "next/link";
 import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { product, mergeCheck, mergeCheckLimits } from "../product";
+import { product } from "../product";
 
 export const metadata = pageMetadata(
   "Argon CLI (argonctl): Install and Command Reference",
-  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, following a live database, time travel, undo and the MCP server.",
+  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, following a live database, time travel, undo and MCP.",
   "/cli",
 );
 
@@ -25,11 +25,12 @@ const groups: {
     lead: "A sandbox is a branch forked from a parent, checked out into its own MongoDB database and given a time to live. Hand its connection string to an agent.",
     code: `argon sandbox create -p <project> --ttl 1h
 argon sandbox create -p <project> --ttl 1h --watch --actor agent:run-1
+argon sandbox create -p <project> --ttl 1h --credential
 argon sandbox list    -p <project>
 argon sandbox keep    -p <project> -b <sandbox>
 argon sandbox discard -p <project> -b <sandbox>
 argon sandbox sweep   -p <project>`,
-    note: "--watch captures the sandbox's writes in the foreground until you stop it. keep removes the TTL; sweep discards every expired sandbox.",
+    note: "--watch captures the sandbox's writes in the foreground until you stop it. --credential gives the sandbox its own MongoDB user, limited to its database and revoked with it. keep removes the TTL; sweep discards every expired sandbox.",
   },
   {
     id: "review",
@@ -77,7 +78,7 @@ argon source detach -p <project> --yes
 argon merge list  -p <project> --output json
 argon merge check <plan-id>                # optional, before approval
 argon merge apply <plan-id> --write-back --approve <approval_digest>`,
-    note: `If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: pass the approval_digest from merge list's JSON output to --approve; without a matching digest the source is left untouched. ${mergeCheck} ${mergeCheckLimits} What following and write-back do not cover is listed under the operating limits.`,
+    note: "If following ends as degraded, status names the reason and resync repairs main in place. Write-back is the only way a merged change reaches the source: pass the approval_digest from merge list's JSON output to --approve; without a matching digest nothing is written. merge check is optional and reports unique-key collisions before you approve.",
   },
   {
     id: "history",

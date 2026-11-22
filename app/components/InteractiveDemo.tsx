@@ -220,7 +220,7 @@ const cliSteps: DemoStep[] = [
     ],
     panel: {
       title: "my-app · feature-x (fork @ LSN 3)",
-      note: "same 3 documents, zero bytes copied — a branch is a pointer",
+      note: "same 3 documents, a metadata write — no documents copied",
       sections: [
         {
           name: "products (3 documents, inherited)",
@@ -238,7 +238,7 @@ const cliSteps: DemoStep[] = [
     command: "argon checkout -p my-app -b feature-x",
     description: "Check the branch out as a real MongoDB database",
     output: [
-      "Checked out at LSN 3: 1 collection, 3 documents",
+      "Checked out at LSN 3: 1 collection(s), 3 document(s), 0 secondary index(es)",
       "Connection string:",
       "  mongodb://localhost:27017/argon_br_9f2c1a",
     ],

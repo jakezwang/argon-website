@@ -55,6 +55,14 @@
         "url": "https://github.com/argon-lab/argon/pull/111",
         "mergedAt": "2026-11-18",
         "release": "v2.4.1"
+      },
+      {
+        "repository": "argon-lab/argon",
+        "number": 201,
+        "title": "feat(cli): add -o json to migrate-wal",
+        "url": "https://github.com/argon-lab/argon/pull/201",
+        "mergedAt": "2026-11-22",
+        "release": null
       }
     ]
   },
