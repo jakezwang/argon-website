@@ -4,7 +4,7 @@ import { pageMetadata } from "../metadata";
 
 export const metadata = pageMetadata(
   "Argon FAQ: MongoDB Sandboxes, Branching and AI Agents",
-  "Answers on MongoDB sandboxes for AI agents: Git for MongoDB, Atlas, importing a live database, write-back, sandbox credentials and cleanup, and installing Argon.",
+  "Answers on MongoDB sandboxes for AI agents: Git for MongoDB, Atlas, importing a live database, write-back, sandbox credentials, cleanup and installing Argon.",
   "/faq",
 );
 

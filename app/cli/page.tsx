@@ -6,7 +6,7 @@ import { product } from "../product";
 
 export const metadata = pageMetadata(
   "Argon CLI (argonctl): Install and Command Reference",
-  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, following a live database, time travel, undo and the MCP server.",
+  "Install the Argon CLI and see every command group: MongoDB sandboxes, diff and merge, pins, branches, following a live database, time travel, undo and MCP.",
   "/cli",
 );
 
