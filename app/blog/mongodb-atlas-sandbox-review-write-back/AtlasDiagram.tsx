@@ -52,7 +52,7 @@ export default function AtlasDiagram() {
           <rect x={10} y={10} width={620} height={120} rx={14}
             style={{ fill: "var(--color-brand-sunken)", stroke: "var(--color-brand-added)", strokeWidth: 1.5 }} />
           <text x={26} y={36} style={{ ...text, fill: "var(--color-brand-added)" }}>MongoDB Atlas · the source</text>
-          <text x={26} y={54} style={sub}>Free M0 or dedicated M10 and up</text>
+          <text x={26} y={54} style={sub}>Free M0, or a dedicated M10+ replica set (not sharded)</text>
           <Box x={30} y={66} w={580} h={50} title="Your database (shop)" lines={["your application keeps reading and writing it as usual"]} />
 
           {/* Engine */}

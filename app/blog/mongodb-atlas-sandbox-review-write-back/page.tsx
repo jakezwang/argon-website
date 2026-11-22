@@ -51,7 +51,7 @@ const mcpReadOnly =
 const faq = [
   {
     q: "Does Argon support MongoDB Atlas?",
-    a: "Yes, from Argon 2.12.0, on the free M0 tier and on dedicated tiers such as M10; both are tested, including write-back. Argon imports an Atlas database while it is being written, follows its changes, gives AI agents sandboxes forked from it, and writes a reviewed plan back to Atlas in one transaction. The Argon engine and the sandboxes run on a MongoDB replica set you run; Atlas stays the source.",
+    a: "Yes, from Argon 2.12.0, on the free M0 tier and on dedicated replica-set clusters such as M10; both are tested, including write-back. Argon imports an Atlas database while it is being written, follows its changes, gives AI agents sandboxes forked from it, and writes a reviewed plan back to Atlas in one transaction. Sharded clusters are not supported. The Argon engine and the sandboxes run on a MongoDB replica set you run; Atlas stays the source.",
   },
   {
     q: "Can an AI agent write to MongoDB Atlas safely?",
@@ -87,11 +87,12 @@ export default function Page() {
       <p>
         <strong>
           From Argon 2.12.0, this works on the free M0 tier and on dedicated
-          clusters such as M10.
+          replica-set clusters such as M10.
         </strong>{" "}
         Both are tested, including write-back. The run in this post is on a free
         M0; the M10 tests are in <a href={atlasPR}>the pull request</a> that
-        added Atlas support. Self-managed replica sets work as before.
+        added Atlas support. Atlas sharded clusters are not supported, and self-managed replica
+        sets work as before.
       </p>
 
       <h2>How does Argon work with MongoDB Atlas?</h2>
@@ -165,7 +166,7 @@ export default function Page() {
               <td>M0</td>
             </tr>
             <tr>
-              <td>Dedicated M10 and up</td>
+              <td>Dedicated M10 and up, as a replica set</td>
               <td>The replica-set ID, as on a self-managed replica set</td>
               <td>M10</td>
             </tr>
@@ -575,7 +576,10 @@ $ argon merge preview -p shop -b agent-2
           <code>argon sandbox create --credential</code> needs an engine
           deployment that allows <code>createUser</code>, which Atlas does not.
         </li>
-        <li>Sharded clusters are not supported as sources.</li>
+        <li>
+          Sharded clusters, on Atlas or self-managed, are not supported as
+          sources: an online import through <code>mongos</code> is refused.
+        </li>
         <li>
           Behind a TLS-inspecting proxy, reading and following a shared-tier
           cluster work, but write-back is refused.
