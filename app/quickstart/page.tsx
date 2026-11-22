@@ -330,7 +330,9 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
               <code>changeStream</code> and <code>listIndexes</code>; write-back
               also needs <code>readWrite</code>. The import user must be allowed
               to run <code>replSetGetConfig</code>, for example with the{" "}
-              <code>clusterMonitor</code> role.
+              <code>clusterMonitor</code> role, except on Atlas M0 and Flex,
+              where a fully verified TLS connection to the cluster identifies
+              it instead.
             </li>
             <li>
               <code>merge check</code> is optional: it reports unique-key

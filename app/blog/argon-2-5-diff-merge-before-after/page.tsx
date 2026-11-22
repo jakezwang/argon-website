@@ -419,7 +419,8 @@ scripts/gc_case_docker.sh 2.5.0 100000,1000000 results/gc-case.txt`}</code>
       <h2>Upgrading</h2>
       <p>
         There are no data format changes between 2.4.1 and 2.5.0. Install
-        2.5.0 or a later release over the old one; this is the current release:
+        2.5.0 or a later release over the old one, and read the changelog&apos;s
+        upgrade notes for releases after 2.5.0. This is the current release:
       </p>
       <pre>
         <code>{`npm install -g argonctl@${release.version} --allow-scripts=argonctl`}</code>

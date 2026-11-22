@@ -17,9 +17,9 @@ export const product = {
   ],
 };
 export const sourceTesting =
-  "Importing, following and write-back are tested with MongoDB 6.0, 7.0 and 8.0, with access control and TLS, across primary elections, and on MongoDB Atlas including the free M0 tier. Sharded sources are not tested.";
+  "Importing, following and write-back are tested with MongoDB 6.0, 7.0 and 8.0, with access control and TLS, across primary elections, and on MongoDB Atlas including the free M0 tier. Sharded sources, the Atlas Flex tier, Atlas failover while following, and running the engine itself on Atlas are not tested.";
 export const sandboxCredential =
-  "argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database; discarding the sandbox, or the sweep after its TTL, revokes it. Without --credential the connection string carries the engine's own MongoDB credentials.";
+  "argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database; discarding the sandbox, or the sweep after its TTL, revokes it. Argon refuses the flag when the engine's own connection is not authenticated, or when the engine runs on MongoDB Atlas. Without --credential the connection string carries the engine's own MongoDB credentials.";
 export const mergeCheck =
   "Before approval, you can run argon merge check <plan-id> to see whether an insert or replacement would use a unique key another source document keeps or two documents in the plan would share a key.";
 export const mergeCheckLimits =
@@ -299,7 +299,7 @@ export const gitMap = [
   [
     "git clone",
     ["argon import database --online"],
-    "Copies a replica-set database while it is being written. Unlike a clone, it brings the documents as they are at one moment, without earlier history or indexes.",
+    "Copies a replica-set database while it is being written. Unlike a clone, it brings the documents as they are at one moment, without earlier history. Index definitions are recorded and checkouts build them; validators and collection options are not copied.",
     "source",
   ],
   [

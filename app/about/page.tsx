@@ -98,6 +98,10 @@ export default function AboutPage() {
                 undo
               </li>
               <li>
+                Per-sandbox MongoDB users, sandboxes built with the
+                source&apos;s indexes, and a unique-key check before write-back
+              </li>
+              <li>
                 TTL sandboxes, dataset pins, an MCP server and the argon-agents
                 Python SDK
               </li>
