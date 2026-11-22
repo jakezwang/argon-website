@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { install, limits, mergeCheck, mergeCheckLimits, sourceTesting } from "../product";
+import { install } from "../product";
 import { pageMetadata } from "../metadata";
 
 export const metadata = pageMetadata(
   "Argon FAQ: MongoDB Sandboxes, Branching and AI Agents",
-  "Answers about MongoDB sandboxes for AI agents, Git for MongoDB, branching, capture, retained history, merge, sandbox cleanup, and installing Argon.",
+  "Answers on MongoDB sandboxes for AI agents: Git for MongoDB, Atlas, importing a live database, write-back, sandbox credentials and cleanup, and installing Argon.",
   "/faq",
 );
 
@@ -47,7 +47,7 @@ const faq = [
   },
   {
     q: "How do I clean up MongoDB sandboxes with a TTL, and who runs capture?",
-    a: `Every sandbox has a time to live, one hour by default, set with --ttl. ${limits.lifecycle} argon sandbox discard removes one sandbox immediately, and argon sandbox keep removes the TTL from one you want to keep.`,
+    a: "Every sandbox has a time to live, one hour by default, set with --ttl. The next sweep after it expires removes the sandbox; a running MCP server or REST service sweeps and captures for you, and with the CLI alone you run argon watch and schedule argon sandbox sweep. argon sandbox discard removes a sandbox at once, and argon sandbox keep removes its TTL. A TTL does not stop the agent process.",
     href: "/cli#sandboxes",
     label: "Sandbox commands",
   },
@@ -71,7 +71,7 @@ const faq = [
   },
   {
     q: "Does Argon work with MongoDB Atlas?",
-    a: "Yes, as the database Argon imports, follows and writes back to, from 2.12.0. Run the engine and its sandboxes on a MongoDB replica set you run and point argon import database --online at the Atlas connection string. It is tested on a free M0 and a dedicated M10 cluster with least-privilege custom roles; the free tier hides the replica-set ID, so Argon identifies the cluster by its TLS-verified mongodb.net hosts instead. Running the engine itself on Atlas is not tested, and --credential needs a deployment that allows createUser, which Atlas does not.",
+    a: "Yes, as the database Argon imports, follows and writes back to. Run the engine on a replica set you manage and point argon import database --online at the Atlas connection string. It is tested on free M0 and dedicated M10 clusters with least-privilege custom roles. Running the engine itself on Atlas is not tested.",
     href: "https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md#mongodb-atlas-as-a-source",
     label: "Atlas roles and limits",
   },
@@ -88,6 +88,12 @@ const faq = [
     label: "Operating limits",
   },
   {
+    q: "Can I limit what an agent's database connection can reach?",
+    a: "Yes. Create the sandbox with argon sandbox create --credential, or credential=True in the Python SDK. Its connection string then carries a MongoDB user that can read and write only that sandbox's database, and discarding or sweeping the sandbox revokes the user.",
+    href: "/cli#sandboxes",
+    label: "Sandbox commands",
+  },
+  {
     q: "Can every change be undone?",
     a: "Changes captured with complete images, within retained history. Undo filters by the actor label of a branch, so give each agent its own branch.",
     href: "/features#capabilities",
@@ -101,15 +107,15 @@ const faq = [
   },
   {
     q: "Can Argon import a database that is in use and keep up with it?",
-    a: `Yes. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current afterwards, so each sandbox forks from recent data. This is available from 2.7.0. ${sourceTesting}`,
-    href: "/features#capabilities",
-    label: "Limits of following",
+    a: "Yes. argon import database --online copies a replica-set database while your application keeps writing to it, and argon source follow keeps main current, so each sandbox forks from recent data. It is tested with MongoDB 6.0 to 8.0 and Atlas, not with sharded clusters.",
+    href: "/features#source",
+    label: "Following a database in use",
   },
   {
     q: "Can Argon write a reviewed change back to the database it follows?",
-    a: `Yes, from the CLI only. ${mergeCheck} ${mergeCheckLimits} You pass the approval digest of the plan you reviewed to argon merge apply --write-back; without a matching digest the source is left untouched. This is available from 2.8.0; from 2.8.1 a one-field change does not reorder the other fields of the document. ${sourceTesting}`,
-    href: "/features#capabilities",
-    label: "Limits of write-back",
+    a: "Yes, from the CLI. Review the plan, optionally run argon merge check to catch unique-key collisions, then pass the plan's approval digest to argon merge apply --write-back. The write is one transaction: without a matching digest, or if a document changed on the source since the review, nothing is written.",
+    href: "/features#write-back",
+    label: "Write a reviewed change back",
   },
   {
     q: "How fast is branching?",

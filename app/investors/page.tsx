@@ -34,6 +34,10 @@ export default function InvestorsPage() {
               Python SDK {product.sdkVersion} on PyPI
             </li>
             <li>
+              Imports and follows live production databases, including MongoDB
+              Atlas, and writes reviewed changes back
+            </li>
+            <li>
               Public benchmark suite separates metadata costs from checkout,
               capture and end-to-end workflows
             </li>

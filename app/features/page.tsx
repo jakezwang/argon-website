@@ -24,7 +24,7 @@ const deepDives = [
 
 export const metadata = pageMetadata(
   "Git for MongoDB: Sandboxes, Diff, Merge, Time Travel and Undo",
-  "Git for MongoDB, command by command: branch your data, give each agent run a sandbox, diff, merge, time travel and undo. Open source and self-hosted.",
+  "Git for MongoDB, command by command: agent sandboxes, diff, merge, time travel and undo, plus importing a live database and writing reviewed changes back.",
   "/features",
 );
 
@@ -38,6 +38,25 @@ export default function FeaturesPage() {
         changed, merge what you reviewed, and go back when you need to. The same
         commands serve tests and development databases.
       </p>
+
+      <nav aria-label="On this page" className="mt-8">
+        <ul className="flex flex-wrap gap-2">
+          {[
+            ...features.map((f) => [f.short, `#${f.id}`] as const),
+            ["Limits", "#capabilities"] as const,
+            ["Terms", "#terms"] as const,
+          ].map(([label, href]) => (
+            <li key={href}>
+              <a
+                href={href}
+                className="inline-flex min-h-9 items-center rounded-full border border-brand-edge bg-brand-surface px-3.5 text-sm text-brand-text-darker transition-colors hover:border-brand-primary hover:text-brand-primary"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <table className="mt-12 block w-full border-t border-brand-edge-strong text-left md:table md:border-collapse">
         <caption className="sr-only">
@@ -139,10 +158,8 @@ export default function FeaturesPage() {
           </section>
         ))}
         <p className="border-t border-brand-edge pt-6 text-sm leading-6 text-brand-muted">
-          Recorded with Argon {featureTranscriptVersion} on a local replica set;
-          output and IDs are shortened. The last two sections, on a database in
-          use, were recorded with Argon {sourceTranscriptVersion} on two
-          one-member MongoDB 7.0 replica sets without access control.{" "}
+          Output from local runs with Argon {featureTranscriptVersion} (
+          {sourceTranscriptVersion} for the last two sections), shortened.{" "}
           <Link className="prose-link" href="/quickstart">
             Run them yourself
           </Link>

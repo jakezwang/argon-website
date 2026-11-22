@@ -17,11 +17,9 @@ export const product = {
   ],
 };
 export const sourceTesting =
-  "From 2.10.0, importing, following and write-back are tested on self-managed replica sets with access control and TLS, across primary elections on three members, and with MongoDB 6.0, 7.0 and 8.0. From 2.12.0 MongoDB Atlas is a tested source too, including the free M0 tier, with least-privilege custom roles. Sharded sources are not tested.";
-export const sandboxIndexes =
-  "From 2.11.0 a checkout builds each collection's secondary indexes, recorded from the source at import, from index changes while following, and from index builds made in a branch's checkout. A TTL index is built without its expiry, and an index the data violates is skipped and reported.";
+  "Importing, following and write-back are tested with MongoDB 6.0, 7.0 and 8.0, with access control and TLS, across primary elections, and on MongoDB Atlas including the free M0 tier. Sharded sources are not tested.";
 export const sandboxCredential =
-  "From 2.10.0, argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database. Discarding the sandbox, or the sweep after its TTL, revokes that user; until a sweep runs, an expired sandbox's credential still works. Without --credential the connection string carries the engine's own MongoDB credentials.";
+  "argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database; discarding the sandbox, or the sweep after its TTL, revokes it. Without --credential the connection string carries the engine's own MongoDB credentials.";
 export const mergeCheck =
   "Before approval, you can run argon merge check <plan-id> to see whether an insert or replacement would use a unique key another source document keeps or two documents in the plan would share a key.";
 export const mergeCheckLimits =
@@ -62,7 +60,7 @@ export const capabilities = [
   ],
   [
     "Importing and following",
-    `argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it; on an idle source the last change takes ten to twenty seconds to arrive by default. Validators are not followed; index definitions are, for checkouts. A reviewed merge plan can be written back to the source from the CLI only: take the plan's approval_digest from argon merge list -p <project> --output json and pass it to argon merge apply <plan-id> --write-back --approve <digest>. From 2.8.1 a sandbox holds each document with the field order it has in the source, so writing back a one-field change does not reorder the other fields; this applies to a database imported online and followed by 2.8.1. Programmatic writes and undo can still store fields in name order, a snapshot rebuilt after garbage collection reclaimed a collection's history stores name order, and a document with non-canonical BSON is encoded from its decoded value. A plan previewed by 2.8.0 needs a fresh preview after upgrading. ${sourceTesting}`,
+    `argon import database --online copies a replica-set database while it is being written, and argon source follow keeps main current with it, ten to twenty seconds behind on an idle source. Index definitions are followed for checkouts; validators are not. Write-back is a CLI step that needs the approval digest of the plan you reviewed. A one-field change keeps the other fields in source order; programmatic writes and undo can store fields in name order. ${sourceTesting}`,
     "Main can follow a database in use. Write-back is a reviewed CLI step.",
   ],
   [
@@ -99,9 +97,11 @@ export const features = [
     points: [
       "Creating a branch copies no documents. A branch is a pointer into shared history.",
       "Checkout builds the physical database and prints its connection string.",
-      "From 2.11.0 checkout also builds the collection's secondary indexes, so unique constraints hold in the sandbox as on the source.",
+      "Checkout also builds the collection's secondary indexes, so unique constraints hold as on the source.",
       "Past its TTL, a sandbox is removed by the next sweep.",
     ],
+    limit:
+      "A TTL index is built without its expiry, and an index the data violates is skipped and reported.",
   },
   {
     id: "diff",
@@ -254,7 +254,7 @@ export const features = [
       "Following is a running process and goes one way, from the source into main. While it follows, main refuses ordinary merges, undo and other writes.",
     ],
     limit:
-      `The source must be a replica set, not a sharded cluster. ${sandboxIndexes} Validators are not followed. ${sourceTesting}`,
+      "The source must be a replica set, not a sharded cluster; MongoDB Atlas works, including the free tier. Validators are not followed.",
   },
   {
     id: "write-back",
@@ -285,8 +285,7 @@ export const features = [
       "Without a matching digest nothing is written. If a planned document changed on the source after the preview, the transaction aborts, nothing is written and the plan stays pending.",
       "Write-back is a CLI step for a person. The MCP server, the REST API and the console do not offer it.",
     ],
-    limit:
-      `${mergeCheck} A collision gives a nonzero exit status. The check only reads the source and leaves the plan pending with the same approval digest. ${mergeCheckLimits} From 2.8.1 a one-field change does not reorder the other fields of the document, for a database imported online and followed by 2.8.1; programmatic writes and undo can still store fields in name order. ${sourceTesting}`,
+    limit: `${mergeCheck} A collision gives a nonzero exit status; the check only reads the source and leaves the plan pending. ${mergeCheckLimits}`,
   },
 ] as const;
 // The two sections about a database in use were recorded later than the rest.
@@ -336,7 +335,7 @@ export const gitMap = [
   [
     "git push",
     ["argon merge apply --write-back"],
-    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest, is a CLI step only, and aborts without writing if a planned document changed on the source after the review. The optional argon merge check <plan-id> reports unique-key collisions at check time and lists any indexes or key paths it skipped.",
+    "Writes a reviewed plan to the followed database in one transaction. Unlike a push, it needs the plan's approval digest and aborts without writing if a planned document changed on the source after the review.",
     "write-back",
   ],
   [

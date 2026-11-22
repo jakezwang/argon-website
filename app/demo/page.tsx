@@ -5,8 +5,8 @@ import UnderTheHood from "../components/UnderTheHood";
 import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
 export const metadata = pageMetadata(
-  "How it works: Review MongoDB Changes",
-  "Explore illustrated Argon branching and review workflows. The hosted console is paused; run the real engine locally with the quickstart.",
+  "How Argon Works: MongoDB Branching, Review and Architecture",
+  "Step through MongoDB branching, merge review and time travel, then see how Argon works: change streams, an ordered log of document changes, branches as pointers.",
   "/demo",
 );
 export default function DemoPage() {

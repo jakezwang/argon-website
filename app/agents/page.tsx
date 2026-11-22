@@ -1,7 +1,7 @@
 import { pageMetadata } from "../metadata";
 import CodeBlock from "../components/CodeBlock";
 import { ActionLink } from "../components/Funnel";
-import { install, product, sourceTesting } from "../product";
+import { install, product } from "../product";
 
 export const metadata = pageMetadata(
   "MongoDB Sandboxes for Claude, Cursor and LangGraph Agents",
@@ -217,7 +217,7 @@ argon merge apply <plan-id>`}
               argon merge apply &lt;plan-id&gt; --write-back --approve
               &lt;digest&gt;
             </code>
-            , and is not offered over MCP, REST or the console. {sourceTesting}
+            , and is not offered over MCP, REST or the console.
           </p>
         </div>
       </section>
@@ -283,12 +283,12 @@ print("Review this plan:", plan["id"])
             <code>orders</code> diff containing price 44, and a merge plan ID.
             The proposal does not change the parent branch unless you apply a
             reviewed merge. After 30 minutes the sandbox is eligible for cleanup
-            on a successful sweep. Manage the agent process separately. For
-            code you do not trust, create the sandbox with{" "}
-            <code>--credential</code> (from 2.10.0), or pass{" "}
-            <code>credential=True</code> to the Python SDK (from 0.3.0): its
+            on a successful sweep. Manage the agent process separately. For code
+            you do not trust, create the sandbox with <code>--credential</code>,
+            or pass <code>credential=True</code> to the Python SDK: its
             connection string then carries a MongoDB user that can reach only
-            that sandbox&apos;s database, and discard or the sweep revokes it. See the{" "}
+            that sandbox&apos;s database, and discard or the sweep revokes it.
+            See the{" "}
             <a
               className="prose-link"
               href="/blog/disposable-mongodb-sandbox-for-ai-agents#ttl-experiment"
