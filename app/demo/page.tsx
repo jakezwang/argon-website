@@ -6,7 +6,7 @@ import { ActionLink } from "../components/Funnel";
 import { product } from "../product";
 export const metadata = pageMetadata(
   "How Argon Works: MongoDB Branching, Review and Architecture",
-  "Step through MongoDB branching, merge review and time travel, then see how Argon works: change streams, an ordered log of document changes, branches as pointers.",
+  "Step through MongoDB branching, merge review and time travel, then see how Argon works: change streams, an ordered log of document changes and branch pointers.",
   "/demo",
 );
 export default function DemoPage() {
