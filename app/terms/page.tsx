@@ -39,9 +39,9 @@ export default function TermsPage() {
       <p>
         When available, the hosted demo uses a session cookie. Optional website
         and console usage counts have separate opt-in choices. The{" "}
-        <a href="/privacy">Privacy page</a>
-        describes these choices and ordinary hosting request metadata. Avoid
-        posting private data in public support discussions.
+        <a href="/privacy">Privacy page</a> describes these choices and ordinary
+        hosting request metadata. Avoid posting private data in public support
+        discussions.
       </p>
       <h2>Software and documentation</h2>
       <p>
@@ -64,7 +64,7 @@ export default function TermsPage() {
         The website, demo, and these terms may change as the project develops.
         Material changes to this page will have a new update date. Contact the
         maintainers at{" "}
-        <a href="mailto:jake.wang@argonlabs.tech">jake.wang@argonlabs.tech</a>
+        <a href="mailto:jake.wang@argonlabs.tech">jake.wang@argonlabs.tech</a>{" "}
         with questions about these terms or use of the demo.
       </p>
     </article>

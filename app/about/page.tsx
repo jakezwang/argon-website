@@ -103,18 +103,16 @@ export default function AboutPage() {
               </li>
               <li>
                 Importing a replica-set database while it is being written, and
-                following it, so sandboxes fork from recent data (from 2.7.0)
+                following it, so sandboxes fork from recent data
               </li>
               <li>
                 Writing a reviewed merge plan back to the followed database in
-                one transaction, from the CLI only (from 2.8.0)
+                one transaction, from the CLI only
               </li>
               <li>
-                Importing, following and write-back are tested on
-                self-managed replica sets with access control, TLS and
-                primary elections, on MongoDB 6.0, 7.0 and 8.0 (from 2.10.0),
-                and on MongoDB Atlas including the free tier (from 2.12.0);
-                not on sharded sources
+                Tested with MongoDB 6.0, 7.0 and 8.0, access control, TLS and
+                primary elections, and with MongoDB Atlas including the free
+                tier
               </li>
             </ul>
           </div>

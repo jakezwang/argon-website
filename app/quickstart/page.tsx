@@ -2,7 +2,7 @@ import { pageMetadata } from "../metadata";
 import type { ReactNode } from "react";
 import CodeBlock from "../components/CodeBlock";
 import QuickStartCommand from "../components/QuickStartCommand";
-import { install, product, mergeCheck, mergeCheckLimits, sourceTesting } from "../product";
+import { install, product } from "../product";
 
 export const metadata = pageMetadata(
   "Quickstart: Run MongoDB Sandboxes for AI Agents Locally",
@@ -96,10 +96,9 @@ export default function Quickstart() {
         </p>
         <QuickStartCommand showSdk={false} />
         <p>
-          npm 12 blocks package install scripts by default, so the flag allows
-          only <code>argonctl</code> to download its release binary. The
-          installer refuses a download whose SHA-256 does not match the one
-          published with the package.
+          npm 12 blocks package install scripts by default; the flag makes an
+          exception for <code>argonctl</code>, whose installer checks the binary
+          against the SHA-256 published with the package.
         </p>
         <CodeBlock
           label="Check the installed CLI"
@@ -321,39 +320,32 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
             <code>approval_digest</code>; without a matching digest nothing is
             written.
           </p>
-          <p>{mergeCheck} {mergeCheckLimits}</p>
           <ul className="list-disc space-y-2 pl-5 marker:text-brand-edge-strong">
             <li>
               The source has to be a replica set, not a sharded cluster.
-              Validators are not followed. From 2.11.0 index definitions are,
-              and each sandbox builds them.
+              MongoDB Atlas works, including the free tier.
             </li>
             <li>
-              Reading and following need <code>find</code> and{" "}
-              <code>changeStream</code> on the database. Write-back also needs{" "}
-              <code>readWrite</code>, and the import has to be made by a user
-              allowed to run <code>replSetGetConfig</code>, for example one with
-              the <code>clusterMonitor</code> role.
+              Reading and following need <code>find</code>,{" "}
+              <code>changeStream</code> and <code>listIndexes</code>; write-back
+              also needs <code>readWrite</code>. The import user must be allowed
+              to run <code>replSetGetConfig</code>, for example with the{" "}
+              <code>clusterMonitor</code> role.
             </li>
             <li>
-              {sourceTesting} Those tests use the least-privilege roles that
-              the operations guide lists for each command, including{" "}
-              <code>listIndexes</code> so that sandboxes get the source&apos;s
-              indexes.
-            </li>
-            <li>
-              From 2.8.1 a sandbox holds each document with the field order it
-              has in the source, so writing back a one-field change does not
-              reorder the other fields. Programmatic writes and undo can still
-              store fields in name order. A plan previewed by 2.8.0 needs a
-              fresh preview after upgrading.
+              <code>merge check</code> is optional: it reports unique-key
+              collisions before you approve.
             </li>
           </ul>
           <p>
             <a className="prose-link" href="/features#source">
               See the output of each command
             </a>
-            , or read{" "}
+            , the{" "}
+            <a className="prose-link" href="/features#capabilities">
+              limits
+            </a>
+            , or{" "}
             <a
               className="prose-link"
               href="/blog/branch-live-mongodb-write-back"
