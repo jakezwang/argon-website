@@ -32,94 +32,73 @@ const walkthrough = `${reports}/2026-11-21-v2.12.0-atlas-source-walkthrough`;
 const transcript = `${walkthrough}/transcript.txt`;
 const ops = "https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md";
 const atlasPR = "https://github.com/argon-lab/argon/pull/202";
+const launcherPR = "https://github.com/argon-lab/argon/pull/208";
 const atlasCI =
   "https://github.com/argon-lab/argon/blob/master/.github/workflows/atlas.yml";
-const atlasRestore =
-  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-overview/";
-const atlasBackup =
-  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/overview/";
-const atlasFreeBackup =
-  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/free-cluster-backup/";
-const mongodump = "https://www.mongodb.com/docs/database-tools/mongodump/";
-const atlasUsers = "https://www.mongodb.com/docs/atlas/security-add-mongodb-users/";
 const atlasTests =
   "https://github.com/argon-lab/argon/blob/v2.12.0/tests/wal/source_atlas_test.go";
+const atlasRestore =
+  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-overview/";
+const atlasFreeBackup =
+  "https://www.mongodb.com/docs/atlas/backup/cloud-backup/free-cluster-backup/";
+const atlasTempCluster =
+  "https://www.mongodb.com/docs/atlas/cli/current/atlas-cli-temporary-cluster/";
+const mongodump = "https://www.mongodb.com/docs/database-tools/mongodump/";
+const mcpReadOnly =
+  "https://www.mongodb.com/docs/mcp-server/local-mcp/security-best-practices/";
 
 const faq = [
   {
-    q: "Can Argon use MongoDB Atlas as the source database?",
-    a: "Yes, from Argon 2.12.0, on the free M0 tier and on dedicated tiers such as M10; both are tested, including write-back. Argon imports an Atlas database while it is being written, follows its changes, gives agents sandboxes forked from it, and writes a reviewed plan back to Atlas in one transaction. The engine and the sandboxes run on a MongoDB replica set you administer; Atlas holds only the source.",
+    q: "Does Argon support MongoDB Atlas?",
+    a: "Yes, from Argon 2.12.0, on the free M0 tier and on dedicated tiers such as M10; both are tested, including write-back. Argon imports an Atlas database while it is being written, follows its changes, gives AI agents sandboxes forked from it, and writes a reviewed plan back to Atlas in one transaction. The Argon engine and the sandboxes run on a MongoDB replica set you run; Atlas stays the source.",
   },
   {
-    q: "Does it work on the free M0 tier?",
-    a: "Yes. The run in this post used a free M0 cluster on MongoDB 8.0.39. The shared tiers refuse replSetGetConfig, so Argon cannot record the replica-set ID there. It identifies the cluster instead by a connection whose every host is under mongodb.net and verifies TLS against public certificate authorities, and it requires the same of every later command.",
+    q: "Can an AI agent write to MongoDB Atlas safely?",
+    a: "MongoDB's own advice for production is read-only access: its MCP server has a --readOnly mode and recommends a read-only database user. When an agent's writes are the point, Argon gives it a sandbox copy instead: the agent writes only to the sandbox, a person reviews every changed document, and the write-back to Atlas needs the plan's approval digest, a connection that verifies as the same cluster, and no change on Atlas to the reviewed documents since the review.",
   },
   {
-    q: "What stops an agent's change from reaching Atlas without review?",
-    a: "The agent writes only to its sandbox. Writing to Atlas takes argon merge apply with --write-back and the plan's approval digest, from a connection that verifies as the same Atlas cluster. In the run, a missing digest, a wrong digest, the wrong deployment and a plain apply were all refused, and a document changed on Atlas after the review made the write-back stop with nothing written.",
+    q: "Can I clone a MongoDB Atlas database for testing?",
+    a: "Atlas can restore a backup to another cluster, from M10 up, and mongodump with mongorestore copies a database; neither keeps following Atlas or brings reviewed changes back. Argon imports the Atlas database once, keeps a copy that follows it, and forks as many sandboxes from it as you need, each a real MongoDB database you can discard.",
   },
   {
-    q: "How fast does main follow Atlas?",
-    a: "In this run, with the application paused, following stored Atlas's newest write 0.5 s after it was made, and status reported changes stored about 0.1 to 0.6 s after they happened. A change is stored once the next oplog entry shows its cluster time is complete; on an idle self-managed replica set that can take 10 to 20 seconds. One short run on one M0 is not a latency guarantee.",
-  },
-  {
-    q: "What is not supported on Atlas?",
-    a: "Running the engine itself on Atlas is not tested, and argon sandbox create --credential needs an engine deployment that allows createUser, which Atlas does not. Sharded clusters are not supported as sources. Write-back to a shared-tier cluster is refused behind a TLS-inspecting proxy, though reading and following still work.",
-  },
-  {
-    q: "Can I clone a MongoDB Atlas database for testing with Argon?",
-    a: "Yes. Argon imports the Atlas database once, keeps a copy that follows Atlas, and forks as many sandboxes from it as you need. Each sandbox is a real MongoDB database on the engine's replica set, which you run, and can be discarded without touching Atlas. Atlas's own options are restoring a backup to another cluster, from M10 up, or mongodump and mongorestore; neither keeps following Atlas or writes reviewed changes back.",
+    q: "Do I need a paid Atlas tier?",
+    a: "No. Argon's Atlas support is tested on the free M0 tier, and the run in this post used one. The Argon engine needs its own MongoDB replica set, which you run.",
   },
   {
     q: "Is there Neon-style database branching for MongoDB Atlas?",
     a: "Argon adds branching to MongoDB, Atlas included: a branch is a metadata write, and checking one out copies it into a real MongoDB database. Unlike Neon's copy-on-write branches, each checked-out sandbox is a full copy, so it takes longer to be ready as the database grows.",
   },
+  {
+    q: "How fast does Argon follow changes on Atlas?",
+    a: "In this run on a free M0, status reported changes stored 84 to 96 ms after they happened while the application was writing, and with the application paused the newest write was stored 0.5 s after it was made. A change is stored once the next oplog entry shows its cluster time is complete; on an idle self-managed replica set that can take 10 to 20 seconds. One short run on one cluster is not a latency guarantee.",
+  },
 ];
 
 export default function Page() {
   return (
-    <ArticleLayout post={post} faq={faq}>
+    <ArticleLayout post={post} faq={faq} capabilityNotes={false}>
       <p>
-        Argon gives AI agents their own sandbox copies of a MongoDB Atlas
-        database, shows you what each agent changed, and writes the changes
-        you approve back to Atlas.
+        Argon gives AI agents sandbox copies of a MongoDB Atlas database, shows
+        you what each agent changed, and writes the changes you approve back
+        to Atlas. The Argon engine and the sandboxes run on a MongoDB replica
+        set you run; Atlas stays the source.
       </p>
       <p>
         <strong>
-          Argon now supports MongoDB Atlas as a source, from the free M0 tier
-          to dedicated clusters such as M10.
+          From Argon 2.12.0, this works on the free M0 tier and on dedicated
+          clusters such as M10.
         </strong>{" "}
-        From <a href={atlasPR}>Argon 2.12.0</a>, an Atlas database can be
-        imported while your application keeps writing to it, followed, forked
-        into sandboxes for AI agents, and written back to after you review
-        what the agent changed.
-      </p>
-      <ul>
-        <li>
-          <strong>Free M0</strong>: tested, including write-back. This post
-          runs the whole path on one.
-        </li>
-        <li>
-          <strong>Dedicated M10 and up</strong>: tested, including write-back.
-        </li>
-        <li>
-          <strong>Your own replica set</strong>: as before. Atlas joins it as
-          a supported source; it does not replace it.
-        </li>
-      </ul>
-      <p>
-        Until 2.12.0 our tests ran against self-managed replica sets only, and
-        Atlas&apos;s free tier hides the identifier Argon used to make sure a
-        write-back reaches the database that was reviewed. Below is how it
-        works now, then a full run on a free M0 with the published release.
+        Both are tested, including write-back. The run in this post is on a
+        free M0; the M10 tests are in{" "}
+        <a href={atlasPR}>the pull request</a> that added Atlas support.
+        Self-managed replica sets work as before.
       </p>
 
-      <h2>How it works</h2>
+      <h2>How does Argon work with MongoDB Atlas?</h2>
       <p>
-        Argon splits the work across two places. Atlas keeps your database,
-        and your application keeps using it as usual. The Argon engine runs on
-        a MongoDB replica set you run, and holds everything Argon makes: a
-        copy of the database that tracks Atlas, the agents&apos; sandboxes and
+        Atlas keeps your database, and your application keeps using it as
+        usual. The Argon engine, on a replica set you run, holds everything
+        Argon makes: a copy that tracks Atlas, the agents&apos; sandboxes and
         the merge plans.
       </p>
       <AtlasDiagram />
@@ -132,8 +111,8 @@ export default function Page() {
         </li>
         <li>
           <strong>Follow.</strong> <code>argon source follow</code> keeps
-          reading the change stream, so <code>main</code> stays current with
-          Atlas. It records who the source is and checks it on every
+          reading the change stream, so <code>main</code> stays current. It
+          records which cluster the source is and checks it on every
           connection.
         </li>
         <li>
@@ -160,7 +139,9 @@ export default function Page() {
       </ol>
       <p>
         The tiers differ only in how Argon recognizes the cluster in steps 2
-        and 6:
+        and 6. A write-back must reach the database the plan was reviewed
+        against, so the identity is recorded at import and checked on every
+        later connection:
       </p>
       <table>
         <thead>
@@ -174,9 +155,12 @@ export default function Page() {
           <tr>
             <td>Free M0, Flex</td>
             <td>
-              Every host under <code>mongodb.net</code>, over TLS verified
-              against public certificate authorities. These tiers refuse the
-              command that reads the replica-set ID.
+              These tiers refuse the command that reads the replica-set ID.
+              Argon accepts instead a connection whose every host is under{" "}
+              <code>mongodb.net</code>, with TLS verified against public
+              certificate authorities. Only Atlas can hold those certificates,
+              so a tunnel or another deployment cannot stand in for the
+              cluster.
             </td>
             <td>M0</td>
           </tr>
@@ -188,7 +172,7 @@ export default function Page() {
         </tbody>
       </table>
 
-      <h2>What it is for</h2>
+      <h2>What is it for?</h2>
       <p>
         Each of these runs the six steps above. The agent works on a fork of
         the Atlas data, and nothing reaches Atlas until someone has read the
@@ -216,176 +200,231 @@ export default function Page() {
         </li>
         <li>
           <strong>Several agents at once.</strong> Each gets its own sandbox.
-          When two change the same document, the second preview shows a
-          conflict and a person decides which version wins, as in the run
-          below.
+          When two change the same document, the later preview shows a
+          conflict and a person decides which version wins. See{" "}
+          <a href="/blog/two-ai-agents-one-mongodb-document">
+            two AI agents, one MongoDB document
+          </a>
+          .
         </li>
       </ul>
 
-      <h2>What we ran</h2>
+      <h2>How is this different from restoring an Atlas backup or using mongodump?</h2>
+      <p>
+        The common ways to put an agent or a test near Atlas data, from
+        MongoDB&apos;s own documentation, checked on November 21, 2026:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Approach</th>
+            <th>What the agent gets</th>
+            <th>Getting reviewed changes back to Atlas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href={atlasRestore}>Restore an Atlas backup</a> to another
+              cluster
+            </td>
+            <td>
+              A full cluster as of a snapshot. Cloud Backup is for M10 and up;
+              on a free M0, daily snapshots are a{" "}
+              <a href={atlasFreeBackup}>paid private preview</a>. The restore
+              target must not receive client requests while it restores.
+            </td>
+            <td>
+              No built-in path. You find and copy the changes yourself, and
+              the copy does not follow later writes to Atlas.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href={mongodump}>
+                <code>mongodump</code> and <code>mongorestore</code>
+              </a>
+            </td>
+            <td>
+              A copy of the documents, collection options and index
+              definitions, consistent with writes during the dump when run
+              with <code>--oplog</code>.
+            </td>
+            <td>
+              No built-in path, and the dump does not follow Atlas after it
+              ends.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              A <a href={atlasTempCluster}>temporary cluster</a> from the
+              Atlas CLI
+            </td>
+            <td>
+              A new, empty cluster for testing scripts, deleted afterwards.
+              MongoDB&apos;s tutorial creates an M10, which is billed hourly
+              until it is deleted.
+            </td>
+            <td>Not applicable: it holds none of your data.</td>
+          </tr>
+          <tr>
+            <td>
+              The <a href={mcpReadOnly}>MongoDB MCP server in read-only mode</a>{" "}
+              with a read-only user
+            </td>
+            <td>
+              The live data, read-only. MongoDB recommends this for production;
+              read-only mode is not on by default.
+            </td>
+            <td>Nothing to bring back: the agent cannot write.</td>
+          </tr>
+          <tr>
+            <td>A database user with write access to production</td>
+            <td>The live data, limited by the user&apos;s roles.</td>
+            <td>
+              Every write the roles allow lands on Atlas at once, with no
+              review before it.
+            </td>
+          </tr>
+          <tr>
+            <td>Argon</td>
+            <td>
+              A sandbox forked from a copy that follows Atlas, one per agent
+              run. The engine runs on a replica set you run, and each sandbox
+              is a full copy of the database.
+            </td>
+            <td>
+              A plan with every document before and after, written back in
+              one transaction after approval, refused if Atlas changed since
+              the review.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Read-only access is the right answer when the agent only needs to
+        look. A restored cluster or a dump is simpler when nobody needs the
+        agent&apos;s changes afterwards, or when the copy does not have to
+        keep up with Atlas. Argon is for the case where an agent&apos;s work
+        is meant to reach Atlas, and someone has to see it first. For
+        branching tools beyond MongoDB, see{" "}
+        <a href="/blog/database-branching-tools-compared">
+          database branching tools compared
+        </a>
+        .
+      </p>
+
+      <h2>Can an AI agent write to Atlas safely this way?</h2>
+      <p>
+        The agent never needs Atlas credentials. It holds a connection string
+        to its sandbox on the engine, and only{" "}
+        <code>argon merge apply --write-back</code>, run by a person with the
+        plan&apos;s digest, writes to Atlas.
+      </p>
+      <p>
+        The sandbox connection string is not a security boundary on its own.
+        Without <code>--credential</code> it carries the engine&apos;s MongoDB
+        credentials, so code holding it can reach whatever the engine can.
+        With <code>argon sandbox create --credential</code>, available since
+        2.10.0, each sandbox gets its own MongoDB user that can read and write
+        only that sandbox and is revoked when the sandbox is discarded. That
+        needs an engine deployment with access control, which you run; see{" "}
+        <a href="/blog/mongodb-sandbox-indexes-scoped-credentials">
+          sandboxes that refuse what production refuses
+        </a>
+        .
+      </p>
+
+      <h2>What happened on a free M0</h2>
+      <p>
+        We ran the whole path with the published release. The data is
+        synthetic, and a second process wrote to Atlas the whole time, like an
+        application would.
+      </p>
       <ul>
         <li>
           <strong>Argon 2.12.0</strong>, installed from npm as{" "}
           <code>argonctl</code>.
         </li>
         <li>
-          <strong>The source</strong>: a free MongoDB Atlas M0 cluster, MongoDB
+          <strong>The source</strong>: a free MongoDB Atlas M0, MongoDB
           8.0.39, AWS us-east-1. Its database <code>shop</code> starts with
           2,000 orders and 200 customers.
         </li>
         <li>
           <strong>The engine</strong>: MongoDB 7.0.45 as a one-member replica
-          set in a container. Argon keeps its metadata and the sandboxes
-          there.
+          set in a container.
         </li>
         <li>
           <strong>The application</strong>: a thread that inserts or updates
-          an order on Atlas, then sleeps 50 ms, for the whole run. It never
-          touches orders 1 to 99, which the agents use.
+          an order on Atlas, then sleeps 50 ms, for the whole run.
         </li>
       </ul>
       <p>
         Every command and its output is in{" "}
-        <a href={transcript}>the transcript</a>; <a href={walkthrough}>the report</a>{" "}
-        has the script. The cluster&apos;s host and replica-set name are masked
-        as <code>&lt;id&gt;</code>. Long output is shortened with …
+        <a href={transcript}>the transcript</a>, and{" "}
+        <a href={walkthrough}>the report</a> has the script. The cluster&apos;s
+        host and replica-set name are masked as <code>&lt;id&gt;</code>, and
+        the output below keeps only the lines discussed. The same steps on a self-managed source, with more on each, are in{" "}
+        <a href="/blog/branch-live-mongodb-write-back">
+          branch a live MongoDB database and write reviewed changes back
+        </a>
+        .
       </p>
 
-      <h2>Import while Atlas is being written</h2>
+      <h3>Import and follow, while Atlas is being written</h3>
       <pre>
         <code>{`$ export ARGON_SOURCE_URI="mongodb+srv://…@cluster1.<id>.mongodb.net/"
 $ argon import database --database shop --project shop --online --yes
 ✅ Import Complete
    Documents Imported: 2.2K
-   Collections: 2
-   Duration: 887.464125ms
-   LSN Range: 2 - 2225
    Consistent: LSN 2225 is the source at cluster time Timestamp(1795303135, 26)
    LSNs below 2225 are the copy in progress, not states the source was in.
-   main follows database 'shop'; keep it current with: argon source follow -p <project>`}</code>
-      </pre>
-      <p>
-        The application made 13 writes to Atlas while the command ran. The
-        import takes Atlas&apos;s cluster time, copies the collections, then
-        replays the change stream from that time until it has passed
-        everything the copy read. What it publishes is Atlas at one cluster time, and it says
-        which one.
-      </p>
 
-      <h2>Follow it</h2>
-      <pre>
-        <code>{`$ argon source follow -p shop        # left running
-
+$ argon source follow -p shop        # left running
 $ argon source status -p shop
-Project shop: main follows database "shop"
   Source:      mongodb+srv://cluster1.<id>.mongodb.net/shop (replica set atlas-<id>-shard-0)
   Identity:    replica-set name and TLS-verified MongoDB Atlas hosts
-  State:       running (last report 2026-11-21T23:18:56Z)
   Health:      healthy (exact)
-  Head:        LSN 2333
-  Consistent:  LSN 2333 is the source at Timestamp(1795303143, 87)
-  Last change: 2026-11-21T23:19:03Z (stored 96 ms after it happened)
-  …`}</code>
+  Last change: 2026-11-21T23:19:03Z (stored 96 ms after it happened)`}</code>
       </pre>
       <p>
-        The <code>Identity</code> line shows the M0 path from the table
-        above. A write-back must reach the database the plan was reviewed
-        against, so Argon records who the source is at import and checks it
-        on every later connection. On a self-managed replica set or a
-        dedicated Atlas tier it records the replica-set ID. Atlas&apos;s
-        shared tiers (M0 and Flex) refuse the command that reads it.
-      </p>
-      <p>
-        In its place Argon accepts a connection that can only be Atlas:
-      </p>
-      <ul>
-        <li>
-          every seed host and every member the cluster reports is under{" "}
-          <code>mongodb.net</code>;
-        </li>
-        <li>
-          TLS is on, with certificate and host name checks and no custom
-          certificate authority;
-        </li>
-        <li>
-          the certificates verify against the public root program Argon ships,
-          not only against the machine&apos;s trust store.
-        </li>
-      </ul>
-      <p>
-        Only Atlas can get a public certificate for those hosts, so a tunnel
-        or another deployment cannot stand in for the cluster. The last
-        condition rules out a private root the machine happens to trust, such
-        as a corporate one. A dedicated tier that allows the command records
-        the replica-set ID as before.
-      </p>
-
-      <h2>Is main the same as Atlas?</h2>
-      <p>
-        With the application paused for a moment, following stored
-        Atlas&apos;s newest write 0.5 s after it was made. A sandbox forked
-        from <code>main</code> then held exactly what Atlas held:
+        The application made 13 writes to Atlas while the import ran. With
+        the application paused for a moment, following stored Atlas&apos;s
+        newest write 0.5 s after it was made, and a sandbox forked from{" "}
+        <code>main</code> held exactly what Atlas held:
       </p>
       <pre>
         <code>{`[orders: source 2077 documents, sandbox forked from main 2077 documents;
- values IDENTICAL (sha256 8a6077029cd073c3 / 8a6077029cd073c3);
  exact BSON bytes IDENTICAL (sha256 8ebdf6cf33613739 / 8ebdf6cf33613739)]
 [customers: source 200 documents, sandbox forked from main 200 documents;
- values IDENTICAL (sha256 4596f17c23748169 / 4596f17c23748169);
  exact BSON bytes IDENTICAL (sha256 cbd620837406d59f / cbd620837406d59f)]`}</code>
       </pre>
       <p>
-        The hashes run over every document&apos;s BSON bytes in{" "}
-        <code>_id</code> order, so field order and types match too, not just
-        values.
-      </p>
-      <p>
-        The 0.5 s is one measurement on one M0, not a guarantee. A change is
-        stored once the next oplog entry shows its cluster time is complete.
-        On an idle self-managed replica set that next entry is MongoDB&apos;s
-        periodic no-op, so the last change of a burst can wait 10 to 20
-        seconds there. Any other write to the deployment ends the wait at
-        once.
+        The 0.5 s is one measurement on one M0. A change is stored once the
+        next oplog entry shows its cluster time is complete; on an idle
+        self-managed replica set that next entry is MongoDB&apos;s periodic
+        no-op, so the last change of a burst can wait 10 to 20 seconds there.
       </p>
 
-      <h2>An agent works in a sandbox</h2>
+      <h3>An agent changes three documents, and four shortcuts are refused</h3>
       <p>
-        The agent gets a connection string to a sandbox on the engine, forked
-        from <code>main</code>. It refunds one order, adds a refund record and
-        deletes another order, using an ordinary driver:
+        Through its sandbox&apos;s connection string, an agent refunds one
+        order, adds a refund record and deletes another order:
       </p>
       <pre>
-        <code>{`$ argon sandbox create -p shop --name agent-1 --watch --actor agent-1
-Sandbox "agent-1" forked from main at LSN 2334.
-Connection string:
-  mongodb://argon-atlaspost-meta:27017/argon_br_6b0226e93663898f81659960?replicaSet=rs0
-
-$ argon diff -p shop -b agent-1
-Merging agent-1 → main
+        <code>{`$ argon diff -p shop -b agent-1
   delete orders/order-000017
   put    orders/order-000042
   put    orders/order-000042-refund
 3 change(s), 0 conflict(s)`}</code>
       </pre>
       <p>
-        Atlas has not changed. Meanwhile the application keeps writing to it,
-        and following keeps <code>main</code> current.
+        <code>argon merge preview -o json</code> saved a plan with an{" "}
+        <code>approval_digest</code> and the source it was reviewed for,{" "}
+        <code>atlas-tls:atlas-&lt;id&gt;-shard-0</code>. Four attempts that
+        should not reach Atlas:
       </p>
-
-      <h2>Review, and what is refused</h2>
-      <p>
-        <code>argon merge preview -p shop -b agent-1 -o json</code> saves a
-        plan with each document before and after, and an{" "}
-        <code>approval_digest</code> over all of it. The plan also records
-        which source it was reviewed for:
-      </p>
-      <pre>
-        <code>{`    "followed_database": "shop",
-    "followed_replica_set_id": "atlas-tls:atlas-<id>-shard-0",
-    …
-    "approval_digest": "852c9aacbdf9f9409789da45f4f12be730dd2a0b0d27079ba0a63279fe5940b5"`}</code>
-      </pre>
-      <p>Four attempts that should not reach Atlas:</p>
       <pre>
         <code>{`$ argon merge apply 6b0226e9… --write-back
 Error: --write-back requires --approve with a 64-character lowercase hex digest; …
@@ -395,7 +434,7 @@ Error: approval digest does not match the saved plan; …
 
 $ argon merge apply 6b0226e9… --write-back --approve 852c9aac… --uri mongodb://argon-atlaspost-meta:27017/?replicaSet=rs0
 Error: write-back failed: this project identifies its source by a verified TLS connection
-to MongoDB Atlas, and this connection is not one (mongodb+srv://cluster1.<id>.mongodb.net/shop): …
+to MongoDB Atlas, and this connection is not one (…): …
 
 $ argon merge apply 6b0226e9…
 Error: apply failed: merge apply refused: branch main follows the external database "shop"
@@ -403,70 +442,56 @@ and only changes when that database does; …`}</code>
       </pre>
       <p>
         The third points the write-back at the engine&apos;s own deployment
-        instead of Atlas, and the identity check refuses it. After all four,
-        the three documents on Atlas were as they had been.
+        instead of Atlas. After all four, the three documents on Atlas were as
+        they had been.
       </p>
 
-      <h2>Write back</h2>
+      <h3>The approved write-back</h3>
       <pre>
         <code>{`$ argon merge apply 6b0226e9… --write-back --approve 852c9aac…
-Written to the source database: 3 change(s) in one transaction.
-main shows them once following has read them from the source (argon source status).`}</code>
-      </pre>
-      <p>On Atlas afterwards:</p>
-      <pre>
-        <code>{`order-000042:        {"_id": "order-000042", "status": "refunded", …, "refund_cents": 2054}
-order-000042-refund: {"_id": "order-000042-refund", "status": "refund", "customer": "cust-042",
-                      "total_cents": -2054, "refunds": "order-000042"}
-order-000017:        null`}</code>
+Written to the source database: 3 change(s) in one transaction.`}</code>
       </pre>
       <p>
-        The command took 599 ms. The same plan cannot be applied twice: a repeat returned{" "}
-        <code>merge plan is applied, not pending</code>. <code>main</code>{" "}
-        shows the change once following reads it back from Atlas, like any
-        other write.
+        On Atlas, order 42 became <code>refunded</code> with a new{" "}
+        <code>refund_cents</code> field, the refund record appeared and order
+        17 was gone. Order 42 kept its field order, with the new field at the
+        end. The command took 599 ms, and applying the same plan again was
+        refused with <code>merge plan is applied, not pending</code>.
       </p>
 
-      <h2>When Atlas changes after the review</h2>
+      <h3>When Atlas changes after the review</h3>
       <p>
-        A second agent cancels orders 50 and 51 in its own sandbox, and the
-        plan is reviewed. Then, before the write-back, someone ships order 51
-        directly on Atlas:
+        A second agent cancelled orders 50 and 51 in its own sandbox, and the
+        plan was reviewed. Then, before the write-back, someone shipped order
+        51 directly on Atlas:
       </p>
       <pre>
         <code>{`$ argon merge apply 6b0226f0… --write-back --approve 323cd7b6…
 Error: write-back failed: write-back aborted, nothing was written: document orders/order-000051
 in the source database differs from the state this plan was reviewed against.
-Let following catch up and run preview again`}</code>
-      </pre>
-      <p>
-        Order 50 was not cancelled either: the plan is written whole or not
-        at all. After following stored the edit, a new preview showed it as a
-        conflict:
-      </p>
-      <pre>
-        <code>{`$ argon merge preview -p shop -b agent-2
-Merging agent-2 → main
+Let following catch up and run preview again
+
+$ argon merge preview -p shop -b agent-2
   put    orders/order-000050
   CONFLICT orders/order-000051 (both sides changed since the fork)
 1 change(s), 1 conflict(s)`}</code>
       </pre>
       <p>
-        From there a person decides: <code>--strategy ours</code> keeps the
-        shipment and cancels only order 50, <code>--strategy theirs</code>{" "}
-        takes the agent&apos;s version of both.
+        Order 50 was not cancelled either: a plan is written whole or not at
+        all. From the new plan a person decides with{" "}
+        <code>--strategy</code>: <code>ours</code> keeps the version on Atlas
+        for a conflicting document, <code>theirs</code> takes the
+        agent&apos;s. This run stopped at the preview.
       </p>
-
-      <h2>At the end</h2>
       <p>
-        The application made 125 inserts and 123 updates during the run.
+        At the end the application had made 125 inserts and 123 updates, and
         Atlas held 2,125 orders: 2,000 seeded, 125 inserted by the
         application, one inserted and one deleted by the plan. A new sandbox
         forked from <code>main</code> held the same 2,125 documents, with
         identical BSON bytes.
       </p>
 
-      <h2>Roles</h2>
+      <h2>Which Atlas roles does Argon need?</h2>
       <p>
         The run connected as a user with read and write on any database, for
         brevity. In production give each command only what it needs. Atlas
@@ -526,102 +551,14 @@ Merging agent-2 → main
         names the action it is missing.
       </p>
 
-      <h2>Kept working</h2>
+      <h2>How is Atlas support kept working?</h2>
       <p>
         <a href={atlasTests}>Argon&apos;s Atlas tests</a> import, follow, fork a
-        sandbox, write back and check that a weakened TLS connection is not
-        accepted as the cluster. Since November 21{" "}
-        <a href={atlasCI}>a workflow</a> runs them against a free M0 every
-        day and on every change to the source code on master, so a change
-        that breaks Atlas shows up as a failed run.
-      </p>
-
-      <h2>Other ways to give an agent Atlas data</h2>
-      <p>
-        Argon is not the only way to put an agent near Atlas data. The common
-        alternatives, from MongoDB&apos;s own documentation, checked on
-        November 21, 2026:
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Approach</th>
-            <th>What the agent gets</th>
-            <th>Getting reviewed changes back to Atlas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a href={atlasRestore}>Restore an Atlas backup</a> to another
-              cluster
-            </td>
-            <td>
-              A full cluster as of a snapshot. Cloud Backup is for M10 and up;
-              on a free M0, daily snapshots are a{" "}
-              <a href={atlasFreeBackup}>paid private preview</a>. The restore
-              target must not receive client requests while it restores.
-            </td>
-            <td>
-              No built-in path. You find and copy the changes yourself, and
-              the copy does not follow later writes to Atlas.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href={mongodump}>
-                <code>mongodump</code> and <code>mongorestore</code>
-              </a>
-            </td>
-            <td>
-              A copy of the documents, collection options and index
-              definitions, consistent with writes during the dump when run
-              with <code>--oplog</code>.
-            </td>
-            <td>
-              No built-in path, and the dump does not follow Atlas after it
-              ends.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              A <a href={atlasUsers}>restricted database user</a> on the
-              production cluster
-            </td>
-            <td>
-              The live data, limited by the user&apos;s roles and by which
-              clusters it may reach.
-            </td>
-            <td>
-              Nothing to bring back: every write the roles allow lands on
-              Atlas at once, with no review before it.
-            </td>
-          </tr>
-          <tr>
-            <td>Argon</td>
-            <td>
-              A sandbox forked from a copy that follows Atlas, one per agent
-              run. The engine runs on a replica set you run, and each sandbox
-              is a full copy of the database.
-            </td>
-            <td>
-              A plan with every document before and after, written back in
-              one transaction after approval, refused if Atlas changed since
-              the review.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        A restored cluster or a dump is the simpler choice when nobody needs
-        the agent&apos;s changes afterwards, or when the copy does not have
-        to keep up with Atlas. Argon is for the case where an agent&apos;s
-        work is meant to reach Atlas, and someone has to see it first. For
-        branching tools beyond MongoDB, see{" "}
-        <a href="/blog/database-branching-tools-compared">
-          database branching tools compared
-        </a>
-        .
+        sandbox, write back, and check that a weakened TLS connection is not
+        accepted as the cluster. Since November 21,{" "}
+        <a href={atlasCI}>a workflow</a> runs them against a free M0 once a
+        day, when started by hand, and on pushes to master that change the
+        code for importing, following and merging.
       </p>
 
       <h2>Limits</h2>
@@ -644,10 +581,19 @@ Merging agent-2 → main
         </li>
         <li>
           A sandbox is a full copy of the database on the engine, so it takes
-          longer to be ready as the database grows.
+          longer to be ready as the database grows. Validators and collection
+          options are not copied to sandboxes.
         </li>
         <li>
-          Validators and collection options are not copied to sandboxes.
+          A sandbox created from the CLI records the agent&apos;s writes while{" "}
+          <code>--watch</code> or <code>argon watch</code> runs; sandboxes
+          from the MCP server and the console are watched for you.
+        </li>
+        <li>
+          In 2.12.0, stopping <code>argon source follow</code> by sending a
+          signal to the npm-installed <code>argon</code> command leaves the
+          follower running; Ctrl-C in a terminal is not affected.{" "}
+          <a href={launcherPR}>The fix</a> is in the next release.
         </li>
       </ul>
 
@@ -663,8 +609,13 @@ argon sandbox create -p shop --ttl 1h --watch`}</code>
       <p>
         Review with <code>argon merge preview</code>, take the digest from{" "}
         <code>argon merge list -p shop --output json</code>, and write back
-        with <code>argon merge apply &lt;plan&gt; --write-back --approve
-        &lt;digest&gt;</code>.
+        with{" "}
+        <code>argon merge apply &lt;plan&gt; --write-back --approve &lt;digest&gt;</code>
+        . For a disposable sandbox without a live source, see{" "}
+        <a href="/blog/disposable-mongodb-sandbox-for-ai-agents">
+          disposable MongoDB sandboxes for AI agents
+        </a>
+        .
       </p>
     </ArticleLayout>
   );

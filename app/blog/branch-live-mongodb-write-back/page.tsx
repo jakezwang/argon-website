@@ -512,7 +512,11 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
         <em>
           Update, November 21, 2026. From Argon 2.12.0 MongoDB Atlas is a
           tested source as well, including the free M0 tier, so a database on
-          Atlas can be followed and written back to as shown above.
+          Atlas can be followed and written back to as shown above; see{" "}
+          <a href="/blog/mongodb-atlas-sandbox-review-write-back">
+            the run on a free Atlas M0
+          </a>
+          .
         </em>
       </p>
     </ArticleLayout>
