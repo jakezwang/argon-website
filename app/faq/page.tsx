@@ -71,9 +71,9 @@ const faq = [
   },
   {
     q: "Does Argon work with MongoDB Atlas?",
-    a: "Yes, as the database Argon imports, follows and writes back to. Run the engine on a replica set you manage and point argon import database --online at the Atlas connection string. It is tested on free M0 and dedicated M10 clusters with least-privilege custom roles. Running the engine itself on Atlas is not tested.",
-    href: "https://github.com/argon-lab/argon/blob/v2.12.0/docs/OPERATIONS.md#mongodb-atlas-as-a-source",
-    label: "Atlas roles and limits",
+    a: "Yes. Argon can import, follow and write back to Atlas replica-set sources, and the engine and its sandboxes can also run on Atlas. Check the tested tiers, permissions and capacity limits before connecting a workload.",
+    href: "/features#capabilities",
+    label: "Atlas support and limits",
   },
   {
     q: "What are the requirements?",

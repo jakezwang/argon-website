@@ -87,6 +87,7 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`,
     code: `argon time-travel info  -p <project> -b <branch>
 argon time-travel query -p <project> -b <branch> --lsn <lsn>
 argon undo -p <project> -b <branch> --from-lsn <lsn> --actor <label> --dry-run
+argon undo --merge <plan-id> --dry-run
 argon restore preview -p <project> -b <branch> --time <rfc3339>
 argon restore reset   -p <project> -b <branch> --time <rfc3339> --backup <name>
 argon restore branch  -p <project> -b <branch> --lsn <lsn> --as <new-branch>`,
@@ -99,11 +100,12 @@ argon restore branch  -p <project> -b <branch> --lsn <lsn> --as <new-branch>`,
     code: `argon mcp
 argon mcp --disable-tools argon_merge_apply
 argon mcp --read-only
+argon mcp --http 127.0.0.1:8080
 argon console --no-browser
 argon proxy
 argon doctor
 argon status`,
-    note: "The MCP server and the console manage capture and sandbox expiry for the sandboxes they create. The console and the proxy listen on the local machine by default.",
+    note: "The MCP server and the console manage capture and sandbox expiry for the sandboxes they create. MCP over HTTP serves /mcp and requires ARGON_MCP_TOKEN on non-loopback addresses. The console and the proxy listen on the local machine by default.",
   },
 ];
 
