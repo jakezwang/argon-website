@@ -12,6 +12,16 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "mongodb-atlas-sandbox-review-write-back",
+    title: "MongoDB Atlas Sandboxes for AI Agents: Argon Now Supports Free M0 and M10",
+    description:
+      "Give AI agents sandbox copies of a MongoDB Atlas database, review what they changed, and write approved changes back. Tested on free M0 and M10 with Argon 2.12.",
+    date: "2026-11-23",
+    updated: "2026-11-23",
+    tags: ["MongoDB", "Atlas", "AI Agents"],
+    readingMinutes: 11,
+  },
+  {
     slug: "mongodb-sandbox-indexes-scoped-credentials",
     title: "MongoDB Sandboxes That Refuse What Production Refuses",
     description:

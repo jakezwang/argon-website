@@ -9,7 +9,8 @@ export default function LaterReleasesNote() {
         before a write-back, and 2.10.0 tests importing, following and
         write-back against sources with access control and TLS, across primary
         elections on a three-member replica set, and with MongoDB 6.0 and 8.0,
-        and 2.12.0 adds MongoDB Atlas, including the free tier; sharded sources
+        and 2.12.0 adds{" "}
+        <a href="/blog/mongodb-atlas-sandbox-review-write-back">MongoDB Atlas as a source</a>, including the free tier; sharded sources
         are still untested. <code>argon sandbox create --credential</code> gives
         a sandbox its own MongoDB user, revoked when the sandbox is discarded or
         swept; it needs an authenticated engine connection and is refused when

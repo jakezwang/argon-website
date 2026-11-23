@@ -515,8 +515,14 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}</code>
           be followed and written back to as shown above. On M0 and Flex, which
           refuse <code>replSetGetConfig</code>, a fully verified TLS connection
           to the cluster&apos;s <code>mongodb.net</code> hosts identifies the
-          source instead of the replica-set ID. Running the engine itself on
-          Atlas, Atlas failover and the Flex tier are not tested.
+          source instead of the replica-set ID. The{" "}
+          <a href="/blog/mongodb-atlas-sandbox-review-write-back">2.12.0 walkthrough</a>{" "}
+          uses Atlas M0 as the source and a separate replica set for the
+          engine. In 2.13.0,{" "}
+          <a href="https://github.com/argon-lab/argon/pull/221">separate CI</a>{" "}
+          tested the engine on Atlas M0 with a separate source. Atlas failover
+          while following and the Flex tier remain untested; see{" "}
+          <a href="/features#capabilities">current test coverage and limits</a>.
         </em>
       </p>
     </ArticleLayout>
