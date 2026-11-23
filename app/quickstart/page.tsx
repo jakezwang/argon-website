@@ -284,6 +284,21 @@ ${install.python}`}
         </p>
       </section>
 
+      <details className="mt-8 border-t border-brand-edge pt-4">
+        <summary className="min-h-11 cursor-pointer py-2 font-medium text-brand-text">
+          Clean up the local quickstart
+        </summary>
+        <p className="mt-3 text-sm leading-7">
+          Stop the console and any watchers, then remove the disposable MongoDB
+          container and its volumes. This deletes the local quickstart data.
+        </p>
+        <CodeBlock
+          label="Remove the quickstart database"
+          language="bash"
+          code="docker rm -fv argon-mongo"
+        />
+      </details>
+
       <section
         id="existing-database"
         className="mt-16 scroll-mt-24 border-t border-brand-edge pt-10"
@@ -322,8 +337,8 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
           </p>
           <ul className="list-disc space-y-2 pl-5 marker:text-brand-edge-strong">
             <li>
-              The source has to be a replica set, not a sharded cluster.
-              MongoDB Atlas works, including the free tier.
+              The source has to be a replica set, not a sharded cluster. MongoDB
+              Atlas works, including the free tier.
             </li>
             <li>
               Reading and following need <code>find</code>,{" "}
@@ -331,8 +346,8 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
               also needs <code>readWrite</code>. The import user must be allowed
               to run <code>replSetGetConfig</code>, for example with the{" "}
               <code>clusterMonitor</code> role, except on Atlas M0 and Flex,
-              where a fully verified TLS connection to the cluster identifies
-              it instead.
+              where a fully verified TLS connection to the cluster identifies it
+              instead.
             </li>
             <li>
               <code>merge check</code> is optional: it reports unique-key
@@ -367,15 +382,15 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
         <div className="mt-4 max-w-2xl space-y-4 leading-7">
           <p>
             A customer requests a return for <code>order-17</code>. Two scripts
-            run against separate sandboxes with the same synthetic orders.
-            The first changes only <code>order-17</code>. The second also
-            changes <code>order-23</code>. Argon shows both IDs in the second
-            diff, and the example flags the extra order for rejection.
+            run against separate sandboxes with the same synthetic orders. The
+            first changes only <code>order-17</code>. The second also changes{" "}
+            <code>order-23</code>. Argon shows both IDs in the second diff, and
+            the example flags the extra order for rejection.
           </p>
           <p>
-            This standalone test needs Python 3.7 or later, Docker running
-            Linux containers and internet access to download MongoDB, Node and
-            the pinned Argon CLI. You can skip the setup steps above.
+            This standalone test needs Python 3.7 or later, Docker running Linux
+            containers and internet access to download MongoDB, Node and the
+            pinned Argon CLI. You can skip the setup steps above.
           </p>
           <a
             href="/examples/order-review.py"
@@ -389,6 +404,11 @@ argon merge apply <plan-id> --write-back --approve <approval_digest>`}
             language="bash"
             code="python3 order-review.py"
           />
+          <p>
+            Expect <code>WITHIN REQUEST</code> for the first run and{" "}
+            <code>REJECT; unexpected order-23</code> for the second, followed by{" "}
+            <code>PASS</code> after both sandboxes have been discarded.
+          </p>
           <p className="text-sm text-brand-muted">
             The test checks the recorded changes, discards both sandboxes and
             verifies the parent and source orders still have their original

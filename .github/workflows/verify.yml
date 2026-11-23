@@ -95,7 +95,7 @@ jobs:
           name: mcp-example-evidence
           path: ${{ runner.temp }}/argon-mcp-*
       - if: always()
-        run: docker rm -f argon-docs-mongo
+        run: docker rm -fv argon-docs-mongo
 
   npm12-install:
     runs-on: ubuntu-latest

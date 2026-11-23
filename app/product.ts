@@ -16,7 +16,7 @@ export const product = {
   ],
 };
 export const sourceTesting =
-  "Importing, following and write-back are tested with MongoDB 6.0, 7.0 and 8.0, with access control and TLS, across primary elections, and on MongoDB Atlas including the free M0 tier. Sharded sources, the Atlas Flex tier, Atlas failover while following, and running the engine itself on Atlas are not tested.";
+  "Importing, following and write-back are tested with MongoDB 6.0, 7.0 and 8.0, with access control and TLS, across primary elections, and on MongoDB Atlas including free M0 and dedicated replica-set M10 sources. The engine is also tested on Atlas M0. Sharded sources are unsupported. Atlas Flex, Atlas failover while following, the console on Atlas and the engine on dedicated Atlas tiers remain untested.";
 export const sandboxCredential =
   "argon sandbox create --credential gives the sandbox its own MongoDB user that can read and write only the sandbox's database; discarding the sandbox, or the sweep after its TTL, revokes it. Argon refuses the flag when the engine's own connection is not authenticated, or when the engine runs on MongoDB Atlas. Without --credential the connection string carries the engine's own MongoDB credentials.";
 export const mergeCheck =

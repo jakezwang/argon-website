@@ -38,6 +38,8 @@ const atlasCI =
   "https://github.com/argon-lab/argon/blob/master/.github/workflows/atlas.yml";
 const atlasTests =
   "https://github.com/argon-lab/argon/blob/v2.12.0/tests/wal/source_atlas_test.go";
+const atlasEnginePR = "https://github.com/argon-lab/argon/pull/221";
+const atlasEngineRun = "https://github.com/argon-lab/argon/actions/runs/45000368146";
 const atlasRestore =
   "https://www.mongodb.com/docs/atlas/backup/cloud-backup/restore-overview/";
 const atlasFreeBackup =
@@ -51,7 +53,7 @@ const mcpReadOnly =
 const faq = [
   {
     q: "Does Argon support MongoDB Atlas?",
-    a: "Yes, from Argon 2.12.0, on the free M0 tier and on dedicated replica-set clusters such as M10; both are tested, including write-back. Argon imports an Atlas database while it is being written, follows its changes, gives AI agents sandboxes forked from it, and writes a reviewed plan back to Atlas in one transaction. Sharded clusters are not supported. The Argon engine and the sandboxes run on a MongoDB replica set you run; Atlas stays the source.",
+    a: "Yes: Argon 2.12.0 tested Atlas as a source on free M0 and dedicated M10 replica sets, including reviewed write-back. This walkthrough uses an Atlas M0 source and a separate self-managed replica set for the engine and sandboxes. Argon 2.13.0 separately tested using an Atlas M0 for the engine with a separate source replica set; sharded sources are not supported.",
   },
   {
     q: "Can an AI agent write to MongoDB Atlas safely?",
@@ -63,7 +65,7 @@ const faq = [
   },
   {
     q: "Do I need a paid Atlas tier?",
-    a: "No. Argon's Atlas support is tested on the free M0 tier, and the run in this post used one. The Argon engine needs its own MongoDB replica set, which you run.",
+    a: "No. This walkthrough uses a free Atlas M0 as the source and a separate replica set you run for the Argon engine. Argon 2.13.0 also separately tested hosting the engine on a free M0.",
   },
   {
     q: "Is there Neon-style database branching for MongoDB Atlas?",
@@ -81,8 +83,8 @@ export default function Page() {
       <p>
         Argon gives AI agents sandbox copies of a MongoDB Atlas database, shows
         you what each agent changed, and writes the changes you approve back to
-        Atlas. The Argon engine and the sandboxes run on a MongoDB replica set
-        you run; Atlas stays the source.
+        Atlas. In this 2.12.0 walkthrough, the engine and sandboxes run on a
+        separate, self-managed MongoDB replica set; Atlas is the source.
       </p>
       <p>
         <strong>
@@ -568,11 +570,22 @@ $ argon merge preview -p shop -b agent-2
         importing, following and merging.
       </p>
 
+      <p>
+        Argon 2.13.0 added a separate{" "}
+        <a href={atlasEnginePR}>Atlas M0 engine test</a>. Its{" "}
+        <a href={atlasEngineRun}>passing CI run</a> used M0 for engine metadata,
+        checkouts and a writable sandbox, with a separate source replica set.
+        It exercised following, write capture, merge preview, write-back and
+        restart. It did not test the console on Atlas or put the source and
+        engine on the same cluster. See{" "}
+        <a href="/features#capabilities">current test coverage and limits</a>.
+      </p>
+
       <h2>Limits</h2>
       <ul>
         <li>
-          The engine and its sandboxes run on a MongoDB replica set you
-          administer. Running the engine on Atlas is not tested.{" "}
+          For engine setups, Atlas M0 validation is limited to the separate-source
+          CI scenario above.{" "}
           <code>argon sandbox create --credential</code> needs an engine
           deployment that allows <code>createUser</code>, which Atlas does not.
         </li>
